@@ -1,0 +1,365 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+    content="Admiro admin is super flexible, powerful, clean &amp; modern responsive bootstrap 5 admin template with unlimited possibilities.">
+  <meta name="keywords"
+    content="admin template, Admiro admin template, best javascript admin, dashboard template, bootstrap admin template, responsive admin template, web app">
+  <meta name="author" content="pixelstrap">
+  <title>Admiro - Premium Admin Template</title>
+  <!-- Favicon icon-->
+  <link rel="icon" href="{% static 'assets/img/favicon.png' %}" type="image/x-icon"> 
+  <link rel="shortcut icon" href="{% static 'assets/img/favicon.png' %}" type="image/x-icon">
+  <!-- Google font-->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link
+    href="../../css2?family=Nunito+Sans:opsz,wght@6..12,200;6..12,300;6..12,400;6..12,500;6..12,600;6..12,700;6..12,800;6..12,900;6..12,1000&amp;display=swap"
+    rel="stylesheet">
+  <!-- Flag icon css -->
+  <link rel="stylesheet" href="{% static 'assets/css/vendors/flag-icon.css' %}">
+  <!-- iconly-icon-->
+  <link rel="stylesheet" href="{% static 'assets/css/iconly-icon.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/css/bulk-style.css' %}">
+  <!-- iconly-icon-->
+  <link rel="stylesheet" href="{% static 'assets/css/themify.css' %}">
+  <!--fontawesome-->
+  <link rel="stylesheet" href="{% static 'assets/css/fontawesome-min.css' %}">
+  <!-- Whether Icon css-->
+  <link rel="stylesheet" type="text/css" href="{% static 'assets/css/vendors/weather-icons/weather-icons.min.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'assets/css/vendors/scrollbar.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'assets/css/vendors/slick.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'assets/css/vendors/slick-theme.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'assets/css/vendors/datatables.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'assets/css/vendors/datatable-extension.css' %}">
+  <!-- App css -->
+  <link id="color" rel="stylesheet" href="{% static 'assets/css/color-1.css' %}" media="screen">
+  <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-…(hash)…”" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="https://cdn.iconly.io/iconly.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/iconly@latest/css/iconly.css" />
+
+    <link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+  integrity="sha512-KNuNk+LZ8e2j+ozhRtX7sMGu0j1qFeIslMo7k3M5lVZhcN7sVbG7ByAzt+BrgrbM5nxp7/ECYtJ8O5E2+8Y0eA=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+/>
+
+
+<link rel="stylesheet" href="https://cdn.iconly.io/your-generated-hash/iconly.css">
+
+
+
+
+  <style>
+
+    .sidebar-pannle-main{
+      display: none;
+    }
+
+    .margin_left_auto{
+      margin-left: auto;
+    }
+
+  </style>
+
+</head>
+
+
+
+
+
+<body>
+  <!-- page-wrapper Start-->
+  <!-- tap on top starts-->
+  <div class="tap-top">
+    <i class="fa-solid fa-angle-up"></i>
+  </div> 
+  <!-- tap on tap ends-->
+  <!-- loader-->
+  <div class="loader-wrapper">
+    <div class="loader"><span></span><span></span><span></span><span></span><span></span></div>
+  </div>
+
+  
+  <div class="page-wrapper compact-wrapper" id="pageWrapper">
+
+    <!-- this is header section -->
+    <header class="page-header row">
+      <div class="logo-wrapper d-flex align-items-right col-auto"><a href="index.html"><img class="light-logo img-fluid"
+            src="{% static 'assets/img/logo.png' %}" alt="logo"><img class="dark-logo img-fluid" src="{% static 'assets/img/logo.png' %}"
+            alt="logo"></a><a class="close-btn toggle-sidebar" href="javascript:void(0)">
+          <svg class="svg-color">
+            <use href="{% static 'assets/svg/iconly-sprite.svg#Category' %}"></use>
+          </svg></a></div>
+      <div class="page-main-header col">
+        <div class="header-left">
+          <form class="form-inline search-full col" action="#" method="get">
+            <div class="form-group w-100">
+              <div class="Typeahead Typeahead--twitterUsers">
+                <div class="u-posRelative">
+                  <input class="demo-input Typeahead-input form-control-plaintext w-100" type="text"
+                    placeholder="Search Admiro .." name="q" title="" autofocus="autofocus">
+                  <div class="spinner-border Typeahead-spinner" role="status"><span class="sr-only">Loading...</span>
+                  </div><i class="close-search" data-feather="x"></i>
+                </div>
+                <div class="Typeahead-menu"></div>
+              </div>
+            </div>
+          </form>
+
+          <!-- <div class="form-group-header d-lg-block d-none">
+            <div class="Typeahead Typeahead--twitterUsers">
+              <div class="u-posRelative d-flex align-items-center">
+                <input class="demo-input py-0 Typeahead-input form-control-plaintext w-100" type="text"
+                  placeholder="Type to Search..." name="q" title=""><i class="search-bg iconly-Search icli"></i>
+              </div>
+            </div>
+          </div> -->
+
+        </div>
+        <div class="nav-right">
+          <ul class="header-right">
+            <li class="search d-lg-none d-flex"> <a href="javascript:void(0)">
+                <svg>
+                  <use href="{% static 'assets/svg/iconly-sprite.svg#Search' %}"></use>
+                </svg></a></li>
+            <li> <a class="dark-mode" href="javascript:void(0)">
+                <svg>
+                  <use href="{% static 'assets/svg/iconly-sprite.svg#moondark' %}"></use>
+                </svg></a></li>
+           
+            <li class="custom-dropdown"><a href="javascript:void(0)">
+                <svg>
+                  <use href="{% static 'assets/svg/iconly-sprite.svg#notification' %}"></use>
+                </svg></a><span class="badge rounded-pill badge-primary">4</span>
+              <div class="custom-menu notification-dropdown py-0 overflow-hidden">
+                <h3 class="title bg-primary-light dropdown-title">Notification <span class="font-primary">View
+                    all</span></h3>
+                <ul class="activity-timeline">
+                  <li class="d-flex align-items-start">
+                    <div class="activity-line"></div>
+                    <div class="activity-dot-primary"></div>
+                    <div class="flex-grow-1">
+                      <h6 class="f-w-600 font-primary">30-04-2024<span>Today</span><span
+                          class="circle-dot-primary float-end">
+                          <svg class="circle-color">
+                            <use href="{% static 'assets/svg/iconly-sprite.svg#circle' %}"></use>
+                          </svg></span></h6>
+                      <h5>Alice Goodwin</h5>
+                      <p class="mb-0">Fashion should be fun. It shouldn't be labelled intellectual.</p>
+                    </div>
+                  </li>
+                  <li class="d-flex align-items-start">
+                    <div class="activity-dot-secondary"></div>
+                    <div class="flex-grow-1">
+                      <h6 class="f-w-600 font-secondary">28-06-2024<span>1 hour ago</span><span
+                          class="float-end circle-dot-secondary">
+                          <svg class="circle-color">
+                            <use href="{% static 'assets/svg/iconly-sprite.svg#circle' %}"></use>
+                          </svg></span></h6>
+                      <h5>Herry Venter</h5>
+                      <p>I am convinced that there can be luxury in simplicity.</p>
+                    </div>
+                  </li>
+                  <li class="d-flex align-items-start">
+                    <div class="activity-dot-primary"></div>
+                    <div class="flex-grow-1">
+                      <h6 class="f-w-600 font-primary">04-08-2024<span>Today</span><span
+                          class="float-end circle-dot-primary">
+                          <svg class="circle-color">
+                            <use href="{% static 'assets/svg/iconly-sprite.svg#circle' %}"></use>
+                          </svg></span></h6>
+                      <h5>Loain Deo</h5>
+                      <p>I feel that things happen for open new opportunities.</p>
+                    </div>
+                  </li>
+                  <li class="d-flex align-items-start">
+                    <div class="activity-dot-secondary"></div>
+                    <div class="flex-grow-1">
+                      <h6 class="f-w-600 font-secondary">12-11-2024<span>Yesterday</span><span
+                          class="float-end circle-dot-secondary">
+                          <svg class="circle-color">
+                            <use href="{% static 'assets/svg/iconly-sprite.svg#circle' %}"></use>
+                          </svg></span></h6>
+                      <h5>Fenter Jessy</h5>
+                      <p>Sometimes the simplest things are the most profound.</p>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </li>
+            </li>
+            
+            <li class="profile-nav custom-dropdown">
+              <div class="user-wrap">
+                <div class="user-img"><img src="{% static 'assets/images/profile.png' %}" alt="user"></div>
+                <div class="user-content">
+                  <h6>Manas Moharana</h6>
+                  <p class="mb-0">Admin<i class="fa-solid fa-chevron-down"></i></p>
+                </div>
+              </div>
+              <div class="custom-menu overflow-hidden">
+                <ul class="profile-body">
+                  <li class="d-flex">
+                    <svg class="svg-color">
+                      <use href="{% static 'assets/svg/iconly-sprite.svg#Profile' %}"></use>
+                    </svg><a class="ms-2" href="user-profile.html">Account</a>
+                  </li>
+                  <li class="d-flex">
+                    <svg class="svg-color">
+                      <use href="{% static 'assets/svg/iconly-sprite.svg#Message' %}"></use>
+                    </svg><a class="ms-2" href="letter-box.html">Inbox</a>
+                  </li>
+                  <li class="d-flex">
+                    <svg class="svg-color">
+                      <use href="{% static 'assets/svg/iconly-sprite.svg#Document' %}"></use>
+                    </svg><a class="ms-2" href="to-do.html">Task</a>
+                  </li>
+                  <li class="d-flex">
+                    <svg class="svg-color">
+                      <use href="{% static 'assets/svg/iconly-sprite.svg#Login' %}"></use>
+                    </svg><a class="ms-2" href="login.html">Log Out</a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </header>
+    
+    <!--header section end -->
+    <!-- Page Body Start-->
+    <div class="page-body-wrapper">
+      <!-- Page sidebar start-->
+      <aside class="page-sidebar">
+        <div class="left-arrow" id="left-arrow"><i data-feather="arrow-left"></i></div>
+        <div class="main-sidebar" id="main-sidebar">
+          <ul class="sidebar-menu" id="simple-bar">
+            <li class="pin-title sidebar-main-title">
+              <div>
+                <h5 class="sidebar-title f-w-700">Pinned</h5>
+              </div>
+            </li>
+            <li class="sidebar-main-title">
+              <div>
+                <h5 class="lan-1 f-w-700 sidebar-title">General</h5>
+              </div>
+            </li>
+            <li class="sidebar-list">
+              <!-- <i class="fa-solid fa-thumbtack"></i> -->
+              <a class="sidebar-link"
+                href="javascript:void(0)">
+                <svg class="stroke-icon">
+                  <use href="{% static 'assets/svg/iconly-sprite.svg#Home-dashboard' %}"></use>
+                </svg>
+                <h6>Dashboards</h6>
+              </a>
+            </li>
+            <li class="sidebar-list">
+              <a class="sidebar-link" href="javascript:void(0)">
+                <svg class="stroke-icon">
+                  <use href="{% static 'assets/svg/iconly-sprite.svg#Pie' %}"></use>
+                </svg>
+                <h6>User</h6>
+                <i class="fa-solid fa-chevron-right margin_left_auto"></i>
+              </a>
+              <ul class="sidebar-submenu">
+                <li> <a href="telecaller.html">Telecaller</a></li>
+                <li><a href="teamlead.html">Team lead</a></li>
+                <li><a href="ground_staff.html">Ground staff</a></li>
+              </ul>
+            </li>
+
+
+            <li class="sidebar-list"><a class="sidebar-link" href="create_user.html">
+                <svg class="stroke-icon">
+                <use href="{% static 'assets/svg/iconly-sprite.svg#Profile' %}"></use>
+                </svg>
+               <h6 class="f-w-600">Create Users</h6></a>
+                          
+            </li>
+
+
+            <li class="sidebar-list">
+              <!-- <i class="fa-solid fa-thumbtack"></i> -->
+              <a class="sidebar-link"
+                href="javascript:void(0)">
+                <svg class="stroke-icon">
+                  <use href="{% static 'assets/svg/iconly-sprite.svg#Document' %}"></use>
+                </svg>
+                <h6>Login Status</h6>
+                <!-- <i class="iconly-Arrow-Right-2 icli"> </i> -->
+                 <i class="fa-solid fa-chevron-right margin_left_auto"></i>
+              </a>
+              <ul class="sidebar-submenu">
+                <li> <a href="tc_login.html">Telecaller</a></li>
+                <li><a href="tl_login.html">Team lead</a></li>
+                <li> <a href="gs_login.html">Ground staff</a></li>
+              </ul>
+            </li>
+
+            <li class="sidebar-list"> 
+              <!-- <i class="fa-solid fa-thumbtack"></i> -->
+              <a class="sidebar-link"
+                href="create_task.html">
+                <svg class="stroke-icon">
+                  <use href="{% static 'assets/svg/iconly-sprite.svg#Message' %}"></use>
+                </svg>
+                <h6 class="f-w-600">Create Task</h6>
+              </a></li>
+
+
+            <li class="sidebar-list"> 
+              <!-- <i class="fa-solid fa-thumbtack"></i> -->
+              <a class="sidebar-link" href="assign_task.html">
+                <svg class="stroke-icon">
+                  <use href="{% static 'assets/svg/iconly-sprite.svg#Bookmark' %}"></use>
+                </svg>
+                <h6 class="f-w-600">Task List</h6>
+              </a></li>
+
+            <li class="sidebar-list"> 
+              <!-- <i class="fa-solid fa-thumbtack"></i> -->
+              <a class="sidebar-link"
+                href="javascript:void(0)">
+                <svg class="stroke-icon">
+                  <use href="{% static 'assets/svg/iconly-sprite.svg#Info-circle' %}"></use>
+                </svg>
+                <h6 class="f-w-600">All Tasks</h6>
+                <!-- <i class="iconly-Arrow-Right-2 icli"></i> -->
+                 <i class="fa-solid fa-chevron-right margin_left_auto"></i>
+              </a>
+              <ul class="sidebar-submenu">
+                <li> <a href="pending_task.html">Pending</a></li>
+                <li> <a href="complete_task.html">Completed</a></li>
+              </ul>
+            </li>
+
+
+            <li class="sidebar-list"> 
+              <!-- <i class="fa-solid fa-thumbtack"></i> -->
+              <a class="sidebar-link" href="leave.html">
+                <svg class="stroke-icon">
+                  <use href="{% static 'assets/svg/iconly-sprite.svg#Bookmark' %}"></use>
+                </svg>
+                <h6 class="f-w-600">Leave Request</h6>
+              </a></li>
+          </ul>
+        </div>
+        <div class="right-arrow" id="right-arrow"><i data-feather="arrow-right"></i></div>
+      </aside>
+      <!-- Page sidebar end-->
+       

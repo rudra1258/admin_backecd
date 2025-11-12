@@ -1,0 +1,429 @@
+{% include "common/header.html" %}
+{% load static %}
+
+            <!-- body section start  -->
+            <div class="page-body">
+                <div class="container-fluid">
+                    <div class="page-title">
+                        <div class="row">
+                            <!-- table start -->
+                            <div class="col-sm-12">
+                                <div class="card">
+                                    <div class="card-header pb-0 card-no-border">
+
+                                        <h3>MY TASK LIST</h3>
+
+
+
+                                    </div>
+                                    <div class="filter-container">
+                                        <div class="filter-row">
+                                            <div class="filter-group">
+                                                <label for="columnSelect">Select Column:</label>
+                                                <select id="columnSelect">
+                                                    <option value="">-- Select Column --</option>
+                                                </select>
+                                            </div>
+                                            <div class="filter-group">
+                                                <label for="valueSelect">Select Value:</label>
+                                                <select id="valueSelect" disabled>
+                                                    <option value="">-- Select Value --</option>
+                                                </select>
+                                            </div>
+                                            <button class="btn-reset" onclick="resetFilters()">Reset Filters</button>
+                                        </div>
+                                    </div>
+
+                                    <!-- Category Section -->
+                                    <div class="category-section">
+                                        <h3>Status Categories</h3>
+                                        <div class="category-scroll">
+                                            <div class="category-grid">
+                                                <div class="category-card">
+                                                    <div class="category-code">CB</div>
+                                                    <div class="category-desc">The customer asked us to call back</div>
+                                                </div>
+                                                <div class="category-card">
+                                                    <div class="category-code">DISP</div>
+                                                    <div class="category-desc">Disputed cases</div>
+                                                </div>
+                                                <div class="category-card">
+                                                    <div class="category-code">EXP</div>
+                                                    <div class="category-desc">Death</div>
+                                                </div>
+                                                <div class="category-card">
+                                                    <div class="category-code">NC</div>
+                                                    <div class="category-desc">Not contact/Invalid/Incoming call off
+                                                    </div>
+                                                </div>
+                                                <div class="category-card">
+                                                    <div class="category-code">NITP</div>
+                                                    <div class="category-desc">Customer having no intension to repay
+                                                        loans / Intentional issues</div>
+                                                </div>
+                                                <div class="category-card">
+                                                    <div class="category-code">OS</div>
+                                                    <div class="category-desc">Out of station</div>
+                                                </div>
+                                                <div class="category-card">
+                                                    <div class="category-code">PAID</div>
+                                                    <div class="category-desc">Paid</div>
+                                                </div>
+                                                <div class="category-card">
+                                                    <div class="category-code">PTP</div>
+                                                    <div class="category-desc">Promised to pay</div>
+                                                </div>
+                                                <div class="category-card">
+                                                    <div class="category-code">REPO</div>
+                                                    <div class="category-desc">Vehicle repossession</div>
+                                                </div>
+                                                <div class="category-card">
+                                                    <div class="category-code">RNR</div>
+                                                    <div class="category-desc">Customer not responding the call</div>
+                                                </div>
+                                                <div class="category-card">
+                                                    <div class="category-code">RTP</div>
+                                                    <div class="category-desc">Refused to pay</div>
+                                                </div>
+                                                <div class="category-card">
+                                                    <div class="category-code">SHIFT</div>
+                                                    <div class="category-desc">Shifted the address</div>
+                                                </div>
+                                                <div class="category-card">
+                                                    <div class="category-code">SKIP</div>
+                                                    <div class="category-desc">Skip the address</div>
+                                                </div>
+                                                <div class="category-card">
+                                                    <div class="category-code">VISIT</div>
+                                                    <div class="category-desc">Not visit</div>
+                                                </div>
+                                                <div class="category-card">
+                                                    <div class="category-code">RE-VISIT</div>
+                                                    <div class="category-desc">Need to group visit</div>
+                                                </div>
+                                                <div class="category-card">
+                                                    <div class="category-code">WIP</div>
+                                                    <div class="category-desc">Working progress</div>
+                                                </div>
+                                                <div class="category-card">
+                                                    <div class="category-code">N-OFF</div>
+                                                    <div class="category-desc">Number off</div>
+                                                </div>
+                                                <div class="category-card">
+                                                    <div class="category-code">ANF</div>
+                                                    <div class="category-desc">Address not found</div>
+                                                </div>
+                                                <div class="category-card">
+                                                    <div class="category-code">FRAUD</div>
+                                                    <div class="category-desc">Potential fraud</div>
+                                                </div>
+                                                <div class="category-card">
+                                                    <div class="category-code">PS</div>
+                                                    <div class="category-desc">Product sold</div>
+                                                </div>
+                                                <div class="category-card">
+                                                    <div class="category-code">CF</div>
+                                                    <div class="category-desc">Cash funding</div>
+                                                </div>
+                                                <div class="category-card">
+                                                    <div class="category-code">FP</div>
+                                                    <div class="category-desc">Financial problem</div>
+                                                </div>
+                                                <div class="category-card">
+                                                    <div class="category-code">WS</div>
+                                                    <div class="category-desc">Wants settlement</div>
+                                                </div>
+                                                <div class="category-card">
+                                                    <div class="category-code">NO JOB</div>
+                                                    <div class="category-desc">Jobless</div>
+                                                </div>
+                                                <div class="category-card">
+                                                    <div class="category-code">MP</div>
+                                                    <div class="category-desc">Medical problems</div>
+                                                </div>
+                                                <div class="category-card">
+                                                    <div class="category-code">MD</div>
+                                                    <div class="category-desc">Multiple loan availed & market defaulter
+                                                    </div>
+                                                </div>
+                                                <div class="category-card">
+                                                    <div class="category-code">IC</div>
+                                                    <div class="category-desc">Insurance claim</div>
+                                                </div>
+                                                <div class="category-card">
+                                                    <div class="category-code">3P</div>
+                                                    <div class="category-desc">3rd party case</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="display dataTable" id="basic-9">
+                                                <thead style="background:#f8f9fa;">
+                                                    <tr>
+                                                        <th>Sl</th>
+                                                        <th>Agreement ID</th>
+                                                        <th>Customer Name</th>
+                                                        <th>Product</th>
+                                                        <th>TC Name</th>
+                                                        <th>Branch</th>
+                                                        <th>Count of Cases</th>
+                                                        <th>Old/New</th>
+                                                        <th>Bucket</th>
+                                                        <th>Mode</th>
+                                                        <th>NPA Status</th>
+                                                        <th>POS</th>
+                                                        <th>EMI Amount</th>
+                                                        <th>EMI Due Amount</th>
+                                                        <th>Total Charges</th>
+                                                        <th>Receipt Amount</th>
+                                                        <th>Receipt Date</th>
+                                                        <th>BCC Pending</th>
+                                                        <th>Penal Pending</th>
+                                                        <th>Disbursement Amount</th>
+                                                        <th>Loan Amount</th>
+                                                        <th>Disbursement Date</th>
+                                                        <th>EMI Start Date</th>
+                                                        <th>EMI End Date</th>
+                                                        <th>EMI Cycle Date</th>
+                                                        <th>Make</th>
+                                                        <th>Manufacturer Description</th>
+                                                        <th>Registration Number</th>
+                                                        <th>Age</th>
+                                                        <th>Employer</th>
+                                                        <th>Father Name</th>
+                                                        <th>FE Name</th>
+                                                        <th>FE Mobile Number</th>
+                                                        <th>Customer Number</th>
+                                                        <th>Customer Address</th>
+                                                        <th>Customer Office Address</th>
+                                                        <th>PIN Code</th>
+                                                        <th>Reference Details</th>
+                                                        <th>Collection Manager Name</th>
+                                                        <th>Finance Company Name</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="table-body"></tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                    <!-- Modal -->
+                                    <div id="detailModal" class="modal">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h2>Case Details & Update</h2>
+                                                <span class="close" onclick="closeModal()">&times;</span>
+                                            </div>
+                                            <div class="modal-body">
+                                                <!-- Row Details Section -->
+                                                <div class="row-details" id="rowDetailsSection">
+                                                    <h3>Current Case Information</h3>
+                                                    <div class="details-grid" id="rowDetailsGrid">
+                                                        <!-- Details will be populated here -->
+                                                    </div>
+                                                </div>
+
+                                                <!-- Form Section -->
+                                                <form id="detailForm">
+                                                    <div class="form-section">
+                                                        <h3>Contact Information</h3>
+                                                        <div class="form-grid">
+                                                            <div class="form-group">
+                                                                <label>Code</label>
+                                                                <select id="code">
+                                                                    <option value="">Select Code</option>
+                                                                    <option value="C1">Code 1</option>
+                                                                    <option value="C2">Code 2</option>
+                                                                    <option value="C3">Code 3</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label>New Mobile Number</label>
+                                                                <input type="tel" id="newMobileNumber"
+                                                                    placeholder="Enter mobile number">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-section">
+                                                        <h3>Projection Details</h3>
+                                                        <div class="form-grid">
+                                                            <div class="form-group">
+                                                                <label>Projection (Y/D/N)</label>
+                                                                <select id="projection">
+                                                                    <option value="">Select</option>
+                                                                    <option value="Y">Yes</option>
+                                                                    <option value="D">Delayed</option>
+                                                                    <option value="N">No</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label>Promise Date</label>
+                                                                <input type="datetime-local" id="promiseDate">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label>Promise Amount</label>
+                                                                <input type="number" id="promiseAmount"
+                                                                    placeholder="00000/-">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-section">
+                                                        <h3>Remarks</h3>
+                                                        <div class="form-grid">
+                                                            <div class="form-group">
+                                                                <label>Customer Remarks</label>
+                                                                <textarea id="customerRemarks"
+                                                                    placeholder="Enter customer remarks"></textarea>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label>Reference Remarks</label>
+                                                                <textarea id="referenceRemarks"
+                                                                    placeholder="Enter reference remarks"></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-section">
+                                                        <h3>Visit Details</h3>
+                                                        <div class="form-grid">
+                                                            <div class="form-group">
+                                                                <label>Need Group Visit (Y/N)</label>
+                                                                <select id="needGroupVisit">
+                                                                    <option value="">Select</option>
+                                                                    <option value="Y">Yes</option>
+                                                                    <option value="N">No</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label>Projection (Y/Y2/Y3/D/N)</label>
+                                                                <select id="projectionExtended">
+                                                                    <option value="">Select</option>
+                                                                    <option value="Y">Yes</option>
+                                                                    <option value="Y2">Yes 2</option>
+                                                                    <option value="Y3">Yes 3</option>
+                                                                    <option value="D">Delayed</option>
+                                                                    <option value="N">No</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label>Visit Status (Y/N)</label>
+                                                                <select id="visitStatus">
+                                                                    <option value="">Select</option>
+                                                                    <option value="Y">Yes</option>
+                                                                    <option value="N">No</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-section">
+                                                        <h3>Customer & Vehicle Status</h3>
+                                                        <div class="form-grid">
+                                                            <div class="form-group">
+                                                                <label>Customer Available (Y/N)</label>
+                                                                <select id="customerAvailable">
+                                                                    <option value="">Select</option>
+                                                                    <option value="Y">Yes</option>
+                                                                    <option value="N">No</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label>Vehicle Available (Y/N)</label>
+                                                                <select id="vehicleAvailable">
+                                                                    <option value="">Select</option>
+                                                                    <option value="Y">Yes</option>
+                                                                    <option value="N">No</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label>3rd Party Status (Y/N)</label>
+                                                                <select id="thirdPartyStatus">
+                                                                    <option value="">Select</option>
+                                                                    <option value="Y">Yes</option>
+                                                                    <option value="N">No</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label>3rd Party Details</label>
+                                                                <input type="text" id="thirdPartyDetails"
+                                                                    placeholder="Enter details">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-section">
+                                                        <h3>Location & Status</h3>
+                                                        <div class="form-grid">
+                                                            <div class="form-group">
+                                                                <label>New Update Address</label>
+                                                                <textarea id="newUpdateAddress"
+                                                                    placeholder="Enter new address"></textarea>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label>Location Photo</label>
+                                                                <input type="file" id="locationPhoto" accept="image/*">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label>Status (ST/RB/NR/RF)</label>
+                                                                <select id="status">
+                                                                    <option value="">Select</option>
+                                                                    <option value="ST">ST</option>
+                                                                    <option value="RB">RB</option>
+                                                                    <option value="NR">NR</option>
+                                                                    <option value="RF">RF</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-section">
+                                                        <h3>Payment Details</h3>
+                                                        <div class="form-grid">
+                                                            <div class="form-group">
+                                                                <label>Payment</label>
+                                                                <input type="text" id="payment"
+                                                                    placeholder="Enter payment info">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label>Mode (Cash/Online)</label>
+                                                                <select id="paymentMode">
+                                                                    <option value="">Select</option>
+                                                                    <option value="Cash">Cash</option>
+                                                                    <option value="Online">Online</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label>Payment Amount</label>
+                                                                <input type="number" id="paymentAmount"
+                                                                    placeholder="00000/-">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label>Payment Date</label>
+                                                                <input type="datetime-local" id="paymentDate">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+                                                <button class="btn-save" onclick="saveDetails()">Save Changes</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+   {% include "common/footer.html" %}     

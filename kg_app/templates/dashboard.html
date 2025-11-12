@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+    content="Admiro admin is super flexible, powerful, clean &amp; modern responsive bootstrap 5 admin template with unlimited possibilities.">
+  <meta name="keywords"
+    content="admin template, Admiro admin template, best javascript admin, dashboard template, bootstrap admin template, responsive admin template, web app">
+  <meta name="author" content="pixelstrap">
+  <title>Admiro - Premium Admin Template</title>
+  <!-- Favicon icon-->
+  <link rel="icon" href="../assets/img/favicon.png" type="image/x-icon">
+  <link rel="shortcut icon" href="../assets/img/favicon.png" type="image/x-icon">
+  <!-- Google font-->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link
+    href="../../css2?family=Nunito+Sans:opsz,wght@6..12,200;6..12,300;6..12,400;6..12,500;6..12,600;6..12,700;6..12,800;6..12,900;6..12,1000&amp;display=swap"
+    rel="stylesheet">
+  <!-- Flag icon css -->
+  <link rel="stylesheet" href="../assets/css/vendors/flag-icon.css">
+  <!-- iconly-icon-->
+  <link rel="stylesheet" href="../assets/css/iconly-icon.css">
+  <link rel="stylesheet" href="../assets/css/bulk-style.css">
+  <!-- iconly-icon-->
+  <link rel="stylesheet" href="../assets/css/themify.css">
+  <!--fontawesome-->
+  <link rel="stylesheet" href="../assets/css/fontawesome-min.css">
+  <!-- Whether Icon css-->
+  <link rel="stylesheet" type="text/css" href="../assets/css/vendors/weather-icons/weather-icons.min.css">
+  <link rel="stylesheet" type="text/css" href="../assets/css/vendors/scrollbar.css">
+  <link rel="stylesheet" type="text/css" href="../assets/css/vendors/slick.css">
+  <link rel="stylesheet" type="text/css" href="../assets/css/vendors/slick-theme.css">
+  <link rel="stylesheet" type="text/css" href="../assets/css/vendors/datatables.css">
+  <link rel="stylesheet" type="text/css" href="../assets/css/vendors/datatable-extension.css">
+  <!-- App css -->
+  <link id="color" rel="stylesheet" href="../assets/css/color-1.css" media="screen">
+  <link rel="stylesheet" href="../assets/css/style.css">
+
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    integrity="sha512-…(hash)…”" crossorigin=" anonymous" referrerpolicy="no-referrer" />
+
+  <link rel="stylesheet" href="https://cdn.iconly.io/iconly.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/iconly@latest/css/iconly.css" />
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+    integrity="sha512-KNuNk+LZ8e2j+ozhRtX7sMGu0j1qFeIslMo7k3M5lVZhcN7sVbG7ByAzt+BrgrbM5nxp7/ECYtJ8O5E2+8Y0eA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+
+  <link rel="stylesheet" href="https://cdn.iconly.io/your-generated-hash/iconly.css">
+
+
+
+
+  <style>
+
+    .sidebar-pannle-main {
+      display: none;
+    }
+
+    .margin_left_auto {
+      margin-left: auto;
+    }
+
+    .dashboard-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding-top: 25px;
+    }
+
+    .header {
+      background: white;
+      padding: 25px 30px;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .header h1 {
+      color: #5250c3;
+      font-size: 28px;
+      font-weight: 700;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 15px;
+    }
+
+    .btn {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-primary {
+      background: #5250c3;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #413ea8;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(82, 80, 195, 0.3);
+    }
+
+    .btn-secondary {
+      background: #f0f0f5;
+      color: #5250c3;
+    }
+
+    .btn-secondary:hover {
+      background: #e0e0ea;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .stat-card {
+      background: white;
+      padding: 25px;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: #5250c3;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .stat-card h3 {
+      color: #666;
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .stat-card .number {
+      color: #5250c3;
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .stat-card .subtitle {
+      color: #999;
+      font-size: 13px;
+    }
+
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      margin-bottom: 30px;
+    }
+
+    .panel {
+      background: white;
+      padding: 25px;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 2px solid #f0f0f5;
+    }
+
+    .panel-header h2 {
+      color: #333;
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .tab {
+      padding: 10px 20px;
+      border: none;
+      background: #f0f0f5;
+      color: #666;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .tab.active {
+      background: #5250c3;
+      color: white;
+    }
+
+    .tab:hover:not(.active) {
+      background: #e0e0ea;
+    }
+
+    .user-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .user-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 15px;
+      background: #f8f8fc;
+      border-radius: 10px;
+      transition: all 0.3s ease;
+    }
+
+    .user-item:hover {
+      background: #f0f0f8;
+      transform: translateX(5px);
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #5250c3, #764ba2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 600;
+      font-size: 16px;
+    }
+
+    .user-details h4 {
+      color: #333;
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 3px;
+    }
+
+    .user-details p {
+      color: #999;
+      font-size: 13px;
+    }
+
+    .status-badge {
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .status-online {
+      background: #d4edda;
+      color: #155724;
+    }
+
+    .status-offline {
+      background: #f8d7da;
+      color: #721c24;
+    }
+
+    .task-item {
+      padding: 15px;
+      background: #f8f8fc;
+      border-radius: 10px;
+      margin-bottom: 12px;
+      border-left: 4px solid #5250c3;
+      transition: all 0.3s ease;
+    }
+
+    .task-item:hover {
+      background: #f0f0f8;
+      transform: translateX(5px);
+    }
+
+    .task-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .task-title {
+      color: #333;
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .task-meta {
+      display: flex;
+      gap: 15px;
+      color: #666;
+      font-size: 13px;
+    }
+
+    .status-pending {
+      background: #fff3cd;
+      color: #856404;
+    }
+
+    .status-completed {
+      background: #d4edda;
+      color: #155724;
+    }
+
+    .status-in-progress {
+      background: #cce5ff;
+      color: #004085;
+    }
+
+    .leave-item {
+      padding: 15px;
+      background: #f8f8fc;
+      border-radius: 10px;
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.3s ease;
+    }
+
+    .leave-item:hover {
+      background: #f0f0f8;
+    }
+
+    .leave-info h4 {
+      color: #333;
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+
+    .leave-info p {
+      color: #666;
+      font-size: 13px;
+    }
+
+    .leave-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn-small {
+      padding: 8px 16px;
+      font-size: 12px;
+      border-radius: 6px;
+    }
+
+    .btn-approve {
+      background: #28a745;
+      color: white;
+    }
+
+    .btn-approve:hover {
+      background: #218838;
+    }
+
+    .btn-reject {
+      background: #dc3545;
+      color: white;
+    }
+
+    .btn-reject:hover {
+      background: #c82333;
+    }
+
+    .full-width {
+      grid-column: 1 / -1;
+    }
+
+    .quick-actions {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .action-card {
+      background: linear-gradient(135deg, #5250c3, #6b69d4);
+      padding: 20px;
+      border-radius: 12px;
+      color: white;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-align: center;
+    }
+
+    .action-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(82, 80, 195, 0.3);
+    }
+
+    .action-card h3 {
+      font-size: 16px;
+      margin-bottom: 8px;
+    }
+
+    .action-card p {
+      font-size: 13px;
+      opacity: 0.9;
+    }
+
+    @media (max-width: 1024px) {
+      .main-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .header {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .header-actions {
+        flex-direction: column;
+        width: 100%;
+      }
+
+      .btn {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+
+    .icon {
+      font-size: 18px;
+    }
+  </style>
+
+</head>
+
+
+
+
+
+<body>
+  <!-- page-wrapper Start-->
+  <!-- tap on top starts-->
+  <div class="tap-top">
+    <i class="fa-solid fa-angle-up"></i>
+  </div>
+  <!-- tap on tap ends-->
+  <!-- loader-->
+  <div class="loader-wrapper">
+    <div class="loader"><span></span><span></span><span></span><span></span><span></span></div>
+  </div>
+
+
+  <div class="page-wrapper compact-wrapper" id="pageWrapper">
+
+    <!-- this is header section -->
+    <header class="page-header row">
+      <div class="logo-wrapper d-flex align-items-right col-auto"><a href="index.html"><img class="light-logo img-fluid"
+            src="../assets/img/logo.png" alt="logo"><img class="dark-logo img-fluid" src="../assets/img/logo.png"
+            alt="logo"></a><a class="close-btn toggle-sidebar" href="javascript:void(0)">
+          <svg class="svg-color">
+            <use href="../assets/svg/iconly-sprite.svg#Category"></use>
+          </svg></a></div>
+      <div class="page-main-header col">
+        <div class="header-left">
+          <form class="form-inline search-full col" action="#" method="get">
+            <div class="form-group w-100">
+              <div class="Typeahead Typeahead--twitterUsers">
+                <div class="u-posRelative">
+                  <input class="demo-input Typeahead-input form-control-plaintext w-100" type="text"
+                    placeholder="Search Admiro .." name="q" title="" autofocus="autofocus">
+                  <div class="spinner-border Typeahead-spinner" role="status"><span class="sr-only">Loading...</span>
+                  </div><i class="close-search" data-feather="x"></i>
+                </div>
+                <div class="Typeahead-menu"></div>
+              </div>
+            </div>
+          </form>
+
+          <!-- <div class="form-group-header d-lg-block d-none">
+            <div class="Typeahead Typeahead--twitterUsers">
+              <div class="u-posRelative d-flex align-items-center">
+                <input class="demo-input py-0 Typeahead-input form-control-plaintext w-100" type="text"
+                  placeholder="Type to Search..." name="q" title=""><i class="search-bg iconly-Search icli"></i>
+              </div>
+            </div>
+          </div> -->
+
+        </div>
+        <div class="nav-right">
+          <ul class="header-right">
+            <li class="search d-lg-none d-flex"> <a href="javascript:void(0)">
+                <svg>
+                  <use href="../assets/svg/iconly-sprite.svg#Search"></use>
+                </svg></a></li>
+            <li> <a class="dark-mode" href="javascript:void(0)">
+                <svg>
+                  <use href="../assets/svg/iconly-sprite.svg#moondark"></use>
+                </svg></a></li>
+
+            <li class="custom-dropdown"><a href="javascript:void(0)">
+                <svg>
+                  <use href="../assets/svg/iconly-sprite.svg#notification"></use>
+                </svg></a><span class="badge rounded-pill badge-primary">4</span>
+              <div class="custom-menu notification-dropdown py-0 overflow-hidden">
+                <h3 class="title bg-primary-light dropdown-title">Notification <span class="font-primary">View
+                    all</span></h3>
+                <ul class="activity-timeline">
+                  <li class="d-flex align-items-start">
+                    <div class="activity-line"></div>
+                    <div class="activity-dot-primary"></div>
+                    <div class="flex-grow-1">
+                      <h6 class="f-w-600 font-primary">30-04-2024<span>Today</span><span
+                          class="circle-dot-primary float-end">
+                          <svg class="circle-color">
+                            <use href="../assets/svg/iconly-sprite.svg#circle"></use>
+                          </svg></span></h6>
+                      <h5>Alice Goodwin</h5>
+                      <p class="mb-0">Fashion should be fun. It shouldn't be labelled intellectual.</p>
+                    </div>
+                  </li>
+                  <li class="d-flex align-items-start">
+                    <div class="activity-dot-secondary"></div>
+                    <div class="flex-grow-1">
+                      <h6 class="f-w-600 font-secondary">28-06-2024<span>1 hour ago</span><span
+                          class="float-end circle-dot-secondary">
+                          <svg class="circle-color">
+                            <use href="../assets/svg/iconly-sprite.svg#circle"></use>
+                          </svg></span></h6>
+                      <h5>Herry Venter</h5>
+                      <p>I am convinced that there can be luxury in simplicity.</p>
+                    </div>
+                  </li>
+                  <li class="d-flex align-items-start">
+                    <div class="activity-dot-primary"></div>
+                    <div class="flex-grow-1">
+                      <h6 class="f-w-600 font-primary">04-08-2024<span>Today</span><span
+                          class="float-end circle-dot-primary">
+                          <svg class="circle-color">
+                            <use href="../assets/svg/iconly-sprite.svg#circle"></use>
+                          </svg></span></h6>
+                      <h5>Loain Deo</h5>
+                      <p>I feel that things happen for open new opportunities.</p>
+                    </div>
+                  </li>
+                  <li class="d-flex align-items-start">
+                    <div class="activity-dot-secondary"></div>
+                    <div class="flex-grow-1">
+                      <h6 class="f-w-600 font-secondary">12-11-2024<span>Yesterday</span><span
+                          class="float-end circle-dot-secondary">
+                          <svg class="circle-color">
+                            <use href="../assets/svg/iconly-sprite.svg#circle"></use>
+                          </svg></span></h6>
+                      <h5>Fenter Jessy</h5>
+                      <p>Sometimes the simplest things are the most profound.</p>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </li>
+            </li>
+
+            <li class="profile-nav custom-dropdown">
+              <div class="user-wrap">
+                <div class="user-img"><img src="../assets/images/profile.png" alt="user"></div>
+                <div class="user-content">
+                  <h6>Manas Moharana</h6>
+                  <p class="mb-0">Admin<i class="fa-solid fa-chevron-down"></i></p>
+                </div>
+              </div>
+              <div class="custom-menu overflow-hidden">
+                <ul class="profile-body">
+                  <li class="d-flex">
+                    <svg class="svg-color">
+                      <use href="../assets/svg/iconly-sprite.svg#Profile"></use>
+                    </svg><a class="ms-2" href="user-profile.html">Account</a>
+                  </li>
+                  <li class="d-flex">
+                    <svg class="svg-color">
+                      <use href="../assets/svg/iconly-sprite.svg#Message"></use>
+                    </svg><a class="ms-2" href="letter-box.html">Inbox</a>
+                  </li>
+                  <li class="d-flex">
+                    <svg class="svg-color">
+                      <use href="../assets/svg/iconly-sprite.svg#Document"></use>
+                    </svg><a class="ms-2" href="to-do.html">Task</a>
+                  </li>
+                  <li class="d-flex">
+                    <svg class="svg-color">
+                      <use href="../assets/svg/iconly-sprite.svg#Login"></use>
+                    </svg><a class="ms-2" href="login.html">Log Out</a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </header>
+
+    <!--header section end -->
+    <!-- Page Body Start-->
+    <div class="page-body-wrapper">
+      <!-- Page sidebar start-->
+      <aside class="page-sidebar">
+        <div class="left-arrow" id="left-arrow"><i data-feather="arrow-left"></i></div>
+        <div class="main-sidebar" id="main-sidebar">
+          <ul class="sidebar-menu" id="simple-bar">
+            <li class="pin-title sidebar-main-title">
+              <div>
+                <h5 class="sidebar-title f-w-700">Pinned</h5>
+              </div>
+            </li>
+            <li class="sidebar-main-title">
+              <div>
+                <h5 class="lan-1 f-w-700 sidebar-title">General</h5>
+              </div>
+            </li>
+            <li class="sidebar-list">
+              <!-- <i class="fa-solid fa-thumbtack"></i> -->
+              <a class="sidebar-link" href="javascript:void(0)">
+                <svg class="stroke-icon">
+                  <use href="../assets/svg/iconly-sprite.svg#Home-dashboard"></use>
+                </svg>
+                <h6>Dashboards</h6>
+              </a>
+            </li>
+            <li class="sidebar-list">
+              <a class="sidebar-link" href="javascript:void(0)">
+                <svg class="stroke-icon">
+                  <use href="../assets/svg/iconly-sprite.svg#User-sidebar"></use>
+                </svg>
+                <h6>User</h6>
+                <i class="fa-solid fa-chevron-right margin_left_auto"></i>
+              </a>
+              <ul class="sidebar-submenu">
+                <li> <a href="telecaller.html">Telecaller</a></li>
+                <li><a href="teamlead.html">Team lead</a></li>
+                <li><a href="ground_staff.html">Ground staff</a></li>
+              </ul>
+            </li>
+            <li class="sidebar-list"><a class="sidebar-link" href="create_user.html">
+                <svg class="stroke-icon">
+                <use href="../assets/svg/iconly-sprite.svg#Profile"></use>
+                </svg>
+               <h6 class="f-w-600">Create Users</h6></a>
+                          
+            </li>
+            <li class="sidebar-list">
+              <!-- <i class="fa-solid fa-thumbtack"></i> -->
+              <a class="sidebar-link" href="javascript:void(0)">
+                <svg class="stroke-icon">
+                  <use href="../assets/svg/iconly-sprite.svg#Document"></use>
+                </svg>
+                <h6>Login Status</h6>
+                <!-- <i class="iconly-Arrow-Right-2 icli"> </i> -->
+                <i class="fa-solid fa-chevron-right margin_left_auto"></i>
+              </a>
+              <ul class="sidebar-submenu">
+                <li> <a href="tc_login.html">Telecaller</a></li>
+                <li><a href="tl_login.html">Team lead</a></li>
+                <li> <a href="gs_login.html">Ground staff</a></li>
+              </ul>
+            </li>
+
+            <li class="sidebar-list">
+              <!-- <i class="fa-solid fa-thumbtack"></i> -->
+              <a class="sidebar-link" href="create_task.html">
+                <svg class="stroke-icon">
+                  <use href="../assets/svg/iconly-sprite.svg#Message"></use>
+                </svg>
+                <h6 class="f-w-600">Create Task</h6>
+              </a>
+            </li>
+
+
+            <li class="sidebar-list">
+              <!-- <i class="fa-solid fa-thumbtack"></i> -->
+              <a class="sidebar-link" href="assign_task.html">
+                <svg class="stroke-icon">
+                  <use href="../assets/svg/iconly-sprite.svg#Bookmark"></use>
+                </svg>
+                <h6 class="f-w-600">Task List</h6>
+              </a>
+            </li>
+
+            <li class="sidebar-list">
+              <!-- <i class="fa-solid fa-thumbtack"></i> -->
+              <a class="sidebar-link" href="javascript:void(0)">
+                <svg class="stroke-icon">
+                  <use href="../assets/svg/iconly-sprite.svg#Info-circle"></use>
+                </svg>
+                <h6 class="f-w-600">All Tasks</h6>
+                <!-- <i class="iconly-Arrow-Right-2 icli"></i> -->
+                <i class="fa-solid fa-chevron-right margin_left_auto"></i>
+              </a>
+              <ul class="sidebar-submenu">
+                <li> <a href="pending_task.html">Pending</a></li>
+                <li> <a href="complete_task.html">Completed</a></li>
+              </ul>
+            </li>
+
+
+            <li class="sidebar-list">
+              <!-- <i class="fa-solid fa-thumbtack"></i> -->
+              <a class="sidebar-link" href="leave.html">
+                <svg class="stroke-icon">
+                  <use href="../assets/svg/iconly-sprite.svg#Bookmark"></use>
+                </svg>
+                <h6 class="f-w-600">Leave Request</h6>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div class="right-arrow" id="right-arrow"><i data-feather="arrow-right"></i></div>
+      </aside>
+      <!-- Page sidebar end-->
+      <div class="page-body">
+        <div class="dashboard-container">
+          <div class="header">
+            <h1>🎯 Agency Admin Dashboard</h1>
+            <div class="header-actions">
+              <button class="btn btn-secondary" onclick="alert('Create User functionality')">
+                <span class="icon">👤</span> Create User
+              </button>
+              <button class="btn btn-primary" onclick="alert('Create Task functionality')">
+                <span class="icon">➕</span> Create Task
+              </button>
+            </div>
+          </div>
+
+          <div class="stats-grid">
+            <div class="stat-card">
+              <h3>Total Employees</h3>
+              <div class="number">127</div>
+              <div class="subtitle">Active users in system</div>
+            </div>
+            <div class="stat-card">
+              <h3>Online Now</h3>
+              <div class="number">89</div>
+              <div class="subtitle">Currently logged in</div>
+            </div>
+            <div class="stat-card">
+              <h3>Pending Tasks</h3>
+              <div class="number">34</div>
+              <div class="subtitle">Require attention</div>
+            </div>
+            <div class="stat-card">
+              <h3>Leave Requests</h3>
+              <div class="number">12</div>
+              <div class="subtitle">Awaiting approval</div>
+            </div>
+          </div>
+
+          <div class="main-grid">
+            <div class="panel">
+              <div class="panel-header">
+                <h2>Employee Management</h2>
+                <button class="btn btn-secondary btn-small">View All</button>
+              </div>
+              <div class="tabs">
+                <button class="tab active" onclick="switchTab(event, 'telecaller')">Telecallers</button>
+                <button class="tab" onclick="switchTab(event, 'teamlead')">Team Leads</button>
+                <button class="tab" onclick="switchTab(event, 'ground')">Ground Staff</button>
+              </div>
+              <div class="user-list" id="userList">
+                <div class="user-item">
+                  <div class="user-info">
+                    <div class="user-avatar">RK</div>
+                    <div class="user-details">
+                      <h4>Rohit Kumar</h4>
+                      <p>Telecaller • ID: TC001</p>
+                    </div>
+                  </div>
+                  <span class="status-badge status-online">Online</span>
+                </div>
+                <div class="user-item">
+                  <div class="user-info">
+                    <div class="user-avatar">PS</div>
+                    <div class="user-details">
+                      <h4>Priya Sharma</h4>
+                      <p>Telecaller • ID: TC002</p>
+                    </div>
+                  </div>
+                  <span class="status-badge status-online">Online</span>
+                </div>
+                <div class="user-item">
+                  <div class="user-info">
+                    <div class="user-avatar">AV</div>
+                    <div class="user-details">
+                      <h4>Amit Verma</h4>
+                      <p>Telecaller • ID: TC003</p>
+                    </div>
+                  </div>
+                  <span class="status-badge status-offline">Offline</span>
+                </div>
+                <div class="user-item">
+                  <div class="user-info">
+                    <div class="user-avatar">SK</div>
+                    <div class="user-details">
+                      <h4>Sneha Kapoor</h4>
+                      <p>Telecaller • ID: TC004</p>
+                    </div>
+                  </div>
+                  <span class="status-badge status-online">Online</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel">
+              <div class="panel-header">
+                <h2>Task Overview</h2>
+                <button class="btn btn-secondary btn-small">Assign Task</button>
+              </div>
+              <div class="task-item">
+                <div class="task-header">
+                  <div class="task-title">Client Follow-up Campaign</div>
+                  <span class="status-badge status-in-progress">In Progress</span>
+                </div>
+                <div class="task-meta">
+                  <span>👤 Rajesh Kumar</span>
+                  <span>📅 Due: Oct 28</span>
+                </div>
+              </div>
+              <div class="task-item">
+                <div class="task-header">
+                  <div class="task-title">Market Survey - Zone A</div>
+                  <span class="status-badge status-pending">Pending</span>
+                </div>
+                <div class="task-meta">
+                  <span>👤 Vikram Singh</span>
+                  <span>📅 Due: Oct 27</span>
+                </div>
+              </div>
+              <div class="task-item">
+                <div class="task-header">
+                  <div class="task-title">Monthly Report Compilation</div>
+                  <span class="status-badge status-completed">Completed</span>
+                </div>
+                <div class="task-meta">
+                  <span>👤 Neha Gupta</span>
+                  <span>📅 Completed: Oct 25</span>
+                </div>
+              </div>
+              <div class="task-item">
+                <div class="task-header">
+                  <div class="task-title">Database Update Project</div>
+                  <span class="status-badge status-in-progress">In Progress</span>
+                </div>
+                <div class="task-meta">
+                  <span>👤 Team Lead - Sales</span>
+                  <span>📅 Due: Oct 30</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="main-grid">
+            <div class="panel">
+              <div class="panel-header">
+                <h2>Leave Requests</h2>
+              </div>
+              <div class="leave-item">
+                <div class="leave-info">
+                  <h4>Rahul Mehta</h4>
+                  <p>Ground Staff • 3 days • Nov 1-3, 2025</p>
+                </div>
+                <div class="leave-actions">
+                  <button class="btn btn-approve btn-small">Approve</button>
+                  <button class="btn btn-reject btn-small">Reject</button>
+                </div>
+              </div>
+              <div class="leave-item">
+                <div class="leave-info">
+                  <h4>Anjali Desai</h4>
+                  <p>Telecaller • 2 days • Oct 29-30, 2025</p>
+                </div>
+                <div class="leave-actions">
+                  <button class="btn btn-approve btn-small">Approve</button>
+                  <button class="btn btn-reject btn-small">Reject</button>
+                </div>
+              </div>
+              <div class="leave-item">
+                <div class="leave-info">
+                  <h4>Karan Patel</h4>
+                  <p>Team Lead • 5 days • Nov 5-9, 2025</p>
+                </div>
+                <div class="leave-actions">
+                  <button class="btn btn-approve btn-small">Approve</button>
+                  <button class="btn btn-reject btn-small">Reject</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel">
+              <div class="panel-header">
+                <h2>Quick Actions</h2>
+              </div>
+              <div class="quick-actions">
+                <div class="action-card" onclick="alert('Generate Report')">
+                  <h3>📊 Generate Report</h3>
+                  <p>Create performance reports</p>
+                </div>
+                <div class="action-card" onclick="alert('Attendance Log')">
+                  <h3>📅 Attendance Log</h3>
+                  <p>View attendance records</p>
+                </div>
+                <div class="action-card" onclick="alert('Broadcast Message')">
+                  <h3>📢 Broadcast</h3>
+                  <p>Send team announcements</p>
+                </div>
+                <div class="action-card" onclick="alert('Settings')">
+                  <h3>⚙️ Settings</h3>
+                  <p>Configure system</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+     
