@@ -1,0 +1,315 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+    content="Admiro admin is super flexible, powerful, clean &amp; modern responsive bootstrap 5 admin template with unlimited possibilities.">
+  <meta name="keywords"
+    content="admin template, Admiro admin template, best javascript admin, dashboard template, bootstrap admin template, responsive admin template, web app">
+  <meta name="author" content="pixelstrap">
+  <title>Admiro - Premium Admin Template</title>
+  <!-- Favicon icon-->
+  <link rel="icon" href="{% static 'assets/img/favicon.png' %}" type="image/x-icon">
+  <link rel="shortcut icon" href="{% static 'assets/img/favicon.png' %}" type="image/x-icon">
+  <!-- Google font-->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link
+    href="../../css2?family=Nunito+Sans:opsz,wght@6..12,200;6..12,300;6..12,400;6..12,500;6..12,600;6..12,700;6..12,800;6..12,900;6..12,1000&amp;display=swap"
+    rel="stylesheet">
+  <!-- Flag icon css -->
+  <link rel="stylesheet" href="{% static 'assets/css/vendors/flag-icon.css' %}">
+  <!-- iconly-icon-->
+  <link rel="stylesheet" href="{% static 'assets/css/iconly-icon.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/css/bulk-style.css' %}">
+  <!-- iconly-icon-->
+  <link rel="stylesheet" href="{% static 'assets/css/themify.css' %}">
+  <!--fontawesome-->
+  <link rel="stylesheet" href="{% static 'assets/css/fontawesome-min.css' %}">
+  <!-- Whether Icon css-->
+  <link rel="stylesheet" type="text/css" href="{% static 'assets/css/vendors/weather-icons/weather-icons.min.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'assets/css/vendors/scrollbar.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'assets/css/vendors/slick.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'assets/css/vendors/slick-theme.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'assets/css/vendors/datatables.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'assets/css/vendors/datatable-extension.css' %}">
+  <!-- App css -->
+  <link id="color" rel="stylesheet" href="{% static 'assets/css/color-1.css' %}" media="screen">
+  <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+
+
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    integrity="sha512-…(hash)…” crossorigin=" anonymous" referrerpolicy="no-referrer" />
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    integrity="sha512-…(hash)…” crossorigin=" anonymous" referrerpolicy="no-referrer" />
+
+  <link rel="stylesheet" href="https://cdn.iconly.io/iconly.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/iconly@latest/css/iconly.css" />
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+    integrity="sha512-KNuNk+LZ8e2j+ozhRtX7sMGu0j1qFeIslMo7k3M5lVZhcN7sVbG7ByAzt+BrgrbM5nxp7/ECYtJ8O5E2+8Y0eA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+
+  <link rel="stylesheet" href="https://cdn.iconly.io/your-generated-hash/iconly.css">
+
+
+
+
+  <style>
+    /*.dataTables_length{
+      display : none;
+    }*/
+
+    .sidebar-pannle-main {
+      display: none;
+    }
+
+    .margin_left_auto {
+      margin-left: auto;
+    }
+  </style>
+
+</head>
+
+
+
+
+
+<body>
+  <!-- page-wrapper Start-->
+  <!-- tap on top starts-->
+  <div class="tap-top">
+    <i class="fa-solid fa-angle-up"></i>
+  </div>
+  <!-- tap on tap ends-->
+  <!-- loader-->
+  <div class="loader-wrapper">
+    <div class="loader"><span></span><span></span><span></span><span></span><span></span></div>
+  </div>
+
+
+  <div class="page-wrapper compact-wrapper" id="pageWrapper">
+
+    <!-- this is header section -->
+    {% include "common/header.html" %}
+    <!--header section end -->
+
+
+
+
+
+    <!-- Page Body Start-->
+    <div class="page-body-wrapper">
+      <!-- Page sidebar start-->
+      {% include "common/sidebar.html" %}
+      <!-- Page sidebar end-->
+
+      <!-- body section start  -->
+      <div class="page-body">
+        <div class="container-fluid">
+          <div class="page-title">
+            <div class="row">
+              <!-- table start -->
+              <div class="col-sm-12">
+                <div class="card">
+                  <div class="card-header pb-0 card-no-border">
+                    <h3>Team Lead</h3>
+                  </div>
+                  <div class="card-body">
+                    <div class="table-responsive">
+                      <table class="display dataTable" id="basic-9">
+                        <thead style="background:#f8f9fa;">
+                          <tr>
+                            <th>Sl</th>
+                            <th>Name</th>
+                            <th>Mobile Number</th>
+                            <th>Email ID</th>
+                            <th>Address</th>
+                            <th>Joining Date</th>
+                            <th>Action</th>
+                          </tr>
+                        </thead>
+                        <tbody id="table-body"></tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Container-fluid starts-->
+   {% include "common/footer.html" %}
+    </div>
+    <!-- page body end  -->
+
+  </div>
+
+
+
+
+  <!-- jquery-->
+  <script src="{% static 'assets/js/vendors/jquery/jquery.min.js' %}"></script>
+  <!-- bootstrap js-->
+  <script src="{% static 'assets/js/vendors/bootstrap/dist/js/bootstrap.bundle.min.js' %}" defer=""></script>
+  <script src="{% static 'assets/js/vendors/bootstrap/dist/js/popper.min.js' %}" defer=""></script>
+  <!--fontawesome-->
+  <script src="{% static 'assets/js/vendors/font-awesome/fontawesome-min.js' %}"></script>
+  <!-- feather-->
+  <script src="{% static 'assets/js/vendors/feather-icon/feather.min.js' %}"></script>
+  <script src="{% static 'assets/js/vendors/feather-icon/custom-script.js' %}"></script>
+  <!-- sidebar -->
+  <script src="{% static 'assets/js/sidebar.js' %}"></script>
+  <!-- height_equal-->
+  <script src="{% static 'assets/js/height-equal.js' %}"></script>
+  <!-- config-->
+  <script src="{% static 'assets/js/config.js' %}"></script>
+  <!-- apex-->
+  <script src="{% static 'assets/js/chart/apex-chart/apex-chart.js' %}"></script>
+  <script src="{% static 'assets/js/chart/apex-chart/stock-prices.js' %}"></script>
+  <!-- scrollbar-->
+  <script src="{% static 'assets/js/scrollbar/simplebar.js' %}"></script>
+  <script src="{% static 'assets/js/scrollbar/custom.js' %}"></script>
+  <!-- slick-->
+  <script src="{% static 'assets/js/slick/slick.min.js' %}"></script>
+  <script src="{% static 'assets/js/slick/slick.js' %}"></script>
+  <!-- data_table-->
+  <script src="{% static 'assets/js/js-datatables/datatables/jquery.dataTables.min.js' %}"></script>
+  <!-- page_datatable-->
+  <script src="{% static 'assets/js/js-datatables/datatables/datatable.custom.js' %}"></script>
+  <!-- page_datatable1-->
+  <script src="{% static 'assets/js/js-datatables/datatables/datatable.custom1.js' %}"></script>
+  <!-- page_datatable-->
+  <script src="{% static 'assets/js/datatable/datatables/datatable.custom.js' %}"></script>
+  <!-- theme_customizer-->
+  <script src="{% static 'assets/js/theme-customizer/customizer.js' %}"></script>
+  <!-- tilt-->
+  <script src="{% static 'assets/js/animation/tilt/tilt.jquery.js' %}"></script>
+  <!-- page_tilt-->
+  <script src="{% static 'assets/js/animation/tilt/tilt-custom.js' %}"></script>
+  <!-- dashboard_1-->
+  <script src="{% static 'assets/js/dashboard/dashboard_1.js' %}"></script>
+
+
+  <!-- slick-->
+  <script src="{% static 'assets/js/slick/slick.min.js' %}"></script>
+  <script src="{% static 'assets/js/slick/slick.js' %}"></script>
+  <!-- datatable-->
+  <script src="{% static 'assets/js/datatable/datatables/jquery.dataTables.min.js' %}"></script>
+  <!-- datatable_extension-->
+  <script src="{% static 'assets/js/datatable/datatable-extension/dataTables.buttons.min.js' %}"></script>
+  <script src="{% static 'assets/js/datatable/datatable-extension/jszip.min.js' %}"></script>
+  <script src="{% static 'assets/js/datatable/datatable-extension/buttons.colVis.min.js' %}"></script>
+  <script src="{% static 'assets/js/datatable/datatable-extension/pdfmake.min.js' %}"></script>
+  <script src="{% static 'assets/js/datatable/datatable-extension/vfs_fonts.js' %}"></script>
+  <script src="{% static 'assets/js/datatable/datatable-extension/dataTables.autoFill.min.js' %}"></script>
+  <script src="{% static 'assets/js/datatable/datatable-extension/dataTables.select.min.js' %}"></script>
+  <script src="{% static 'assets/js/datatable/datatable-extension/buttons.bootstrap4.min.js' %}"></script>
+  <script src="{% static 'assets/js/datatable/datatable-extension/buttons.html5.min.js' %}"></script>
+  <script src="{% static 'assets/js/datatable/datatable-extension/buttons.print.min.js' %}"></script>
+  <script src="{% static 'assets/js/datatable/datatable-extension/dataTables.bootstrap4.min.js' %}"></script>
+  <script src="{% static 'assets/js/datatable/datatable-extension/dataTables.responsive.min.js' %}"></script>
+  <script src="{% static 'assets/js/datatable/datatable-extension/responsive.bootstrap4.min.js' %}"></script>
+  <script src="{% static 'assets/js/datatable/datatable-extension/dataTables.keyTable.min.js' %}"></script>
+  <script src="{% static 'assets/js/datatable/datatable-extension/dataTables.colReorder.min.js' %}"></script>
+  <script src="{% static 'assets/js/datatable/datatable-extension/dataTables.fixedHeader.min.js' %}"></script>
+  <script src="{% static 'assets/js/datatable/datatable-extension/dataTables.rowReorder.min.js' %}"></script>
+  <script src="{% static 'assets/js/datatable/datatable-extension/dataTables.scroller.min.js' %}"></script>
+  <script src="{% static 'assets/js/datatable/datatable-extension/custom.js' %}"></script>
+
+  <!-- datatable-->
+  <script src="{% static 'assets/js/datatable/datatables/jquery.dataTables.min.js' %}"></script>
+  <!-- page_datatable -->
+  <script src="{% static 'assets/js/js-datatables/datatables/datatable.custom.js' %}"></script>
+  <!-- page_datatable-->
+  <!-- <script src="{% static 'assets/js/datatable/datatables/datatable.custom.js' %}"></script> -->
+  <!-- theme_customizer-->
+  <script src="{% static 'assets/js/theme-customizer/customizer.js' %}"></script>
+
+  <!-- custom script -->
+  <script src="{% static 'assets/js/script.js' %}"></script>
+
+
+  <script>
+    const employees = [
+      { sl: 1, name: "Ravi Sharma", mobile: "9876543210", email: "ravi.sharma@example.com", address: "Bhubaneswar, Odisha", joining: "2015/03/12" },
+      { sl: 2, name: "Priya Singh", mobile: "9123456780", email: "priya.singh@example.com", address: "Delhi", joining: "2017/07/18" },
+      { sl: 3, name: "Amit Kumar", mobile: "9988776655", email: "amit.kumar@example.com", address: "Mumbai", joining: "2012/11/05" },
+      { sl: 4, name: "Neha Gupta", mobile: "9871234560", email: "neha.gupta@example.com", address: "Bangalore", joining: "2018/01/22" },
+      { sl: 5, name: "Vikram Reddy", mobile: "9123987654", email: "vikram.reddy@example.com", address: "Hyderabad", joining: "2014/05/16" },
+      { sl: 6, name: "Sanya Mehta", mobile: "9812345670", email: "sanya.mehta@example.com", address: "Chennai", joining: "2016/09/03" },
+      { sl: 7, name: "Rohit Verma", mobile: "9876541230", email: "rohit.verma@example.com", address: "Pune", joining: "2013/12/12" },
+      { sl: 8, name: "Anjali Nair", mobile: "9876501234", email: "anjali.nair@example.com", address: "Kochi", joining: "2017/04/20" },
+      { sl: 9, name: "Siddharth Joshi", mobile: "9988001122", email: "siddharth.joshi@example.com", address: "Ahmedabad", joining: "2011/08/30" },
+      { sl: 10, name: "Pooja Kapoor", mobile: "9876123450", email: "pooja.kapoor@example.com", address: "Jaipur", joining: "2016/11/15" },
+      { sl: 11, name: "Manish Choudhary", mobile: "9811122233", email: "manish.choudhary@example.com", address: "Lucknow", joining: "2014/02/09" },
+      { sl: 12, name: "Isha Pandey", mobile: "9876547890", email: "isha.pandey@example.com", address: "Nagpur", joining: "2018/06/25" },
+      { sl: 13, name: "Karan Malhotra", mobile: "9123459988", email: "karan.malhotra@example.com", address: "Kolkata", joining: "2012/10/10" },
+      { sl: 14, name: "Ritika Bhatia", mobile: "9876512340", email: "ritika.bhatia@example.com", address: "Chandigarh", joining: "2015/08/08" },
+      { sl: 15, name: "Saurabh Jain", mobile: "9812349988", email: "saurabh.jain@example.com", address: "Indore", joining: "2013/03/14" },
+      { sl: 16, name: "Neelam Roy", mobile: "9876541110", email: "neelam.roy@example.com", address: "Bhopal", joining: "2017/12/05" },
+      { sl: 17, name: "Aditya Deshmukh", mobile: "9988771122", email: "aditya.deshmukh@example.com", address: "Pune", joining: "2011/05/21" },
+      { sl: 18, name: "Shreya Dutta", mobile: "9876509988", email: "shreya.dutta@example.com", address: "Kolkata", joining: "2018/09/17" },
+      { sl: 19, name: "Vivek Nair", mobile: "9812345678", email: "vivek.nair@example.com", address: "Trivandrum", joining: "2015/01/30" },
+      { sl: 20, name: "Deepika Sharma", mobile: "9876123456", email: "deepika.sharma@example.com", address: "Bangalore", joining: "2016/03/12" },
+      { sl: 21, name: "Rajan Kapoor", mobile: "9876543321", email: "rajan.kapoor@example.com", address: "Delhi", joining: "2013/07/22" },
+      { sl: 22, name: "Ananya Mishra", mobile: "9811123344", email: "ananya.mishra@example.com", address: "Lucknow", joining: "2017/10/11" },
+      { sl: 23, name: "Arjun Rao", mobile: "9876545678", email: "arjun.rao@example.com", address: "Hyderabad", joining: "2014/04/05" },
+      { sl: 24, name: "Sakshi Singh", mobile: "9876123321", email: "sakshi.singh@example.com", address: "Jaipur", joining: "2016/08/19" },
+      { sl: 25, name: "Rohan Mehta", mobile: "9812345566", email: "rohan.mehta@example.com", address: "Mumbai", joining: "2015/11/07" },
+      { sl: 26, name: "Meera Iyer", mobile: "9876544321", email: "meera.iyer@example.com", address: "Chennai", joining: "2013/06/12" },
+      { sl: 27, name: "Sandeep Kumar", mobile: "9988112233", email: "sandeep.kumar@example.com", address: "Delhi", joining: "2012/09/18" },
+      { sl: 28, name: "Rashmi Patil", mobile: "9876501122", email: "rashmi.patil@example.com", address: "Pune", joining: "2015/02/21" },
+      { sl: 29, name: "Ankit Singh", mobile: "9811234455", email: "ankit.singh@example.com", address: "Lucknow", joining: "2014/12/09" },
+      { sl: 30, name: "Shalini Verma", mobile: "9876547891", email: "shalini.verma@example.com", address: "Jaipur", joining: "2016/01/15" },
+      { sl: 31, name: "Ritesh Sharma", mobile: "9988774433", email: "ritesh.sharma@example.com", address: "Bangalore", joining: "2011/05/12" },
+      { sl: 32, name: "Pallavi Gupta", mobile: "9876124789", email: "pallavi.gupta@example.com", address: "Delhi", joining: "2017/03/18" },
+      { sl: 33, name: "Abhinav Rao", mobile: "9812346677", email: "abhinav.rao@example.com", address: "Hyderabad", joining: "2015/09/21" },
+      { sl: 34, name: "Divya Nair", mobile: "9876543212", email: "divya.nair@example.com", address: "Kochi", joining: "2018/06/05" },
+      { sl: 35, name: "Raghav Malhotra", mobile: "9988775566", email: "raghav.malhotra@example.com", address: "Mumbai", joining: "2012/10/12" },
+      { sl: 36, name: "Anita Bhatia", mobile: "9876504433", email: "anita.bhatia@example.com", address: "Chandigarh", joining: "2014/11/08" },
+      { sl: 37, name: "Suman Joshi", mobile: "9811234456", email: "suman.joshi@example.com", address: "Ahmedabad", joining: "2013/03/15" },
+      { sl: 38, name: "Vikas Reddy", mobile: "9876544322", email: "vikas.reddy@example.com", address: "Hyderabad", joining: "2011/07/23" },
+      { sl: 39, name: "Priyanka Mishra", mobile: "9988113344", email: "priyanka.mishra@example.com", address: "Lucknow", joining: "2016/12/19" },
+      { sl: 40, name: "Aditya Sharma", mobile: "9876125566", email: "aditya.sharma@example.com", address: "Bhubaneswar", joining: "2015/08/07" }
+    ];
+
+
+    const tbody = document.getElementById("table-body");
+
+    employees.forEach(emp => {
+
+      const parts = emp.joining.split('/'); // [yyyy, mm, dd]
+      const formattedDate = `${parts[2]}/${parts[1]}/${parts[0]}`;
+
+      tbody.innerHTML += `
+      <tr>
+        <td>${emp.sl}</td>
+        <td>${emp.name}</td>
+        <td>${emp.mobile}</td>
+        <td>${emp.email}</td>
+        <td>${emp.address}</td>
+        <td>${formattedDate}</td>
+        <td>
+          <ul class="action" style="display:flex;gap:10px;list-style:none;padding:0;margin:0;">
+            <li class="edit"><a href="#"><i class="fa-solid fa-pen"></i></a></li>
+            <li class="delete"><a href="#"><i class="fa-solid fa-trash-can"></i></a></li>
+          </ul>
+        </td>
+      </tr>`;
+    });
+  </script>
+
+</body>
+
+</html>
