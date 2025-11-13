@@ -1,0 +1,559 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Admiro admin is super flexible, powerful, clean &amp; modern responsive bootstrap 5 admin template with unlimited possibilities.">
+  <meta name="keywords" content="admin template, Admiro admin template, best javascript admin, dashboard template, bootstrap admin template, responsive admin template, web app">
+  <meta name="author" content="pixelstrap">
+  <title>Admiro - Create User</title>
+  
+  <!-- Favicon -->
+  <link rel="icon" href="{% static 'assets/img/favicon.png' %}" type="image/x-icon">
+  <link rel="shortcut icon" href="{% static 'assets/img/favicon.png' %}" type="image/x-icon">
+  
+  <!-- Google font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz,wght@6..12,200;6..12,300;6..12,400;6..12,500;6..12,600;6..12,700;6..12,800;6..12,900;6..12,1000&display=swap" rel="stylesheet">
+  
+  <!-- CSS Files -->
+  <link rel="stylesheet" href="{% static 'assets/css/vendors/flag-icon.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/css/iconly-icon.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/css/bulk-style.cs' %}s">
+  <link rel="stylesheet" href="{% static 'assets/css/themify.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/css/fontawesome-min.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/css/vendors/weather-icons/weather-icons.min.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/css/vendors/scrollbar.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/css/vendors/slick.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/css/vendors/slick-theme.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/css/vendors/datatables.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/css/vendors/datatable-extension.css' %}">
+  <link id="color" rel="stylesheet" href="{% static 'assets/css/color-1.css' %}" media="screen">
+  <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Nunito Sans', 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+    }
+
+    .margin_left_auto {
+      margin-left: auto;
+    }
+
+    /* Tap to Top */
+    .tap-top {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: #667eea;
+      color: white;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+      z-index: 1000;
+      transition: all 0.3s;
+    }
+
+    .tap-top.show {
+      display: flex;
+    }
+
+    .tap-top:hover {
+      background: #5a4fc7;
+      transform: translateY(-3px);
+    }
+
+    /* Loader */
+    .loader-wrapper {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      transition: opacity 0.3s;
+    }
+
+    .loader-wrapper.fade-out {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* Main Content Area */
+    .page-body-wrapper {
+      margin-left: 260px;
+      margin-top: 70px;
+      min-height: calc(100vh - 70px);
+      padding: 30px 20px 80px;
+    }
+
+    .content-container {
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 24px;
+      padding: 40px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      animation: slideUp 0.5s ease-out;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .form-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .form-header h1 {
+      font-size: 2.5rem;
+      color: #2d3748;
+      margin-bottom: 8px;
+      font-weight: 700;
+    }
+
+    .form-header p {
+      color: #718096;
+      font-size: 1.1rem;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+      margin-bottom: 32px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-group label {
+      font-weight: 600;
+      color: #2d3748;
+      margin-bottom: 8px;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .required {
+      color: #e53e3e;
+    }
+
+    .form-group input,
+    .form-group select {
+      padding: 14px 16px;
+      border: 2px solid #e2e8f0;
+      border-radius: 12px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      background: white;
+      color: #2d3748;
+      font-family: inherit;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      transform: translateY(-2px);
+    }
+
+    .form-group input:hover,
+    .form-group select:hover {
+      border-color: #cbd5e0;
+    }
+
+    .btn-submit {
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    }
+
+    .btn-submit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+    }
+
+    .btn-submit:active {
+      transform: translateY(0);
+    }
+
+    .success-message {
+      background: #c6f6d5;
+      color: #22543d;
+      padding: 16px;
+      border-radius: 12px;
+      margin-top: 20px;
+      text-align: center;
+      font-weight: 600;
+      display: none;
+      animation: slideDown 0.3s ease-out;
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .login-link {
+      text-align: center;
+      margin-top: 24px;
+      color: #718096;
+      font-size: 0.95rem;
+    }
+
+    .login-link a {
+      color: #667eea;
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s;
+    }
+
+    .login-link a:hover {
+      color: #764ba2;
+      text-decoration: underline;
+    }
+
+    select {
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%232d3748' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      padding-right: 36px;
+    }
+
+    /* Footer */
+    .footer {
+      background: white;
+      padding: 20px 0;
+      box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+      position: fixed;
+      bottom: 0;
+      left: 260px;
+      right: 0;
+      z-index: 997;
+    }
+
+    .footer .container-fluid {
+      padding: 0 20px;
+    }
+
+    .footer p {
+      margin: 0;
+      color: #718096;
+      font-size: 0.9rem;
+    }
+
+    .footer-icon {
+      width: 16px;
+      height: 16px;
+      color: #e53e3e;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1024px) {
+      .page-body-wrapper {
+        margin-left: 0;
+      }
+
+      .footer {
+        left: 0;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .page-body-wrapper {
+        padding: 20px 15px 80px;
+      }
+
+      .content-container {
+        padding: 30px 20px;
+      }
+
+      .form-header h1 {
+        font-size: 2rem;
+      }
+
+      .form-header p {
+        font-size: 1rem;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+
+      .form-group input,
+      .form-group select {
+        padding: 12px 14px;
+        font-size: 0.95rem;
+      }
+
+      .btn-submit {
+        padding: 14px;
+        font-size: 1rem;
+      }
+
+      .footer .row {
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+      }
+
+      .footer .float-end {
+        float: none !important;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .page-body-wrapper {
+        padding: 15px 10px 80px;
+        margin-top: 60px;
+      }
+
+      .content-container {
+        padding: 24px 16px;
+        border-radius: 16px;
+      }
+
+      .form-header {
+        margin-bottom: 28px;
+      }
+
+      .form-header h1 {
+        font-size: 1.75rem;
+      }
+
+      .form-header p {
+        font-size: 0.9rem;
+      }
+
+      .form-grid {
+        gap: 16px;
+        margin-bottom: 24px;
+      }
+
+      .form-group label {
+        font-size: 0.9rem;
+      }
+
+      .form-group input,
+      .form-group select {
+        padding: 11px 12px;
+        font-size: 0.9rem;
+      }
+
+      .tap-top {
+        bottom: 90px;
+        right: 20px;
+        width: 45px;
+        height: 45px;
+      }
+    }
+  </style>
+</head>
+
+
+
+<body>
+  <!-- Tap on top -->
+  <div class="tap-top">
+    <i class="fa-solid fa-angle-up"></i>
+  </div>
+
+  <!-- Loader -->
+  <div class="loader-wrapper">
+    <div class="loader"><span></span><span></span><span></span><span></span><span></span></div>
+  </div>
+
+  <div class="page-wrapper compact-wrapper" id="pageWrapper">
+    <!-- Header Section -->
+    {% include 'common/header.html' %}
+
+    <!-- Page Body Start -->
+    <div class="page-body-wrapper">
+      <!-- Sidebar -->
+        {% include 'common/sidebar.html' %}
+
+      <!-- Main Content -->
+      <div class="content-container">
+        <div class="form-header">
+          <h1>Create New User</h1>
+          <p>Fill in the details to add a new user to the system</p>
+        </div>
+
+        <form id="createUserForm">
+          <div class="form-grid">
+            <div class="form-group">
+              <label>First Name <span class="required">*</span></label>
+              <input type="text" name="firstName" placeholder="Enter first name" required>
+            </div>
+
+            <div class="form-group">
+              <label>Last Name <span class="required">*</span></label>
+              <input type="text" name="lastName" placeholder="Enter last name" required>
+            </div>
+
+            <div class="form-group">
+              <label>Email <span class="required">*</span></label>
+              <input type="email" name="email" placeholder="user@example.com" required>
+            </div>
+
+            <div class="form-group">
+              <label>Phone Number <span class="required">*</span></label>
+              <input type="tel" name="phone" placeholder="+91 99999 99999" required>
+            </div>
+
+            <div class="form-group">
+              <label>Role <span class="required">*</span></label>
+              <select name="role" required>
+                <option value="">Select role</option>
+                <option value="telecaller">Telecaller</option>
+                <option value="teamlead">Team Lead</option>
+                <option value="groundstaff">Ground Staff</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Username <span class="required">*</span></label>
+              <input type="text" name="username" placeholder="Choose username" required>
+            </div>
+
+            <div class="form-group">
+              <label>Password <span class="required">*</span></label>
+              <input type="text" name="password" placeholder="Password" required>
+            </div>
+
+            <div class="form-group">
+              <label>Conform Password <span class="required">*</span></label>
+              <input type="conformpassword" name="conformpassword" placeholder="Conform password" required>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-submit">Create User Account</button>
+
+          <div id="message" class="success-message">
+            User created successfully! ✓
+          </div>
+        </form>
+
+        <div class="login-link">
+          Already have an account? <a href="login.html">Login here</a>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      {% include "common/footer.html"%}
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="{% static 'assets/js/vendors/jquery/jquery.min.js' %}"></script>
+  <script src="{% static 'assets/js/vendors/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'assets/js/vendors/bootstrap/dist/js/popper.min.js' %}"></script>
+  <script src="{% static 'assets/js/vendors/font-awesome/fontawesome-min.js' %}"></script>
+  <script src="{% static 'assets/js/vendors/feather-icon/feather.min.js' %}"></script>
+  <script src="{% static 'assets/js/vendors/feather-icon/custom-script.js' %}"></script>
+  <script src="{% static 'assets/js/sidebar.js' %}"></script>
+  <script src="{% static 'assets/js/height-equal.js' %}"></script>
+  <script src="{% static 'assets/js/config.js' %}"></script>
+  <script src="{% static 'assets/js/scrollbar/simplebar.js' %}"></script>
+  <script src="{% static 'assets/js/scrollbar/custom.js' %}"></script>
+  <script src="{% static 'assets/js/theme-customizer/customizer.js' %}"></script>
+  <script src="{% static 'assets/js/script.js' %}"></script>
+
+  <script>
+    // Hide loader when page loads
+    window.addEventListener('load', function() {
+      setTimeout(function() {
+        document.querySelector('.loader-wrapper').classList.add('fade-out');
+      }, 500);
+    });
+
+    // Form submission
+    document.getElementById('createUserForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const formData = new FormData(this);
+      const userData = Object.fromEntries(formData);
+      
+      console.log('User Data:', userData);
+      
+      const message = document.getElementById('message');
+      message.style.display = 'block';
+      
+      setTimeout(() => {
+        this.reset();
+        message.style.display = 'none';
+      }, 3000);
+    });
+
+    // Scroll to top
+    const tapTop = document.querySelector('.tap-top');
+    window.addEventListener('scroll', function() {
+      if (window.scrollY > 300) {
+        tapTop.classList.add('show');
+      } else {
+        tapTop.classList.remove('show');
+      }
+    });
+
+    tapTop.addEventListener('click', function() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>

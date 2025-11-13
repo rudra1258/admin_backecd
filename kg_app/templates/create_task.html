@@ -1,0 +1,1061 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Admiro admin is super flexible, powerful, clean &amp; modern responsive bootstrap 5 admin template with unlimited possibilities.">
+    <meta name="keywords"
+        content="admin template, Admiro admin template, best javascript admin, dashboard template, bootstrap admin template, responsive admin template, web app">
+    <meta name="author" content="pixelstrap">
+    <title>Admiro - Premium Admin Template</title>
+    <!-- Favicon icon-->
+    <link rel="icon" href="{% static 'assets/img/favicon.png' %}" type="image/x-icon">
+    <link rel="shortcut icon" href="{% static 'assets/img/favicon.png' %}" type="image/x-icon">
+    <!-- Google font-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link
+        href="../../css2?family=Nunito+Sans:opsz,wght@6..12,200;6..12,300;6..12,400;6..12,500;6..12,600;6..12,700;6..12,800;6..12,900;6..12,1000&amp;display=swap"
+        rel="stylesheet">
+    <!-- Flag icon css -->
+    <link rel="stylesheet" href="{% static 'assets/css/vendors/flag-icon.css' %}">
+    <!-- iconly-icon-->
+    <link rel="stylesheet" href="{% static 'assets/css/iconly-icon.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/bulk-style.css' %}">
+    <!-- iconly-icon-->
+    <link rel="stylesheet" href="{% static 'assets/css/themify.css' %}">
+    <!--fontawesome-->
+    <link rel="stylesheet" href="{% static 'assets/css/fontawesome-min.css' %}">
+    <!-- Whether Icon css-->
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/vendors/weather-icons/weather-icons.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/vendors/scrollbar.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/vendors/slick.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/vendors/slick-theme.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/vendors/datatables.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/vendors/datatable-extension.css' %}">
+    <!-- App css -->
+    <link id="color" rel="stylesheet" href="{% static 'assets/css/color-1.css' %}" media="screen">
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+        integrity="sha512-…(hash)…”" crossorigin=" anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+        integrity="sha512-…(hash)…”" crossorigin=" anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="https://cdn.iconly.io/iconly.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/iconly@latest/css/iconly.css" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+        integrity="sha512-KNuNk+LZ8e2j+ozhRtX7sMGu0j1qFeIslMo7k3M5lVZhcN7sVbG7ByAzt+BrgrbM5nxp7/ECYtJ8O5E2+8Y0eA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+
+    <link rel="stylesheet" href="https://cdn.iconly.io/your-generated-hash/iconly.css">
+
+    <style>
+        .sidebar-pannle-main {
+            display: none;
+        }
+
+        .margin_left_auto {
+            margin-left: auto;
+        }
+
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            border: 1px solid #e0e0e0;
+        }
+
+        .header {
+            background: white;
+            color: #333;
+            padding: 30px;
+            text-align: center;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .header h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        .form-container {
+            padding: 40px;
+        }
+
+        .section-title {
+            font-size: 1.5em;
+            color: #333;
+            margin: 30px 0 20px 0;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #333;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title:first-child {
+            margin-top: 0;
+        }
+
+        .section-icon {
+            width: 30px;
+            height: 30px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 0.95em;
+        }
+
+        input,
+        select,
+        textarea {
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #333;
+            box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
+        }
+
+        input.highlight {
+            background-color: #f9f9f9;
+            border-color: #999;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 600;
+            margin-top: 5px;
+        }
+
+        .status-new {
+            background-color: #f0f0f0;
+            color: #333;
+        }
+
+        .status-gcl {
+            background-color: #f0f0f0;
+            color: #333;
+        }
+
+        .btn-container {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 15px 40px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-primary {
+            background: #333;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            background: #555;
+        }
+
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+
+        .info-card {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .info-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .info-label {
+            font-size: 0.85em;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .info-value {
+            font-size: 1.2em;
+            font-weight: 700;
+            color: #333;
+        }
+
+        @media (max-width: 768px) {
+            .form-container {
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 1.5em;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .btn-container {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+
+        .success-message {
+            display: none;
+            background: white;
+            color: #333;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            text-align: center;
+            font-weight: 600;
+            border: 2px solid #333;
+        }
+
+        .bulk-upload-section {
+            background: #f9f9f9;
+            padding: 30px;
+            margin: 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .upload-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: 0 auto;
+            border: 1px solid #e0e0e0;
+        }
+
+        .upload-icon {
+            font-size: 4em;
+            margin-bottom: 15px;
+        }
+
+        .upload-card h2 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .upload-card p {
+            color: #666;
+            margin-bottom: 25px;
+        }
+
+        .upload-controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-upload {
+            background: #333;
+            color: white;
+        }
+
+        .btn-upload:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            background: #555;
+        }
+
+        .btn-download {
+            background: #666;
+            color: white;
+        }
+
+        .btn-download:hover {
+            background: #888;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .file-info {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f0f0f0;
+            border-radius: 8px;
+            color: #333;
+            display: none;
+            border: 1px solid #ccc;
+        }
+
+        .upload-progress {
+            margin-top: 15px;
+            display: none;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background: #e0e0e0;
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #333;
+            transition: width 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        .divider {
+            text-align: center;
+            margin: 30px 0;
+            position: relative;
+        }
+
+        .divider::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 50%;
+            height: 2px;
+            background: #d0d0d0;
+        }
+
+        .divider span {
+            background: white;
+            padding: 0 20px;
+            position: relative;
+            color: #666;
+            font-weight: 600;
+        }
+
+        .result-summary {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .result-summary h3 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .result-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+        }
+
+        .stat-box {
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-box.success {
+            background: #f0f0f0;
+            color: #333;
+            border: 1px solid #ccc;
+        }
+
+        .stat-box.error {
+            background: #f0f0f0;
+            color: #333;
+            border: 1px solid #ccc;
+        }
+
+        .stat-box .number {
+            font-size: 2em;
+            font-weight: 700;
+        }
+
+        .stat-box .label {
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+    </style>
+
+
+
+
+</head>
+
+
+
+
+
+<body>
+    <!-- page-wrapper Start-->
+    <!-- tap on top starts-->
+    <div class="tap-top">
+        <i class="fa-solid fa-angle-up"></i>
+    </div>
+    <!-- tap on tap ends-->
+    <!-- loader-->
+    <div class="loader-wrapper">
+        <div class="loader"><span></span><span></span><span></span><span></span><span></span></div>
+    </div>
+
+
+    <div class="page-wrapper compact-wrapper" id="pageWrapper">
+
+        <!-- this is header section -->
+        {% include "common/header.html"%}
+        <!--header section end -->
+
+
+
+
+
+        <!-- Page Body Start-->
+        <div class="page-body-wrapper">
+            <!-- Page sidebar start-->
+            {% include "common/sidebar.html"%}
+            <!-- Page sidebar end-->
+
+            <!-- body section start  -->
+            <div class="page-body">
+                <div class="container">
+                    <div class="header">
+                        <h1>📋 Loan Agreement Form</h1>
+                        <p>Complete Loan Application & Customer Details</p>
+                    </div>
+
+                    <!-- Bulk Upload Section -->
+                    <div class="bulk-upload-section">
+                        <div class="upload-card">
+                            <div class="upload-icon">📊</div>
+                            <h2>Bulk Upload</h2>
+                            <p>Upload an Excel file to submit multiple records at once</p>
+                            <div class="upload-controls">
+                                <input type="file" id="excelFile" accept=".xlsx,.xls" style="display: none;">
+                                <button type="button" class="btn btn-upload"
+                                    onclick="document.getElementById('excelFile').click()">
+                                    📁 Choose Excel File
+                                </button>
+                                <button type="button" class="btn btn-download" onclick="downloadTemplate()">
+                                    ⬇️ Download Template
+                                </button>
+                            </div>
+                            <div id="fileInfo" class="file-info"></div>
+                            <div id="uploadProgress" class="upload-progress"></div>
+                        </div>
+                        <div class="divider">
+                            <span>OR</span>
+                        </div>
+                    </div>
+
+                    <div class="form-container">
+                        <form id="loanForm">
+                            <!-- Agreement Information -->
+                            <div class="section-title">
+                                <span>📄</span> Agreement Information
+                            </div>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="agreementId">Agreement ID *</label>
+                                    <input type="text" id="agreementId" value="118354371" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="customerName">Customer Name *</label>
+                                    <input type="text" id="customerName" value="BIMAL SAMANTARAY" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="prod">Product Type *</label>
+                                    <select id="prod" required>
+                                        <option value="TR" selected>TR - Two Wheeler</option>
+                                        <option value="CV">CV - Commercial Vehicle</option>
+                                        <option value="PC">PC - Passenger Car</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="tcName">TC Name *</label>
+                                    <input type="text" id="tcName" value="SINU" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="branch">Branch *</label>
+                                    <input type="text" id="branch" value="RASULGARH" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="countCases">Count of Cases *</label>
+                                    <input type="number" id="countCases" value="2" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="oldNew">Old/New *</label>
+                                    <select id="oldNew" required>
+                                        <option value="NEW" selected>NEW</option>
+                                        <option value="OLD">OLD</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="bucket">Bucket *</label>
+                                    <input type="number" id="bucket" value="3" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="mode">Mode *</label>
+                                    <select id="mode" required>
+                                        <option value="RF" selected>RF - Refinance</option>
+                                        <option value="NW">NW - New</option>
+                                        <option value="RN">RN - Renewal</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="npaStatus">NPA Status *</label>
+                                    <select id="npaStatus" required>
+                                        <option value="GCL" selected>GCL</option>
+                                        <option value="STD">STD - Standard</option>
+                                        <option value="NPA">NPA - Non Performing Asset</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Financial Details -->
+                            <div class="section-title">
+                                <span>💰</span> Financial Details
+                            </div>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="pos">POS Amount *</label>
+                                    <input type="number" id="pos" value="434798.55" step="0.01" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="totalCharges">Total Charges *</label>
+                                    <input type="number" id="totalCharges" value="15032" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="bccPending">BCC Pending *</label>
+                                    <input type="number" id="bccPending" value="9722" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="penalPending">Penal Pending *</label>
+                                    <input type="number" id="penalPending" value="5310" required>
+                                </div>
+                            </div>
+
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="emiAmt">EMI Amount *</label>
+                                    <input type="number" id="emiAmt" class="highlight" value="14750" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="emiDueAmount">EMI Due Amount *</label>
+                                    <input type="number" id="emiDueAmount" value="12000" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="receiptAmount">Receipt Amount *</label>
+                                    <input type="number" id="receiptAmount" class="highlight" value="14750" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="receiptDate">Receipt Date *</label>
+                                    <input type="date" id="receiptDate" value="2025-10-12" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="disbAmt">Disbursement Amount</label>
+                                    <input type="number" id="disbAmt" value="612265">
+                                </div>
+                                <div class="form-group">
+                                    <label for="loanAmt">Loan Amount</label>
+                                    <input type="number" id="loanAmt" value="620000">
+                                </div>
+                                <div class="form-group">
+                                    <label for="disbDate">Disbursement Date</label>
+                                    <input type="date" id="disbDate" value="2023-08-28">
+                                </div>
+                                <div class="form-group">
+                                    <label for="emiStartDate">EMI Start Date</label>
+                                    <input type="date" id="emiStartDate" value="2023-05-08">
+                                </div>
+                                <div class="form-group">
+                                    <label for="emiEndDate">EMI End Date</label>
+                                    <input type="date" id="emiEndDate" value="2028-05-07">
+                                </div>
+                                <div class="form-group">
+                                    <label for="emiCycleDate">EMI Cycle Date</label>
+                                    <input type="number" id="emiCycleDate" value="5" min="1" max="31">
+                                </div>
+                            </div>
+
+                            <!-- Vehicle Details -->
+                            <div class="section-title">
+                                <span>🏍️</span> Vehicle Details
+                            </div>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="make">Make *</label>
+                                    <input type="text" id="make" value="MAHINDRA" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="manufacturerDesc">Manufacturer Description</label>
+                                    <input type="text" id="manufacturerDesc" value="MAHINDRA & MAHINDRA LTD.">
+                                </div>
+                                <div class="form-group">
+                                    <label for="regdNum">Registration Number</label>
+                                    <input type="text" id="regdNum" value="OD33AK1032">
+                                </div>
+                                <div class="form-group">
+                                    <label for="age">Vehicle Age (Years)</label>
+                                    <input type="number" id="age" value="33">
+                                </div>
+                            </div>
+
+                            <!-- Customer Details -->
+                            <div class="section-title">
+                                <span>👤</span> Customer Details
+                            </div>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="employer">Employer *</label>
+                                    <input type="text" id="employer" value="TATA CAPITAL" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="fatherName">Father's Name</label>
+                                    <input type="text" id="fatherName" value="PROMOD SAMANTARAY">
+                                </div>
+                                <div class="form-group">
+                                    <label for="feName">FE Name</label>
+                                    <input type="text" id="feName" value="RAMA">
+                                </div>
+                                <div class="form-group">
+                                    <label for="feMobile">FE Mobile Number</label>
+                                    <input type="tel" id="feMobile" value="9999999999" pattern="[0-9]{10}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="customerNumber">Customer Number</label>
+                                    <input type="tel" id="customerNumber" value="8888888888" pattern="[0-9]{10}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="pinCode">PIN Code *</label>
+                                    <input type="text" id="pinCode" value="752050" pattern="[0-9]{6}" required>
+                                </div>
+                                <div class="form-group full-width">
+                                    <label for="customerAddress">Customer Address *</label>
+                                    <textarea id="customerAddress"
+                                        required>AT-HARIRAJPUR, HARIRAJPUR, HARIRAJPUR, PURI,KHORDA,752050</textarea>
+                                </div>
+                                <div class="form-group full-width">
+                                    <label for="customerOfficeAddress">Customer Office Address</label>
+                                    <textarea
+                                        id="customerOfficeAddress">Biswanathpur BRAHMANAPADA G P BISWANATHPUR Puri</textarea>
+                                </div>
+                                <div class="form-group full-width">
+                                    <label for="referenceDetails">Reference Details</label>
+                                    <textarea
+                                        id="referenceDetails">BABULI JENA-7008474630,GUJURI CHAMPATY-7008707394</textarea>
+                                </div>
+                            </div>
+
+                            <!-- Collection Details -->
+                            <div class="section-title">
+                                <span>🏦</span> Collection Details
+                            </div>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="collectionManager">Collection Manager Name</label>
+                                    <input type="text" id="collectionManager" value="RAKESH KUMAR MOHANTY">
+                                </div>
+                                <div class="form-group">
+                                    <label for="financeCompany">Finance Company Name *</label>
+                                    <input type="text" id="financeCompany" value="IDFC FIRST BANK" required>
+                                </div>
+                            </div>
+
+                            <div class="btn-container">
+                                <button type="submit" class="btn btn-primary">💾 Submit Form</button>
+                                <button type="button" class="btn btn-secondary" onclick="resetForm()">🔄 Reset</button>
+                            </div>
+
+                            <div class="success-message" id="successMessage">
+                                ✅ Form submitted successfully!
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- Container-fluid starts-->
+            {% include "common/footer.html"%}
+        </div>
+        <!-- page body end  -->
+
+    </div>
+
+
+
+
+    <!-- jquery-->
+    <script src="{% static 'assets/js/vendors/jquery/jquery.min.js' %}"></script>
+    <!-- bootstrap js-->
+    <script src="{% static 'assets/js/vendors/bootstrap/dist/js/bootstrap.bundle.min.js' %}" defer=""></script>
+    <script src="{% static 'assets/js/vendors/bootstrap/dist/js/popper.min.js' %}" defer=""></script>
+    <!--fontawesome-->
+    <script src="{% static 'assets/js/vendors/font-awesome/fontawesome-min.js' %}"></script>
+    <!-- feather-->
+    <script src="{% static 'assets/js/vendors/feather-icon/feather.min.js' %}"></script>
+    <script src="{% static 'assets/js/vendors/feather-icon/custom-script.js' %}"></script>
+    <!-- sidebar -->
+    <script src="{% static 'assets/js/sidebar.js' %}"></script>
+    <!-- height_equal-->
+    <script src="{% static 'assets/js/height-equal.js' %}"></script>
+    <!-- config-->
+    <script src="{% static 'assets/js/config.js' %}"></script>
+    <!-- apex-->
+    <script src="{% static 'assets/js/chart/apex-chart/apex-chart.js' %}"></script>
+    <script src="{% static 'assets/js/chart/apex-chart/stock-prices.js' %}"></script>
+    <!-- scrollbar-->
+    <script src="{% static 'assets/js/scrollbar/simplebar.js' %}"></script>
+    <script src="{% static 'assets/js/scrollbar/custom.js' %}"></script>
+    <!-- slick-->
+    <script src="{% static 'assets/js/slick/slick.min.js' %}"></script>
+    <script src="{% static 'assets/js/slick/slick.js' %}"></script>
+    <!-- data_table-->
+    <script src="{% static 'assets/js/js-datatables/datatables/jquery.dataTables.min.js' %}"></script>
+    <!-- page_datatable-->
+    <script src="{% static 'assets/js/js-datatables/datatables/datatable.custom.js' %}"></script>
+    <!-- page_datatable1-->
+    <script src="{% static 'assets/js/js-datatables/datatables/datatable.custom1.js' %}"></script>
+    <!-- page_datatable-->
+    <script src="{% static 'assets/js/datatable/datatables/datatable.custom.js' %}"></script>
+    <!-- theme_customizer-->
+    <script src="{% static 'assets/js/theme-customizer/customizer.js' %}"></script>
+    <!-- tilt-->
+    <script src="{% static 'assets/js/animation/tilt/tilt.jquery.js' %}"></script>
+    <!-- page_tilt-->
+    <script src="{% static 'assets/js/animation/tilt/tilt-custom.js' %}"></script>
+    <!-- dashboard_1-->
+    <script src="{% static 'assets/js/dashboard/dashboard_1.js' %}"></script>
+
+
+    <!-- slick-->
+    <script src="{% static 'assets/js/slick/slick.min.js' %}"></script>
+    <script src="{% static 'assets/js/slick/slick.js' %}"></script>
+    <!-- datatable-->
+    <script src="{% static 'assets/js/datatable/datatables/jquery.dataTables.min.js' %}"></script>
+    <!-- datatable_extension-->
+    <script src="{% static 'assets/js/datatable/datatable-extension/dataTables.buttons.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/jszip.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/buttons.colVis.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/pdfmake.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/vfs_fonts.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/dataTables.autoFill.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/dataTables.select.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/buttons.bootstrap4.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/buttons.html5.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/buttons.print.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/dataTables.bootstrap4.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/dataTables.responsive.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/responsive.bootstrap4.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/dataTables.keyTable.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/dataTables.colReorder.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/dataTables.fixedHeader.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/dataTables.rowReorder.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/dataTables.scroller.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/custom.js' %}"></script>
+
+    <!-- datatable-->
+    <script src="{% static 'assets/js/datatable/datatables/jquery.dataTables.min.js' %}"></script>
+    <!-- page_datatable -->
+    <script src="{% static 'assets/js/js-datatables/datatables/datatable.custom.js' %}"></script>
+    <!-- page_datatable-->
+    <!-- <script src="{% static 'assets/js/datatable/datatables/datatable.custom.js' %}"></script> -->
+    <!-- theme_customizer-->
+    <script src="{% static 'assets/js/theme-customizer/customizer.js' %}"></script>
+
+    <!-- custom script -->
+    <script src="{% static 'assets/js/script.js' %}"></script>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script>
+        // Excel file upload handler
+        document.getElementById('excelFile').addEventListener('change', function (e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const fileInfo = document.getElementById('fileInfo');
+            const uploadProgress = document.getElementById('uploadProgress');
+
+            fileInfo.style.display = 'block';
+            fileInfo.innerHTML = `📄 Selected: ${file.name} (${(file.size / 1024).toFixed(2)} KB)`;
+
+            uploadProgress.style.display = 'block';
+            uploadProgress.innerHTML = '<div class="progress-bar"><div class="progress-fill" style="width: 0%">0%</div></div>';
+
+            const reader = new FileReader();
+
+            reader.onprogress = function (e) {
+                if (e.lengthComputable) {
+                    const percentLoaded = Math.round((e.loaded / e.total) * 100);
+                    const progressFill = uploadProgress.querySelector('.progress-fill');
+                    progressFill.style.width = percentLoaded + '%';
+                    progressFill.textContent = percentLoaded + '%';
+                }
+            };
+
+            reader.onload = function (e) {
+                try {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+                    const jsonData = XLSX.utils.sheet_to_json(firstSheet);
+
+                    setTimeout(() => {
+                        processExcelData(jsonData);
+                    }, 500);
+                } catch (error) {
+                    alert('Error reading Excel file: ' + error.message);
+                    uploadProgress.style.display = 'none';
+                }
+            };
+
+            reader.onerror = function () {
+                alert('Error reading file');
+                uploadProgress.style.display = 'none';
+            };
+
+            reader.readAsArrayBuffer(file);
+        });
+
+        function processExcelData(data) {
+            const uploadProgress = document.getElementById('uploadProgress');
+            const fileInfo = document.getElementById('fileInfo');
+
+            console.log('Excel Data:', data);
+            console.log(`Total records: ${data.length}`);
+
+            let successCount = 0;
+            let errorCount = 0;
+
+            data.forEach((row, index) => {
+                try {
+                    // Validate required fields
+                    if (row.AGREEMENTID && row.CUSTOMER_NAME && row.PROD) {
+                        successCount++;
+                    } else {
+                        errorCount++;
+                        console.warn(`Row ${index + 1}: Missing required fields`);
+                    }
+                } catch (error) {
+                    errorCount++;
+                    console.error(`Row ${index + 1}: Error processing`, error);
+                }
+            });
+
+            // Show results
+            uploadProgress.innerHTML = `
+                <div class="result-summary" style="display: block;">
+                    <h3>📊 Upload Results</h3>
+                    <div class="result-stats">
+                        <div class="stat-box success">
+                            <div class="number">${successCount}</div>
+                            <div class="label">Successful</div>
+                        </div>
+                        <div class="stat-box error">
+                            <div class="number">${errorCount}</div>
+                            <div class="label">Failed</div>
+                        </div>
+                        <div class="stat-box" style="background: #cfe2ff; color: #084298;">
+                            <div class="number">${data.length}</div>
+                            <div class="label">Total</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            fileInfo.innerHTML = `✅ Processing complete! ${successCount} records validated successfully.`;
+            fileInfo.style.background = '#d4edda';
+            fileInfo.style.color = '#155724';
+
+            // Reset file input
+            document.getElementById('excelFile').value = '';
+        }
+
+        function downloadTemplate() {
+            // Create template data
+            const templateData = [{
+                'AGREEMENTID': '118354371',
+                'CUSTOMER_NAME': 'BIMAL SAMANTARAY',
+                'PROD': 'TR',
+                'TC_NAME': 'SINU',
+                'branch': 'RASULGARH',
+                'COUNT_OF_CASES': '2',
+                'OLD/NEW': 'NEW',
+                'BUCKET': '3',
+                'MODE': 'RF',
+                'NPA_STATUS': 'GCL',
+                'POS': '434798.55',
+                'EMI_AMT': '14750',
+                'EMI_DUE_AMOUNT': '12000',
+                'TOTAL_CHARGES': '15032',
+                'RECEIPT_AMOUNT': '14750',
+                'RECEIPT_DATE': '10/12/2025',
+                'BCC_PENDING': '9722',
+                'penal_pending': '5310',
+                'disb_amt': '612265',
+                'loan_amt': '620000',
+                'DISB_DATE': '28/06/2023',
+                'EMI_START_DATE': '05/08/2023',
+                'EMI_END_DATE': '05/07/2028',
+                'EMI_CYCLE_DATE': '5',
+                'MAKE': 'MAHINDRA',
+                'manufacturerdesc': 'MAHINDRA & MAHINDRA LTD.',
+                'REGDNUM': 'OD33AK1032',
+                'AGE': '33',
+                'EMPLOYER': 'TATA CAPITAL',
+                'FATHERNAME': 'PROMOD SAMANTARAY',
+                'FE_NAME': 'RAMA',
+                'FE_MOBILE_NUMBER': '9999999999',
+                'CUSTOMER_NUMBER': '8888888888',
+                'CUSTOMER_ADDRESS': 'AT-HARIRAJPUR, HARIRAJPUR, HARIRAJPUR, PURI,KHORDA,752050',
+                'CUSTOMER_OFFICE_ADDRESS': 'Biswanathpur BRAHMANAPADA G P BISWANATHPUR Puri',
+                'PIN_CODE': '752050',
+                'REFERENCE_DETAILS': 'BABULI JENA-7008474630,GUJURI CHAMPATY-7008707394',
+                'COLLECTION_MANAGER_NAME': 'RAKESH KUMAR MOHANTY',
+                'FINANCE_COMPANY_NAME': 'IDFC FIRST BANK'
+            }];
+
+            // Create workbook
+            const ws = XLSX.utils.json_to_sheet(templateData);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, 'Loan Data');
+
+            // Set column widths
+            const colWidths = Object.keys(templateData[0]).map(() => ({ wch: 20 }));
+            ws['!cols'] = colWidths;
+
+            // Download file
+            XLSX.writeFile(wb, 'Loan_Agreement_Template.xlsx');
+        }
+
+        document.getElementById('loanForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const formData = {};
+            const inputs = this.querySelectorAll('input, select, textarea');
+
+            inputs.forEach(input => {
+                formData[input.id] = input.value;
+            });
+
+            console.log('Form Data:', formData);
+
+            const successMessage = document.getElementById('successMessage');
+            successMessage.style.display = 'block';
+
+            setTimeout(() => {
+                successMessage.style.display = 'none';
+            }, 3000);
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        function resetForm() {
+            if (confirm('Are you sure you want to reset the form?')) {
+                document.getElementById('loanForm').reset();
+                document.getElementById('successMessage').style.display = 'none';
+            }
+        }
+
+        document.querySelectorAll('input[type="number"]').forEach(input => {
+            input.addEventListener('wheel', function (e) {
+                e.preventDefault();
+            });
+        });
+    </script>
+
+</body>
+
+</html>
