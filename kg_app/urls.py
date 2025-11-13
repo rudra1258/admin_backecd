@@ -4,7 +4,8 @@ from . import views
 app_name = 'kg_app'  # important for namespacing URLs
 
 urlpatterns = [
-    path('', views.index, name='index'),
+    # path('', views.index, name='index'),
+    path('', views.admin_login, name='admin_login'),
     path('assign_task/', views.assign_task, name='assign_task'),
     path('complete_task/', views.complete_task, name='complete_task'),
     path('create_task/', views.create_task, name='create_task'),

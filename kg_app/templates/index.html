@@ -38,12 +38,12 @@
 
 
   <style>
-    .logo_div{
+    .logo_div {
       background: #5250c3;
       border-radius: 10px;
       padding-top: 10px;
       padding-bottom: 10px;
-      margin-bottom:25px;
+      margin-bottom: 25px;
       box-sizing: border-box;
     }
   </style>
@@ -71,40 +71,54 @@
           <div>
             <div class="logo_div">
               <a class="logo" href="#">
-                <img class="img-fluid for-light m-auto" src="{% static 'assets/img/logo.png' %}"alt="looginpage">
+                <img class="img-fluid for-light m-auto" src="{% static 'assets/img/logo.png' %}" alt="looginpage">
                 <img class="for-dark" src="{% static 'assets/img/logo.png' %}" alt="logo">
               </a>
             </div>
             <div class="login-main">
-              <form class="theme-form">
+              <form class="theme-form" method="POST" action="{% url 'kg_app:admin_login' %}">
+                {% csrf_token %}
+
                 <h2 class="text-center">Log in to account</h2>
                 <p class="text-center">Enter your email &amp; password to login</p>
+
+                <!-- Display error messages -->
+                {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                  {{ message }}
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                {% endfor %}
+                {% endif %}
+
                 <div class="form-group">
                   <label class="col-form-label">Email Address</label>
-                  <input class="form-control" type="email" required="" placeholder="Test@gmail.com">
+                  <input class="form-control" type="email" name="email" required placeholder="Test@gmail.com"
+                    value="{{ email }}">
                 </div>
+
                 <div class="form-group">
                   <label class="col-form-label">Password</label>
                   <div class="form-input position-relative">
-                    <input class="form-control" type="password" name="login[password]" required=""
-                      placeholder="*********">
-                    <div class="show-hide"><span class="show"> </span></div>
-                  </div>
-                </div>
-                <div class="form-group mb-0 checkbox-checked">
-                  <div class="form-check checkbox-solid-info">
-                    <input class="form-check-input" id="solid6" type="checkbox">
-                    <label class="form-check-label" for="solid6">Remember password</label>
-                  </div><a class="link" href="forget-password.html">Forgot password?</a>
-                  <div class="text-end mt-3">
-                    <!-- <button class="btn btn-primary btn-block w-100" type="submit" onclick="windows.location.href='index.html'">Login</button> -->
-                    <button class="btn btn-primary btn-block w-100" type="submit"
-                      onclick="window.location.href='template/dashboard.html'">Login</button>
+                    <input class="form-control" type="password" name="password" required placeholder="*********">
+                    <div class="show-hide"><span class="show"></span></div>
                   </div>
                 </div>
 
+                <div class="form-group mb-0 checkbox-checked">
+                  <div class="form-check checkbox-solid-info">
+                    <input class="form-check-input" id="solid6" type="checkbox" name="remember_me">
+                    <label class="form-check-label" for="solid6">Remember password</label>
+                  </div>
+                  <a class="link" href="#">Forgot password?</a>
+                  <div class="text-end mt-3">
+                    <button class="btn btn-primary btn-block w-100" type="submit">Login</button>
+                  </div>
+                </div>
               </form>
             </div>
+
           </div>
         </div>
       </div>
