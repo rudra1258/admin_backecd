@@ -97,6 +97,18 @@
             </g>
         </g>
     </symbol>
+    <symbol id="user-plus" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Iconly/Curved/User Plus</title>
+    <g fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <g>
+            <path d="M12 12C14.7614 12 17 9.76142 17 7C17 4.23858 14.7614 2 12 2C9.23858 2 7 4.23858 7 7C7 9.76142 9.23858 12 12 12Z" />
+            <path d="M3.41016 22C3.41016 17.8579 6.85803 14.5 11.1202 14.5" />
+            <path d="M18 15V21" />
+            <path d="M21 18H15" />
+        </g>
+    </g>
+    </symbol>
     <symbol id="heart" viewBox="0 0 24 22" version="1.1" xmlns="http://www.w3.org/2000/svg"
         xmlns:xlink="http://www.w3.org/1999/xlink">
         <title>Iconly/Curved/Arrow - heart</title>
