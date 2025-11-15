@@ -32,12 +32,12 @@
                 <i class="fa-solid fa-chevron-right margin_left_auto"></i>
               </a>
               <ul class="sidebar-submenu">
-                <li> <a href="telecaller.html">Telecaller</a></li>
-                <li><a href="teamlead.html">Team lead</a></li>
-                <li><a href="ground_staff.html">Ground staff</a></li>
+                <li> <a href="{% url "kg_app:telecaller" %}">Telecaller</a></li>
+                <li><a href="{% url 'kg_app:teamlead' %}">Team lead</a></li>
+                <li><a href="{% url 'kg_app:groundstaff' %}">Ground staff</a></li>
               </ul>
             </li>
-            <li class="sidebar-list"><a class="sidebar-link" href="create_user.html">
+            <li class="sidebar-list"><a class="sidebar-link" href="{% url 'kg_app:create_user' %}">
                 <svg class="stroke-icon">
                 <use href="{% static 'assets/svg/iconly-sprite.svg' %}#user-plus"></use>
                 </svg>
@@ -55,15 +55,15 @@
                 <i class="fa-solid fa-chevron-right margin_left_auto"></i>
               </a>
               <ul class="sidebar-submenu">
-                <li> <a href="tc_login.html">Telecaller</a></li>
-                <li><a href="tl_login.html">Team lead</a></li>
-                <li> <a href="gs_login.html">Ground staff</a></li>
+                <li> <a href="{% url 'kg_app:tc_login' %}">Telecaller</a></li>
+                <li><a href="{% url 'kg_app:tl_login' %}">Team lead</a></li>
+                <li> <a href="{% url 'kg_app:gs_login' %}">Ground staff</a></li>
               </ul>
             </li>
 
             <li class="sidebar-list">
               <!-- <i class="fa-solid fa-thumbtack"></i> -->
-              <a class="sidebar-link" href="create_task.html">
+              <a class="sidebar-link" href="{% url 'kg_app:create_task' %}">
                 <svg class="stroke-icon">
                   <use href="{% static 'assets/svg/iconly-sprite.svg' %}#Message"></use>
                 </svg>
@@ -74,7 +74,7 @@
 
             <li class="sidebar-list">
               <!-- <i class="fa-solid fa-thumbtack"></i> -->
-              <a class="sidebar-link" href="assign_task.html">
+              <a class="sidebar-link" href="{% url 'kg_app:assign_task' %}">
                 <svg class="stroke-icon">
                   <use href="{% static 'assets/svg/iconly-sprite.svg' %}#Bookmark"></use>
                 </svg>
@@ -93,15 +93,15 @@
                 <i class="fa-solid fa-chevron-right margin_left_auto"></i>
               </a>
               <ul class="sidebar-submenu">
-                <li> <a href="pending_task.html">Pending</a></li>
-                <li> <a href="complete_task.html">Completed</a></li>
+                <li> <a href="{% url 'kg_app:pending_task' %}">Pending</a></li>
+                <li> <a href="{% url 'kg_app:complete_task' %}">Completed</a></li>
               </ul>
             </li>
 
 
             <li class="sidebar-list">
               <!-- <i class="fa-solid fa-thumbtack"></i> -->
-              <a class="sidebar-link" href="leave.html">
+              <a class="sidebar-link" href="{% url 'kg_app:leave' %}">
                 <svg class="stroke-icon">
                   <use href="{% static 'assets/svg/iconly-sprite.svg' %}#Bookmark"></use>
                 </svg>
