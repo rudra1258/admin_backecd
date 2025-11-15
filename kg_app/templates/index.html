@@ -3,41 +3,45 @@
 <html lang="en">
 
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description"
-    content="Admiro admin is super flexible, powerful, clean &amp; modern responsive bootstrap 5 admin template with unlimited possibilities.">
+    content="Admiro admin is super flexible, powerful, clean &amp; modern responsive bootstrap 5 admin template with unlimited possibilities." />
   <meta name="keywords"
-    content="admin template, Admiro admin template, best javascript admin, dashboard template, bootstrap admin template, responsive admin template, web app">
-  <meta name="author" content="pixelstrap">
+    content="admin template, Admiro admin template, best javascript admin, dashboard template, bootstrap admin template, responsive admin template, web app" />
+  <meta name="author" content="pixelstrap" />
   <title>Admiro - Premium Admin Template</title>
   <!-- Favicon icon-->
-  <link rel="icon" href="{% static 'assets/img/favicon.png' %}" type="image/x-icon">
-  <link rel="shortcut icon" href="{% static 'assets/img/favicon.png' %}" type="image/x-icon">
+  <link rel="icon" href="{% static 'assets/img/favicon.png' %}" type="image/x-icon" />
+  <link rel="shortcut icon" href="{% static 'assets/img/favicon.png' %}" type="image/x-icon" />
   <!-- Google font-->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
   <link
     href="../css2?family=Nunito+Sans:opsz,wght@6..12,200;6..12,300;6..12,400;6..12,500;6..12,600;6..12,700;6..12,800;6..12,900;6..12,1000&amp;display=swap"
-    rel="stylesheet">
+    rel="stylesheet" />
   <!-- Flag icon css -->
-  <link rel="stylesheet" href="{% static 'assets/css/vendors/flag-icon.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/css/vendors/flag-icon.css' %}" />
   <!-- iconly-icon-->
-  <link rel="stylesheet" href="{% static 'assets/css/iconly-icon.css' %}">
-  <link rel="stylesheet" href="{% static 'assets/css/bulk-style.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/css/iconly-icon.css' %}" />
+  <link rel="stylesheet" href="{% static 'assets/css/bulk-style.css' %}" />
   <!-- iconly-icon-->
-  <link rel="stylesheet" href="{% static 'assets/css/themify.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/css/themify.css' %}" />
   <!--fontawesome-->
-  <link rel="stylesheet" href="{% static 'assets/css/fontawesome-min.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/css/fontawesome-min.css' %}" />
   <!-- Whether Icon css-->
-  <link rel="stylesheet" type="text/css" href="{% static 'assets/css/vendors/weather-icons/weather-icons.min.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'assets/css/vendors/weather-icons/weather-icons.min.css' %}" />
   <!-- App css -->
-  <link id="color" rel="stylesheet" href="{% static 'assets/css/color-1.css' %}" media="screen">
-  <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
-
+  <link id="color" rel="stylesheet" href="{% static 'assets/css/color-1.css' %}" media="screen" />
+  <link rel="stylesheet" href="{% static 'assets/css/style.css' %}" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
   <style>
+    .login-main {
+      position: relative !important;
+    }
+
     .logo_div {
       background: #5250c3;
       border-radius: 10px;
@@ -46,8 +50,20 @@
       margin-bottom: 25px;
       box-sizing: border-box;
     }
-  </style>
 
+    .show-hide {
+      cursor: pointer;
+      position: absolute;
+      top: 50%;
+      right: 15px;
+      transform: translateY(-50%);
+    }
+
+    .show-hide.hide span {
+      background-position: -22px 0;
+      /* change icon when hide */
+    }
+  </style>
 </head>
 
 <body>
@@ -56,69 +72,77 @@
   <!-- tap on tap ends-->
   <!-- loader-->
   <div class="loader-wrapper">
-    <div class="loader"><span></span><span></span><span></span><span></span><span></span></div>
+    <div class="loader">
+      <span></span><span></span><span></span><span></span><span></span>
+    </div>
   </div>
   <!-- login page start-->
   <div class="container-fluid">
     <div class="row">
       <div class="col-xl-7">
         <script src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.8.5/dist/dotlottie-wc.js" type="module"></script>
-        <dotlottie-wc src="https://lottie.host/4dd90fff-dca2-44a1-80c0-0578802d8f3a/7mhUMq9Y6M.lottie"
-          style="width: 80%;height: 80%; display:block; margin:auto; padding-top:10%" autoplay loop></dotlottie-wc>
+        <dotlottie-wc src="https://lottie.host/4dd90fff-dca2-44a1-80c0-0578802d8f3a/7mhUMq9Y6M.lottie" style="
+              width: 80%;
+              height: 80%;
+              display: block;
+              margin: auto;
+              padding-top: 10%;
+            " autoplay loop></dotlottie-wc>
       </div>
       <div class="col-xl-5 p-0">
         <div class="login-card login-dark login-bg">
           <div>
             <div class="logo_div">
               <a class="logo" href="#">
-                <img class="img-fluid for-light m-auto" src="{% static 'assets/img/logo.png' %}" alt="looginpage">
-                <img class="for-dark" src="{% static 'assets/img/logo.png' %}" alt="logo">
+                <img class="img-fluid for-light m-auto" src="{% static 'assets/img/logo.png' %}" alt="looginpage" />
+                <img class="for-dark" src="{% static 'assets/img/logo.png' %}" alt="logo" />
               </a>
             </div>
-            <div class="login-main">
-              <form class="theme-form" method="POST" action="{% url 'kg_app:admin_login' %}">
+            <div class="login-main position-relative">
+
+              <!-- 🔥 Toast Popup -->
+              <div id="toastMsg" class="position-fixed top-0 end-0 m-3"
+                style="padding:12px 18px; border-radius:6px; color:#fff; display:none; z-index:9999; font-weight:500; min-width:250px;">
+                <div class="d-flex align-items-center justify-content-between">
+                  <div id="toastText">Message goes here</div>
+                  <button type="button" class="btn-close btn-close-white ms-3" onclick="hideToast()"
+                    style="font-size:12px;"></button>
+                </div>
+              </div>
+              <!-- 🔥 END Toast -->
+
+              <form id="loginForm" class="theme-form" method="POST" action="{% url 'kg_app:admin_login' %}">
                 {% csrf_token %}
 
                 <h2 class="text-center">Log in to account</h2>
                 <p class="text-center">Enter your email &amp; password to login</p>
 
-                <!-- Display error messages -->
-                {% if messages %}
-                {% for message in messages %}
-                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-                  {{ message }}
-                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-                {% endfor %}
-                {% endif %}
-
                 <div class="form-group">
                   <label class="col-form-label">Email Address</label>
-                  <input class="form-control" type="email" name="email" required placeholder="Test@gmail.com"
-                    value="{{ email }}">
+                  <input id="emailInput" class="form-control" type="email" name="email" required
+                    placeholder="Test@gmail.com" />
                 </div>
 
                 <div class="form-group">
                   <label class="col-form-label">Password</label>
                   <div class="form-input position-relative">
-                    <input class="form-control" type="password" name="password" required placeholder="*********">
+                    <input id="passwordInput" class="form-control" type="password" name="password" required
+                      placeholder="*****" />
                     <div class="show-hide"><span class="show"></span></div>
                   </div>
                 </div>
 
-                <div class="form-group mb-0 checkbox-checked">
-                  <div class="form-check checkbox-solid-info">
-                    <input class="form-check-input" id="solid6" type="checkbox" name="remember_me">
-                    <label class="form-check-label" for="solid6">Remember password</label>
-                  </div>
-                  <a class="link" href="#">Forgot password?</a>
+                <div class="form-group mb-0">
                   <div class="text-end mt-3">
-                    <button class="btn btn-primary btn-block w-100" type="submit">Login</button>
+                    <button id="loginBtn" class="btn btn-primary btn-block w-100" type="submit">
+                      <span class="btn-text">Login</span>
+                      <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                    </button>
                   </div>
                 </div>
               </form>
-            </div>
 
+            </div>
           </div>
         </div>
       </div>
@@ -135,6 +159,128 @@
     <script src="{% static 'assets/js/password.js' %}"></script>
     <!-- custom script -->
     <script src="{% static 'assets/js/script.js' %}"></script>
+
+    <!-- Bootstrap JS (required for toast fade animation) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+
+    <script>
+      /* 🔥 SHOW TOAST MESSAGE */
+      function showToast(message, type) {
+        const toast = document.getElementById("toastMsg");
+        const toastText = document.getElementById("toastText");
+
+        toastText.textContent = message;
+
+        // Set background color based on type
+        if (type === "success") {
+          toast.style.backgroundColor = "#28a745"; // green
+        } else {
+          toast.style.backgroundColor = "#dc3545"; // red
+        }
+
+        // Show toast with fade in
+        toast.style.display = "block";
+        toast.style.opacity = "0";
+        setTimeout(() => {
+          toast.style.transition = "opacity 0.3s ease-in";
+          toast.style.opacity = "1";
+        }, 10);
+
+        // Auto hide after 3 seconds
+        setTimeout(() => {
+          hideToast();
+        }, 3000);
+      }
+
+      function hideToast() {
+        const toast = document.getElementById("toastMsg");
+        toast.style.transition = "opacity 0.3s ease-out";
+        toast.style.opacity = "0";
+        setTimeout(() => {
+          toast.style.display = "none";
+        }, 300);
+      }
+
+      /* 🔄 LOGIN FORM AJAX SUBMISSION */
+      document.addEventListener("DOMContentLoaded", function () {
+        const form = document.getElementById("loginForm");
+        const loginBtn = document.getElementById("loginBtn");
+        const btnText = loginBtn.querySelector(".btn-text");
+        const spinner = loginBtn.querySelector(".spinner-border");
+
+        form.addEventListener("submit", function (e) {
+          e.preventDefault(); // Prevent default form submission
+
+          // Show loading state
+          loginBtn.disabled = true;
+          btnText.textContent = "Logging in...";
+          spinner.classList.remove("d-none");
+
+          const formData = new FormData(form);
+
+          fetch(form.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+              'X-CSRFToken': formData.get('csrfmiddlewaretoken')
+            }
+          })
+            .then(response => {
+              if (!response.ok) {
+                throw new Error('Network response was not ok');
+              }
+              return response.json();
+            })
+            .then(data => {
+              // Reset button state
+              loginBtn.disabled = false;
+              btnText.textContent = "Login";
+              spinner.classList.add("d-none");
+
+              if (data.success) {
+                // Show success message
+                showToast(data.message, "success");
+
+                // Redirect after a short delay
+                setTimeout(() => {
+                  window.location.href = data.redirect_url;
+                }, 500);
+              } else {
+                // Show error message without page refresh
+                showToast(data.message, "error");
+              }
+            })
+            .catch(error => {
+              console.error('Login Error:', error);
+
+              // Reset button state
+              loginBtn.disabled = false;
+              btnText.textContent = "Login";
+              spinner.classList.add("d-none");
+
+              showToast('An error occurred. Please try again.', 'error');
+            });
+        });
+
+        /* 👁 SHOW/HIDE PASSWORD */
+        const togglePassword = document.querySelector(".show-hide");
+        const passwordInput = document.getElementById("passwordInput");
+
+        if (togglePassword && passwordInput) {
+          togglePassword.addEventListener("click", function () {
+            if (passwordInput.type === "password") {
+              passwordInput.type = "text";
+              this.classList.add("hide");
+            } else {
+              passwordInput.type = "password";
+              this.classList.remove("hide");
+            }
+          });
+        }
+      });
+    </script>
+
   </div>
 </body>
 

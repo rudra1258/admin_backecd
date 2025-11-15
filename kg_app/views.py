@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.http import JsonResponse
 from . models import *
 from django.contrib import messages
 from django.contrib.auth.hashers import check_password, make_password
@@ -8,8 +9,56 @@ from django.contrib.auth.hashers import check_password, make_password
 # def index(request):
 #     return render(request, "index.html")
 
+# def admin_login(request):
+#     print("Admin login view called")
+#     if request.method == 'POST':
+#         email = request.POST.get('email')
+#         password = request.POST.get('password')
+#         remember_me = request.POST.get('remember_me')
+#         print("Login attempt with email:", email)
+#         print("Password entered:", password)
+        
+#         try:
+#             # Check if user exists
+#             admin_user = admin_user_model.objects.get(email=email)
+            
+#             print("Retrieved user:", admin_user)
+#             print("Provided password:", password)
+#             print("Stored hashed password:", admin_user.password)
+            
+#             # Verify password
+#             if (password == admin_user.password):
+#             # if (True):
+#                 # Set session
+#                 request.session['admin_id'] = admin_user.admin_id
+#                 request.session['admin_username'] = admin_user.username
+#                 request.session['admin_email'] = admin_user.email
+                
+#                 # Set session expiry
+#                 # request.session.set_expiry(60 * 1) # 1 minute for testing
+                
+#                 messages.success(request, 'Login successful!')
+#                 return render(request, 'dashboard.html', {'email': email})  # Change to your dashboard URL name
+#             else:
+#                 messages.error(request, 'Invalid email or password!')
+#                 # return render(request, 'index.html', {'email': email})
+#                 return JsonResponse({"status": "error", "message": "Invalid email or password!"})
+                
+#         except admin_user_model.DoesNotExist:
+#             messages.error(request, 'Invalid email or password!')
+#             # return render(request, 'index.html', {'email': email})
+#             return JsonResponse({"status": "error", "message": "Invalid email or password!"})
+    
+#     return render(request, 'index.html')
+
 def admin_login(request):
     print("Admin login view called")
+    
+    # If GET request, show the login page
+    if request.method == 'GET':
+        return render(request, 'index.html')
+    
+    # If POST request, handle login
     if request.method == 'POST':
         email = request.POST.get('email')
         password = request.POST.get('password')
@@ -27,27 +76,31 @@ def admin_login(request):
             
             # Verify password
             if (password == admin_user.password):
-            # if (True):
                 # Set session
                 request.session['admin_id'] = admin_user.admin_id
                 request.session['admin_username'] = admin_user.username
                 request.session['admin_email'] = admin_user.email
                 
-                # Set session expiry
-                # request.session.set_expiry(60 * 1) # 1 minute for testing
-                
-                messages.success(request, 'Login successful!')
-                return render(request, 'dashboard.html', {'email': email})  # Change to your dashboard URL name
+                # Return JSON response for success
+                return JsonResponse({
+                    'success': True,
+                    'message': 'Login successful!',
+                    'redirect_url': '/dashboard/'  # Change this to your actual dashboard URL
+                })
             else:
-                messages.error(request, 'Invalid email or password!')
-                return render(request, 'index.html', {'email': email})
+                # Return JSON response for invalid password
+                return JsonResponse({
+                    'success': False,
+                    'message': 'Invalid email or password!'
+                })
                 
         except admin_user_model.DoesNotExist:
-            messages.error(request, 'Invalid email or password!')
-            return render(request, 'index.html', {'email': email})
-    
+            # Return JSON response for user not found
+            return JsonResponse({
+                'success': False,
+                'message': 'Invalid email or password!'
+            })
     return render(request, 'index.html')
-
 
 def assign_task(request):
     return render(request, "assign_task.html")
