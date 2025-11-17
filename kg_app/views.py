@@ -72,7 +72,7 @@ def admin_login(request):
             
             print("Retrieved user:", admin_user)
             print("Provided password:", password)
-            print("Stored hashed password:", admin_user.password)
+            print("Stored hashed password:", admin_user.email)
             
             # Verify password
             if (password == admin_user.password):
@@ -102,6 +102,40 @@ def admin_login(request):
             })
     return render(request, 'index.html')
 
+
+
+
+def create_user(request):
+    session_admin_id = request.session.get("admin_id")
+    admin_id_pk = admin_user_model.objects.get(pk=session_admin_id)
+    print(f"session admin id by admin_user_model primary key- {admin_id_pk}")
+    if request.method == "POST":
+        first_name = request.POST.get("fname")
+        last_name = request.POST.get("lname")
+        email = request.POST.get("eemail")
+        phone_number = request.POST.get("pnumber")
+        role = request.POST.get("rrole")
+        username = request.POST.get("user_name")
+        password = request.POST.get("pass_word")
+
+        CreateUser.objects.create(
+            admin_id=session_admin_id,
+            first_name=first_name,
+            last_name=last_name,
+            email=email,
+            phone_number=phone_number,
+            role=role,
+            username=username,
+            password=password
+        )
+
+        return redirect("kg_app:create_user")
+
+    admins = admin_user_model.objects.all()
+    return render(request, "create_user.html", {"admins": admins})
+
+
+
 def assign_task(request):
     return render(request, "assign_task.html")
 
@@ -113,8 +147,7 @@ def complete_task(request):
 def create_task(request):
     return render(request, "create_task.html")
 
-def create_user(request):
-    return render(request, "create_user.html")
+
 
 def dashboard(request):
     return render(request, "dashboard.html")
