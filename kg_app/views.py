@@ -119,7 +119,7 @@ def create_user(request):
         password = request.POST.get("pass_word")
 
         CreateUser.objects.create(
-            admin_id=session_admin_id,
+            admin_id=admin_id_pk,
             first_name=first_name,
             last_name=last_name,
             email=email,
@@ -128,10 +128,12 @@ def create_user(request):
             username=username,
             password=password
         )
-
+        # Add success message
+        messages.success(request, 'User created successfully!')
         return redirect("kg_app:create_user")
 
     admins = admin_user_model.objects.all()
+    # return redirect("kg_app:create_user")
     return render(request, "create_user.html", {"admins": admins})
 
 
@@ -145,7 +147,70 @@ def complete_task(request):
 
 
 def create_task(request):
-    return render(request, "create_task.html")
+    session_admin_id = request.session.get("admin_id")
+    admin_id_pk = admin_user_model.objects.get(pk=session_admin_id)
+    # Filter users by admin_id and role telecaller
+    user_list = CreateUser.objects.filter(
+        admin_id=admin_id_pk,
+        role='telecaller'
+    )
+    
+    if request.method == "POST":
+        adreement_id = request.POST.get("agreementId")
+        customer_name = request.POST.get("customerName")
+        product_type = request.POST.get("product_type")
+        tc_name = request.POST.get("tc_name")
+        branch = request.POST.get("branch")
+        count_of_cases = request.POST.get("count_of_cases")
+        old_or_new = request.POST.get("old_or_new")
+        bucket = request.POST.get("bucket")
+        mode = request.POST.get("mode")
+        npa_status = request.POST.get("npa_status")
+        pos_amount = request.POST.get("pos_amount")
+        total_charges = request.POST.get("total_charges")
+        bcc_pending = request.POST.get("bcc_pending")
+        penal_pending = request.POST.get("penal_pending")
+        
+        emi_amount = request.POST.get("emi_amount")
+        emi_due_amount = request.POST.get("emi_due_amount")
+        recipt_amount = request.POST.get("recipt_amount")
+        recipt_date = request.POST.get("recipt_date")
+        disbursement_amount = request.POST.get("disbursement_amount")
+        loan_amount = request.POST.get("loan_amount")
+        
+        disbursement_date = request.POST.get("disbursement_date")
+        emi_start_date = request.POST.get("emi_start_date")
+        emi_end_date = request.POST.get("emi_end_date")
+        emi_cycle_date = request.POST.get("emi_cycle_date")
+
+        Create_task.objects.create(
+            admin_id=admin_id_pk,
+            adreement_id=adreement_id,
+            customer_name=customer_name,
+            product_type=product_type,
+            tc_name=tc_name,
+            branch=branch,
+            count_of_cases=count_of_cases,
+            old_or_new=old_or_new,
+            bucket=bucket,
+            mode=mode,
+            npa_status=npa_status,
+            pos_amount=pos_amount,
+            total_charges=total_charges,
+            bcc_pending=bcc_pending,
+            penal_pending=penal_pending,
+            emi_amount=emi_amount,
+            emi_due_amount=emi_due_amount,
+            recipt_amount=recipt_amount,
+            recipt_date=recipt_date,
+            disbursement_amount=disbursement_amount,
+            loan_amount=loan_amount
+        )
+        messages.success(request, 'Task created successfully!')
+        return redirect("kg_app:create_task")
+    
+    
+    return render(request, "create_task.html", {"users": user_list})
 
 
 

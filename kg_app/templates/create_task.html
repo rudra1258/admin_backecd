@@ -12,7 +12,7 @@
     <meta name="keywords"
         content="admin template, Admiro admin template, best javascript admin, dashboard template, bootstrap admin template, responsive admin template, web app">
     <meta name="author" content="pixelstrap">
-    <title>Admiro - Premium Admin Template</title>
+    <title>create task</title>
     <!-- Favicon icon-->
     <link rel="icon" href="{% static 'assets/img/favicon.png' %}" type="image/x-icon">
     <link rel="shortcut icon" href="{% static 'assets/img/favicon.png' %}" type="image/x-icon">
@@ -556,50 +556,57 @@
                                     <input type="text" id="customerName" value="BIMAL SAMANTARAY" required>
                                 </div>
                                 <div class="form-group">
-                                    <label for="prod">Product Type *</label>
-                                    <select id="prod" required>
-                                        <option value="TR" selected>TR - Two Wheeler</option>
-                                        <option value="CV">CV - Commercial Vehicle</option>
-                                        <option value="PC">PC - Passenger Car</option>
+                                    <label for="prod_type">Product Type *</label>
+                                    <select id="prod_type" name="prodduct_type" required>
+                                        <option value="TR - Two Wheeler" selected>TR - Two Wheeler</option>
+                                        <option value="CV - Commercial Vehicle">CV - Commercial Vehicle</option>
+                                        <option value="PC - Passenger Car">PC - Passenger Car</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="tcName">TC Name *</label>
-                                    <input type="text" id="tcName" value="SINU" required>
+                                    <label for="tc_name">Tc Name*</label>
+                                    <select id="tc_name" name="tc_name" required>
+                                        <option value="" disabled selected>--select--</option>
+                                        {% for user in users %}
+                                        <option value="{{ user.first_name }} {{ user.last_name }}">
+                                            {{ user.first_name }} {{ user.last_name }}
+                                        </option>
+                                        {% endfor %}
+                                    </select>
                                 </div>
                                 <div class="form-group">
                                     <label for="branch">Branch *</label>
-                                    <input type="text" id="branch" value="RASULGARH" required>
+                                    <input type="text" id="branch" name="branch" value="" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="countCases">Count of Cases *</label>
-                                    <input type="number" id="countCases" value="2" required>
+                                    <input type="number" id="countCases" name="count_of_cases" value="2" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="oldNew">Old/New *</label>
-                                    <select id="oldNew" required>
+                                    <select id="oldNew" name="old_or_new" required>
                                         <option value="NEW" selected>NEW</option>
                                         <option value="OLD">OLD</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
                                     <label for="bucket">Bucket *</label>
-                                    <input type="number" id="bucket" value="3" required>
+                                    <input type="number" id="bucket" name="bucket" value="" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="mode">Mode *</label>
-                                    <select id="mode" required>
-                                        <option value="RF" selected>RF - Refinance</option>
-                                        <option value="NW">NW - New</option>
-                                        <option value="RN">RN - Renewal</option>
+                                    <select id="mode" name="mode" required>
+                                        <option value="RF - Refinance" selected>RF - Refinance</option>
+                                        <option value="NW - New">NW - New</option>
+                                        <option value="RN - Renewal">RN - Renewal</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
                                     <label for="npaStatus">NPA Status *</label>
-                                    <select id="npaStatus" required>
+                                    <select id="npaStatus" name="npa_status" required>
                                         <option value="GCL" selected>GCL</option>
-                                        <option value="STD">STD - Standard</option>
-                                        <option value="NPA">NPA - Non Performing Asset</option>
+                                        <option value="STD - Standard">STD - Standard</option>
+                                        <option value="NPA - Non Performing Asset">NPA - Non Performing Asset</option>
                                     </select>
                                 </div>
                             </div>
@@ -611,62 +618,62 @@
                             <div class="form-grid">
                                 <div class="form-group">
                                     <label for="pos">POS Amount *</label>
-                                    <input type="number" id="pos" value="434798.55" step="0.01" required>
+                                    <input type="number" id="pos" name="pos_amount" value="" step="0.01" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="totalCharges">Total Charges *</label>
-                                    <input type="number" id="totalCharges" value="15032" required>
+                                    <input type="number" id="totalCharges" name="total_charges" value="" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="bccPending">BCC Pending *</label>
-                                    <input type="number" id="bccPending" value="9722" required>
+                                    <input type="number" id="bccPending" name="bcc_pending" value="" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="penalPending">Penal Pending *</label>
-                                    <input type="number" id="penalPending" value="5310" required>
+                                    <input type="number" id="penalPending" name="penal_pending" value="" required>
                                 </div>
                             </div>
 
                             <div class="form-grid">
                                 <div class="form-group">
                                     <label for="emiAmt">EMI Amount *</label>
-                                    <input type="number" id="emiAmt" class="highlight" value="14750" required>
+                                    <input type="number" id="emiAmt" class="highlight" value="" name="emi_amount" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="emiDueAmount">EMI Due Amount *</label>
-                                    <input type="number" id="emiDueAmount" value="12000" required>
+                                    <input type="number" id="emiDueAmount" name="emi_due_amount" value="" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="receiptAmount">Receipt Amount *</label>
-                                    <input type="number" id="receiptAmount" class="highlight" value="14750" required>
+                                    <input type="number" id="receiptAmount" class="highlight" name="recipt_amount" value="" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="receiptDate">Receipt Date *</label>
-                                    <input type="date" id="receiptDate" value="2025-10-12" required>
+                                    <input type="date" id="receiptDate" value="" name="recipt_date" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="disbAmt">Disbursement Amount</label>
-                                    <input type="number" id="disbAmt" value="612265">
+                                    <input type="number" id="disbAmt" name="disbursement_amount" value="" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="loanAmt">Loan Amount</label>
-                                    <input type="number" id="loanAmt" value="620000">
+                                    <input type="number" id="loanAmt" name="loan_amount" value="" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="disbDate">Disbursement Date</label>
-                                    <input type="date" id="disbDate" value="2023-08-28">
+                                    <input type="date" id="disbDate" name="disbursement_date" value="" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="emiStartDate">EMI Start Date</label>
-                                    <input type="date" id="emiStartDate" value="2023-05-08">
+                                    <input type="date" id="emiStartDate" name="emi_start_date" value="" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="emiEndDate">EMI End Date</label>
-                                    <input type="date" id="emiEndDate" value="2028-05-07">
+                                    <input type="date" id="emiEndDate" name="emi_end_date" value="" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="emiCycleDate">EMI Cycle Date</label>
-                                    <input type="number" id="emiCycleDate" value="5" min="1" max="31">
+                                    <input type="number" id="emiCycleDate" name="emi_cycle_date" value="" min="1" max="31" required>
                                 </div>
                             </div>
 
@@ -677,19 +684,19 @@
                             <div class="form-grid">
                                 <div class="form-group">
                                     <label for="make">Make *</label>
-                                    <input type="text" id="make" value="MAHINDRA" required>
+                                    <input type="text" id="make" value="" name="make" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="manufacturerDesc">Manufacturer Description</label>
-                                    <input type="text" id="manufacturerDesc" value="MAHINDRA & MAHINDRA LTD.">
+                                    <input type="text" id="manufacturerDesc" value="" name="manufacturer_description" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="regdNum">Registration Number</label>
-                                    <input type="text" id="regdNum" value="OD33AK1032">
+                                    <input type="text" id="regdNum" value="" name="registration_number" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="age">Vehicle Age (Years)</label>
-                                    <input type="number" id="age" value="33">
+                                    <input type="number" id="age" value="" name="vehicle_age" required>
                                 </div>
                             </div>
 
@@ -700,15 +707,15 @@
                             <div class="form-grid">
                                 <div class="form-group">
                                     <label for="employer">Employer *</label>
-                                    <input type="text" id="employer" value="TATA CAPITAL" required>
+                                    <input type="text" id="employer" value="" name="employer" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="fatherName">Father's Name</label>
-                                    <input type="text" id="fatherName" value="PROMOD SAMANTARAY">
+                                    <input type="text" id="fatherName" value="" name="father_name">
                                 </div>
                                 <div class="form-group">
                                     <label for="feName">FE Name</label>
-                                    <input type="text" id="feName" value="RAMA">
+                                    <input type="text" id="feName" value="" name="fe_name">
                                 </div>
                                 <div class="form-group">
                                     <label for="feMobile">FE Mobile Number</label>
