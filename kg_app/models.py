@@ -10,7 +10,7 @@ class admin_user_model(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
-        return f"{self.admin_id} - {self.username}"
+        return f"{self.username}"
     
 
 
@@ -38,9 +38,12 @@ class CreateUser(models.Model):
 
 
 class Create_task(models.Model):
+    # task id 
     task_id = models.AutoField(primary_key = True)
     admin_id = models.ForeignKey(admin_user_model, on_delete = models.CASCADE)
-    adreement_id = models.CharField(max_length = 50)
+    
+    # aggrement information
+    aggrement_id = models.CharField(max_length = 50)
     customer_name = models.CharField(max_length = 100)
     product_type = models.CharField(max_length = 50)
     tc_name = models.CharField(max_length = 100)
@@ -50,6 +53,8 @@ class Create_task(models.Model):
     bucket = models.CharField(max_length = 15)
     mode = models.CharField(max_length = 30)
     npa_status = models.CharField(max_length = 50)
+    
+    # financial details
     pos_amount = models.CharField(max_length = 50)
     total_charges = models.CharField(max_length = 30)
     bcc_pending = models.CharField(max_length = 20)
@@ -64,7 +69,15 @@ class Create_task(models.Model):
     emi_start_date = models.CharField(max_length = 20)
     emi_end_date = models.CharField(max_length = 20)
     emi_cycle_date = models.CharField(max_length = 20)
+    
+    # vehicle details 
     make = models.CharField(max_length = 100)
+    manufacturer_description = models.CharField(max_length = 500, null=True, blank=True)
+    registration_number = models.CharField(max_length = 30, null=True, blank=True)
+    vehicle_age = models.CharField(max_length = 20, null=True, blank=True)
+    
+    # customer details 
+    employer = models.CharField(max_length = 100, null=True, blank=True)
     father_name = models.CharField(max_length = 50)
     fe_name = models.CharField(max_length = 50)
     fe_mobile_number = models.CharField(max_length = 10)
@@ -73,6 +86,8 @@ class Create_task(models.Model):
     customer_address = models.CharField(max_length = 500)
     customer_office_address = models.CharField(max_length = 500)
     reference_details = models.CharField(max_length = 500)
+    
+    # collection details
     collection_manager_name = models.CharField(max_length = 100)
     finance_company_name = models.CharField(max_length = 200)
 

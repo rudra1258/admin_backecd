@@ -110,7 +110,8 @@
               <div class="user-wrap">
                 <div class="user-img"><img src="{% static 'assets/images/profile.png' %}" alt="user"></div>
                 <div class="user-content">
-                  <h6>Manas Moharana</h6>
+                  <!-- <h6>Manas Moharana</h6> -->
+                  <h6>{{ request.session.admin_username }}</h6>
                   <p class="mb-0">Admin<i class="fa-solid fa-chevron-down"></i></p>
                 </div>
               </div>

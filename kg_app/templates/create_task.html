@@ -501,12 +501,45 @@
 
 
 
+        <!-- Bulk Upload Section -->
+            <form method="POST" enctype="multipart/form-data" id="bulkUploadForm">
+                {% csrf_token %}
+                <div class="bulk-upload-section">
+                    <div class="upload-card">
+                        <div class="upload-icon">📊</div>
+                        <h2>Bulk Upload</h2>
+                        <p>Upload an Excel file to submit multiple records at once</p>
+                        <div class="upload-controls">
+                            <input type="file" id="excelFile" name="excel_file" accept=".xlsx,.xls"
+                                style="display: none;">
+                            <button type="button" class="btn btn-upload"
+                                onclick="document.getElementById('excelFile').click()">
+                                📁 Choose Excel File
+                            </button>
+                            <button type="button" class="btn btn-download" onclick="downloadTemplate()">
+                                ⬇️ Download Template
+                            </button>
+                        </div>
+                        <div id="fileInfo" class="file-info"></div>
+                        <div id="uploadProgress" class="upload-progress"></div>
+
+                        <div class="btn-container" style="margin-top: 20px;">
+                            <button type="submit" class="btn btn-primary">📤 Submit Excel File</button>
+                        </div>
+                    </div>
+                    <div class="divider">
+                        <span>OR</span>
+                    </div>
+                </div>
+            </form>
 
         <!-- Page Body Start-->
         <div class="page-body-wrapper">
             <!-- Page sidebar start-->
             {% include "common/sidebar.html"%}
             <!-- Page sidebar end-->
+
+            
 
             <!-- body section start  -->
             <div class="page-body">
@@ -516,32 +549,11 @@
                         <p>Complete Loan Application & Customer Details</p>
                     </div>
 
-                    <!-- Bulk Upload Section -->
-                    <div class="bulk-upload-section">
-                        <div class="upload-card">
-                            <div class="upload-icon">📊</div>
-                            <h2>Bulk Upload</h2>
-                            <p>Upload an Excel file to submit multiple records at once</p>
-                            <div class="upload-controls">
-                                <input type="file" id="excelFile" accept=".xlsx,.xls" style="display: none;">
-                                <button type="button" class="btn btn-upload"
-                                    onclick="document.getElementById('excelFile').click()">
-                                    📁 Choose Excel File
-                                </button>
-                                <button type="button" class="btn btn-download" onclick="downloadTemplate()">
-                                    ⬇️ Download Template
-                                </button>
-                            </div>
-                            <div id="fileInfo" class="file-info"></div>
-                            <div id="uploadProgress" class="upload-progress"></div>
-                        </div>
-                        <div class="divider">
-                            <span>OR</span>
-                        </div>
-                    </div>
 
                     <div class="form-container">
-                        <form id="loanForm">
+                        <form id="loanForm" method="POST" action={% url "kg_app:create_task" %}>
+                            {% csrf_token %}
+
                             <!-- Agreement Information -->
                             <div class="section-title">
                                 <span>📄</span> Agreement Information
@@ -549,11 +561,11 @@
                             <div class="form-grid">
                                 <div class="form-group">
                                     <label for="agreementId">Agreement ID *</label>
-                                    <input type="text" id="agreementId" value="118354371" required>
+                                    <input type="text" id="agreementId" name="agreement_id" value="" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="customerName">Customer Name *</label>
-                                    <input type="text" id="customerName" value="BIMAL SAMANTARAY" required>
+                                    <input type="text" id="customerName" name="customer_name" value="" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="prod_type">Product Type *</label>
@@ -580,7 +592,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="countCases">Count of Cases *</label>
-                                    <input type="number" id="countCases" name="count_of_cases" value="2" required>
+                                    <input type="number" id="countCases" name="count_of_cases" value="" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="oldNew">Old/New *</label>
@@ -637,7 +649,8 @@
                             <div class="form-grid">
                                 <div class="form-group">
                                     <label for="emiAmt">EMI Amount *</label>
-                                    <input type="number" id="emiAmt" class="highlight" value="" name="emi_amount" required>
+                                    <input type="number" id="emiAmt" class="highlight" value="" name="emi_amount"
+                                        required>
                                 </div>
                                 <div class="form-group">
                                     <label for="emiDueAmount">EMI Due Amount *</label>
@@ -645,7 +658,8 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="receiptAmount">Receipt Amount *</label>
-                                    <input type="number" id="receiptAmount" class="highlight" name="recipt_amount" value="" required>
+                                    <input type="number" id="receiptAmount" class="highlight" name="recipt_amount"
+                                        value="" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="receiptDate">Receipt Date *</label>
@@ -673,7 +687,8 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="emiCycleDate">EMI Cycle Date</label>
-                                    <input type="number" id="emiCycleDate" name="emi_cycle_date" value="" min="1" max="31" required>
+                                    <input type="number" id="emiCycleDate" name="emi_cycle_date" value="" min="1"
+                                        max="31" required>
                                 </div>
                             </div>
 
@@ -688,7 +703,8 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="manufacturerDesc">Manufacturer Description</label>
-                                    <input type="text" id="manufacturerDesc" value="" name="manufacturer_description" required>
+                                    <input type="text" id="manufacturerDesc" value="" name="manufacturer_description"
+                                        required>
                                 </div>
                                 <div class="form-group">
                                     <label for="regdNum">Registration Number</label>
@@ -719,30 +735,30 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="feMobile">FE Mobile Number</label>
-                                    <input type="tel" id="feMobile" value="9999999999" pattern="[0-9]{10}">
+                                    <input type="tel" id="feMobile" name="fe_Mobile" value="" pattern="[0-9]{10}">
                                 </div>
                                 <div class="form-group">
                                     <label for="customerNumber">Customer Number</label>
-                                    <input type="tel" id="customerNumber" value="8888888888" pattern="[0-9]{10}">
+                                    <input type="tel" id="customerNumber" value="" name="customer_number"
+                                        pattern="[0-9]{10}">
                                 </div>
                                 <div class="form-group">
                                     <label for="pinCode">PIN Code *</label>
-                                    <input type="text" id="pinCode" value="752050" pattern="[0-9]{6}" required>
+                                    <input type="text" id="pinCode" value="" name="pin_code" pattern="[0-9]{6}"
+                                        required>
                                 </div>
                                 <div class="form-group full-width">
                                     <label for="customerAddress">Customer Address *</label>
-                                    <textarea id="customerAddress"
-                                        required>AT-HARIRAJPUR, HARIRAJPUR, HARIRAJPUR, PURI,KHORDA,752050</textarea>
+                                    <textarea id="customerAddress" required name="customer_address"></textarea>
                                 </div>
                                 <div class="form-group full-width">
                                     <label for="customerOfficeAddress">Customer Office Address</label>
-                                    <textarea
-                                        id="customerOfficeAddress">Biswanathpur BRAHMANAPADA G P BISWANATHPUR Puri</textarea>
+                                    <textarea id="customerOfficeAddress" required
+                                        name="customer_office_address"></textarea>
                                 </div>
                                 <div class="form-group full-width">
                                     <label for="referenceDetails">Reference Details</label>
-                                    <textarea
-                                        id="referenceDetails">BABULI JENA-7008474630,GUJURI CHAMPATY-7008707394</textarea>
+                                    <textarea id="referenceDetails" name="reference_details"></textarea>
                                 </div>
                             </div>
 
@@ -753,11 +769,12 @@
                             <div class="form-grid">
                                 <div class="form-group">
                                     <label for="collectionManager">Collection Manager Name</label>
-                                    <input type="text" id="collectionManager" value="RAKESH KUMAR MOHANTY">
+                                    <input type="text" id="collectionManager" value="" name="collection_manager_name"
+                                        required>
                                 </div>
                                 <div class="form-group">
                                     <label for="financeCompany">Finance Company Name *</label>
-                                    <input type="text" id="financeCompany" value="IDFC FIRST BANK" required>
+                                    <input type="text" id="financeCompany" value="" name="financy_company" required>
                                 </div>
                             </div>
 

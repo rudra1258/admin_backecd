@@ -92,7 +92,7 @@ def admin_login(request):
                 return JsonResponse({
                     'success': False,
                     'message': 'Invalid email or password!'
-                })
+                })  
                 
         except admin_user_model.DoesNotExist:
             # Return JSON response for user not found
@@ -116,17 +116,19 @@ def create_user(request):
         phone_number = request.POST.get("pnumber")
         role = request.POST.get("rrole")
         username = request.POST.get("user_name")
+        address = request.POST.get("address")
         password = request.POST.get("pass_word")
 
         CreateUser.objects.create(
-            admin_id=admin_id_pk,
-            first_name=first_name,
-            last_name=last_name,
-            email=email,
-            phone_number=phone_number,
-            role=role,
-            username=username,
-            password=password
+            admin_id = admin_id_pk,
+            first_name = first_name,
+            last_name = last_name,
+            email = email,
+            phone_number = phone_number,
+            role = role,
+            username = username,
+            address = address,
+            password = password
         )
         # Add success message
         messages.success(request, 'User created successfully!')
@@ -148,6 +150,13 @@ def complete_task(request):
 
 def create_task(request):
     session_admin_id = request.session.get("admin_id")
+    
+    # navigate to login page if not login
+    if not session_admin_id:
+        messages.error(request, 'Please login to continue.')
+        return render(request, 'index.html')
+    
+    
     admin_id_pk = admin_user_model.objects.get(pk=session_admin_id)
     # Filter users by admin_id and role telecaller
     user_list = CreateUser.objects.filter(
@@ -155,10 +164,15 @@ def create_task(request):
         role='telecaller'
     )
     
-    if request.method == "POST":
-        adreement_id = request.POST.get("agreementId")
-        customer_name = request.POST.get("customerName")
-        product_type = request.POST.get("product_type")
+    if request.method == "POST":    
+        print("FULL POST:", request.POST)
+        
+        print("Create Task POST request data: --- -- - ", request.POST.get("prodduct_type"))
+           
+        # addreement information
+        aggrement_id = request.POST.get("agreement_id")
+        customer_name = request.POST.get("customer_name")
+        product_type = request.POST.get("prodduct_type")
         tc_name = request.POST.get("tc_name")
         branch = request.POST.get("branch")
         count_of_cases = request.POST.get("count_of_cases")
@@ -166,26 +180,49 @@ def create_task(request):
         bucket = request.POST.get("bucket")
         mode = request.POST.get("mode")
         npa_status = request.POST.get("npa_status")
+        
+        # financial details
         pos_amount = request.POST.get("pos_amount")
         total_charges = request.POST.get("total_charges")
         bcc_pending = request.POST.get("bcc_pending")
         penal_pending = request.POST.get("penal_pending")
-        
         emi_amount = request.POST.get("emi_amount")
         emi_due_amount = request.POST.get("emi_due_amount")
         recipt_amount = request.POST.get("recipt_amount")
         recipt_date = request.POST.get("recipt_date")
         disbursement_amount = request.POST.get("disbursement_amount")
         loan_amount = request.POST.get("loan_amount")
-        
         disbursement_date = request.POST.get("disbursement_date")
         emi_start_date = request.POST.get("emi_start_date")
         emi_end_date = request.POST.get("emi_end_date")
         emi_cycle_date = request.POST.get("emi_cycle_date")
+        
+        # vhicle details
+        make = request.POST.get("make")
+        manufacturer_description = request.POST.get("manufacturer_description")
+        registration_number = request.POST.get("registration_number")
+        vehicle_age = request.POST.get("vehicle_age")
+        
+        # customer details
+        employer = request.POST.get("employer")
+        father_name = request.POST.get("father_name")
+        fe_name = request.POST.get("fe_name")
+        fe_Mobile = request.POST.get("fe_Mobile")
+        customer_number = request.POST.get("customer_number")
+        pin_code = request.POST.get("pin_code")
+        customer_address = request.POST.get("customer_address")
+        customer_office_address = request.POST.get("customer_office_address")
+        reference_details = request.POST.get("reference_details")
+        
+        # collection details
+        collection_manager_name = request.POST.get("collection_manager_name")
+        finance_company_name = request.POST.get("financy_company")
+        
 
         Create_task.objects.create(
+            # aggrement information 
             admin_id=admin_id_pk,
-            adreement_id=adreement_id,
+            aggrement_id=aggrement_id,
             customer_name=customer_name,
             product_type=product_type,
             tc_name=tc_name,
@@ -195,6 +232,8 @@ def create_task(request):
             bucket=bucket,
             mode=mode,
             npa_status=npa_status,
+            
+            # financial details 
             pos_amount=pos_amount,
             total_charges=total_charges,
             bcc_pending=bcc_pending,
@@ -204,7 +243,32 @@ def create_task(request):
             recipt_amount=recipt_amount,
             recipt_date=recipt_date,
             disbursement_amount=disbursement_amount,
-            loan_amount=loan_amount
+            loan_amount=loan_amount,
+            disbursement_date=disbursement_date,
+            emi_start_date = emi_start_date,
+            emi_end_date = emi_end_date,
+            emi_cycle_date = emi_cycle_date,
+            
+            # vehicle details
+            make = make,
+            manufacturer_description = manufacturer_description,
+            registration_number = registration_number,
+            vehicle_age = vehicle_age,
+            
+            # customer details
+            employer = employer,
+            father_name = father_name,
+            fe_name = fe_name,
+            fe_mobile_number = fe_Mobile,
+            customer_mobile_number = customer_number,
+            pin_code = pin_code,
+            customer_address = customer_address,
+            customer_office_address = customer_office_address,
+            reference_details = reference_details,
+            
+            # collection details 
+            collection_manager_name = collection_manager_name,
+            finance_company_name = finance_company_name                
         )
         messages.success(request, 'Task created successfully!')
         return redirect("kg_app:create_task")
