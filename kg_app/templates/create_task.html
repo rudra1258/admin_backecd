@@ -502,7 +502,7 @@
 
 
         <!-- Bulk Upload Section -->
-            <form method="POST" enctype="multipart/form-data" id="bulkUploadForm">
+            {% comment %} <form method="POST" enctype="multipart/form-data" id="bulkUploadForm">
                 {% csrf_token %}
                 <div class="bulk-upload-section">
                     <div class="upload-card">
@@ -531,7 +531,7 @@
                         <span>OR</span>
                     </div>
                 </div>
-            </form>
+            </form> {% endcomment %}
 
         <!-- Page Body Start-->
         <div class="page-body-wrapper">

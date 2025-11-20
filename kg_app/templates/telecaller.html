@@ -137,7 +137,24 @@
                             <th>Action</th>
                           </tr>
                         </thead>
-                        <tbody id="table-body"></tbody>
+                        <tbody >
+                          {% for emp in data %}
+                         <tr>
+                            <td>{{forloop.counter}}</td>
+                            <td>{{emp.first_name}} {{emp.last_name}}</td>
+                            <td>{{emp.phone_number}}</td>
+                            <td>{{emp.email}}</td>
+                            <td>{{emp.address}}</td>
+                            <td>{{emp.created_at}}</td>
+                            <td>
+                              <ul class="action" style="display:flex;gap:10px;list-style:none;padding:0;margin:0;">
+                                <li class="edit"><a href="#"><i class="fa-solid fa-pen"></i></a></li>
+                                <li class="delete"><a href="#"><i class="fa-solid fa-trash-can"></i></a></li>
+                              </ul>
+                            </td>
+                          </tr> 
+                          {% endfor %}
+                        </tbody>
                       </table>
                     </div>
                   </div>

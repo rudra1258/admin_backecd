@@ -70,16 +70,19 @@ def admin_login(request):
             # Check if user exists
             admin_user = admin_user_model.objects.get(email=email)
             
-            print("Retrieved user:", admin_user)
+            print("password of user:", admin_user)
             print("Provided password:", password)
             print("Stored hashed password:", admin_user.email)
             
             # Verify password
             if (password == admin_user.password):
+                
                 # Set session
                 request.session['admin_id'] = admin_user.admin_id
                 request.session['admin_username'] = admin_user.username
                 request.session['admin_email'] = admin_user.email
+                
+                
                 
                 # Return JSON response for success
                 return JsonResponse({
@@ -107,7 +110,12 @@ def admin_login(request):
 
 def create_user(request):
     session_admin_id = request.session.get("admin_id")
+    # navigate to login page if not login
+    if not session_admin_id:
+        return render(request, 'index.html')
     admin_id_pk = admin_user_model.objects.get(pk=session_admin_id)
+    
+    
     print(f"session admin id by admin_user_model primary key- {admin_id_pk}")
     if request.method == "POST":
         first_name = request.POST.get("fname")
@@ -150,10 +158,8 @@ def complete_task(request):
 
 def create_task(request):
     session_admin_id = request.session.get("admin_id")
-    
     # navigate to login page if not login
     if not session_admin_id:
-        messages.error(request, 'Please login to continue.')
         return render(request, 'index.html')
     
     
@@ -283,7 +289,13 @@ def dashboard(request):
 
 
 def groundstaff(request):
-    return render(request, "groundstaff.html")
+    session_admin_id = request.session.get('admin_id')
+    admin_id_pk = admin_user_model.objects.get(pk = session_admin_id)
+    staff_list = CreateUser.objects.filter(
+        admin_id = admin_id_pk,
+        role = 'groundstaff'
+    )
+    return render(request, "groundstaff.html",{"data":staff_list})
 
 
 def gs_login(request):
@@ -299,10 +311,23 @@ def tc_login(request):
     return render(request, "tc_login.html")
 
 def teamlead(request):
-    return render(request, "teamlead.html")
+    session_admin_id = request.session.get('admin_id')
+    admin_id_pk = admin_user_model.objects.get(pk = session_admin_id)
+    caller_list = CreateUser.objects.filter(
+        admin_id = admin_id_pk,
+        role = 'teamlead'
+    )
+    return render(request, "teamlead.html",{"data":caller_list})
+
 
 def telecaller(request):
-    return render(request, "telecaller.html")
+    session_admin_id = request.session.get('admin_id')
+    admin_id_pk  = admin_user_model.objects.get(pk = session_admin_id)
+    user_list = CreateUser.objects.filter(
+        admin_id = admin_id_pk,
+        role = 'telecaller'
+    )
+    return render(request, "telecaller.html",{"data":user_list})
 
 def tl_login(request):
     return render(request, "tl_login.html")
