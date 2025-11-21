@@ -106,9 +106,6 @@ def admin_login(request):
             })
     return render(request, 'index.html')
 
-
-
-
 def create_user(request):
     session_admin_id = request.session.get("admin_id")
     # navigate to login page if not login
@@ -147,7 +144,6 @@ def create_user(request):
     # return redirect("kg_app:create_user")
     return render(request, "create_user.html", {"admins": admins})
 
-
 def import_users_from_excel(request):
     session_admin_id = request.session.get("admin_id")
     # navigate to login page if not login
@@ -160,7 +156,7 @@ def import_users_from_excel(request):
         # Validate file extension
         if not excel_file.name.endswith(('.xlsx', '.xls')):
             messages.error(request, 'Please upload a valid Excel file (.xlsx or .xls)')
-            return redirect('import_users')
+            return redirect('kg_app:import_users_from_excel')
         
         try:
             # Read Excel file
@@ -418,7 +414,250 @@ def create_task(request):
     
     return render(request, "create_task.html", {"users": user_list})
 
+def import_tasks_from_excel(request):
+    session_admin_id = request.session.get("admin_id")
+    # navigate to login page if not login
+    if not session_admin_id:
+        return render(request, 'index.html')
+    admin_id_pk = admin_user_model.objects.get(pk=session_admin_id)
+    
+    if request.method == 'POST' and request.FILES.get('excel_file'):
+        excel_file = request.FILES['excel_file']
+        
+        # Validate file extension
+        if not excel_file.name.endswith(('.xlsx', '.xls')):
+            messages.error(request, 'Please upload a valid Excel file (.xlsx or .xls)')
+            return redirect('kg_app:import_tasks')
+        
+        try:
+            # Read Excel file
+            df = pd.read_excel(excel_file)
+            
+            # Strip whitespace from column names
+            df.columns = df.columns.str.strip()
+            
+            # Required columns (only mandatory fields)
+            required_columns = [
+                'aggrement_id', 'customer_name', 'product_type', 'tc_name', 
+                'branch', 'count_of_cases', 'old_or_new', 'bucket', 'mode', 
+                'npa_status', 'pos_amount', 'total_charges', 'bcc_pending', 
+                'penal_pending', 'emi_amount', 'emi_due_amount', 'recipt_amount', 
+                'recipt_date', 'disbursement_amount', 'loan_amount', 'disbursement_date', 
+                'emi_start_date', 'emi_end_date', 'emi_cycle_date', 'make', 
+                'father_name', 'fe_name', 'fe_mobile_number', 'customer_mobile_number', 
+                'pin_code', 'customer_address', 'customer_office_address', 
+                'reference_details', 'collection_manager_name', 'finance_company_name'
+            ]
+            
+            # Check if all required columns exist
+            missing_columns = [col for col in required_columns if col not in df.columns]
+            if missing_columns:
+                messages.error(request, f'Missing required columns: {", ".join(missing_columns)}')
+                return redirect('kg_app:import_tasks')
+            
+            success_count = 0
+            error_count = 0
+            errors = []
+            
+            # Process each row
+            for index, row in df.iterrows():
+                try:
+                    # Skip empty rows
+                    if pd.isna(row['aggrement_id']) or pd.isna(row['customer_name']):
+                        continue
+                    
+                    # Validate mobile numbers (should be 10 digits)
+                    fe_mobile = str(row['fe_mobile_number']).strip()
+                    customer_mobile = str(row['customer_mobile_number']).strip()
+                    
+                    if not fe_mobile.isdigit() or len(fe_mobile) != 10:
+                        errors.append(f"Row {index + 2}: Invalid FE mobile number")
+                        error_count += 1
+                        continue
+                    
+                    if not customer_mobile.isdigit() or len(customer_mobile) != 10:
+                        errors.append(f"Row {index + 2}: Invalid customer mobile number")
+                        error_count += 1
+                        continue
+                    
+                    # Validate pin code (should be 6 digits)
+                    pin_code = str(row['pin_code']).strip()
+                    if not pin_code.isdigit() or len(pin_code) != 6:
+                        errors.append(f"Row {index + 2}: Invalid pin code")
+                        error_count += 1
+                        continue
+                    
+                    # Create task
+                    task = Create_task(
+                        admin_id=admin_id_pk,
+                        
+                        # Agreement information
+                        aggrement_id=str(row['aggrement_id']).strip(),
+                        customer_name=str(row['customer_name']).strip(),
+                        product_type=str(row['product_type']).strip(),
+                        tc_name=str(row['tc_name']).strip(),
+                        branch=str(row['branch']).strip(),
+                        count_of_cases=str(row['count_of_cases']).strip(),
+                        old_or_new=str(row['old_or_new']).strip(),
+                        bucket=str(row['bucket']).strip(),
+                        mode=str(row['mode']).strip(),
+                        npa_status=str(row['npa_status']).strip(),
+                        
+                        # Financial details
+                        pos_amount=str(row['pos_amount']).strip(),
+                        total_charges=str(row['total_charges']).strip(),
+                        bcc_pending=str(row['bcc_pending']).strip(),
+                        penal_pending=str(row['penal_pending']).strip(),
+                        emi_amount=str(row['emi_amount']).strip(),
+                        emi_due_amount=str(row['emi_due_amount']).strip(),
+                        recipt_amount=str(row['recipt_amount']).strip(),
+                        recipt_date=str(row['recipt_date']).strip(),
+                        disbursement_amount=str(row['disbursement_amount']).strip(),
+                        loan_amount=str(row['loan_amount']).strip(),
+                        disbursement_date=str(row['disbursement_date']).strip(),
+                        emi_start_date=str(row['emi_start_date']).strip(),
+                        emi_end_date=str(row['emi_end_date']).strip(),
+                        emi_cycle_date=str(row['emi_cycle_date']).strip(),
+                        
+                        # Vehicle details
+                        make=str(row['make']).strip(),
+                        manufacturer_description=str(row.get('manufacturer_description', '')).strip() if pd.notna(row.get('manufacturer_description')) else '',
+                        registration_number=str(row.get('registration_number', '')).strip() if pd.notna(row.get('registration_number')) else '',
+                        vehicle_age=str(row.get('vehicle_age', '')).strip() if pd.notna(row.get('vehicle_age')) else '',
+                        
+                        # Customer details
+                        employer=str(row.get('employer', '')).strip() if pd.notna(row.get('employer')) else '',
+                        father_name=str(row['father_name']).strip(),
+                        fe_name=str(row['fe_name']).strip(),
+                        fe_mobile_number=fe_mobile,
+                        customer_mobile_number=customer_mobile,
+                        pin_code=pin_code,
+                        customer_address=str(row['customer_address']).strip(),
+                        customer_office_address=str(row['customer_office_address']).strip(),
+                        reference_details=str(row['reference_details']).strip(),
+                        
+                        # Collection details
+                        collection_manager_name=str(row['collection_manager_name']).strip(),
+                        finance_company_name=str(row['finance_company_name']).strip()
+                    )
+                    task.save()
+                    success_count += 1
+                    
+                except Exception as e:
+                    errors.append(f"Row {index + 2}: {str(e)}")
+                    error_count += 1
+            
+            # Display results
+            if success_count > 0:
+                messages.success(request, f'Successfully imported {success_count} tasks!')
+            
+            if error_count > 0:
+                error_message = f'{error_count} errors occurred:<br>'
+                error_message += '<br>'.join(errors[:10])  # Show first 10 errors
+                if len(errors) > 10:
+                    error_message += f'<br>...and {len(errors) - 10} more errors'
+                messages.warning(request, error_message)
+            
+            if success_count == 0 and error_count == 0:
+                messages.info(request, 'No data found in the Excel file')
+            
+        except Exception as e:
+            messages.error(request, f'Error processing file: {str(e)}')
+        
+        return redirect('kg_app:import_tasks')
+    
+    return render(request, 'create_task.html')
 
+def download_task_sample_excel(request):
+    """Generate and download a sample Excel template for tasks"""
+    import io
+    from django.http import HttpResponse
+    
+    # Create sample data with all columns
+    sample_data = {
+        # Agreement information
+        'aggrement_id': ['AGR001', 'AGR002'],
+        'customer_name': ['John Doe', 'Jane Smith'],
+        'product_type': ['Auto Loan', 'Personal Loan'],
+        'tc_name': ['TC001', 'TC002'],
+        'branch': ['Mumbai', 'Delhi'],
+        'count_of_cases': ['5', '3'],
+        'old_or_new': ['New', 'Old'],
+        'bucket': ['Bucket1', 'Bucket2'],
+        'mode': ['Online', 'Offline'],
+        'npa_status': ['Active', 'Inactive'],
+        
+        # Financial details
+        'pos_amount': ['500000', '300000'],
+        'total_charges': ['50000', '30000'],
+        'bcc_pending': ['5000', '3000'],
+        'penal_pending': ['2000', '1000'],
+        'emi_amount': ['10000', '8000'],
+        'emi_due_amount': ['10000', '8000'],
+        'recipt_amount': ['10000', '8000'],
+        'recipt_date': ['2024-01-15', '2024-01-20'],
+        'disbursement_amount': ['500000', '300000'],
+        'loan_amount': ['500000', '300000'],
+        'disbursement_date': ['2024-01-01', '2024-01-05'],
+        'emi_start_date': ['2024-02-01', '2024-02-05'],
+        'emi_end_date': ['2029-01-01', '2029-01-05'],
+        'emi_cycle_date': ['1', '5'],
+        
+        # Vehicle details
+        'make': ['Honda City', 'Maruti Swift'],
+        'manufacturer_description': ['Honda City 2023 Model', 'Maruti Swift VXI'],
+        'registration_number': ['MH01AB1234', 'DL02CD5678'],
+        'vehicle_age': ['1 year', '2 years'],
+        
+        # Customer details
+        'employer': ['ABC Corp', 'XYZ Ltd'],
+        'father_name': ['Robert Doe', 'David Smith'],
+        'fe_name': ['Agent A', 'Agent B'],
+        'fe_mobile_number': ['9876543210', '8765432109'],
+        'customer_mobile_number': ['9123456789', '8234567890'],
+        'pin_code': ['400001', '110001'],
+        'customer_address': ['123 Main St, Mumbai', '456 Park Ave, Delhi'],
+        'customer_office_address': ['789 Business Park, Mumbai', '321 Corporate Tower, Delhi'],
+        'reference_details': ['Friend: Mike, 9999999999', 'Brother: Tom, 8888888888'],
+        
+        # Collection details
+        'collection_manager_name': ['Manager A', 'Manager B'],
+        'finance_company_name': ['ABC Finance', 'XYZ Finance']
+    }
+    
+    df = pd.DataFrame(sample_data)
+    
+    # Create Excel file in memory
+    output = io.BytesIO()
+    with pd.ExcelWriter(output, engine='openpyxl') as writer:
+        df.to_excel(writer, index=False, sheet_name='Tasks')
+        
+        # Get the workbook and worksheet
+        workbook = writer.book
+        worksheet = writer.sheets['Tasks']
+        
+        # Auto-adjust column widths
+        for column in worksheet.columns:
+            max_length = 0
+            column_letter = column[0].column_letter
+            for cell in column:
+                try:
+                    if len(str(cell.value)) > max_length:
+                        max_length = len(cell.value)
+                except:
+                    pass
+            adjusted_width = min(max_length + 2, 50)
+            worksheet.column_dimensions[column_letter].width = adjusted_width
+    
+    output.seek(0)
+    
+    response = HttpResponse(
+        output.read(),
+        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    )
+    response['Content-Disposition'] = 'attachment; filename=task_import_template.xlsx'
+    
+    return response
 
 def dashboard(request):
     return render(request, "dashboard.html")

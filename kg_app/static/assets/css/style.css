@@ -28120,6 +28120,8 @@ input::-webkit-inner-spin-button {
   padding: 0 15px 0 15px;
   position: relative;
   transition: 0.5s;
+  padding-top: 35px;
+  padding-bottom: 35px;
 }
 @media (max-width: 991.98px) {
   .page-wrapper .page-body-wrapper .page-body {

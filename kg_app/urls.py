@@ -22,4 +22,8 @@ urlpatterns = [
     
     path('download-sample/', views.download_sample_excel_user_create, name='download_sample_excel'),
     path('import_users_from_excel/', views.import_users_from_excel, name='import_users_from_excel'),
+    
+    # Task Import URLs
+    path('import-tasks/', views.import_tasks_from_excel, name='import_tasks'),
+    path('download-task-sample/', views.download_task_sample_excel, name='download_task_sample_excel'),
 ]
