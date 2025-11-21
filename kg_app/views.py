@@ -3,6 +3,7 @@ from django.http import JsonResponse
 from . models import *
 from django.contrib import messages
 from django.contrib.auth.hashers import check_password, make_password
+import pandas as pd
 # Create your views here.
 
 
@@ -146,6 +147,141 @@ def create_user(request):
     # return redirect("kg_app:create_user")
     return render(request, "create_user.html", {"admins": admins})
 
+
+def import_users_from_excel(request):
+    session_admin_id = request.session.get("admin_id")
+    # navigate to login page if not login
+    if not session_admin_id:
+        return render(request, 'index.html')
+    admin_id_pk = admin_user_model.objects.get(pk=session_admin_id)
+    if request.method == 'POST' and request.FILES.get('excel_file'):
+        excel_file = request.FILES['excel_file']
+        
+        # Validate file extension
+        if not excel_file.name.endswith(('.xlsx', '.xls')):
+            messages.error(request, 'Please upload a valid Excel file (.xlsx or .xls)')
+            return redirect('import_users')
+        
+        try:
+            # Read Excel file
+            df = pd.read_excel(excel_file)
+            
+            # Strip whitespace from column names
+            df.columns = df.columns.str.strip()
+            
+            # Required columns
+            required_columns = ['first_name', 'last_name', 'email', 'phone_number', 
+                              'role', 'username', 'password']
+            
+            # Check if all required columns exist
+            missing_columns = [col for col in required_columns if col not in df.columns]
+            if missing_columns:
+                messages.error(request, f'Missing required columns: {", ".join(missing_columns)}')
+                return redirect('kg_app:import_users_from_excel')
+            
+            success_count = 0
+            error_count = 0
+            errors = []
+            
+            # Process each row
+            for index, row in df.iterrows():
+                try:
+                    # Skip empty rows
+                    if pd.isna(row['email']) or pd.isna(row['username']):
+                        continue
+                    
+                    # Check if user already exists
+                    if CreateUser.objects.filter(email=row['email']).exists():
+                        errors.append(f"Row {index + 2}: User with email {row['email']} already exists")
+                        error_count += 1
+                        continue
+                    
+                    if CreateUser.objects.filter(username=row['username']).exists():
+                        errors.append(f"Row {index + 2}: Username {row['username']} already exists")
+                        error_count += 1
+                        continue
+                    
+                    # Validate role
+                    valid_roles = ['telecaller', 'teamlead', 'groundstaff']
+                    role = str(row['role']).lower().strip()
+                    if role not in valid_roles:
+                        errors.append(f"Row {index + 2}: Invalid role '{row['role']}'")
+                        error_count += 1
+                        continue
+                    
+                    # Create user
+                    user = CreateUser(
+                        admin_id=admin_id_pk,  # Assuming current user is admin
+                        first_name=str(row['first_name']).strip(),
+                        last_name=str(row['last_name']).strip(),
+                        email=str(row['email']).strip().lower(),
+                        phone_number=str(row['phone_number']).strip(),
+                        role=role,
+                        username=str(row['username']).strip(),
+                        address=str(row.get('address', '')).strip() if pd.notna(row.get('address')) else '',
+                        password=make_password(str(row['password']))  # Hash the password
+                    )
+                    user.save()
+                    success_count += 1
+                    
+                except Exception as e:
+                    errors.append(f"Row {index + 2}: {str(e)}")
+                    error_count += 1
+            
+            # Display results
+            if success_count > 0:
+                messages.success(request, f'Successfully imported {success_count} users!')
+            
+            if error_count > 0:
+                error_message = f'{error_count} errors occurred:<br>'
+                error_message += '<br>'.join(errors[:10])  # Show first 10 errors
+                if len(errors) > 10:
+                    error_message += f'<br>...and {len(errors) - 10} more errors'
+                messages.warning(request, error_message)
+            
+            if success_count == 0 and error_count == 0:
+                messages.info(request, 'No data found in the Excel file')
+            
+        except Exception as e:
+            messages.error(request, f'Error processing file: {str(e)}')
+        
+        return redirect('kg_app:import_users_from_excel')
+    
+    return render(request, 'create_user.html')
+
+def download_sample_excel_user_create(request):
+    """Generate and download a sample Excel template"""
+    import io
+    from django.http import HttpResponse
+    
+    # Create sample data
+    sample_data = {
+        'first_name': ['John', 'Jane'],
+        'last_name': ['Doe', 'Smith'],
+        'email': ['john.doe@example.com', 'jane.smith@example.com'],
+        'phone_number': ['1234567890', '0987654321'],
+        'role': ['telecaller', 'teamlead'],
+        'username': ['johndoe', 'janesmith'],
+        'address': ['123 Main St', '456 Oak Ave'],
+        'password': ['password123', 'password456']
+    }
+    
+    df = pd.DataFrame(sample_data)
+    
+    # Create Excel file in memory
+    output = io.BytesIO()
+    with pd.ExcelWriter(output, engine='openpyxl') as writer:
+        df.to_excel(writer, index=False, sheet_name='Users')
+    
+    output.seek(0)
+    
+    response = HttpResponse(
+        output.read(),
+        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    )
+    response['Content-Disposition'] = 'attachment; filename=user_import_template.xlsx'
+    
+    return response
 
 
 def assign_task(request):

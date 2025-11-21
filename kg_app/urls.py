@@ -19,5 +19,7 @@ urlpatterns = [
     path('teamlead/', views.teamlead, name='teamlead'),
     path('telecaller/', views.telecaller, name='telecaller'),
     path('tl_login/', views.tl_login, name='tl_login'),
-   
+    
+    path('download-sample/', views.download_sample_excel_user_create, name='download_sample_excel'),
+    path('import_users_from_excel/', views.import_users_from_excel, name='import_users_from_excel'),
 ]
