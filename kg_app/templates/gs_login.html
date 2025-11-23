@@ -136,6 +136,7 @@
                             <th>Status</th>
                             <th>Login Time</th>
                             <th>Logout Time</th>
+                            <th>Image</th>
                             <th>Action</th>
                           </tr>
                         </thead>
@@ -243,26 +244,34 @@
 
 
   <script>
-    const employees = [
+const employees = [
 
-      { sl: 31, name: "Ritika Agarwal", email: "ritika.agarwal@example.com", mobile: "9876543240", status: "active", loginTime: "09:05", logoutTime: "18:00" },
-      { sl: 32, name: "Siddharth Rao", email: "siddharth.rao@example.com", mobile: "9876543241", status: "inactive", loginTime: "10:00", logoutTime: "17:30" },
-      { sl: 33, name: "Mehul Shah", email: "mehul.shah@example.com", mobile: "9876543242", status: "active", loginTime: "08:50", logoutTime: "17:50" },
-      { sl: 34, name: "Ayesha Khan", email: "ayesha.khan@example.com", mobile: "9876543243", status: "inactive", loginTime: "10:20", logoutTime: "18:15" },
-      { sl: 35, name: "Naveen Patil", email: "naveen.patil@example.com", mobile: "9876543244", status: "active", loginTime: "09:15", logoutTime: "18:10" },
-      { sl: 36, name: "Sonal Bhagat", email: "sonal.bhagat@example.com", mobile: "9876543245", status: "inactive", loginTime: "10:05", logoutTime: "17:45" },
-      { sl: 37, name: "Yash Chopra", email: "yash.chopra@example.com", mobile: "9876543246", status: "active", loginTime: "08:55", logoutTime: "17:55" },
-      { sl: 38, name: "Lavanya Iyer", email: "lavanya.iyer@example.com", mobile: "9876543247", status: "inactive", loginTime: "10:10", logoutTime: "18:00" },
-      { sl: 39, name: "Tushar Saxena", email: "tushar.saxena@example.com", mobile: "9876543248", status: "active", loginTime: "09:00", logoutTime: "18:00" },
-      { sl: 40, name: "Bhavna Chawla", email: "bhavna.chawla@example.com", mobile: "9876543249", status: "inactive", loginTime: "10:30", logoutTime: "17:30" },
-      { sl: 41, name: "Zaid Ansari", email: "zaid.ansari@example.com", mobile: "9876543250", status: "active", loginTime: "09:20", logoutTime: "18:25" },
-      { sl: 42, name: "Namrata Dey", email: "namrata.dey@example.com", mobile: "9876543251", status: "inactive", loginTime: "10:00", logoutTime: "17:40" },
-      { sl: 43, name: "Kabir Mehra", email: "kabir.mehra@example.com", mobile: "9876543252", status: "active", loginTime: "08:40", logoutTime: "17:35" },
-      { sl: 44, name: "Rhea Pillai", email: "rhea.pillai@example.com", mobile: "9876543253", status: "inactive", loginTime: "10:25", logoutTime: "18:10" },
-      { sl: 45, name: "Aditya Sinha", email: "aditya.sinha@example.com", mobile: "9876543254", status: "active", loginTime: "09:10", logoutTime: "18:05" }
+  { sl: 1, name: "Arjun Mehta", email: "arjun.mehta@example.com", mobile: "9876543201", status: "active", loginTime: "09:00", logoutTime: "18:00", image: "https://i.pravatar.cc/150?img=1" },
+  { sl: 2, name: "Sneha Sharma", email: "sneha.sharma@example.com", mobile: "9876543202", status: "inactive", loginTime: "10:15", logoutTime: "17:30", image: "https://i.pravatar.cc/150?img=2" },
+  { sl: 3, name: "Rohan Gupta", email: "rohan.gupta@example.com", mobile: "9876543203", status: "active", loginTime: "08:50", logoutTime: "17:40", image: "https://i.pravatar.cc/150?img=3" },
+  { sl: 4, name: "Priya Nair", email: "priya.nair@example.com", mobile: "9876543204", status: "inactive", loginTime: "10:20", logoutTime: "18:10", image: "https://i.pravatar.cc/150?img=4" },
+  { sl: 5, name: "Vikas Yadav", email: "vikas.yadav@example.com", mobile: "9876543205", status: "active", loginTime: "09:10", logoutTime: "18:05", image: "https://i.pravatar.cc/150?img=5" },
 
+  { sl: 6, name: "Meera Kulkarni", email: "meera.kulkarni@example.com", mobile: "9876543206", status: "inactive", loginTime: "10:05", logoutTime: "17:50", image: "https://i.pravatar.cc/150?img=6" },
+  { sl: 7, name: "Harsh Patel", email: "harsh.patel@example.com", mobile: "9876543207", status: "active", loginTime: "08:45", logoutTime: "17:55", image: "https://i.pravatar.cc/150?img=7" },
+  { sl: 8, name: "Ankita Singh", email: "ankita.singh@example.com", mobile: "9876543208", status: "inactive", loginTime: "10:30", logoutTime: "17:40", image: "https://i.pravatar.cc/150?img=8" },
+  { sl: 9, name: "Sameer Bansal", email: "sameer.bansal@example.com", mobile: "9876543209", status: "active", loginTime: "09:05", logoutTime: "18:10", image: "https://i.pravatar.cc/150?img=9" },
+  { sl: 10, name: "Ritu Verma", email: "ritu.verma@example.com", mobile: "9876543210", status: "inactive", loginTime: "10:25", logoutTime: "17:35", image: "https://i.pravatar.cc/150?img=10" },
 
-    ];
+  { sl: 11, name: "Aman Singh", email: "aman.singh@example.com", mobile: "9876543211", status: "active", loginTime: "08:55", logoutTime: "17:45", image: "https://i.pravatar.cc/150?img=11" },
+  { sl: 12, name: "Nidhi Chauhan", email: "nidhi.chauhan@example.com", mobile: "9876543212", status: "inactive", loginTime: "10:10", logoutTime: "18:00", image: "https://i.pravatar.cc/150?img=12" },
+  { sl: 13, name: "Rakesh Menon", email: "rakesh.menon@example.com", mobile: "9876543213", status: "active", loginTime: "09:00", logoutTime: "18:00", image: "https://i.pravatar.cc/150?img=13" },
+  { sl: 14, name: "Tanisha Rao", email: "tanisha.rao@example.com", mobile: "9876543214", status: "inactive", loginTime: "10:15", logoutTime: "17:50", image: "https://i.pravatar.cc/150?img=14" },
+  { sl: 15, name: "Kunal Kapoor", email: "kunal.kapoor@example.com", mobile: "9876543215", status: "active", loginTime: "08:50", logoutTime: "17:55", image: "https://i.pravatar.cc/150?img=15" },
+
+  { sl: 16, name: "Bhavya Sinha", email: "bhavya.sinha@example.com", mobile: "9876543216", status: "inactive", loginTime: "10:00", logoutTime: "17:45", image: "https://i.pravatar.cc/150?img=16" },
+  { sl: 17, name: "Deepak Jaiswal", email: "deepak.jaiswal@example.com", mobile: "9876543217", status: "active", loginTime: "09:20", logoutTime: "18:15", image: "https://i.pravatar.cc/150?img=17" },
+  { sl: 18, name: "Kritika Desai", email: "kritika.desai@example.com", mobile: "9876543218", status: "inactive", loginTime: "10:35", logoutTime: "17:55", image: "https://i.pravatar.cc/150?img=18" },
+  { sl: 19, name: "Raghav Kohli", email: "raghav.kohli@example.com", mobile: "9876543219", status: "active", loginTime: "08:40", logoutTime: "17:35", image: "https://i.pravatar.cc/150?img=19" },
+  { sl: 20, name: "Mansi Goyal", email: "mansi.goyal@example.com", mobile: "9876543220", status: "inactive", loginTime: "10:20", logoutTime: "18:05", image: "https://i.pravatar.cc/150?img=20" }
+
+];
+
 
     const tbody = document.getElementById("table-body");
 
@@ -281,9 +290,14 @@
         <td>${emp.loginTime}</td>
         <td>${emp.logoutTime}</td>
         <td>
-          <button class= "btn btn-primary">View map</button>
+            <img src="${emp.image}" width="40" height="40" style="border-radius: 50px;" />
         </td>
-      </tr>`;
+
+        <td>
+            <button class="btn btn-primary">View map</button>
+        </td>
+      </tr>`
+
     });
   </script>
 

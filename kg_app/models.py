@@ -91,3 +91,65 @@ class Create_task(models.Model):
     collection_manager_name = models.CharField(max_length = 100)
     finance_company_name = models.CharField(max_length = 200)
 
+
+
+class TcLogin(models.Model):
+    tc_login_id = models.AutoField(primary_key=True)
+
+    admin_id = models.CharField(max_length=20) 
+    name = models.CharField(max_length=100)
+    email = models.EmailField(unique=True)
+    mobile_no = models.CharField(max_length=15, unique=True)
+
+    status = models.CharField(max_length=20)  
+    login_time = models.DateTimeField(null=True, blank=True)
+    logout_time = models.DateTimeField(null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.name} ({self.email})"
+
+
+
+
+
+class TlLogin(models.Model):
+    tl_login_id = models.AutoField(primary_key=True)   # Primary Key
+    admin_id = models.CharField(max_length=50)         # Admin ID
+    name = models.CharField(max_length=100)            # Name
+    email = models.EmailField(unique=True)             # Email (unique)
+    mobile_no = models.CharField(max_length=15, unique=True)  # Mobile (unique)
+    
+    status = models.CharField(max_length=20)           # Active / Inactive
+    
+    login_time = models.DateTimeField(null=True, blank=True)   # Login Time
+    logout_time = models.DateTimeField(null=True, blank=True)  # Logout Time
+
+    image = models.ImageField(upload_to='tl_images/', null=True, blank=True)  # Profile Image
+    
+    longitude = models.FloatField(null=True, blank=True)   # GPS Longitude
+    latitude = models.FloatField(null=True, blank=True)    # GPS Latitude
+
+    def __str__(self):
+        return f"{self.name} ({self.email})"
+    
+    
+
+
+class GsLogin(models.Model):
+    gs_login_id = models.AutoField(primary_key=True)
+    admin_id = models.CharField(max_length=50)
+    name = models.CharField(max_length=100)
+    email = models.EmailField(unique=True)
+    mobile_no = models.CharField(max_length=15, unique=True)
+    status = models.CharField(max_length=20)  # Active / Inactive
+    login_time = models.DateTimeField(null=True, blank=True)
+    logout_time = models.DateTimeField(null=True, blank=True)
+
+    image = models.ImageField(upload_to='gs_login/', null=True, blank=True)
+
+    longitude = models.CharField(max_length=50, null=True, blank=True)
+    latitude = models.CharField(max_length=50, null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.name} ({self.email})"
+

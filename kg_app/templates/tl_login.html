@@ -135,6 +135,7 @@
                             <th>Status</th>
                             <th>Login Time</th>
                             <th>Logout Time</th>
+                            <th>Image</th>
                             <th>Action</th>
                           </tr>
                         </thead>
@@ -242,26 +243,30 @@
 
 
   <script>
-    const employees = [
+   const employees = [
+    { sl: 1, name: "Ravi Sharma", email: "ravi.sharma@example.com", mobile: "9876543210", status: "active", loginTime: "09:00", logoutTime: "18:00", image: "https://randomuser.me/api/portraits/men/1.jpg" },
+    { sl: 2, name: "Anita Verma", email: "anita.verma@example.com", mobile: "9876543211", status: "inactive", loginTime: "09:15", logoutTime: "17:45", image: "https://randomuser.me/api/portraits/women/2.jpg" },
+    { sl: 3, name: "Mohit Gupta", email: "mohit.gupta@example.com", mobile: "9876543212", status: "active", loginTime: "08:45", logoutTime: "17:30", image: "https://randomuser.me/api/portraits/men/3.jpg" },
+    { sl: 4, name: "Pooja Rani", email: "pooja.rani@example.com", mobile: "9876543213", status: "inactive", loginTime: "10:00", logoutTime: "18:15", image: "https://randomuser.me/api/portraits/women/4.jpg" },
+    { sl: 5, name: "Aman Singh", email: "aman.singh@example.com", mobile: "9876543214", status: "active", loginTime: "09:30", logoutTime: "18:30", image: "https://randomuser.me/api/portraits/men/5.jpg" },
+    { sl: 6, name: "Neha Mehta", email: "neha.mehta@example.com", mobile: "9876543215", status: "active", loginTime: "09:00", logoutTime: "18:00", image: "https://randomuser.me/api/portraits/women/6.jpg" },
+    { sl: 7, name: "Rakesh Kumar", email: "rakesh.kumar@example.com", mobile: "9876543216", status: "inactive", loginTime: "10:15", logoutTime: "17:45", image: "https://randomuser.me/api/portraits/men/7.jpg" },
+    { sl: 8, name: "Swati Joshi", email: "swati.joshi@example.com", mobile: "9876543217", status: "active", loginTime: "09:10", logoutTime: "18:05", image: "https://randomuser.me/api/portraits/women/8.jpg" },
+    { sl: 9, name: "Deepak Yadav", email: "deepak.yadav@example.com", mobile: "9876543218", status: "active", loginTime: "08:50", logoutTime: "17:50", image: "https://randomuser.me/api/portraits/men/9.jpg" },
+    { sl: 10, name: "Kriti Desai", email: "kriti.desai@example.com", mobile: "9876543219", status: "inactive", loginTime: "10:00", logoutTime: "18:10", image: "https://randomuser.me/api/portraits/women/10.jpg" },
 
-      { sl: 1, name: "Ravi Sharma", email: "ravi.sharma@example.com", mobile: "9876543210", status: "active", loginTime: "09:00", logoutTime: "18:00" },
-      { sl: 2, name: "Anita Verma", email: "anita.verma@example.com", mobile: "9876543211", status: "inactive", loginTime: "09:15", logoutTime: "17:45" },
-      { sl: 3, name: "Mohit Gupta", email: "mohit.gupta@example.com", mobile: "9876543212", status: "active", loginTime: "08:45", logoutTime: "17:30" },
-      { sl: 4, name: "Pooja Rani", email: "pooja.rani@example.com", mobile: "9876543213", status: "inactive", loginTime: "10:00", logoutTime: "18:15" },
-      { sl: 5, name: "Aman Singh", email: "aman.singh@example.com", mobile: "9876543214", status: "active", loginTime: "09:30", logoutTime: "18:30" },
-      { sl: 6, name: "Neha Mehta", email: "neha.mehta@example.com", mobile: "9876543215", status: "active", loginTime: "09:00", logoutTime: "18:00" },
-      { sl: 7, name: "Rakesh Kumar", email: "rakesh.kumar@example.com", mobile: "9876543216", status: "inactive", loginTime: "10:15", logoutTime: "17:45" },
-      { sl: 8, name: "Swati Joshi", email: "swati.joshi@example.com", mobile: "9876543217", status: "active", loginTime: "09:10", logoutTime: "18:05" },
-      { sl: 9, name: "Deepak Yadav", email: "deepak.yadav@example.com", mobile: "9876543218", status: "active", loginTime: "08:50", logoutTime: "17:50" },
-      { sl: 10, name: "Kriti Desai", email: "kriti.desai@example.com", mobile: "9876543219", status: "inactive", loginTime: "10:00", logoutTime: "18:10" },
-      { sl: 11, name: "Vikas Jain", email: "vikas.jain@example.com", mobile: "9876543220", status: "active", loginTime: "09:05", logoutTime: "18:00" },
-      { sl: 12, name: "Meena Kumari", email: "meena.kumari@example.com", mobile: "9876543221", status: "inactive", loginTime: "10:30", logoutTime: "17:00" },
-      { sl: 13, name: "Saurabh Mishra", email: "saurabh.mishra@example.com", mobile: "9876543222", status: "active", loginTime: "08:55", logoutTime: "17:45" },
-      { sl: 14, name: "Alka Sinha", email: "alka.sinha@example.com", mobile: "9876543223", status: "inactive", loginTime: "10:20", logoutTime: "17:30" },
-      { sl: 15, name: "Nikhil Raj", email: "nikhil.raj@example.com", mobile: "9876543224", status: "active", loginTime: "09:00", logoutTime: "18:00" }
+    { sl: 11, name: "Vikas Jain", email: "vikas.jain@example.com", mobile: "9876543220", status: "active", loginTime: "09:05", logoutTime: "18:00", image: "https://randomuser.me/api/portraits/men/11.jpg" },
+    { sl: 12, name: "Meena Kumari", email: "meena.kumari@example.com", mobile: "9876543221", status: "inactive", loginTime: "10:30", logoutTime: "17:00", image: "https://randomuser.me/api/portraits/women/12.jpg" },
+    { sl: 13, name: "Saurabh Mishra", email: "saurabh.mishra@example.com", mobile: "9876543222", status: "active", loginTime: "08:55", logoutTime: "17:45", image: "https://randomuser.me/api/portraits/men/13.jpg" },
+    { sl: 14, name: "Alka Sinha", email: "alka.sinha@example.com", mobile: "9876543223", status: "inactive", loginTime: "10:20", logoutTime: "17:30", image: "https://randomuser.me/api/portraits/women/14.jpg" },
+    { sl: 15, name: "Nikhil Raj", email: "nikhil.raj@example.com", mobile: "9876543224", status: "active", loginTime: "09:00", logoutTime: "18:00", image: "https://randomuser.me/api/portraits/men/15.jpg" },
 
-
-    ];
+    { sl: 16, name: "Shruti Agarwal", email: "shruti.agarwal@example.com", mobile: "9876543225", status: "active", loginTime: "09:10", logoutTime: "18:20", image: "https://randomuser.me/api/portraits/women/16.jpg" },
+    { sl: 17, name: "Harsh Vardhan", email: "harsh.vardhan@example.com", mobile: "9876543226", status: "inactive", loginTime: "10:05", logoutTime: "17:40", image: "https://randomuser.me/api/portraits/men/17.jpg" },
+    { sl: 18, name: "Jyoti Kaur", email: "jyoti.kaur@example.com", mobile: "9876543227", status: "active", loginTime: "08:40", logoutTime: "17:30", image: "https://randomuser.me/api/portraits/women/18.jpg" },
+    { sl: 19, name: "Rohan Bhandari", email: "rohan.bhandari@example.com", mobile: "9876543228", status: "active", loginTime: "09:00", logoutTime: "17:55", image: "https://randomuser.me/api/portraits/men/19.jpg" },
+    { sl: 20, name: "Tanya Kapoor", email: "tanya.kapoor@example.com", mobile: "9876543229", status: "inactive", loginTime: "10:25", logoutTime: "17:35", image: "https://randomuser.me/api/portraits/women/20.jpg" }
+  ];
 
     const tbody = document.getElementById("table-body");
 
@@ -279,6 +284,7 @@
         <td>${emp.status}</td>
         <td>${emp.loginTime}</td>
         <td>${emp.logoutTime}</td>
+        <td><img src="${emp.image}" width="50" height="50" style="border-radius: 50%; object-fit: cover;"></td>
         <td>
           <button class= "btn btn-primary">View map</button>
         </td>
