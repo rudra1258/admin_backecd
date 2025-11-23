@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
 from . models import *
 from django.contrib import messages
@@ -707,4 +707,22 @@ def telecaller(request):
 def tl_login(request):
     return render(request, "tl_login.html")
 
+
+
+def tc_delete(request, id):
+    emp = get_object_or_404(CreateUser, id=id)
+    emp.delete()
+    return redirect('kg_app:telecaller')   # change to your list page URL name
+
+
+def tl_delete(request, id):
+    emp = get_object_or_404(CreateUser, id=id)
+    emp.delete()
+    return redirect('kg_app:teamlead')   # change to your list page URL name
+
+
+def gs_delete(request, id):
+    emp = get_object_or_404(CreateUser, id=id)
+    emp.delete()
+    return redirect('kg_app:groundstaff')   # change to your list page URL name
 

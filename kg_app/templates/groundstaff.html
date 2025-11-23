@@ -148,11 +148,21 @@
                               <td>{{staff.address}}</td>
                               <td>{{staff.created_at}}</td>
                               <td>
-                                <ul class="action" style="display:flex;gap:10px;list-style:none;padding:0;margin:0;">
-                                  <li class="edit"><a href="#"><i class="fa-solid fa-pen"></i></a></li>
-                                  <li class="delete"><a href="#"><i class="fa-solid fa-trash-can"></i></a></li>
-                                </ul>
-                              </td>
+
+                                      <ul class="action" style="display:flex;gap:10px;list-style:none;padding:0;margin:0;">
+                                          <li class="delete">
+                                              <form method="post" action="{% url 'kg_app:gs_delete' staff.id %}"
+                                                    onsubmit="return confirm('Delete this record?');"
+                                                    style="display:inline;">
+                                                  {% csrf_token %}
+                                                  <button type="submit" style="background:none;border:0;cursor:pointer;color:red;">
+                                                      <i class="fa-solid fa-trash-can"></i>
+                                                  </button>
+                                              </form>
+                                          </li>
+                                      </ul>
+                                  </td>
+                              
                             </tr>
                             {% endfor %}
                         </tbody>
