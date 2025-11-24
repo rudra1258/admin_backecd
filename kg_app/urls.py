@@ -26,4 +26,9 @@ urlpatterns = [
     # Task Import URLs
     path('import-tasks/', views.import_tasks_from_excel, name='import_tasks'),
     path('download-task-sample/', views.download_task_sample_excel, name='download_task_sample_excel'),
+    path('telecaller/delete/<int:id>/', views.tc_delete, name='tc_delete'),
+    path('teamlead/delete/<int:id>/', views.tl_delete, name='tl_delete'),
+    path('groundstaff/delete/<int:id>/', views.gs_delete, name='gs_delete'),
+
+
 ]
