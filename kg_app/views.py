@@ -4,6 +4,10 @@ from . models import *
 from django.contrib import messages
 from django.contrib.auth.hashers import check_password, make_password
 import pandas as pd
+from rest_framework import viewsets, status
+from .serializers import *
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 # Create your views here.
 
 
@@ -143,6 +147,53 @@ def create_user(request):
     admins = admin_user_model.objects.all()
     # return redirect("kg_app:create_user")
     return render(request, "create_user.html", {"admins": admins})
+
+
+# api like view for CreateUser model
+class CreateUserViewSet(viewsets.ModelViewSet):
+    queryset = CreateUser.objects.all()
+    serializer_class = UserListSerializer
+    
+# User Login API
+@api_view(['POST'])
+def user_login(request):
+    serializer = UserLoginSerializer(data = request.data)
+    
+    if serializer.is_valid():
+        email = serializer.validated_data['email']
+        password = serializer.validated_data['password']
+        
+        try:
+            user = CreateUser.objects.get(email=email)
+            
+            # Check if password matches (plain text comparison for now)
+            if user.password == password:
+                return Response({
+                    'success': True,
+                    'message': 'User login successful',
+                    'data': {
+                        'id': user.id,
+                        'username': user.username,
+                        'email': user.email,
+                        'first_name': user.first_name,
+                        'last_name': user.last_name,
+                        'role': user.role,
+                        'phone_number': user.phone_number
+                    }
+                }, status=status.HTTP_200_OK)
+            else:
+                return Response({
+                    'success': False,
+                    'message': 'Invalid credentials'
+                }, status=status.HTTP_401_UNAUTHORIZED)
+                
+        except CreateUser.DoesNotExist:
+            return Response({
+                'success': False,
+                'message': 'User not found'
+            }, status=status.HTTP_404_NOT_FOUND)
+    
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 def import_users_from_excel(request):
     session_admin_id = request.session.get("admin_id")

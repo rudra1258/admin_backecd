@@ -1,7 +1,12 @@
-from django.urls import path
+from django.urls import path, include
 from . import views
+from rest_framework import routers
 
 app_name = 'kg_app'  # important for namespacing URLs
+
+
+router = routers.DefaultRouter()
+router.register(r'createUserList', views.CreateUserViewSet)
 
 urlpatterns = [
     # path('', views.index, name='index'),
@@ -29,6 +34,12 @@ urlpatterns = [
     path('telecaller/delete/<int:id>/', views.tc_delete, name='tc_delete'),
     path('teamlead/delete/<int:id>/', views.tl_delete, name='tl_delete'),
     path('groundstaff/delete/<int:id>/', views.gs_delete, name='gs_delete'),
+    
+    
+    # api urls
+    path('', include(router.urls)),
+    path('user/login/', views.user_login, name='user-login'),
+    
 
 
 ]
