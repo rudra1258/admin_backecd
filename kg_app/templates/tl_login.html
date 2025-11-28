@@ -77,6 +77,16 @@
     }
   </style>
 
+  <!-- Image Modal -->
+  <div id="imageModal" style="display: none; position: fixed; z-index: 1000; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.9); justify-content: center; align-items: center;">
+    <span onclick="closeImageModal()" style="position: absolute; top: 20px; right: 40px; color: white; font-size: 40px; cursor: pointer; transition: 0.3s;">&times;</span>
+    <div style="text-align: center;">
+      <img id="modalImage" style="max-width: 90%; max-height: 80vh; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.5);">
+      <p id="imageCaption" style="color: white; font-size: 20px; margin-top: 15px;"></p>
+    </div>
+  </div>
+
+
 </head>
 
 
@@ -244,7 +254,8 @@
 
   <script>
    const employees = [
-    { sl: 1, name: "Ravi Sharma", email: "ravi.sharma@example.com", mobile: "9876543210", status: "active", loginTime: "09:00", logoutTime: "18:00", image: "https://randomuser.me/api/portraits/men/1.jpg" },
+    //{ sl: 1, name: "Ravi Sharma", email: "ravi.sharma@example.com", mobile: "9876543210", status: "active", loginTime: "09:00", logoutTime: "18:00", image: "https://randomuser.me/api/portraits/men/1.jpg" },
+    { sl: 1, name: "Ravi Sharma", email: "ravi.sharma@example.com", mobile: "9876543210", status: "active", loginTime: "09:00", logoutTime: "18:00", image: "https://thumbs.dreamstime.com/b/falling-drop-rain-blue-earth-image-water-splash-crown-shape-water-splash-crown-shape-falling-drop-earth-140453719.jpg" },
     { sl: 2, name: "Anita Verma", email: "anita.verma@example.com", mobile: "9876543211", status: "inactive", loginTime: "09:15", logoutTime: "17:45", image: "https://randomuser.me/api/portraits/women/2.jpg" },
     { sl: 3, name: "Mohit Gupta", email: "mohit.gupta@example.com", mobile: "9876543212", status: "active", loginTime: "08:45", logoutTime: "17:30", image: "https://randomuser.me/api/portraits/men/3.jpg" },
     { sl: 4, name: "Pooja Rani", email: "pooja.rani@example.com", mobile: "9876543213", status: "inactive", loginTime: "10:00", logoutTime: "18:15", image: "https://randomuser.me/api/portraits/women/4.jpg" },
@@ -284,12 +295,34 @@
         <td>${emp.status}</td>
         <td>${emp.loginTime}</td>
         <td>${emp.logoutTime}</td>
-        <td><img src="${emp.image}" width="50" height="50" style="border-radius: 50%; object-fit: cover;"></td>
+       <td><img src="${emp.image}" width="50" height="50" style="border-radius: 50%; object-fit: cover; cursor: pointer;" onclick="openImageModal('${emp.image}', '${emp.name}')"></td>
         <td>
           <button class= "btn btn-primary">View map</button>
         </td>
       </tr>`;
     });
+
+    function openImageModal(imageSrc, name) {
+      const modal = document.getElementById('imageModal');
+      const modalImg = document.getElementById('modalImage');
+      const caption = document.getElementById('imageCaption');
+      
+      modal.style.display = "flex";
+      modalImg.src = imageSrc;
+      caption.textContent = name;
+    }
+
+    function closeImageModal() {
+      document.getElementById('imageModal').style.display = "none";
+    }
+
+    // Close modal when clicking outside the image
+    document.getElementById('imageModal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeImageModal();
+      }
+    });
+
   </script>
 
 </body>

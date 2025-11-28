@@ -755,7 +755,6 @@ def teamlead(request):
     )
     return render(request, "teamlead.html",{"data":caller_list})
 
-
 def telecaller(request):
     session_admin_id = request.session.get('admin_id')
     admin_id_pk  = admin_user_model.objects.get(pk = session_admin_id)
