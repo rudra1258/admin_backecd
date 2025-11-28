@@ -43,7 +43,7 @@
     <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
 
 
-    
+
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
         integrity="sha512-…(hash)…”" crossorigin=" anonymous" referrerpolicy="no-referrer" />
@@ -65,7 +65,7 @@
     <style>
         /*.dataTables_filter {
             display: none;
-        }*/ 
+        }*/
 
         .sidebar-pannle-main {
             display: none;
@@ -629,7 +629,7 @@
     <div class="page-wrapper compact-wrapper" id="pageWrapper">
 
         <!-- this is header section -->
-      {% include "common/header.html" %}
+        {% include "common/header.html" %}
         <!--header section end -->
 
 
@@ -639,7 +639,7 @@
         <!-- Page Body Start-->
         <div class="page-body-wrapper">
             <!-- Page sidebar start-->
-           {% include "common/sidebar.html" %}
+            {% include "common/sidebar.html" %}
             <!-- Page sidebar end-->
 
             <!-- body section start  -->
@@ -844,7 +844,7 @@
                                                         <th>Reference Details</th>
                                                         <th>Collection Manager Name</th>
                                                         <th>Finance Company Name</th>
-                                                        <th>Action</th>
+                                                        {% comment %} <th>Action</th> {% endcomment %}
                                                     </tr>
                                                 </thead>
                                                 <tbody id="table-body"></tbody>
@@ -1067,7 +1067,7 @@
                 </div>
             </div>
             <!-- Container-fluid starts-->
-          {% include "common/footer.html" %}
+            {% include "common/footer.html" %}
         </div>
         <!-- page body end  -->
 
@@ -1169,938 +1169,417 @@
 
 
 
-    <script>
+<script>
+    const columnMapping = {
+        "Sl": "sl",
+        "Agreement ID": "aggrement_id",
+        "Customer Name": "customer_name",
+        "Product": "product_type",
+        "TC Name": "tc_name",
+        "Branch": "branch",
+        "Count of Cases": "count_of_cases",
+        "Old/New": "old_or_new",
+        "Bucket": "bucket",
+        "Mode": "mode",
+        "NPA Status": "npa_status",
+        "POS": "pos_amount",
+        "EMI Amount": "emi_amount",
+        "EMI Due Amount": "emi_due_amount",
+        "Total Charges": "total_charges",
+        "Receipt Amount": "recipt_amount",
+        "Receipt Date": "recipt_date",
+        "BCC Pending": "bcc_pending",
+        "Penal Pending": "penal_pending",
+        "Disbursement Amount": "disbursement_amount",
+        "Loan Amount": "loan_amount",
+        "Disbursement Date": "disbursement_date",
+        "EMI Start Date": "emi_start_date",
+        "EMI End Date": "emi_end_date",
+        "EMI Cycle Date": "emi_cycle_date",
+        "Make": "make",
+        "Manufacturer Description": "manufacturer_description",
+        "Registration Number": "registration_number",
+        "Age": "vehicle_age",
+        "Employer": "employer",
+        "Father Name": "father_name",
+        "FE Name": "fe_name",
+        "FE Mobile Number": "fe_mobile_number",
+        "Customer Number": "customer_mobile_number",
+        "Customer Address": "customer_address",
+        "Customer Office Address": "customer_office_address",
+        "PIN Code": "pin_code",
+        "Reference Details": "reference_details",
+        "Collection Manager Name": "collection_manager_name",
+        "Finance Company Name": "finance_company_name"
+    };
 
+    const fieldLabels = {
+        'sl': 'Sl',
+        'aggrement_id': 'Agreement ID',
+        'customer_name': 'Customer Name',
+        'product_type': 'Product Type',
+        'tc_name': 'TC Name',
+        'branch': 'Branch',
+        'count_of_cases': 'Count of Cases',
+        'old_or_new': 'Old/New',
+        'bucket': 'Bucket',
+        'mode': 'Mode',
+        'npa_status': 'NPA Status',
+        'pos_amount': 'POS Amount',
+        'emi_amount': 'EMI Amount',
+        'emi_due_amount': 'EMI Due Amount',
+        'total_charges': 'Total Charges',
+        'recipt_amount': 'Receipt Amount',
+        'recipt_date': 'Receipt Date',
+        'bcc_pending': 'BCC Pending',
+        'penal_pending': 'Penal Pending',
+        'disbursement_amount': 'Disbursement Amount',
+        'loan_amount': 'Loan Amount',
+        'disbursement_date': 'Disbursement Date',
+        'emi_start_date': 'EMI Start Date',
+        'emi_end_date': 'EMI End Date',
+        'emi_cycle_date': 'EMI Cycle Date',
+        'make': 'Make',
+        'manufacturer_description': 'Manufacturer Description',
+        'registration_number': 'Registration Number',
+        'vehicle_age': 'Vehicle Age',
+        'employer': 'Employer',
+        'father_name': 'Father Name',
+        'fe_name': 'FE Name',
+        'fe_mobile_number': 'FE Mobile Number',
+        'customer_mobile_number': 'Customer Mobile Number',
+        'customer_address': 'Customer Address',
+        'customer_office_address': 'Customer Office Address',
+        'pin_code': 'Pin Code',
+        'reference_details': 'Reference Details',
+        'collection_manager_name': 'Collection Manager Name',
+        'finance_company_name': 'Finance Company Name'
+    };
 
-        const tasks = [
-            {
-                sl: 1,
-                agreementId: "118354371",
-                customerName: "BIMAL SAMANTARAY",
-                prod: "TR",
-                tcName: "SINU",
-                branch: "RASULGARH",
-                countOfCases: 2,
-                oldNew: "NEW",
-                bucket: 3,
-                mode: "RF",
-                npaStatus: "GCL",
-                pos: "434798.55",
-                emiAmt: "14750",
-                emiDueAmount: "12000",
-                totalCharges: "15032",
-                receiptAmount: "14750",
-                receiptDate: "10/12/2025",
-                bccPending: "9722",
-                penalPending: "5310",
-                disbAmt: "612265",
-                loanAmt: "620000",
-                disbDate: "28/06/2023",
-                emiStartDate: "05/08/2023",
-                emiEndDate: "05/07/2028",
-                emiCycleDate: "5",
-                make: "MAHINDRA",
-                manufacturerDesc: "MAHINDRA & MAHINDRA LTD.",
-                regdnum: "OD33AK1032",
-                age: "33",
-                employer: "TATA CAPITAL",
-                fatherName: "PROMOD SAMANTARAY",
-                feName: "RAMA",
-                feMobileNumber: "9999999999",
-                customerNumber: "8888888888",
-                customerAddress: "AT-HARIRAJPUR, HARIRAJPUR, HARIRAJPUR, PURI,KHORDA,752050",
-                customerOfficeAddress: "Biswanathpur BRAHMANAPADA G P BISWANATHPUR Puri",
-                pinCode: "752050",
-                referenceDetails: "BABULI JENA-7008474630,GUJURI CHAMPATY-7008707394",
-                collectionManagerName: "RAKESH KUMAR MOHANTY",
-                financeCompanyName: "IDFC FIRST BANK"
-            },
-            {
-                sl: 2,
-                agreementId: "118765432",
-                customerName: "PRIYA KRISHNAN",
-                prod: "CV",
-                tcName: "ARJUN",
-                branch: "PATIA",
-                countOfCases: 1,
-                oldNew: "OLD",
-                bucket: 2,
-                mode: "ECS",
-                npaStatus: "STD",
-                pos: "385420.75",
-                emiAmt: "12500",
-                emiDueAmount: "25000",
-                totalCharges: "13250",
-                receiptAmount: "12500",
-                receiptDate: "15/12/2025",
-                bccPending: "8500",
-                penalPending: "4200",
-                disbAmt: "450000",
-                loanAmt: "450000",
-                disbDate: "15/04/2022",
-                emiStartDate: "15/05/2022",
-                emiEndDate: "15/04/2027",
-                emiCycleDate: "15",
-                make: "TATA",
-                manufacturerDesc: "TATA MOTORS LIMITED",
-                regdnum: "OD05BK5678",
-                age: "29",
-                employer: "INFOSYS",
-                fatherName: "K SUBRAMANIAM",
-                feName: "LAKSHMI",
-                feMobileNumber: "9876543210",
-                customerNumber: "9123456789",
-                customerAddress: "PLOT NO 45, PATIA, BHUBANESWAR, KHORDA,751024",
-                customerOfficeAddress: "Infosys Campus, Chandrasekharpur, Bhubaneswar",
-                pinCode: "751024",
-                referenceDetails: "RAVI KUMAR-9876543211,ANITA PATEL-9876543212",
-                collectionManagerName: "SURESH PANDA",
-                financeCompanyName: "HDFC BANK"
-            },
-            {
-                sl: 3,
-                agreementId: "119234567",
-                customerName: "AMIT KUMAR SINGH",
-                prod: "PV",
-                tcName: "MEERA",
-                branch: "CUTTACK",
-                countOfCases: 3,
-                oldNew: "NEW",
-                bucket: 4,
-                mode: "CH",
-                npaStatus: "SMA1",
-                pos: "567890.25",
-                emiAmt: "18900",
-                emiDueAmount: "37800",
-                totalCharges: "22450",
-                receiptAmount: "18900",
-                receiptDate: "08/12/2025",
-                bccPending: "12500",
-                penalPending: "6800",
-                disbAmt: "750000",
-                loanAmt: "750000",
-                disbDate: "10/01/2023",
-                emiStartDate: "10/02/2023",
-                emiEndDate: "10/01/2030",
-                emiCycleDate: "10",
-                make: "HYUNDAI",
-                manufacturerDesc: "HYUNDAI MOTOR INDIA LIMITED",
-                regdnum: "OD02CX9876",
-                age: "38",
-                employer: "CIPLA",
-                fatherName: "RAM BAHADUR SINGH",
-                feName: "SUNITA",
-                feMobileNumber: "8888777766",
-                customerNumber: "9988776655",
-                customerAddress: "CHAULIAGANJ, CUTTACK, ODISHA,753004",
-                customerOfficeAddress: "Industrial Area, Cuttack",
-                pinCode: "753004",
-                referenceDetails: "VIJAY MISHRA-8899776655,DEEPAK PRADHAN-8899776656",
-                collectionManagerName: "BIJAY KUMAR DAS",
-                financeCompanyName: "ICICI BANK"
-            },
-            {
-                sl: 4,
-                agreementId: "119876543",
-                customerName: "SNEHA PATEL",
-                prod: "TW",
-                tcName: "ROHIT",
-                branch: "KHANDAGIRI",
-                countOfCases: 1,
-                oldNew: "NEW",
-                bucket: 1,
-                mode: "RF",
-                npaStatus: "STD",
-                pos: "125670.50",
-                emiAmt: "4500",
-                emiDueAmount: "4500",
-                totalCharges: "4850",
-                receiptAmount: "4500",
-                receiptDate: "20/12/2025",
-                bccPending: "2100",
-                penalPending: "950",
-                disbAmt: "145000",
-                loanAmt: "145000",
-                disbDate: "05/09/2024",
-                emiStartDate: "05/10/2024",
-                emiEndDate: "05/09/2027",
-                emiCycleDate: "5",
-                make: "HONDA",
-                manufacturerDesc: "HONDA MOTORCYCLE & SCOOTER INDIA",
-                regdnum: "OD07DK1234",
-                age: "26",
-                employer: "TCS",
-                fatherName: "RAMESH PATEL",
-                feName: "NEHA",
-                feMobileNumber: "7777888899",
-                customerNumber: "9876543221",
-                customerAddress: "KHANDAGIRI, BHUBANESWAR, KHORDA,751030",
-                customerOfficeAddress: "TCS Office, Infocity, Bhubaneswar",
-                pinCode: "751030",
-                referenceDetails: "RAHUL SHARMA-7766554433,POOJA VERMA-7766554434",
-                collectionManagerName: "SANTOSH MOHANTY",
-                financeCompanyName: "BAJAJ FINSERV"
-            },
-            {
-                sl: 5,
-                agreementId: "120123456",
-                customerName: "Rudra Prasad Maharana",
-                prod: "TR",
-                tcName: "KAVITA",
-                branch: "BERHAMPUR",
-                countOfCases: 2,
-                oldNew: "OLD",
-                bucket: 5,
-                mode: "ECS",
-                npaStatus: "SMA2",
-                pos: "892345.80",
-                emiAmt: "25600",
-                emiDueAmount: "51200",
-                totalCharges: "29850",
-                receiptAmount: "25600",
-                receiptDate: "05/12/2025",
-                bccPending: "18900",
-                penalPending: "9500",
-                disbAmt: "1200000",
-                loanAmt: "1200000",
-                disbDate: "22/08/2021",
-                emiStartDate: "22/09/2021",
-                emiEndDate: "22/08/2028",
-                emiCycleDate: "22",
-                make: "ASHOK LEYLAND",
-                manufacturerDesc: "ASHOK LEYLAND LIMITED",
-                regdnum: "OD09EK7890",
-                age: "42",
-                employer: "SELF EMPLOYED",
-                fatherName: "GOPAL NAYAK",
-                feName: "LAXMI",
-                feMobileNumber: "9999888877",
-                customerNumber: "8877665544",
-                customerAddress: "GANDHI NAGAR, BERHAMPUR, GANJAM,760001",
-                customerOfficeAddress: "Market Complex, Berhampur",
-                pinCode: "760001",
-                referenceDetails: "SUBASH PATRA-9988776644,SANJAY RATH-9988776645",
-                collectionManagerName: "PRADIP KUMAR SWAIN",
-                financeCompanyName: "KOTAK MAHINDRA BANK"
-            },
-            {
-                sl: 6,
-                agreementId: "120456789",
-                customerName: "ANJALI REDDY",
-                prod: "PV",
-                tcName: "DEEPAK",
-                branch: "NAYAPALLI",
-                countOfCases: 1,
-                oldNew: "NEW",
-                bucket: 2,
-                mode: "RF",
-                npaStatus: "GCL",
-                pos: "456780.90",
-                emiAmt: "16200",
-                emiDueAmount: "32400",
-                totalCharges: "18650",
-                receiptAmount: "16200",
-                receiptDate: "12/12/2025",
-                bccPending: "9800",
-                penalPending: "5200",
-                disbAmt: "580000",
-                loanAmt: "580000",
-                disbDate: "18/11/2023",
-                emiStartDate: "18/12/2023",
-                emiEndDate: "18/11/2030",
-                emiCycleDate: "18",
-                make: "MARUTI SUZUKI",
-                manufacturerDesc: "MARUTI SUZUKI INDIA LIMITED",
-                regdnum: "OD06FK2345",
-                age: "31",
-                employer: "WIPRO",
-                fatherName: "VENKAT REDDY",
-                feName: "PRIYA",
-                feMobileNumber: "8888999900",
-                customerNumber: "9876501234",
-                customerAddress: "NAYAPALLI, BHUBANESWAR, KHORDA,751012",
-                customerOfficeAddress: "Wipro Campus, Infovalley, Bhubaneswar",
-                pinCode: "751012",
-                referenceDetails: "ARUN KUMAR-8877665511,MADHAVI RAO-8877665512",
-                collectionManagerName: "RAMESH KUMAR JENA",
-                financeCompanyName: "AXIS BANK"
-            },
-            {
-                sl: 7,
-                agreementId: "120789012",
-                customerName: "VIKRAM CHOUDHURY",
-                prod: "CV",
-                tcName: "ANITA",
-                branch: "SAMBALPUR",
-                countOfCases: 4,
-                oldNew: "OLD",
-                bucket: 6,
-                mode: "CH",
-                npaStatus: "NPA",
-                pos: "1234567.45",
-                emiAmt: "32500",
-                emiDueAmount: "97500",
-                totalCharges: "42850",
-                receiptAmount: "32500",
-                receiptDate: "02/12/2025",
-                bccPending: "28500",
-                penalPending: "14200",
-                disbAmt: "1800000",
-                loanAmt: "1800000",
-                disbDate: "30/06/2020",
-                emiStartDate: "30/07/2020",
-                emiEndDate: "30/06/2027",
-                emiCycleDate: "30",
-                make: "EICHER",
-                manufacturerDesc: "EICHER MOTORS LIMITED",
-                regdnum: "OD12GK4567",
-                age: "45",
-                employer: "SELF EMPLOYED",
-                fatherName: "BHARAT CHOUDHURY",
-                feName: "SARITA",
-                feMobileNumber: "7777666655",
-                customerNumber: "9988772233",
-                customerAddress: "AINTHAPALI, SAMBALPUR, ODISHA,768004",
-                customerOfficeAddress: "Transport Nagar, Sambalpur",
-                pinCode: "768004",
-                referenceDetails: "MANOJ BEHERA-9876543298,PRASANT SAHU-9876543299",
-                collectionManagerName: "DEBASIS PRADHAN",
-                financeCompanyName: "SBI"
-            },
-            {
-                sl: 8,
-                agreementId: "121234567",
-                customerName: "MEENA AGARWAL",
-                prod: "TW",
-                tcName: "SURESH",
-                branch: "JANPATH",
-                countOfCases: 1,
-                oldNew: "NEW",
-                bucket: 1,
-                mode: "ECS",
-                npaStatus: "STD",
-                pos: "98765.30",
-                emiAmt: "3800",
-                emiDueAmount: "3800",
-                totalCharges: "4150",
-                receiptAmount: "3800",
-                receiptDate: "18/12/2025",
-                bccPending: "1850",
-                penalPending: "750",
-                disbAmt: "115000",
-                loanAmt: "115000",
-                disbDate: "12/10/2024",
-                emiStartDate: "12/11/2024",
-                emiEndDate: "12/10/2027",
-                emiCycleDate: "12",
-                make: "TVS",
-                manufacturerDesc: "TVS MOTOR COMPANY LIMITED",
-                regdnum: "OD03HK5678",
-                age: "28",
-                employer: "MINDTREE",
-                fatherName: "SUNIL AGARWAL",
-                feName: "REKHA",
-                feMobileNumber: "9999777788",
-                customerNumber: "8877664455",
-                customerAddress: "JANPATH, BHUBANESWAR, KHORDA,751022",
-                customerOfficeAddress: "Mindtree Office, Chandrasekharpur",
-                pinCode: "751022",
-                referenceDetails: "AMIT GUPTA-9876501111,NEELAM SINGH-9876501112",
-                collectionManagerName: "SRIKANT PATTNAIK",
-                financeCompanyName: "IDFC FIRST BANK"
-            },
-            {
-                sl: 9,
-                agreementId: "121567890",
-                customerName: "SUNIL MAHAPATRA",
-                prod: "TR",
-                tcName: "RITU",
-                branch: "ROURKELA",
-                countOfCases: 2,
-                oldNew: "NEW",
-                bucket: 3,
-                mode: "RF",
-                npaStatus: "GCL",
-                pos: "678901.20",
-                emiAmt: "22400",
-                emiDueAmount: "44800",
-                totalCharges: "25950",
-                receiptAmount: "22400",
-                receiptDate: "10/12/2025",
-                bccPending: "14500",
-                penalPending: "7800",
-                disbAmt: "950000",
-                loanAmt: "950000",
-                disbDate: "25/05/2023",
-                emiStartDate: "25/06/2023",
-                emiEndDate: "25/05/2029",
-                emiCycleDate: "25",
-                make: "MAHINDRA",
-                manufacturerDesc: "MAHINDRA & MAHINDRA LTD.",
-                regdnum: "OD18JK3456",
-                age: "36",
-                employer: "SAIL",
-                fatherName: "KRUSHNA MAHAPATRA",
-                feName: "PUJA",
-                feMobileNumber: "8888666677",
-                customerNumber: "9988771122",
-                customerAddress: "CIVIL TOWNSHIP, ROURKELA, SUNDARGARH,769004",
-                customerOfficeAddress: "SAIL Plant, Rourkela",
-                pinCode: "769004",
-                referenceDetails: "BISWAJIT SAHOO-9876509876,SANTOSH KUMAR-9876509877",
-                collectionManagerName: "ASHOK KUMAR SAHU",
-                financeCompanyName: "HDFC BANK"
-            },
-            {
-                sl: 10,
-                agreementId: "121890123",
-                customerName: "KAVITA DESHMUKH",
-                prod: "PV",
-                tcName: "NITIN",
-                branch: "CHANDRASEKHARPUR",
-                countOfCases: 1,
-                oldNew: "OLD",
-                bucket: 2,
-                mode: "ECS",
-                npaStatus: "STD",
-                pos: "345678.60",
-                emiAmt: "13500",
-                emiDueAmount: "27000",
-                totalCharges: "15250",
-                receiptAmount: "13500",
-                receiptDate: "14/12/2025",
-                bccPending: "7900",
-                penalPending: "4100",
-                disbAmt: "425000",
-                loanAmt: "425000",
-                disbDate: "08/03/2023",
-                emiStartDate: "08/04/2023",
-                emiEndDate: "08/03/2028",
-                emiCycleDate: "8",
-                make: "KIA",
-                manufacturerDesc: "KIA MOTORS INDIA",
-                regdnum: "OD04KK6789",
-                age: "34",
-                employer: "COGNIZANT",
-                fatherName: "MOHAN DESHMUKH",
-                feName: "SONAL",
-                feMobileNumber: "7777555566",
-                customerNumber: "9876512345",
-                customerAddress: "CHANDRASEKHARPUR, BHUBANESWAR, KHORDA,751016",
-                customerOfficeAddress: "Cognizant Office, Infocity, Bhubaneswar",
-                pinCode: "751016",
-                referenceDetails: "PRAKASH JOSHI-8877669988,SEEMA RATHI-8877669989",
-                collectionManagerName: "NIGAM CHANDRA SETHI",
-                financeCompanyName: "ICICI BANK"
-            },
-            {
-                sl: 11,
-                agreementId: "122123456",
-                customerName: "DINESH TRIPATHI",
-                prod: "CV",
-                tcName: "POOJA",
-                branch: "BALASORE",
-                countOfCases: 3,
-                oldNew: "NEW",
-                bucket: 4,
-                mode: "CH",
-                npaStatus: "SMA1",
-                pos: "987654.75",
-                emiAmt: "28700",
-                emiDueAmount: "57400",
-                totalCharges: "33450",
-                receiptAmount: "28700",
-                receiptDate: "06/12/2025",
-                bccPending: "19500",
-                penalPending: "10200",
-                disbAmt: "1350000",
-                loanAmt: "1350000",
-                disbDate: "14/07/2022",
-                emiStartDate: "14/08/2022",
-                emiEndDate: "14/07/2028",
-                emiCycleDate: "14",
-                make: "TATA",
-                manufacturerDesc: "TATA MOTORS LIMITED",
-                regdnum: "OD15LK8901",
-                age: "40",
-                employer: "SELF EMPLOYED",
-                fatherName: "RAGHUNATH TRIPATHI",
-                feName: "KAVITA",
-                feMobileNumber: "9999666677",
-                customerNumber: "9988773344",
-                customerAddress: "SAHADEVKHUNTA, BALASORE, ODISHA,756001",
-                customerOfficeAddress: "Industrial Estate, Balasore",
-                pinCode: "756001",
-                referenceDetails: "BIPIN MOHANTY-9876547890,KISHORE PANDA-9876547891",
-                collectionManagerName: "JAGANNATH SAHOO",
-                financeCompanyName: "KOTAK MAHINDRA BANK"
-            },
-            {
-                sl: 12,
-                agreementId: "122456789",
-                customerName: "REKHA BANERJEE",
-                prod: "TW",
-                tcName: "ANIL",
-                branch: "SAHEED NAGAR",
-                countOfCases: 1,
-                oldNew: "NEW",
-                bucket: 1,
-                mode: "RF",
-                npaStatus: "STD",
-                pos: "87654.40",
-                emiAmt: "3200",
-                emiDueAmount: "3200",
-                totalCharges: "3550",
-                receiptAmount: "3200",
-                receiptDate: "22/12/2025",
-                bccPending: "1500",
-                penalPending: "650",
-                disbAmt: "98000",
-                loanAmt: "98000",
-                disbDate: "18/11/2024",
-                emiStartDate: "18/12/2024",
-                emiEndDate: "18/11/2027",
-                emiCycleDate: "18",
-                make: "HERO",
-                manufacturerDesc: "HERO MOTOCORP LIMITED",
-                regdnum: "OD01MK2345",
-                age: "25",
-                employer: "ACCENTURE",
-                fatherName: "SUBIR BANERJEE",
-                feName: "PRIYA",
-                feMobileNumber: "8888555566",
-                customerNumber: "9876523456",
-                customerAddress: "SAHEED NAGAR, BHUBANESWAR, KHORDA,751007",
-                customerOfficeAddress: "Accenture Office, Infovalley, Bhubaneswar",
-                pinCode: "751007",
-                referenceDetails: "ARJUN DAS-9988775566,SWATI MISHRA-9988775567",
-                collectionManagerName: "BISWAJIT MOHANTY",
-                financeCompanyName: "BAJAJ FINSERV"
-            },
-            {
-                sl: 13,
-                agreementId: "122789012",
-                customerName: "ARUN SINHA",
-                prod: "TR",
-                tcName: "SUNITA",
-                branch: "PURI",
-                countOfCases: 2,
-                oldNew: "OLD",
-                bucket: 5,
-                mode: "ECS",
-                npaStatus: "SMA2",
-                pos: "765432.85",
-                emiAmt: "24200",
-                emiDueAmount: "48400",
-                totalCharges: "28150",
-                receiptAmount: "24200",
-                receiptDate: "04/12/2025",
-                bccPending: "16800",
-                penalPending: "8900",
-                disbAmt: "1080000",
-                loanAmt: "1080000",
-                disbDate: "20/09/2021",
-                emiStartDate: "20/10/2021",
-                emiEndDate: "20/09/2028",
-                emiCycleDate: "20",
-                make: "MAHINDRA",
-                manufacturerDesc: "MAHINDRA & MAHINDRA LTD.",
-                regdnum: "OD10NK4567",
-                age: "43",
-                employer: "GOVERNMENT",
-                fatherName: "RAMESH SINHA",
-                feName: "ASHA",
-                feMobileNumber: "7777444455",
-                customerNumber: "9988774455",
-                customerAddress: "GRAND ROAD, PURI, ODISHA,752001",
-                customerOfficeAddress: "District Office, Puri",
-                pinCode: "752001",
-                referenceDetails: "PRAMOD JENA-9876556677,KAMALA PATRA-9876556678",
-                collectionManagerName: "PRASANNA KUMAR NAYAK",
-                financeCompanyName: "AXIS BANK"
-            },
-            {
-                sl: 14,
-                agreementId: "123012345",
-                customerName: "NEELAM VERMA",
-                prod: "PV",
-                tcName: "RAJESH",
-                branch: "BARAMUNDA",
-                countOfCases: 1,
-                oldNew: "NEW",
-                bucket: 2,
-                mode: "RF",
-                npaStatus: "GCL",
-                pos: "523456.30",
-                emiAmt: "19800",
-                emiDueAmount: "39600",
-                totalCharges: "22550",
-                receiptAmount: "19800",
-                receiptDate: "16/12/2025",
-                bccPending: "11200",
-                penalPending: "5900",
-                disbAmt: "680000",
-                loanAmt: "680000",
-                disbDate: "02/02/2024",
-                emiStartDate: "02/03/2024",
-                emiEndDate: "02/02/2031",
-                emiCycleDate: "2",
-                make: "TOYOTA",
-                manufacturerDesc: "TOYOTA KIRLOSKAR MOTOR",
-                regdnum: "OD08OK6789",
-                age: "32",
-                employer: "TECH MAHINDRA",
-                fatherName: "HARI PRASAD VERMA",
-                feName: "ANJALI",
-                feMobileNumber: "9999555544",
-                customerNumber: "9876534567",
-                customerAddress: "BARAMUNDA, BHUBANESWAR, KHORDA,751003",
-                customerOfficeAddress: "Tech Mahindra Campus, Infocity",
-                pinCode: "751003",
-                referenceDetails: "MANISH KUMAR-9988776611,SHALINI SINGH-9988776612",
-                collectionManagerName: "SANJAY KUMAR BISWAL",
-                financeCompanyName: "HDFC BANK"
-            },
-            {
-                sl: 15,
-                agreementId: "123345678",
-                customerName: "MANOJ KUMAR DASH",
-                prod: "CV",
-                tcName: "RADHA",
-                branch: "ANGUL",
-                countOfCases: 3,
-                oldNew: "OLD",
-                bucket: 6,
-                mode: "CH",
-                npaStatus: "NPA",
-                pos: "1456789.50",
-                emiAmt: "35600",
-                emiDueAmount: "106800",
-                totalCharges: "46850",
-                receiptAmount: "35600",
-                receiptDate: "01/12/2025",
-                bccPending: "32500",
-                penalPending: "16200",
-                disbAmt: "2100000",
-                loanAmt: "2100000",
-                disbDate: "15/04/2020",
-                emiStartDate: "15/05/2020",
-                emiEndDate: "15/04/2027",
-                emiCycleDate: "15",
-                make: "ASHOK LEYLAND",
-                manufacturerDesc: "ASHOK LEYLAND LIMITED",
-                regdnum: "OD20PK9012",
-                age: "47",
-                employer: "SELF EMPLOYED",
-                fatherName: "BISWANATH DASH",
-                feName: "MANJULA",
-                feMobileNumber: "8888444433",
-                customerNumber: "9988775566",
-                customerAddress: "NALCO NAGAR, ANGUL, ODISHA,759145",
-                customerOfficeAddress: "Truck Stand, Angul",
-                pinCode: "759145",
-                referenceDetails: "BIJAY PRADHAN-9876565432,GOPAL SAHU-9876565433",
-                collectionManagerName: "LAXMIDHAR BEHERA",
-                financeCompanyName: "SBI"
-            }
-        ];
+    // Convert Django task_list to JavaScript array
+    const allTasks = [
+        {% for task in task_list %}
+        {
+            sl: {{ forloop.counter }},
+            aggrement_id: "{{ task.aggrement_id|default:'' }}",
+            customer_name: "{{ task.customer_name|default:'' }}",
+            product_type: "{{ task.product_type|default:'' }}",
+            tc_name: "{{ task.tc_name|default:'' }}",
+            branch: "{{ task.branch|default:'' }}",
+            count_of_cases: "{{ task.count_of_cases|default:'' }}",
+            old_or_new: "{{ task.old_or_new|default:'' }}",
+            bucket: "{{ task.bucket|default:'' }}",
+            mode: "{{ task.mode|default:'' }}",
+            npa_status: "{{ task.npa_status|default:'' }}",
+            pos_amount: "{{ task.pos_amount|default:'' }}",
+            emi_amount: "{{ task.emi_amount|default:'' }}",
+            emi_due_amount: "{{ task.emi_due_amount|default:'' }}",
+            total_charges: "{{ task.total_charges|default:'' }}",
+            recipt_amount: "{{ task.recipt_amount|default:'' }}",
+            recipt_date: "{{ task.recipt_date|default:'' }}",
+            bcc_pending: "{{ task.bcc_pending|default:'' }}",
+            penal_pending: "{{ task.penal_pending|default:'' }}",
+            disbursement_amount: "{{ task.disbursement_amount|default:'' }}",
+            loan_amount: "{{ task.loan_amount|default:'' }}",
+            disbursement_date: "{{ task.disbursement_date|default:'' }}",
+            emi_start_date: "{{ task.emi_start_date|default:'' }}",
+            emi_end_date: "{{ task.emi_end_date|default:'' }}",
+            emi_cycle_date: "{{ task.emi_cycle_date|default:'' }}",
+            make: "{{ task.make|default:'' }}",
+            manufacturer_description: "{{ task.manufacturer_description|default:'' }}",
+            registration_number: "{{ task.registration_number|default:'' }}",
+            vehicle_age: "{{ task.vehicle_age|default:'' }}",
+            employer: "{{ task.employer|default:'' }}",
+            father_name: "{{ task.father_name|default:'' }}",
+            fe_name: "{{ task.fe_name|default:'' }}",
+            fe_mobile_number: "{{ task.fe_mobile_number|default:'' }}",
+            customer_mobile_number: "{{ task.customer_mobile_number|default:'' }}",
+            customer_address: "{{ task.customer_address|default:'' }}",
+            customer_office_address: "{{ task.customer_office_address|default:'' }}",
+            pin_code: "{{ task.pin_code|default:'' }}",
+            reference_details: "{{ task.reference_details|default:'' }}",
+            collection_manager_name: "{{ task.collection_manager_name|default:'' }}",
+            finance_company_name: "{{ task.finance_company_name|default:'' }}"
+        }{% if not forloop.last %},{% endif %}
+        {% endfor %}
+    ];
 
-        const columnMapping = {
-            "Sl": "sl",
-            "Agreement ID": "agreementId",
-            "Customer Name": "customerName",
-            "Product": "prod",
-            "TC Name": "tcName",
-            "Branch": "branch",
-            "Count of Cases": "countOfCases",
-            "Old/New": "oldNew",
-            "Bucket": "bucket",
-            "Mode": "mode",
-            "NPA Status": "npaStatus",
-            "POS": "pos",
-            "EMI Amount": "emiAmt",
-            "EMI Due Amount": "emiDueAmount",
-            "Total Charges": "totalCharges",
-            "Receipt Amount": "receiptAmount",
-            "Receipt Date": "receiptDate",
-            "BCC Pending": "bccPending",
-            "Penal Pending": "penalPending",
-            "Disbursement Amount": "disbAmt",
-            "Loan Amount": "loanAmt",
-            "Disbursement Date": "disbDate",
-            "EMI Start Date": "emiStartDate",
-            "EMI End Date": "emiEndDate",
-            "EMI Cycle Date": "emiCycleDate",
-            "Make": "make",
-            "Manufacturer Description": "manufacturerDesc",
-            "Registration Number": "regdnum",
-            "Age": "age",
-            "Employer": "employer",
-            "Father Name": "fatherName",
-            "FE Name": "feName",
-            "FE Mobile Number": "feMobileNumber",
-            "Customer Number": "customerNumber",
-            "Customer Address": "customerAddress",
-            "Customer Office Address": "customerOfficeAddress",
-            "PIN Code": "pinCode",
-            "Reference Details": "referenceDetails",
-            "Collection Manager Name": "collectionManagerName",
-            "Finance Company Name": "financeCompanyName"
-        };
+    let filteredTasks = [...allTasks];
+    let currentTask = null;
 
-        const fieldLabels = {
-            "sl": "Serial No.",
-            "agreementId": "Agreement ID",
-            "customerName": "Customer Name",
-            "prod": "Product",
-            "tcName": "TC Name",
-            "branch": "Branch",
-            "countOfCases": "Count of Cases",
-            "oldNew": "Old/New",
-            "bucket": "Bucket",
-            "mode": "Mode",
-            "npaStatus": "NPA Status",
-            "pos": "POS",
-            "emiAmt": "EMI Amount",
-            "emiDueAmount": "EMI Due Amount",
-            "totalCharges": "Total Charges",
-            "receiptAmount": "Receipt Amount",
-            "receiptDate": "Receipt Date",
-            "bccPending": "BCC Pending",
-            "penalPending": "Penal Pending",
-            "disbAmt": "Disbursement Amount",
-            "loanAmt": "Loan Amount",
-            "disbDate": "Disbursement Date",
-            "emiStartDate": "EMI Start Date",
-            "emiEndDate": "EMI End Date",
-            "emiCycleDate": "EMI Cycle Date",
-            "make": "Make",
-            "manufacturerDesc": "Manufacturer Description",
-            "regdnum": "Registration Number",
-            "age": "Age",
-            "employer": "Employer",
-            "fatherName": "Father Name",
-            "feName": "FE Name",
-            "feMobileNumber": "FE Mobile Number",
-            "customerNumber": "Customer Number",
-            "customerAddress": "Customer Address",
-            "customerOfficeAddress": "Customer Office Address",
-            "pinCode": "PIN Code",
-            "referenceDetails": "Reference Details",
-            "collectionManagerName": "Collection Manager Name",
-            "financeCompanyName": "Finance Company Name"
-        };
+    function initializeFilters() {
+        const columnSelect = document.getElementById('columnSelect');
+        
+        if (!columnSelect) return;
 
-        let filteredTasks = [...tasks];
-        let currentTask = null;
+        Object.keys(columnMapping).forEach(displayName => {
+            const option = document.createElement('option');
+            option.value = displayName;
+            option.textContent = displayName;
+            columnSelect.appendChild(option);
+        });
 
-        function initializeFilters() {
-            const columnSelect = document.getElementById('columnSelect');
+        columnSelect.addEventListener('change', onColumnChange);
+        const valueSelect = document.getElementById('valueSelect');
+        if (valueSelect) {
+            valueSelect.addEventListener('change', onValueChange);
+        }
+    }
 
-            Object.keys(columnMapping).forEach(displayName => {
-                const option = document.createElement('option');
-                option.value = displayName;
-                option.textContent = displayName;
-                columnSelect.appendChild(option);
-            });
+    function onColumnChange(e) {
+        const selectedColumn = e.target.value;
+        const valueSelect = document.getElementById('valueSelect');
 
-            columnSelect.addEventListener('change', onColumnChange);
-            document.getElementById('valueSelect').addEventListener('change', onValueChange);
+        if (!valueSelect) return;
+
+        valueSelect.innerHTML = '<option value="">-- Select Value --</option>';
+
+        if (!selectedColumn) {
+            valueSelect.disabled = true;
+            return;
         }
 
-        function onColumnChange(e) {
-            const selectedColumn = e.target.value;
-            const valueSelect = document.getElementById('valueSelect');
+        valueSelect.disabled = false;
 
-            valueSelect.innerHTML = '<option value="">-- Select Value --</option>';
+        const fieldKey = columnMapping[selectedColumn];
+        const uniqueValues = [...new Set(allTasks.map(task => task[fieldKey]))].filter(v => v).sort();
 
-            if (!selectedColumn) {
-                valueSelect.disabled = true;
-                return;
-            }
+        uniqueValues.forEach(value => {
+            const option = document.createElement('option');
+            option.value = value;
+            option.textContent = value;
+            valueSelect.appendChild(option);
+        });
+    }
 
-            valueSelect.disabled = false;
+    function onValueChange(e) {
+        const selectedColumn = document.getElementById('columnSelect').value;
+        const selectedValue = e.target.value;
 
+        if (!selectedColumn || !selectedValue) {
+            filteredTasks = [...allTasks];
+        } else {
             const fieldKey = columnMapping[selectedColumn];
-            const uniqueValues = [...new Set(tasks.map(task => task[fieldKey]))].sort();
-
-            uniqueValues.forEach(value => {
-                const option = document.createElement('option');
-                option.value = value;
-                option.textContent = value;
-                valueSelect.appendChild(option);
-            });
+            filteredTasks = allTasks.filter(task => task[fieldKey] == selectedValue);
         }
 
-        function onValueChange(e) {
-            const selectedColumn = document.getElementById('columnSelect').value;
-            const selectedValue = e.target.value;
+        renderTable();
+    }
 
-            if (!selectedColumn || !selectedValue) {
-                filteredTasks = [...tasks];
-            } else {
-                const fieldKey = columnMapping[selectedColumn];
-                filteredTasks = tasks.filter(task => task[fieldKey] == selectedValue);
-            }
-
-            renderTable();
+    function resetFilters() {
+        document.getElementById('columnSelect').value = '';
+        const valueSelect = document.getElementById('valueSelect');
+        if (valueSelect) {
+            valueSelect.innerHTML = '<option value="">-- Select Value --</option>';
+            valueSelect.disabled = true;
         }
+        filteredTasks = [...allTasks];
+        renderTable();
+    }
 
-        function resetFilters() {
-            document.getElementById('columnSelect').value = '';
-            document.getElementById('valueSelect').innerHTML = '<option value="">-- Select Value --</option>';
-            document.getElementById('valueSelect').disabled = true;
-            filteredTasks = [...tasks];
-            renderTable();
-        }
+    function populateRowDetails(task) {
+        const detailsGrid = document.getElementById('rowDetailsGrid');
+        if (!detailsGrid) return;
+        
+        detailsGrid.innerHTML = '';
 
-        function populateRowDetails(task) {
-            const detailsGrid = document.getElementById('rowDetailsGrid');
-            detailsGrid.innerHTML = '';
+        Object.keys(task).forEach(key => {
+            const detailItem = document.createElement('div');
+            detailItem.className = 'detail-item';
 
-            // Create detail items for all fields
-            Object.keys(task).forEach(key => {
-                const detailItem = document.createElement('div');
-                detailItem.className = 'detail-item';
+            const label = document.createElement('div');
+            label.className = 'detail-label';
+            label.textContent = fieldLabels[key] || key;
 
-                const label = document.createElement('div');
-                label.className = 'detail-label';
-                label.textContent = fieldLabels[key] || key;
+            const value = document.createElement('div');
+            value.className = 'detail-value';
+            value.textContent = task[key] || '-';
 
-                const value = document.createElement('div');
-                value.className = 'detail-value';
-                value.textContent = task[key] || '-';
+            detailItem.appendChild(label);
+            detailItem.appendChild(value);
+            detailsGrid.appendChild(detailItem);
+        });
+    }
 
-                detailItem.appendChild(label);
-                detailItem.appendChild(value);
-                detailsGrid.appendChild(detailItem);
-            });
-        }
-
-        function openModal(task) {
-            currentTask = task;
-            populateRowDetails(task);
-            document.getElementById('detailModal').style.display = 'block';
+    function openModal(task) {
+        currentTask = task;
+        populateRowDetails(task);
+        const modal = document.getElementById('detailModal');
+        if (modal) {
+            modal.style.display = 'block';
             document.body.style.overflow = 'hidden';
         }
+    }
 
-        function closeModal() {
-            document.getElementById('detailModal').style.display = 'none';
+    function closeModal() {
+        const modal = document.getElementById('detailModal');
+        if (modal) {
+            modal.style.display = 'none';
             document.body.style.overflow = 'auto';
-            document.getElementById('detailForm').reset();
         }
+        const form = document.getElementById('detailForm');
+        if (form) form.reset();
+    }
 
-        function saveDetails() {
-            const formData = {
-                agreementId: currentTask.agreementId,
-                customerName: currentTask.customerName,
-                code: document.getElementById('code').value,
-                newMobileNumber: document.getElementById('newMobileNumber').value,
-                projection: document.getElementById('projection').value,
-                promiseDate: document.getElementById('promiseDate').value,
-                promiseAmount: document.getElementById('promiseAmount').value,
-                customerRemarks: document.getElementById('customerRemarks').value,
-                referenceRemarks: document.getElementById('referenceRemarks').value,
-                needGroupVisit: document.getElementById('needGroupVisit').value,
-                projectionExtended: document.getElementById('projectionExtended').value,
-                visitStatus: document.getElementById('visitStatus').value,
-                customerAvailable: document.getElementById('customerAvailable').value,
-                vehicleAvailable: document.getElementById('vehicleAvailable').value,
-                thirdPartyStatus: document.getElementById('thirdPartyStatus').value,
-                thirdPartyDetails: document.getElementById('thirdPartyDetails').value,
-                newUpdateAddress: document.getElementById('newUpdateAddress').value,
-                status: document.getElementById('status').value,
-                payment: document.getElementById('payment').value,
-                paymentMode: document.getElementById('paymentMode').value,
-                paymentAmount: document.getElementById('paymentAmount').value,
-                paymentDate: document.getElementById('paymentDate').value
-            };
+    function saveDetails() {
+        const formData = {
+            agreementId: currentTask.aggrement_id,
+            customerName: currentTask.customer_name,
+            code: document.getElementById('code')?.value || '',
+            newMobileNumber: document.getElementById('newMobileNumber')?.value || '',
+            projection: document.getElementById('projection')?.value || '',
+            promiseDate: document.getElementById('promiseDate')?.value || '',
+            promiseAmount: document.getElementById('promiseAmount')?.value || '',
+            customerRemarks: document.getElementById('customerRemarks')?.value || '',
+            referenceRemarks: document.getElementById('referenceRemarks')?.value || '',
+            needGroupVisit: document.getElementById('needGroupVisit')?.value || '',
+            projectionExtended: document.getElementById('projectionExtended')?.value || '',
+            visitStatus: document.getElementById('visitStatus')?.value || '',
+            customerAvailable: document.getElementById('customerAvailable')?.value || '',
+            vehicleAvailable: document.getElementById('vehicleAvailable')?.value || '',
+            thirdPartyStatus: document.getElementById('thirdPartyStatus')?.value || '',
+            thirdPartyDetails: document.getElementById('thirdPartyDetails')?.value || '',
+            newUpdateAddress: document.getElementById('newUpdateAddress')?.value || '',
+            status: document.getElementById('status')?.value || '',
+            payment: document.getElementById('payment')?.value || '',
+            paymentMode: document.getElementById('paymentMode')?.value || '',
+            paymentAmount: document.getElementById('paymentAmount')?.value || '',
+            paymentDate: document.getElementById('paymentDate')?.value || ''
+        };
 
-            console.log('Form Data:', formData);
+        console.log('Form Data:', formData);
 
-            alert('Details saved successfully for Agreement ID: ' + currentTask.agreementId);
+        // TODO: Send data to server via AJAX
+        // Example:
+        // fetch('/save-details/', {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //         'X-CSRFToken': getCookie('csrftoken')
+        //     },
+        //     body: JSON.stringify(formData)
+        // })
+        // .then(response => response.json())
+        // .then(data => {
+        //     alert('Details saved successfully!');
+        //     closeModal();
+        // });
+
+        alert('Details saved successfully for Agreement ID: ' + currentTask.aggrement_id);
+        closeModal();
+    }
+
+    // Helper function to get CSRF token
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    window.onclick = function(event) {
+        const modal = document.getElementById('detailModal');
+        if (event.target == modal) {
             closeModal();
         }
+    }
 
-        window.onclick = function (event) {
-            const modal = document.getElementById('detailModal');
-            if (event.target == modal) {
-                closeModal();
-            }
+    function renderTable() {
+        const tbody = document.getElementById('table-body');
+        if (!tbody) return;
+        
+        // Store the table reference
+        const table = document.getElementById('basic-9');
+        const isDataTable = $.fn.DataTable.isDataTable(table);
+        
+        // If DataTable is initialized, destroy it temporarily
+        let dtInstance;
+        if (isDataTable) {
+            dtInstance = $(table).DataTable();
+            dtInstance.destroy();
         }
-
-        function renderTable() {
-            const tbody = document.getElementById("table-body");
-            tbody.innerHTML = '';
-
-            if (filteredTasks.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="41" class="no-results">No results found</td></tr>';
-                return;
-            }
-
-            filteredTasks.forEach((task, index) => {
+        
+        // Clear tbody
+        tbody.innerHTML = '';
+        
+        if (filteredTasks.length === 0) {
+            tbody.innerHTML = '<tr class="no-results-row"><td colspan="40" style="text-align: center; padding: 40px; color: #999;">No results found</td></tr>';
+        } else {
+            // Render filtered tasks
+            filteredTasks.forEach((task) => {
                 const row = document.createElement('tr');
-                row.onclick = function () { openModal(task); };
+                row.onclick = function() { openModal(task); };
+                row.style.cursor = 'pointer';
 
                 row.innerHTML = `
                     <td>${task.sl}</td>
-                    <td>${task.agreementId}</td>
-                    <td>${task.customerName}</td>
-                    <td>${task.prod}</td>
-                    <td>${task.tcName}</td>
+                    <td>${task.aggrement_id}</td>
+                    <td>${task.customer_name}</td>
+                    <td>${task.product_type}</td>
+                    <td>${task.tc_name}</td>
                     <td>${task.branch}</td>
-                    <td>${task.countOfCases}</td>
-                    <td>${task.oldNew}</td>
+                    <td>${task.count_of_cases}</td>
+                    <td>${task.old_or_new}</td>
                     <td>${task.bucket}</td>
                     <td>${task.mode}</td>
-                    <td>${task.npaStatus}</td>
-                    <td>${task.pos}</td>
-                    <td>${task.emiAmt}</td>
-                    <td>${task.emiDueAmount}</td>
-                    <td>${task.totalCharges}</td>
-                    <td>${task.receiptAmount}</td>
-                    <td>${task.receiptDate}</td>
-                    <td>${task.bccPending}</td>
-                    <td>${task.penalPending}</td>
-                    <td>${task.disbAmt}</td>
-                    <td>${task.loanAmt}</td>
-                    <td>${task.disbDate}</td>
-                    <td>${task.emiStartDate}</td>
-                    <td>${task.emiEndDate}</td>
-                    <td>${task.emiCycleDate}</td>
+                    <td>${task.npa_status}</td>
+                    <td>${task.pos_amount}</td>
+                    <td>${task.emi_amount}</td>
+                    <td>${task.emi_due_amount}</td>
+                    <td>${task.total_charges}</td>
+                    <td>${task.recipt_amount}</td>
+                    <td>${task.recipt_date}</td>
+                    <td>${task.bcc_pending}</td>
+                    <td>${task.penal_pending}</td>
+                    <td>${task.disbursement_amount}</td>
+                    <td>${task.loan_amount}</td>
+                    <td>${task.disbursement_date}</td>
+                    <td>${task.emi_start_date}</td>
+                    <td>${task.emi_end_date}</td>
+                    <td>${task.emi_cycle_date}</td>
                     <td>${task.make}</td>
-                    <td>${task.manufacturerDesc}</td>
-                    <td>${task.regdnum}</td>
-                    <td>${task.age}</td>
+                    <td>${task.manufacturer_description}</td>
+                    <td>${task.registration_number}</td>
+                    <td>${task.vehicle_age}</td>
                     <td>${task.employer}</td>
-                    <td>${task.fatherName}</td>
-                    <td>${task.feName}</td>
-                    <td>${task.feMobileNumber}</td>
-                    <td>${task.customerNumber}</td>
-                    <td>${task.customerAddress}</td>
-                    <td>${task.customerOfficeAddress}</td>
-                    <td>${task.pinCode}</td>
-                    <td>${task.referenceDetails}</td>
-                    <td>${task.collectionManagerName}</td>
-                    <td>${task.financeCompanyName}</td>
-                    <td>
-                        <button class="btn btn-primary" onclick="event.stopPropagation(); openModal(tasks[${index}])">View</button>
-                    </td>
+                    <td>${task.father_name}</td>
+                    <td>${task.fe_name}</td>
+                    <td>${task.fe_mobile_number}</td>
+                    <td>${task.customer_mobile_number}</td>
+                    <td>${task.customer_address}</td>
+                    <td>${task.customer_office_address}</td>
+                    <td>${task.pin_code}</td>
+                    <td>${task.reference_details}</td>
+                    <td>${task.collection_manager_name}</td>
+                    <td>${task.finance_company_name}</td>
                 `;
                 tbody.appendChild(row);
             });
         }
+        
+        // Re-initialize DataTable if it was initialized before
+        if (isDataTable) {
+            $(table).DataTable({
+                // Add your DataTable options here if you have any custom settings
+                // For example: pageLength: 10, searching: true, etc.
+            });
+        }
+    }
 
+    // Initialize when DOM is ready
+    document.addEventListener('DOMContentLoaded', function() {
         initializeFilters();
-        renderTable();
-
-
-
-
-
-
-
-    </script>
+        renderTable(); // Initial render of all tasks
+    });
+</script>
 
     <!-- <script>
     document.querySelector(".sweet-26").onclick = function () {

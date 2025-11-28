@@ -332,7 +332,12 @@ def download_sample_excel_user_create(request):
 
 
 def assign_task(request):
-    return render(request, "assign_task.html")
+    session_admin_id = request.session.get('admin_id')
+    admin_id_pk = admin_user_model.objects.get(pk = session_admin_id)
+    create_task_list = Create_task.objects.filter(
+        admin_id = admin_id_pk
+    )
+    return render(request, "assign_task.html", {"task_list":create_task_list})
 
 
 def complete_task(request):
@@ -464,6 +469,11 @@ def create_task(request):
     
     
     return render(request, "create_task.html", {"users": user_list})
+
+#create task list api function
+class Create_task_Viewset(viewsets.ModelViewSet):
+    queryset = Create_task.objects.all()
+    serializer_class = CreateTaskSerializer
 
 def import_tasks_from_excel(request):
     session_admin_id = request.session.get("admin_id")

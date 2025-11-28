@@ -12,3 +12,8 @@ class UserListSerializer(serializers.ModelSerializer):
 class UserLoginSerializer(serializers.Serializer):
     email = serializers.CharField()
     password = serializers.CharField(write_only=True)
+    
+class CreateTaskSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Create_task
+        fields = '__all__'
