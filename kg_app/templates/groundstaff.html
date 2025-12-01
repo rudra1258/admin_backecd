@@ -140,31 +140,30 @@
                         </thead>
                         <tbody>
                           {% for staff in data %}
-                           <tr>
-                              <td>{{forloop.counter}}</td>
-                              <td>{{staff.first_name}}{{team.last_name}}</td>
-                              <td>{{staff.phone_number}}</td>
-                              <td>{{staff.email}}</td>
-                              <td>{{staff.address}}</td>
-                              <td>{{staff.created_at}}</td>
-                              <td>
+                          <tr>
+                            <td>{{forloop.counter}}</td>
+                            <td>{{staff.first_name}}{{team.last_name}}</td>
+                            <td>{{staff.phone_number}}</td>
+                            <td>{{staff.email}}</td>
+                            <td>{{staff.address}}</td>
+                            <td>{{staff.created_at}}</td>
+                            <td>
 
-                                      <ul class="action" style="display:flex;gap:10px;list-style:none;padding:0;margin:0;">
-                                          <li class="delete">
-                                              <form method="post" action="{% url 'kg_app:gs_delete' staff.id %}"
-                                                    onsubmit="return confirm('Delete this record?');"
-                                                    style="display:inline;">
-                                                  {% csrf_token %}
-                                                  <button type="submit" style="background:none;border:0;cursor:pointer;color:red;">
-                                                      <i class="fa-solid fa-trash-can"></i>
-                                                  </button>
-                                              </form>
-                                          </li>
-                                      </ul>
-                                  </td>
-                              
-                            </tr>
-                            {% endfor %}
+                              <ul class="action" style="display:flex;gap:10px;list-style:none;padding:0;margin:0;">
+                                <li class="delete">
+                                  <form method="post" action="{% url 'kg_app:gs_delete' staff.id %}"
+                                    onsubmit="return confirm('Delete this record?');" style="display:inline;">
+                                    {% csrf_token %}
+                                    <button type="submit" style="background:none;border:0;cursor:pointer;color:red;">
+                                      <i class="fa-solid fa-trash-can"></i>
+                                    </button>
+                                  </form>
+                                </li>
+                              </ul>
+                            </td>
+
+                          </tr>
+                          {% endfor %}
                         </tbody>
                       </table>
                     </div>
@@ -269,39 +268,39 @@
 
 
   <script>
-  // Sample dataset generator for 80 employees
-const firstNames = ["Ravi","Priya","Amit","Neha","Vikram","Sanya","Rohit","Anjali","Siddharth","Pooja","Manish","Isha","Karan","Ritika","Saurabh","Neelam","Aditya","Shreya","Vivek","Deepika","Rajan","Ananya","Arjun","Sakshi","Rohan"];
-const lastNames = ["Sharma","Singh","Kumar","Gupta","Reddy","Mehta","Verma","Nair","Joshi","Kapoor","Choudhary","Pandey","Malhotra","Bhatia","Jain","Roy","Deshmukh","Dutta","Rao","Mishra","Saxena","Tripathi","Shukla","Patel","Chatterjee"];
-const cities = ["Delhi","Mumbai","Bangalore","Hyderabad","Chennai","Pune","Kolkata","Jaipur","Lucknow","Bhubaneswar","Ahmedabad","Trivandrum","Nagpur","Chandigarh"];
-const streets = ["MG Road","Park Street","Laxmi Nagar","Bandra West","Indira Nagar","Sector 15","Civil Lines","Kumar Street","Ring Road","Shastri Nagar"];
+    // Sample dataset generator for 80 employees
+    const firstNames = ["Ravi", "Priya", "Amit", "Neha", "Vikram", "Sanya", "Rohit", "Anjali", "Siddharth", "Pooja", "Manish", "Isha", "Karan", "Ritika", "Saurabh", "Neelam", "Aditya", "Shreya", "Vivek", "Deepika", "Rajan", "Ananya", "Arjun", "Sakshi", "Rohan"];
+    const lastNames = ["Sharma", "Singh", "Kumar", "Gupta", "Reddy", "Mehta", "Verma", "Nair", "Joshi", "Kapoor", "Choudhary", "Pandey", "Malhotra", "Bhatia", "Jain", "Roy", "Deshmukh", "Dutta", "Rao", "Mishra", "Saxena", "Tripathi", "Shukla", "Patel", "Chatterjee"];
+    const cities = ["Delhi", "Mumbai", "Bangalore", "Hyderabad", "Chennai", "Pune", "Kolkata", "Jaipur", "Lucknow", "Bhubaneswar", "Ahmedabad", "Trivandrum", "Nagpur", "Chandigarh"];
+    const streets = ["MG Road", "Park Street", "Laxmi Nagar", "Bandra West", "Indira Nagar", "Sector 15", "Civil Lines", "Kumar Street", "Ring Road", "Shastri Nagar"];
 
-function randomItem(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
-function randomMobile() { return "9" + Math.floor(100000000 + Math.random()*900000000); }
-function randomEmail(name) { return name.toLowerCase().replace(" ",".") + "@example.com"; }
-function randomDate(start="2010-01-01", end="2023-12-31") {
-    const startDate = new Date(start);
-    const endDate = new Date(end);
-    const date = new Date(startDate.getTime() + Math.random() * (endDate.getTime() - startDate.getTime()));
-    return date.toISOString().split('T')[0];
-}
+    function randomItem(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+    function randomMobile() { return "9" + Math.floor(100000000 + Math.random() * 900000000); }
+    function randomEmail(name) { return name.toLowerCase().replace(" ", ".") + "@example.com"; }
+    function randomDate(start = "2010-01-01", end = "2023-12-31") {
+      const startDate = new Date(start);
+      const endDate = new Date(end);
+      const date = new Date(startDate.getTime() + Math.random() * (endDate.getTime() - startDate.getTime()));
+      return date.toISOString().split('T')[0];
+    }
 
-const employees = [];
-for(let i=1; i<=80; i++){
-    const first = randomItem(firstNames);
-    const last = randomItem(lastNames);
-    const name = first + " " + last;
-    const mobile = randomMobile();
-    const email = randomEmail(name);
-    const address = `${Math.floor(Math.random()*200+1)}, ${randomItem(streets)}, ${randomItem(cities)}`;
-    const joinDate = randomDate();
-    
-    employees.push({sl: i, name, mobile, email, address, joinDate});
-}
+    const employees = [];
+    for (let i = 1; i <= 80; i++) {
+      const first = randomItem(firstNames);
+      const last = randomItem(lastNames);
+      const name = first + " " + last;
+      const mobile = randomMobile();
+      const email = randomEmail(name);
+      const address = `${Math.floor(Math.random() * 200 + 1)}, ${randomItem(streets)}, ${randomItem(cities)}`;
+      const joinDate = randomDate();
 
-// Populate table body
-const tbody = document.getElementById("table-body");
-employees.forEach(emp => {
-  tbody.innerHTML += `
+      employees.push({ sl: i, name, mobile, email, address, joinDate });
+    }
+
+    // Populate table body
+    const tbody = document.getElementById("table-body");
+    employees.forEach(emp => {
+      tbody.innerHTML += `
     <tr>
       <td>${emp.sl}</td>
       <td>${emp.name}</td>
@@ -316,9 +315,9 @@ employees.forEach(emp => {
         </ul>
       </td>
     </tr>`;
-});
+    });
 
-</script>
+  </script>
 
 </body>
 

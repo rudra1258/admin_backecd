@@ -605,6 +605,125 @@
             line-height: 1.4;
             opacity: 0.95;
         }
+
+
+        /*history table css*/
+        .popup-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .popup-overlay.active {
+        display: flex;
+    }
+
+    .popup-container {
+        background: white;
+        border-radius: 8px;
+        width: 95%;
+        max-width: 1200px;
+        max-height: 85vh;
+        overflow: hidden;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        animation: slideDown 0.3s ease;
+    }
+
+    @keyframes slideDown {
+        from {
+            transform: translateY(-50px);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
+    .popup-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px;
+        border-bottom: 2px solid #f0f0f0;
+        background-color: #f8f9fa;
+    }
+
+    .popup-header h2 {
+        margin: 0;
+        color: #333;
+        font-size: 24px;
+    }
+
+    .close-btn {
+        font-size: 32px;
+        color: #666;
+        cursor: pointer;
+        transition: color 0.3s;
+        line-height: 1;
+    }
+
+    .close-btn:hover {
+        color: #ff0000;
+    }
+
+    .popup-body {
+        padding: 20px;
+        overflow-y: auto;
+        max-height: calc(85vh - 80px);
+    }
+
+    .history-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+        font-size: 14px;
+    }
+
+    .history-table thead {
+        background-color: #007bff;
+        color: white;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+
+    .history-table th,
+    .history-table td {
+        padding: 12px 8px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .history-table th {
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 12px;
+    }
+
+    .history-table tbody tr:hover {
+        background-color: #f5f5f5;
+    }
+
+    .history-table tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    .history-table a {
+        color: #007bff;
+        text-decoration: none;
+    }
+
+    .history-table a:hover {
+        text-decoration: underline;
+    }
     </style>
 
 </head>
@@ -869,23 +988,53 @@
                                                 </div>
 
                                                 <!-- Form Section -->
-                                                <form id="detailForm">
+                                                <form id="detailForm" method="post" action="{% url 'kg_app:update_task' %}" enctype="multipart/form-data">
+                                                    {% csrf_token %}
                                                     <div class="form-section">
                                                         <h3>Contact Information</h3>
                                                         <div class="form-grid">
                                                             <div class="form-group">
+                                                                <label>Agreement Id</label>
+                                                                <input type="text" id="agreementIdInput" name="agreement_id" value="" readonly>
+                                                            </div>
+                                                            <input type="text" id="task_id" name="task_id" value="" readonly hidden>
+                                                            <div class="form-group">
                                                                 <label>Code</label>
-                                                                <select id="code">
-                                                                    <option value="">Select Code</option>
-                                                                    <option value="C1">Code 1</option>
-                                                                    <option value="C2">Code 2</option>
-                                                                    <option value="C3">Code 3</option>
+                                                                <select id="code" name="code" required>
+                                                                    <option value="" selected disabled>Select Code</option>
+                                                                    <option value="CB">CB - THE CUSTOMER ASKED US TO CALL BACK</option>
+                                                                    <option value="DISP">DISP - DISPUTED CASES</option>
+                                                                    <option value="EXP">EXP - DEATH</option>
+                                                                    <option value="NC">NC - NOT CONTACT/INVALID/INCOMING CALL OFF</option>
+                                                                    <option value="NITP">NITP - CUSTOMER HAVING NO INTENSION TO REPAY LOANS / INTENTIONAL ISSUES</option>
+                                                                    <option value="OS">OS - OUT OF STATION</option>
+                                                                    <option value="PAID">PAID - PAID</option>
+                                                                    <option value="PTP">PTP - PROMISED TO PAY</option>
+                                                                    <option value="REPO">REPO - VEHICLE REPOSSESSION</option>
+                                                                    <option value="RNR">RNR - CUSTOMER NOT RESPONDING THE CALL</option>
+                                                                    <option value="RTP">RTP - REFUSED TO PAY</option>
+                                                                    <option value="SHIFT">SHIFT - SHIFTED THE ADDRESS</option>
+                                                                    <option value="SKIP">SKIP - SKIP THE ADDRESS</option>
+                                                                    <option value="VISIT">VISIT - NOT VISIT</option>
+                                                                    <option value="RE-VISIT">RE-VISIT - NEED TO GROUP VISIT</option>
+                                                                    <option value="WIP">WIP - WORKING PROGRESS</option>
+                                                                    <option value="N-OFF">N-OFF - NUMBER OFF</option>
+                                                                    <option value="ANF">ANF - ADDRESS NOT FOUND</option>
+                                                                    <option value="FRAUD">FRAUD - POTENTIAL FRAUD</option>
+                                                                    <option value="PS">PS - PRODUCT SOLD</option>
+                                                                    <option value="CF">CF - CASH FUNDING</option>
+                                                                    <option value="FP">FP - FINANCIAL PROBLEM</option>
+                                                                    <option value="WS">WS - WANTS SETTLEMENT</option>
+                                                                    <option value="NO JOB">NO JOB - JOBLESS</option>
+                                                                    <option value="MP">MP - MEDICAL PROBLEMS</option>
+                                                                    <option value="MD">MD - MULTIPLE LOAN AVAILED & MARKET DEFAULTER</option>
+                                                                    <option value="IC">IC - INSURANCE CLAIM</option>
+                                                                    <option value="3P">3P - 3RD PARTY CASE</option>
                                                                 </select>
                                                             </div>
                                                             <div class="form-group">
                                                                 <label>New Mobile Number</label>
-                                                                <input type="tel" id="newMobileNumber"
-                                                                    placeholder="Enter mobile number">
+                                                                <input type="tel" id="newMobileNumber" name="newMobileNumber" placeholder="Enter mobile number" required>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -895,21 +1044,20 @@
                                                         <div class="form-grid">
                                                             <div class="form-group">
                                                                 <label>Projection (Y/D/N)</label>
-                                                                <select id="projection">
-                                                                    <option value="">Select</option>
-                                                                    <option value="Y">Yes</option>
-                                                                    <option value="D">Delayed</option>
-                                                                    <option value="N">No</option>
+                                                                <select id="projection" name="projection" required >
+                                                                    <option value="" selected disabled>Select</option>
+                                                                    <option value="Yes">Yes</option>
+                                                                    <option value="Delayed">Delayed</option>
+                                                                    <option value="No">No</option>
                                                                 </select>
                                                             </div>
                                                             <div class="form-group">
                                                                 <label>Promise Date</label>
-                                                                <input type="datetime-local" id="promiseDate">
+                                                                <input type="datetime-local" id="promise_date" name="promise_date" required>
                                                             </div>
                                                             <div class="form-group">
                                                                 <label>Promise Amount</label>
-                                                                <input type="number" id="promiseAmount"
-                                                                    placeholder="00000/-">
+                                                                <input type="number" id="promiseAmount" name="promise_amt" placeholder="00000/-" required>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -919,13 +1067,11 @@
                                                         <div class="form-grid">
                                                             <div class="form-group">
                                                                 <label>Customer Remarks</label>
-                                                                <textarea id="customerRemarks"
-                                                                    placeholder="Enter customer remarks"></textarea>
+                                                                <textarea id="customerRemarks" placeholder="Enter customer remarks" name="customer_remark" required></textarea>
                                                             </div>
                                                             <div class="form-group">
                                                                 <label>Reference Remarks</label>
-                                                                <textarea id="referenceRemarks"
-                                                                    placeholder="Enter reference remarks"></textarea>
+                                                                <textarea id="referenceRemarks" placeholder="Enter reference remarks" name="referencr_remark" required></textarea>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -935,29 +1081,29 @@
                                                         <div class="form-grid">
                                                             <div class="form-group">
                                                                 <label>Need Group Visit (Y/N)</label>
-                                                                <select id="needGroupVisit">
-                                                                    <option value="">Select</option>
-                                                                    <option value="Y">Yes</option>
-                                                                    <option value="N">No</option>
+                                                                <select id="needGroupVisit" name="need_group_visit"required>
+                                                                    <option value="" selected disabled>--Select--</option>
+                                                                    <option value="Yes">Yes</option>
+                                                                    <option value="No">No</option>
                                                                 </select>
                                                             </div>
                                                             <div class="form-group">
                                                                 <label>Projection (Y/Y2/Y3/D/N)</label>
-                                                                <select id="projectionExtended">
+                                                                <select id="projectionExtended" name="visit_projection">
                                                                     <option value="">Select</option>
-                                                                    <option value="Y">Yes</option>
-                                                                    <option value="Y2">Yes 2</option>
-                                                                    <option value="Y3">Yes 3</option>
-                                                                    <option value="D">Delayed</option>
-                                                                    <option value="N">No</option>
+                                                                    <option value="Yess">Yes</option>
+                                                                    <option value="Yes2">Yes 2</option>
+                                                                    <option value="Yes3">Yes 3</option>
+                                                                    <option value="Delayed">Delayed</option>
+                                                                    <option value="No">No</option>
                                                                 </select>
                                                             </div>
                                                             <div class="form-group">
                                                                 <label>Visit Status (Y/N)</label>
-                                                                <select id="visitStatus">
-                                                                    <option value="">Select</option>
-                                                                    <option value="Y">Yes</option>
-                                                                    <option value="N">No</option>
+                                                                <select id="visitStatus" name="visit_status" required>
+                                                                    <option value="" selected disabled>Select</option>
+                                                                    <option value="Yes">Yes</option>
+                                                                    <option value="No">No</option>
                                                                 </select>
                                                             </div>
                                                         </div>
@@ -968,32 +1114,31 @@
                                                         <div class="form-grid">
                                                             <div class="form-group">
                                                                 <label>Customer Available (Y/N)</label>
-                                                                <select id="customerAvailable">
-                                                                    <option value="">Select</option>
-                                                                    <option value="Y">Yes</option>
-                                                                    <option value="N">No</option>
+                                                                <select id="customerAvailable" name="customer_available">
+                                                                    <option value="" selected disabled>Select</option>
+                                                                    <option value="Yes">Yes</option>
+                                                                    <option value="No">No</option>
                                                                 </select>
                                                             </div>
                                                             <div class="form-group">
                                                                 <label>Vehicle Available (Y/N)</label>
-                                                                <select id="vehicleAvailable">
-                                                                    <option value="">Select</option>
-                                                                    <option value="Y">Yes</option>
-                                                                    <option value="N">No</option>
+                                                                <select id="vehicleAvailable" name="vehicle_available">
+                                                                    <option value="" selected disabled>Select</option>
+                                                                    <option value="Yes">Yes</option>
+                                                                    <option value="No">No</option>
                                                                 </select>
                                                             </div>
                                                             <div class="form-group">
                                                                 <label>3rd Party Status (Y/N)</label>
-                                                                <select id="thirdPartyStatus">
-                                                                    <option value="">Select</option>
-                                                                    <option value="Y">Yes</option>
-                                                                    <option value="N">No</option>
+                                                                <select id="thirdPartyStatus" name="third_party_status">
+                                                                    <option value="" selected disabled>Select</option>
+                                                                    <option value="Yes">Yes</option>
+                                                                    <option value="No">No</option>
                                                                 </select>
                                                             </div>
                                                             <div class="form-group">
                                                                 <label>3rd Party Details</label>
-                                                                <input type="text" id="thirdPartyDetails"
-                                                                    placeholder="Enter details">
+                                                                <input type="text" id="thirdPartyDetails" name="third_party_details" placeholder="Enter details">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1003,17 +1148,16 @@
                                                         <div class="form-grid">
                                                             <div class="form-group">
                                                                 <label>New Update Address</label>
-                                                                <textarea id="newUpdateAddress"
-                                                                    placeholder="Enter new address"></textarea>
+                                                                <textarea id="newUpdateAddress" name="new_update_address" placeholder="Enter new address" required></textarea>
                                                             </div>
                                                             <div class="form-group">
                                                                 <label>Location Photo</label>
-                                                                <input type="file" id="locationPhoto" accept="image/*">
+                                                                <input type="file" id="locationPhoto" accept="image/*" name="location_image" required>
                                                             </div>
                                                             <div class="form-group">
                                                                 <label>Status (ST/RB/NR/RF)</label>
-                                                                <select id="status">
-                                                                    <option value="">Select</option>
+                                                                <select id="status" required name="location_status">
+                                                                    <option value="" selected disabled>Select</option>
                                                                     <option value="ST">ST</option>
                                                                     <option value="RB">RB</option>
                                                                     <option value="NR">NR</option>
@@ -1028,33 +1172,92 @@
                                                         <div class="form-grid">
                                                             <div class="form-group">
                                                                 <label>Payment</label>
-                                                                <input type="text" id="payment"
-                                                                    placeholder="Enter payment info">
+                                                                <input type="text" id="payment" name="payment_info" required placeholder="Enter payment info">
                                                             </div>
                                                             <div class="form-group">
-                                                                <label>Mode (Cash/Online)</label>
-                                                                <select id="paymentMode">
-                                                                    <option value="">Select</option>
+                                                                <label>Payment Mode</label>
+                                                                <select id="paymentMode" name="payment_mode" required>
+                                                                    <option value="" selected disabled>Select</option>
                                                                     <option value="Cash">Cash</option>
                                                                     <option value="Online">Online</option>
                                                                 </select>
                                                             </div>
                                                             <div class="form-group">
                                                                 <label>Payment Amount</label>
-                                                                <input type="number" id="paymentAmount"
-                                                                    placeholder="00000/-">
+                                                                <input type="number" id="paymentAmount" name="payment_amount" required placeholder="00000/-">
                                                             </div>
                                                             <div class="form-group">
                                                                 <label>Payment Date</label>
-                                                                <input type="datetime-local" id="paymentDate">
+                                                                <input type="datetime-local" id="paymentDate" name="payment_date" required>
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    <div class="modal-footer">
+                                                        
+                                                        <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+                                                        <button class="btn-save" type="submit">Save Changes</button>
+                                                    </div>
                                                 </form>
+                                                    <input type="text" id="agreementIdInputs" name="agreement_id" value="" readonly hidden> 
+                                                    <button class="btn-cancel" onclick="openHistoryPopup(this)" >History</button>
                                             </div>
-                                            <div class="modal-footer">
-                                                <button class="btn-cancel" onclick="closeModal()">Cancel</button>
-                                                <button class="btn-save" onclick="saveDetails()">Save Changes</button>
+                                            
+                                        </div>
+                                    </div>
+
+                                    <!-- Popup Modal -->
+                                    <div id="historyPopup" class="popup-overlay">
+                                        <div class="popup-container">
+                                            <div class="popup-header">
+                                                <h2>Task Update History</h2>
+                                                <span class="close-btn" onclick="closeHistoryPopup()">&times;</span>
+                                            </div>
+                                            <div class="popup-body">
+                                                <!-- <div id="loadingMessage" style="text-align: center; padding: 20px;">
+                                                    <p>Loading history...</p>
+                                                </div>
+                                                <div id="noDataMessage" style="text-align: center; padding: 20px; display: none;">
+                                                    <p>No history found for this agreement.</p>
+                                                </div> -->
+                                                <div id="historyTableContainer" >
+                                                    <table class="history-table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Sl</th>
+                                                                <th>Updated By</th>
+                                                                <th>Agreement Id</th>
+                                                                <th>Projection</th>
+                                                                <th>Promise Date</th>
+                                                                <th>Promise Amount</th>
+                                                                <th>Customer Remark</th>
+                                                                <th>Visit Status</th>
+                                                                <th>Location Status</th>
+                                                                <th>Payment</th>
+                                                                <th>Mobile</th>
+                                                                <th>Image</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="historyTableBody">
+                                                            <!-- Data will be loaded here dynamically -->
+                                                             <!-- {% for data in updated_task_list %}
+                                                             <tr>
+                                                                <td>{{forloop.counter}}</td>
+                                                                <td>{{data.updated_by}}</td>
+                                                                <td>{{data.agreement_id}}</td>
+                                                                <td>{{data.projection}}</td>
+                                                                <td>{{data.promise_date}}</td>
+                                                                <td>{{data.promise_amount}}</td>
+                                                                <td>{{data.customer_remark}}</td>
+                                                                <td>{{data.visit_status}}</td>
+                                                                <td>{{data.location_status}}</td>
+                                                                <td>{{data.payment_mode}}</td>
+                                                                <td>{{data.new_mobile_number}}</td>
+                                                                <td>{{data.location_image}}</td>
+                                                             </tr>
+                                                             {% endfor %} -->
+                                                        </tbody>
+                                                    </table>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -1262,6 +1465,7 @@
         {
             sl: {{ forloop.counter }},
             aggrement_id: "{{ task.aggrement_id|default:'' }}",
+            task_id: "{{ task.task_id|default:'' }}",
             customer_name: "{{ task.customer_name|default:'' }}",
             product_type: "{{ task.product_type|default:'' }}",
             tc_name: "{{ task.tc_name|default:'' }}",
@@ -1377,11 +1581,27 @@
         renderTable();
     }
 
+    var global_aggrement_id = '';
     function populateRowDetails(task) {
         const detailsGrid = document.getElementById('rowDetailsGrid');
+        const agreementIdInput = document.getElementById('agreementIdInput');
+        const agreementIdInputs = document.getElementById('agreementIdInputs');
+        const taskIdInput = document.getElementById('task_id');
         if (!detailsGrid) return;
+
+        if (agreementIdInput) {
+            agreementIdInput.value = task.aggrement_id || '';
+            global_aggrement_id = task.aggrement_id || '';
+        }
+        if (agreementIdInputs){
+            agreementIdInputs.value = task.aggrement_id || '';
+        }
+        if(taskIdInput){
+            taskIdInput.value = task.task_id || '';
+        }
         
         detailsGrid.innerHTML = '';
+        console.log('Populating details for task:', task.aggrement_id);
 
         Object.keys(task).forEach(key => {
             const detailItem = document.createElement('div');
@@ -1620,6 +1840,106 @@
       };
   </script> -->
 
+  <script>
+    
+    const updatedTaskList = {{ updated_task_list_json|safe }};
+
+    function openHistoryPopup(button) {
+        console.log("*********************************************************** global_aggrement_id ",global_aggrement_id);
+    const agreementId = button.getAttribute('data-agreement-id');
+    document.getElementById('historyPopup').classList.add('active');
+    
+    // Show loading message
+    //document.getElementById('loadingMessage').style.display = 'block';
+    //document.getElementById('noDataMessage').style.display = 'none';
+    //document.getElementById('historyTableContainer').style.display = 'none';
+    
+    // Load history data
+    loadHistoryData(global_aggrement_id);
+    }
+
+    
+    function loadHistoryData(agreementId) {
+            const tableBody = document.getElementById('historyTableBody');
+            
+            // Clear existing data
+            tableBody.innerHTML = '';
+            console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& - global_aggrement_id", global_aggrement_id)            
+            
+            
+            // Filter data by agreement_id
+            const filteredData = updatedTaskList.filter(task => 
+                task.agreement_id === agreementId || 
+                task.agreement_id === String(agreementId)
+            );
+            
+            // Check if no data found
+            if (filteredData.length === 0) {
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="12" style="text-align: center; padding: 20px;">
+                            No history found for Agreement ID: ${agreementId}
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            // Populate table with filtered data
+            filteredData.forEach((data, index) => {
+                const row = document.createElement('tr');
+                // Format the image display
+                let imageDisplay = '-';
+                if (data.location_image) {
+                    // Handle the image path - Django usually serves media files from MEDIA_URL
+                    const imagePath = data.location_image.startsWith('/media/') 
+                        ? data.location_image 
+                        : '/media/' + data.location_image;
+                    
+                    imageDisplay = `<img src="${imagePath}" 
+                                        alt="Location" 
+                                        class="image-thumbnail" 
+                                        style="width: 50px; height: 50px; cursor: pointer;"
+                                        onclick="window.open('${imagePath}', '_blank')">`;
+                }
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${data.updated_by || '-'}</td>
+                    <td>${data.agreement_id || '-'}</td>
+                    <td>${data.projection || '-'}</td>
+                    <td>${data.promise_date || '-'}</td>
+                    <td>${data.promise_amount || '-'}</td>
+                    <td>${data.customer_remark || '-'}</td>
+                    <td>${data.visit_status || '-'}</td>
+                    <td>${data.location_status || '-'}</td>
+                    <td>${data.payment_mode || '-'}</td>
+                    <td>${data.new_mobile_number || '-'}</td>
+                    <td>${imageDisplay}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+    }
+
+    function closeHistoryPopup() {
+        document.getElementById('historyPopup').classList.remove('active');
+    }
+
+    
+
+    // Close popup when clicking outside
+    document.getElementById('historyPopup').addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeHistoryPopup();
+        }
+    });
+
+    // Close with Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeHistoryPopup();
+        }
+    });
+  </script>
 
 
 </body>

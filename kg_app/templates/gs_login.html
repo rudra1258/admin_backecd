@@ -80,10 +80,13 @@
 
 
   <!-- Image Modal -->
-  <div id="imageModal" style="display: none; position: fixed; z-index: 1000; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.9); justify-content: center; align-items: center;">
-    <span onclick="closeImageModal()" style="position: absolute; top: 20px; right: 40px; color: white; font-size: 40px; cursor: pointer; transition: 0.3s;">&times;</span>
+  <div id="imageModal"
+    style="display: none; position: fixed; z-index: 1000; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.9); justify-content: center; align-items: center;">
+    <span onclick="closeImageModal()"
+      style="position: absolute; top: 20px; right: 40px; color: white; font-size: 40px; cursor: pointer; transition: 0.3s;">&times;</span>
     <div style="text-align: center;">
-      <img id="modalImage" style="max-width: 90%; max-height: 80vh; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.5);">
+      <img id="modalImage"
+        style="max-width: 90%; max-height: 80vh; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.5);">
       <p id="imageCaption" style="color: white; font-size: 20px; margin-top: 15px;"></p>
     </div>
   </div>
@@ -254,33 +257,33 @@
 
 
   <script>
-const employees = [
+    const employees = [
 
-  { sl: 1, name: "Arjun Mehta", email: "arjun.mehta@example.com", mobile: "9876543201", status: "active", loginTime: "09:00", logoutTime: "18:00", image: "https://i.pravatar.cc/150?img=1" },
-  { sl: 2, name: "Sneha Sharma", email: "sneha.sharma@example.com", mobile: "9876543202", status: "inactive", loginTime: "10:15", logoutTime: "17:30", image: "https://i.pravatar.cc/150?img=2" },
-  { sl: 3, name: "Rohan Gupta", email: "rohan.gupta@example.com", mobile: "9876543203", status: "active", loginTime: "08:50", logoutTime: "17:40", image: "https://i.pravatar.cc/150?img=3" },
-  { sl: 4, name: "Priya Nair", email: "priya.nair@example.com", mobile: "9876543204", status: "inactive", loginTime: "10:20", logoutTime: "18:10", image: "https://i.pravatar.cc/150?img=4" },
-  { sl: 5, name: "Vikas Yadav", email: "vikas.yadav@example.com", mobile: "9876543205", status: "active", loginTime: "09:10", logoutTime: "18:05", image: "https://i.pravatar.cc/150?img=5" },
+      { sl: 1, name: "Arjun Mehta", email: "arjun.mehta@example.com", mobile: "9876543201", status: "active", loginTime: "09:00", logoutTime: "18:00", image: "https://i.pravatar.cc/150?img=1" },
+      { sl: 2, name: "Sneha Sharma", email: "sneha.sharma@example.com", mobile: "9876543202", status: "inactive", loginTime: "10:15", logoutTime: "17:30", image: "https://i.pravatar.cc/150?img=2" },
+      { sl: 3, name: "Rohan Gupta", email: "rohan.gupta@example.com", mobile: "9876543203", status: "active", loginTime: "08:50", logoutTime: "17:40", image: "https://i.pravatar.cc/150?img=3" },
+      { sl: 4, name: "Priya Nair", email: "priya.nair@example.com", mobile: "9876543204", status: "inactive", loginTime: "10:20", logoutTime: "18:10", image: "https://i.pravatar.cc/150?img=4" },
+      { sl: 5, name: "Vikas Yadav", email: "vikas.yadav@example.com", mobile: "9876543205", status: "active", loginTime: "09:10", logoutTime: "18:05", image: "https://i.pravatar.cc/150?img=5" },
 
-  { sl: 6, name: "Meera Kulkarni", email: "meera.kulkarni@example.com", mobile: "9876543206", status: "inactive", loginTime: "10:05", logoutTime: "17:50", image: "https://i.pravatar.cc/150?img=6" },
-  { sl: 7, name: "Harsh Patel", email: "harsh.patel@example.com", mobile: "9876543207", status: "active", loginTime: "08:45", logoutTime: "17:55", image: "https://i.pravatar.cc/150?img=7" },
-  { sl: 8, name: "Ankita Singh", email: "ankita.singh@example.com", mobile: "9876543208", status: "inactive", loginTime: "10:30", logoutTime: "17:40", image: "https://i.pravatar.cc/150?img=8" },
-  { sl: 9, name: "Sameer Bansal", email: "sameer.bansal@example.com", mobile: "9876543209", status: "active", loginTime: "09:05", logoutTime: "18:10", image: "https://i.pravatar.cc/150?img=9" },
-  { sl: 10, name: "Ritu Verma", email: "ritu.verma@example.com", mobile: "9876543210", status: "inactive", loginTime: "10:25", logoutTime: "17:35", image: "https://i.pravatar.cc/150?img=10" },
+      { sl: 6, name: "Meera Kulkarni", email: "meera.kulkarni@example.com", mobile: "9876543206", status: "inactive", loginTime: "10:05", logoutTime: "17:50", image: "https://i.pravatar.cc/150?img=6" },
+      { sl: 7, name: "Harsh Patel", email: "harsh.patel@example.com", mobile: "9876543207", status: "active", loginTime: "08:45", logoutTime: "17:55", image: "https://i.pravatar.cc/150?img=7" },
+      { sl: 8, name: "Ankita Singh", email: "ankita.singh@example.com", mobile: "9876543208", status: "inactive", loginTime: "10:30", logoutTime: "17:40", image: "https://i.pravatar.cc/150?img=8" },
+      { sl: 9, name: "Sameer Bansal", email: "sameer.bansal@example.com", mobile: "9876543209", status: "active", loginTime: "09:05", logoutTime: "18:10", image: "https://i.pravatar.cc/150?img=9" },
+      { sl: 10, name: "Ritu Verma", email: "ritu.verma@example.com", mobile: "9876543210", status: "inactive", loginTime: "10:25", logoutTime: "17:35", image: "https://i.pravatar.cc/150?img=10" },
 
-  { sl: 11, name: "Aman Singh", email: "aman.singh@example.com", mobile: "9876543211", status: "active", loginTime: "08:55", logoutTime: "17:45", image: "https://i.pravatar.cc/150?img=11" },
-  { sl: 12, name: "Nidhi Chauhan", email: "nidhi.chauhan@example.com", mobile: "9876543212", status: "inactive", loginTime: "10:10", logoutTime: "18:00", image: "https://i.pravatar.cc/150?img=12" },
-  { sl: 13, name: "Rakesh Menon", email: "rakesh.menon@example.com", mobile: "9876543213", status: "active", loginTime: "09:00", logoutTime: "18:00", image: "https://i.pravatar.cc/150?img=13" },
-  { sl: 14, name: "Tanisha Rao", email: "tanisha.rao@example.com", mobile: "9876543214", status: "inactive", loginTime: "10:15", logoutTime: "17:50", image: "https://i.pravatar.cc/150?img=14" },
-  { sl: 15, name: "Kunal Kapoor", email: "kunal.kapoor@example.com", mobile: "9876543215", status: "active", loginTime: "08:50", logoutTime: "17:55", image: "https://i.pravatar.cc/150?img=15" },
+      { sl: 11, name: "Aman Singh", email: "aman.singh@example.com", mobile: "9876543211", status: "active", loginTime: "08:55", logoutTime: "17:45", image: "https://i.pravatar.cc/150?img=11" },
+      { sl: 12, name: "Nidhi Chauhan", email: "nidhi.chauhan@example.com", mobile: "9876543212", status: "inactive", loginTime: "10:10", logoutTime: "18:00", image: "https://i.pravatar.cc/150?img=12" },
+      { sl: 13, name: "Rakesh Menon", email: "rakesh.menon@example.com", mobile: "9876543213", status: "active", loginTime: "09:00", logoutTime: "18:00", image: "https://i.pravatar.cc/150?img=13" },
+      { sl: 14, name: "Tanisha Rao", email: "tanisha.rao@example.com", mobile: "9876543214", status: "inactive", loginTime: "10:15", logoutTime: "17:50", image: "https://i.pravatar.cc/150?img=14" },
+      { sl: 15, name: "Kunal Kapoor", email: "kunal.kapoor@example.com", mobile: "9876543215", status: "active", loginTime: "08:50", logoutTime: "17:55", image: "https://i.pravatar.cc/150?img=15" },
 
-  { sl: 16, name: "Bhavya Sinha", email: "bhavya.sinha@example.com", mobile: "9876543216", status: "inactive", loginTime: "10:00", logoutTime: "17:45", image: "https://i.pravatar.cc/150?img=16" },
-  { sl: 17, name: "Deepak Jaiswal", email: "deepak.jaiswal@example.com", mobile: "9876543217", status: "active", loginTime: "09:20", logoutTime: "18:15", image: "https://i.pravatar.cc/150?img=17" },
-  { sl: 18, name: "Kritika Desai", email: "kritika.desai@example.com", mobile: "9876543218", status: "inactive", loginTime: "10:35", logoutTime: "17:55", image: "https://i.pravatar.cc/150?img=18" },
-  { sl: 19, name: "Raghav Kohli", email: "raghav.kohli@example.com", mobile: "9876543219", status: "active", loginTime: "08:40", logoutTime: "17:35", image: "https://i.pravatar.cc/150?img=19" },
-  { sl: 20, name: "Mansi Goyal", email: "mansi.goyal@example.com", mobile: "9876543220", status: "inactive", loginTime: "10:20", logoutTime: "18:05", image: "https://i.pravatar.cc/150?img=20" }
+      { sl: 16, name: "Bhavya Sinha", email: "bhavya.sinha@example.com", mobile: "9876543216", status: "inactive", loginTime: "10:00", logoutTime: "17:45", image: "https://i.pravatar.cc/150?img=16" },
+      { sl: 17, name: "Deepak Jaiswal", email: "deepak.jaiswal@example.com", mobile: "9876543217", status: "active", loginTime: "09:20", logoutTime: "18:15", image: "https://i.pravatar.cc/150?img=17" },
+      { sl: 18, name: "Kritika Desai", email: "kritika.desai@example.com", mobile: "9876543218", status: "inactive", loginTime: "10:35", logoutTime: "17:55", image: "https://i.pravatar.cc/150?img=18" },
+      { sl: 19, name: "Raghav Kohli", email: "raghav.kohli@example.com", mobile: "9876543219", status: "active", loginTime: "08:40", logoutTime: "17:35", image: "https://i.pravatar.cc/150?img=19" },
+      { sl: 20, name: "Mansi Goyal", email: "mansi.goyal@example.com", mobile: "9876543220", status: "inactive", loginTime: "10:20", logoutTime: "18:05", image: "https://i.pravatar.cc/150?img=20" }
 
-];
+    ];
 
 
     const tbody = document.getElementById("table-body");
@@ -302,7 +305,9 @@ const employees = [
         <td><img src="${emp.image}" width="50" height="50" style="border-radius: 50%; object-fit: cover; cursor: pointer;" onclick="openImageModal('${emp.image}', '${emp.name}')"></td>
 
         <td>
-            <button class="btn btn-primary">View map</button>
+            <a href="https://www.google.com/maps?q=20.295136727143245,85.82908364419782" target="_blank">
+              <button class="btn btn-primary">View map</button>
+            </a>
         </td>
       </tr>`
 
@@ -312,7 +317,7 @@ const employees = [
       const modal = document.getElementById('imageModal');
       const modalImg = document.getElementById('modalImage');
       const caption = document.getElementById('imageCaption');
-      
+
       modal.style.display = "flex";
       modalImg.src = imageSrc;
       caption.textContent = name;
@@ -323,7 +328,7 @@ const employees = [
     }
 
     // Close modal when clicking outside the image
-    document.getElementById('imageModal').addEventListener('click', function(e) {
+    document.getElementById('imageModal').addEventListener('click', function (e) {
       if (e.target === this) {
         closeImageModal();
       }

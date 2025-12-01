@@ -42,6 +42,9 @@ class Create_task(models.Model):
     task_id = models.AutoField(primary_key = True)
     admin_id = models.ForeignKey(admin_user_model, on_delete = models.CASCADE)
     
+    # category section
+    category = models.CharField(max_length = 100, null=True, blank=True)
+    
     # aggrement information
     aggrement_id = models.CharField(max_length = 50)
     customer_name = models.CharField(max_length = 100)
@@ -91,6 +94,59 @@ class Create_task(models.Model):
     collection_manager_name = models.CharField(max_length = 100)
     finance_company_name = models.CharField(max_length = 200)
 
+
+class task_update(models.Model):
+    task_update_id = models.AutoField(primary_key = True)
+    
+    updated_by = models.CharField(max_length = 100, null = True, blank = True)
+    
+    #data form admin table
+    admin_id = models.ForeignKey(admin_user_model, on_delete = models.CASCADE)
+    
+    #data from create task table
+    task_id = models.ForeignKey(Create_task, on_delete = models.CASCADE)
+    agreement_id = models.CharField(max_length = 50)
+    
+    # contact information
+    code = models.CharField(max_length = 10)
+    new_mobile_number = models.CharField(max_length = 15)
+    
+    # projection details 
+    projection = models.CharField(max_length = 100)
+    promise_date = models.CharField(max_length = 20)
+    promise_amount = models.CharField(max_length = 30)
+    
+    # remark 
+    customer_remark = models.CharField(max_length = 500)
+    reference_remark = models.CharField(max_length = 500)
+    
+    # visit details
+    need_group_visit = models.CharField(max_length = 10)
+    visit_projection = models.CharField(max_length = 100)
+    visit_status = models.CharField(max_length = 20)
+    
+    # customer & vehicle details
+    customer_available = models.CharField(max_length = 20)
+    vehicle_available = models.CharField(max_length = 10)
+    third_party_status = models.CharField(max_length = 10)
+    third_party_details = models.CharField(max_length = 500)
+    
+    # location & status
+    new_update_address = models.CharField(max_length = 500)
+    location_image = models.ImageField(upload_to='location_image/', null=True, blank=True)
+    location_status = models.CharField(max_length = 20)
+    
+    # payment details
+    payment_info = models.CharField(max_length = 500)
+    payment_mode = models.CharField(max_length = 50)
+    payment_amount = models.CharField(max_length = 30)
+    payment_date = models.CharField(max_length = 20)
+    
+    
+    
+    
+    
+    
 
 
 class TcLogin(models.Model):

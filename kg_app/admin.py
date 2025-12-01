@@ -10,6 +10,7 @@ admin.site.index_title = "Welcome to My Admin Dashboard"
 
 
 admin.site.register(admin_user_model)
+admin.site.register(task_update)
 
 @admin.register(CreateUser)
 class CreateUserAdmin(admin.ModelAdmin):
@@ -80,3 +81,5 @@ class GsLoginAdmin(admin.ModelAdmin):
         return "No Image"
 
     image_preview.short_description = "Image"
+    
+    

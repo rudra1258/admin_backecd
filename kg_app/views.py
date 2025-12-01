@@ -8,6 +8,7 @@ from rest_framework import viewsets, status
 from .serializers import *
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+import json
 # Create your views here.
 
 
@@ -266,7 +267,7 @@ def import_users_from_excel(request):
                         role=role,
                         username=str(row['username']).strip(),
                         address=str(row.get('address', '')).strip() if pd.notna(row.get('address')) else '',
-                        password=make_password(str(row['password']))  # Hash the password
+                        password=(row['password']) # Hash the password
                     )
                     user.save()
                     success_count += 1
@@ -337,8 +338,50 @@ def assign_task(request):
     create_task_list = Create_task.objects.filter(
         admin_id = admin_id_pk
     )
-    return render(request, "assign_task.html", {"task_list":create_task_list})
+    update_task_list = task_update.objects.all()
 
+     # Convert queryset to JSON with all fields from your model
+    updated_task_list_json = json.dumps(list(update_task_list.values(
+        'task_update_id',
+        'updated_by',
+        'agreement_id',
+        'code',
+        'new_mobile_number',
+        'projection',
+        'promise_date',
+        'promise_amount',
+        'customer_remark',
+        'reference_remark',
+        'need_group_visit',
+        'visit_projection',
+        'visit_status',
+        'customer_available',
+        'vehicle_available',
+        'third_party_status',
+        'third_party_details',
+        'new_update_address',
+        'location_image',
+        'location_status',
+        'payment_info',
+        'payment_mode',
+        'payment_amount',
+        'payment_date'
+    )), default=str)
+    
+    return render(request, "assign_task.html", {
+        "task_list":create_task_list, 
+        "updated_task_list":update_task_list,
+        "updated_task_list_json": updated_task_list_json
+        })
+
+# def view_history(request):
+#     if request.method == "POST":
+#         agreement_id = request.POST.get("agreement_id")
+#         print("********************************************* ", agreement_id)
+#         updated_task = task_update.objects.filter(
+#             agreement_id = agreement_id
+#         )
+#     return render(request, "assign_task.html", {"updated_task_list":updated_task})
 
 def complete_task(request):
     return render(request, "complete_task.html")
@@ -719,6 +762,102 @@ def download_task_sample_excel(request):
     response['Content-Disposition'] = 'attachment; filename=task_import_template.xlsx'
     
     return response
+
+def update_task(request):
+    session_admin_id = request.session.get('admin_id')
+    session_admin_username= request.session.get('admin_username')
+    # navigate to login page if not login
+    if not session_admin_id:
+        return render(request, 'index.html')
+    admin_id_pk = admin_user_model.objects.get(pk = session_admin_id)
+    if request.method == "POST":
+        aggrement_id = request.POST.get("agreement_id")
+        print("Agreement ID for task update:", aggrement_id)
+        print("Agreement ID for task update:", request.POST)
+        task_id = request.POST.get("task_id")
+        model_task_id = Create_task.objects.get(pk = task_id)
+        
+        # contact information
+        code = request.POST.get("code")
+        new_mobile_number = request.POST.get("newMobileNumber")
+
+        # projection details 
+        projection = request.POST.get("projection")
+        promise_date = request.POST.get("promise_date")
+        promise_amount = request.POST.get("promise_amt")
+        
+        # remark 
+        customer_remark = request.POST.get("customer_remark")
+        reference_remark = request.POST.get("referencr_remark")
+        
+        #visit details
+        need_group_visit = request.POST.get("need_group_visit")
+        visit_projection = request.POST.get("visit_projection")
+        visit_status = request.POST.get("visit_status")
+        
+        # customer & vehicle details
+        customer_available = request.POST.get("customer_available")
+        vehicle_available = request.POST.get("vehicle_available")
+        third_party_status = request.POST.get("third_party_status")
+        third_party_details = request.POST.get("third_party_details")
+        
+        # location & status
+        new_update_address = request.POST.get("new_update_address")
+        location_image = request.FILES.get("location_image")
+        location_status = request.POST.get("location_status")
+
+        # payment details 
+        payment_info = request.POST.get("payment_info")
+        payment_mode = request.POST.get("payment_mode")
+        payment_amount = request.POST.get("payment_amount")
+        payment_date = request.POST.get("payment_date")
+        
+        task_update.objects.create(
+            updated_by = session_admin_username,
+            admin_id = admin_id_pk,
+            task_id = model_task_id,
+            agreement_id = aggrement_id,
+            
+            # contact information
+            code = code,
+            new_mobile_number = new_mobile_number,
+            
+            # projection details 
+            projection = projection,
+            promise_date = promise_date,
+            promise_amount = promise_amount,
+            
+            # remark 
+            customer_remark = customer_remark,
+            reference_remark = reference_remark,
+            
+            # visit details
+            need_group_visit = need_group_visit,
+            visit_projection = visit_projection,
+            visit_status = visit_status,
+            
+            # customer & vehicle details
+            customer_available = customer_available,
+            vehicle_available = vehicle_available,
+            third_party_status = third_party_status,
+            third_party_details = third_party_details,
+            
+            # location and status 
+            new_update_address = new_update_address,
+            location_image = location_image,
+            location_status = location_status,
+            
+            # payment details 
+            payment_info = payment_info,
+            payment_mode = payment_mode,
+            payment_amount = payment_amount,
+            payment_date = payment_date
+            
+        )
+        messages.success(request, 'task updated successfully')
+        return redirect("kg_app:assign_task")
+          
+    return render(request, "assign_task.html")
 
 def dashboard(request):
     return render(request, "dashboard.html")
