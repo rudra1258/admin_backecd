@@ -111,6 +111,11 @@ def admin_login(request):
             })
     return render(request, 'index.html')
 
+def admin_logout(request):
+    request.session.flush()
+    # return redirect('kg_app:admin_login')
+    return render(request, 'index.html')
+
 def create_user(request):
     session_admin_id = request.session.get("admin_id")
     # navigate to login page if not login
@@ -334,6 +339,9 @@ def download_sample_excel_user_create(request):
 
 def assign_task(request):
     session_admin_id = request.session.get('admin_id')
+    # navigate to login page if not login
+    if not session_admin_id:
+        return render(request, 'index.html')
     admin_id_pk = admin_user_model.objects.get(pk = session_admin_id)
     create_task_list = Create_task.objects.filter(
         admin_id = admin_id_pk
@@ -374,16 +382,11 @@ def assign_task(request):
         "updated_task_list_json": updated_task_list_json
         })
 
-# def view_history(request):
-#     if request.method == "POST":
-#         agreement_id = request.POST.get("agreement_id")
-#         print("********************************************* ", agreement_id)
-#         updated_task = task_update.objects.filter(
-#             agreement_id = agreement_id
-#         )
-#     return render(request, "assign_task.html", {"updated_task_list":updated_task})
-
 def complete_task(request):
+    session_admin_id = request.session.get("admin_id")
+    # navigate to login page if not login
+    if not session_admin_id:
+        return render(request, 'index.html')
     return render(request, "complete_task.html")
 
 
@@ -765,6 +768,9 @@ def download_task_sample_excel(request):
 
 def update_task(request):
     session_admin_id = request.session.get('admin_id')
+    # navigate to login page if not login
+    if not session_admin_id:
+        return render(request, 'index.html')
     session_admin_username= request.session.get('admin_username')
     # navigate to login page if not login
     if not session_admin_id:
@@ -860,11 +866,34 @@ def update_task(request):
     return render(request, "assign_task.html")
 
 def dashboard(request):
-    return render(request, "dashboard.html")
+    session_admin_id = request.session.get("admin_id")
+    # navigate to login page if not login
+    if not session_admin_id:
+        return render(request, 'index.html')
+    
+    create_user_list = CreateUser.objects.all()
+    user_length = len(create_user_list)
+    print("Total users:", user_length)
+    
+    tc_login = TcLogin.objects.all()
+    tl_login = TlLogin.objects.all()
+    gs_login = GsLogin.objects.all()
+    login_status_len = len(tc_login) + len(tl_login) + len(gs_login)
+    print("Total login status entries:", login_status_len)
+    
+    task_list = Create_task.objects.all()
+    task_length = len(task_list)
+    return render(request, "dashboard.html", {
+        "user_length":user_length, 
+        "login_status_len":login_status_len,
+        "task_length":task_length
+        })
 
 
 def groundstaff(request):
     session_admin_id = request.session.get('admin_id')
+    if not session_admin_id:
+        return render(request, 'index.html')
     admin_id_pk = admin_user_model.objects.get(pk = session_admin_id)
     staff_list = CreateUser.objects.filter(
         admin_id = admin_id_pk,
@@ -874,19 +903,37 @@ def groundstaff(request):
 
 
 def gs_login(request):
+    session_admin_id = request.session.get("admin_id")
+    # navigate to login page if not login
+    if not session_admin_id:
+        return render(request, 'index.html')
     return render(request, "gs_login.html")
 
 def leave(request):
+    session_admin_id = request.session.get("admin_id")
+    # navigate to login page if not login
+    if not session_admin_id:
+        return render(request, 'index.html')
     return render(request, "leave.html")
 
 def pending_task(request):
+    session_admin_id = request.session.get("admin_id")
+    # navigate to login page if not login
+    if not session_admin_id:
+        return render(request, 'index.html')
     return render(request, "pending_task.html")
 
 def tc_login(request):
+    session_admin_id = request.session.get("admin_id")
+    # navigate to login page if not login
+    if not session_admin_id:
+        return render(request, 'index.html')
     return render(request, "tc_login.html")
 
 def teamlead(request):
     session_admin_id = request.session.get('admin_id')
+    if not session_admin_id:
+        return render(request, 'index.html')
     admin_id_pk = admin_user_model.objects.get(pk = session_admin_id)
     caller_list = CreateUser.objects.filter(
         admin_id = admin_id_pk,
@@ -896,6 +943,8 @@ def teamlead(request):
 
 def telecaller(request):
     session_admin_id = request.session.get('admin_id')
+    if not session_admin_id:
+        return render(request, 'index.html')
     admin_id_pk  = admin_user_model.objects.get(pk = session_admin_id)
     user_list = CreateUser.objects.filter(
         admin_id = admin_id_pk,
@@ -904,23 +953,37 @@ def telecaller(request):
     return render(request, "telecaller.html",{"data":user_list})
 
 def tl_login(request):
+    session_admin_id = request.session.get("admin_id")
+    # navigate to login page if not login
+    if not session_admin_id:
+        return render(request, 'index.html')
     return render(request, "tl_login.html")
 
-
-
 def tc_delete(request, id):
+    session_admin_id = request.session.get("admin_id")
+    # navigate to login page if not login
+    if not session_admin_id:
+        return render(request, 'index.html')
     emp = get_object_or_404(CreateUser, id=id)
     emp.delete()
     return redirect('kg_app:telecaller')   # change to your list page URL name
 
 
 def tl_delete(request, id):
+    session_admin_id = request.session.get("admin_id")
+    # navigate to login page if not login
+    if not session_admin_id:
+        return render(request, 'index.html')
     emp = get_object_or_404(CreateUser, id=id)
     emp.delete()
     return redirect('kg_app:teamlead')   # change to your list page URL name
 
 
 def gs_delete(request, id):
+    session_admin_id = request.session.get("admin_id")
+    # navigate to login page if not login
+    if not session_admin_id:
+        return render(request, 'index.html')
     emp = get_object_or_404(CreateUser, id=id)
     emp.delete()
     return redirect('kg_app:groundstaff')   # change to your list page URL name

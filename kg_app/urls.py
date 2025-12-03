@@ -12,6 +12,7 @@ router.register(r'createTaskList', views.Create_task_Viewset)
 urlpatterns = [
     # path('', views.index, name='index'),
     path('', views.admin_login, name='admin_login'),
+    path('admin_logout/', views.admin_logout, name='admin_logout'),
     path('assign_task/', views.assign_task, name='assign_task'),
     path('update_task/', views.update_task, name='update_task'),
     # path('view_history/', views.view_history, name='view_history'),

@@ -165,6 +165,12 @@
 
 
     <script>
+
+      if (!sessionStorage.getItem("reloaded")) {
+        sessionStorage.setItem("reloaded", "yes");
+        location.reload();
+      }
+
       /* 🔥 SHOW TOAST MESSAGE */
       function showToast(message, type) {
         const toast = document.getElementById("toastMsg");
