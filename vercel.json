@@ -1,0 +1,13 @@
+{
+    "builds": [{
+        "src": "kg_admin/wsgi.py",
+        "use": "@vercel/python",
+        "config": { "maxLambdaSize": "15mb", "runtime": "python3.9" }
+    }],
+    "routes": [
+        {
+            "src": "/(.*)",
+            "dest": "kg_admin/wsgi.py"
+        }
+    ]
+}
