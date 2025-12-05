@@ -9,6 +9,8 @@ from .serializers import *
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 import json
+import io
+from django.http import HttpResponse
 # Create your views here.
 
 
@@ -153,7 +155,6 @@ def create_user(request):
     admins = admin_user_model.objects.all()
     # return redirect("kg_app:create_user")
     return render(request, "create_user.html", {"admins": admins})
-
 
 # api like view for CreateUser model
 class CreateUserViewSet(viewsets.ModelViewSet):
@@ -304,8 +305,7 @@ def import_users_from_excel(request):
 
 def download_sample_excel_user_create(request):
     """Generate and download a sample Excel template"""
-    import io
-    from django.http import HttpResponse
+   
     
     # Create sample data
     sample_data = {
@@ -335,7 +335,6 @@ def download_sample_excel_user_create(request):
     response['Content-Disposition'] = 'attachment; filename=user_import_template.xlsx'
     
     return response
-
 
 def assign_task(request):
     session_admin_id = request.session.get('admin_id')
@@ -388,7 +387,6 @@ def complete_task(request):
     if not session_admin_id:
         return render(request, 'index.html')
     return render(request, "complete_task.html")
-
 
 def create_task(request):
     session_admin_id = request.session.get("admin_id")
@@ -860,6 +858,12 @@ def update_task(request):
             payment_date = payment_date
             
         )
+        
+        # to update category in Create_task model later
+        update = Create_task.objects.get(pk = task_id)
+        update.category = code
+        update.save()
+        
         messages.success(request, 'task updated successfully')
         return redirect("kg_app:assign_task")
           
@@ -889,7 +893,6 @@ def dashboard(request):
         "task_length":task_length
         })
 
-
 def groundstaff(request):
     session_admin_id = request.session.get('admin_id')
     if not session_admin_id:
@@ -900,7 +903,6 @@ def groundstaff(request):
         role = 'groundstaff'
     )
     return render(request, "groundstaff.html",{"data":staff_list})
-
 
 def gs_login(request):
     session_admin_id = request.session.get("admin_id")
@@ -968,7 +970,6 @@ def tc_delete(request, id):
     emp.delete()
     return redirect('kg_app:telecaller')   # change to your list page URL name
 
-
 def tl_delete(request, id):
     session_admin_id = request.session.get("admin_id")
     # navigate to login page if not login
@@ -977,7 +978,6 @@ def tl_delete(request, id):
     emp = get_object_or_404(CreateUser, id=id)
     emp.delete()
     return redirect('kg_app:teamlead')   # change to your list page URL name
-
 
 def gs_delete(request, id):
     session_admin_id = request.session.get("admin_id")

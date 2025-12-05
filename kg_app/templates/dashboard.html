@@ -14,7 +14,7 @@
       content="admin template, Admiro admin template, best javascript admin, dashboard template, bootstrap admin template, responsive admin template, web app"
     />
     <meta name="author" content="pixelstrap" />
-    <title>Admiro - Premium Admin Template</title>
+    <title>Dashboard</title>
     <!-- Favicon icon-->
     <link
       rel="icon"
@@ -768,21 +768,21 @@
                   <h2>Quick Actions</h2>
                 </div>
                 <div class="quick-actions">
-                  <div class="action-card" onclick="alert('Generate Report')">
-                    <h3>📊 Generate Report</h3>
-                    <p>Create performance reports</p>
+                  <div class="action-card" onclick="window.location.href='{% url 'kg_app:create_task' %}'">
+                    <h3>📊 Create Task</h3>
+                    <p>Add and assign new tasks</p>
                   </div>
-                  <div class="action-card" onclick="alert('Attendance Log')">
-                    <h3>📅 Attendance Log</h3>
-                    <p>View attendance records</p>
+                  <div class="action-card" onclick="window.location.href='{% url 'kg_app:create_user' %}'">
+                    <h3>🙎🏽 Create User</h3>
+                    <p>Add a new user to the system</p>
                   </div>
-                  <div class="action-card" onclick="alert('Broadcast Message')">
-                    <h3>📢 Broadcast</h3>
-                    <p>Send team announcements</p>
+                  <div class="action-card" onclick="window.location.href='{% url 'kg_app:tc_login' %}'">
+                    <h3>🔐 Login Status</h3>
+                    <p>Monitor your recent login activity</p>
                   </div>
-                  <div class="action-card" onclick="alert('Settings')">
-                    <h3>⚙️ Settings</h3>
-                    <p>Configure system</p>
+                  <div class="action-card" onclick="window.location.href='{% url 'kg_app:assign_task' %}'">
+                    <h3>📋 Task List</h3>
+                    <p>View your task list</p>
                   </div>
                 </div>
               </div>
