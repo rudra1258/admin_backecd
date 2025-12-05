@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-6fx(1)g2!b&637v+=ghc8nq!=$dh8)nvs47f07m52ew9zzmc)n
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['.vercel.app','admin-backecd-2.onrender.com']
+ALLOWED_HOSTS = ['.vercel.app','admin-backecd-2.onrender.com','127.0.0.1']
 
 
 # Application definition
@@ -80,6 +80,11 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://admin-backecd.onrender.com",
+    "https://admin-backecd-2.onrender.com",
+]
 
 
 # Password validation
