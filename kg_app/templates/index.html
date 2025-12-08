@@ -215,6 +215,8 @@
         const btnText = loginBtn.querySelector(".btn-text");
         const spinner = loginBtn.querySelector(".spinner-border");
 
+        console.log('Submitting form to form ---:', form);
+
         form.addEventListener("submit", function (e) {
           e.preventDefault(); // Prevent default form submission
 
@@ -225,6 +227,8 @@
 
           const formData = new FormData(form);
 
+          console.log('Submitting form to form data:', formData);
+
           fetch(form.action, {
             method: 'POST',
             body: formData,
@@ -233,6 +237,12 @@
             }
           })
             .then(response => {
+                console.log('Response status:', response.status);
+                console.log('Response ok:', response.ok);
+                
+                // Check what content type is being returned
+                const contentType = response.headers.get("content-type");
+                console.log('Content-Type:', contentType);
               if (!response.ok) {
                 throw new Error('Network response was not ok');
               }
@@ -285,6 +295,7 @@
           });
         }
       });
+    
     </script>
 
   </div>

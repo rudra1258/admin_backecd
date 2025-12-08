@@ -1,0 +1,330 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+    content="Admiro admin is super flexible, powerful, clean &amp; modern responsive bootstrap 5 admin template with unlimited possibilities.">
+  <meta name="keywords"
+    content="admin template, Admiro admin template, best javascript admin, dashboard template, bootstrap admin template, responsive admin template, web app">
+  <meta name="author" content="pixelstrap">
+  <title>Teamlead Login</title>
+  <!-- Favicon icon-->
+  <link rel="icon" href="{% static 'assets/img/favicon.png' %}" type="image/x-icon">
+  <link rel="shortcut icon" href="{% static 'assets/img/favicon.png' %}" type="image/x-icon">
+  <!-- Google font-->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link
+    href="../../css2?family=Nunito+Sans:opsz,wght@6..12,200;6..12,300;6..12,400;6..12,500;6..12,600;6..12,700;6..12,800;6..12,900;6..12,1000&amp;display=swap"
+    rel="stylesheet">
+  <!-- Flag icon css -->
+  <link rel="stylesheet" href="{% static 'assets/css/vendors/flag-icon.css' %}">
+  <!-- iconly-icon-->
+  <link rel="stylesheet" href="{% static 'assets/css/iconly-icon.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/css/bulk-style.css' %}">
+  <!-- iconly-icon-->
+  <link rel="stylesheet" href="{% static 'assets/css/themify.css' %}">
+  <!--fontawesome-->
+  <link rel="stylesheet" href="{% static 'assets/css/fontawesome-min.css' %}">
+  <!-- Whether Icon css-->
+  <link rel="stylesheet" type="text/css" href="{% static 'assets/css/vendors/weather-icons/weather-icons.min.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'assets/css/vendors/scrollbar.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'assets/css/vendors/slick.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'assets/css/vendors/slick-theme.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'assets/css/vendors/datatables.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'assets/css/vendors/datatable-extension.css' %}">
+  <!-- App css -->
+  <link id="color" rel="stylesheet" href="{% static 'assets/css/color-1.css' %}" media="screen">
+  <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+
+
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    integrity="sha512-…(hash)…” crossorigin=" anonymous" referrerpolicy="no-referrer" />
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    integrity="sha512-…(hash)…” crossorigin=" anonymous" referrerpolicy="no-referrer" />
+
+  <link rel="stylesheet" href="https://cdn.iconly.io/iconly.css" />
+  <link rel="stylesheet" href="https://cdn.js' %}delivr.net/npm/iconly@latest/css/iconly.css" />
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+    integrity="sha512-KNuNk+LZ8e2j+ozhRtX7sMGu0j1qFeIslMo7k3M5lVZhcN7sVbG7ByAzt+BrgrbM5nxp7/ECYtJ8O5E2+8Y0eA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+
+  <link rel="stylesheet" href="https://cdn.iconly.io/your-generated-hash/iconly.css">
+
+
+
+
+  <style>
+    /*.dataTables_length{
+      display : none;
+    }*/
+
+    .sidebar-pannle-main {
+      display: none;
+    }
+
+    .margin_left_auto {
+      margin-left: auto;
+    }
+  </style>
+
+  <!-- Image Modal -->
+  <div id="imageModal" style="display: none; position: fixed; z-index: 1000; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.9); justify-content: center; align-items: center;">
+    <span onclick="closeImageModal()" style="position: absolute; top: 20px; right: 40px; color: white; font-size: 40px; cursor: pointer; transition: 0.3s;">&times;</span>
+    <div style="text-align: center;">
+      <img id="modalImage" style="max-width: 90%; max-height: 80vh; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.5);">
+      <p id="imageCaption" style="color: white; font-size: 20px; margin-top: 15px;"></p>
+    </div>
+  </div>
+
+
+</head>
+
+
+
+
+
+<body>
+  <!-- page-wrapper Start-->
+  <!-- tap on top starts-->
+  <div class="tap-top">
+    <i class="fa-solid fa-angle-up"></i>
+  </div>
+  <!-- tap on tap ends-->
+  <!-- loader-->
+  <div class="loader-wrapper">
+    <div class="loader"><span></span><span></span><span></span><span></span><span></span></div>
+  </div>
+
+
+  <div class="page-wrapper compact-wrapper" id="pageWrapper">
+
+    <!-- this is header section -->
+   {% include "tc_common/tc_header.html" %}
+    <!--header section end -->
+
+
+
+
+
+    <!-- Page Body Start-->
+    <div class="page-body-wrapper">
+      <!-- Page sidebar start-->
+    {% include "tc_common/tc_sidebar.html" %}
+      <!-- Page sidebar end-->
+
+      <!-- body section start  -->
+      <div class="page-body">
+        <div class="container-fluid">
+          <div class="page-title">
+            <div class="row">
+              <!-- table start -->
+              <div class="col-sm-12">
+                <div class="card">
+                  <div class="card-header pb-0 card-no-border">
+                    <h3>Team Lead</h3>
+                  </div>
+                  <div class="card-body">
+                    <div class="table-responsive">
+                      <table class="display dataTable" id="basic-9">
+                        <thead style="background:#f8f9fa;">
+                          <tr>
+                            <th>Sl</th>
+                            <th>Name</th>
+                            <th>Email ID</th>
+                            <th>Mobile Number</th>
+                            <th>Status</th>
+                            <th>Login Time</th>
+                            <th>Logout Time</th>
+                            <th>Image</th>
+                            <th>Action</th>
+                          </tr>
+                        </thead>
+                        <tbody id="table-body"></tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Container-fluid starts-->
+   {% include "tc_common/tc_footer.html" %}
+    </div>
+    <!-- page body end  -->
+
+  </div>
+
+
+
+
+  <!-- jquery-->
+  <script src="{% static 'assets/js/vendors/jquery/jquery.min.js' %}"></script>
+  <!-- bootstrap js-->
+  <script src="{% static 'assets/js/vendors/bootstrap/dist/js/bootstrap.bundle.min.js' %}" defer=""></script>
+  <script src="{% static 'assets/js/vendors/bootstrap/dist/js/popper.min.js' %}" defer=""></script>
+  <!--fontawesome-->
+  <script src="{% static 'assets/js/vendors/font-awesome/fontawesome-min.js' %}"></script>
+  <!-- feather-->
+  <script src="{% static 'assets/js/vendors/feather-icon/feather.min.js' %}"></script>
+  <script src="{% static 'assets/js/vendors/feather-icon/custom-script.js' %}"></script>
+  <!-- sidebar -->
+  <script src="{% static 'assets/js/sidebar.js' %}"></script>
+  <!-- height_equal-->
+  <script src="{% static 'assets/js/height-equal.js' %}"></script>
+  <!-- config-->
+  <script src="{% static 'assets/js/config.js' %}"></script>
+  <!-- apex-->
+  <script src="{% static 'assets/js/chart/apex-chart/apex-chart.js' %}"></script>
+  <script src="{% static 'assets/js/chart/apex-chart/stock-prices.js' %}"></script>
+  <!-- scrollbar-->
+  <script src="{% static 'assets/js/scrollbar/simplebar.js' %}"></script>
+  <script src="{% static 'assets/js/scrollbar/custom.js' %}"></script>
+  <!-- slick-->
+  <script src="{% static 'assets/js/slick/slick.min.js' %}"></script>
+  <script src="{% static 'assets/js/slick/slick.js' %}"></script>
+  <!-- data_table-->
+  <script src="{% static 'assets/js/js-datatables/datatables/jquery.dataTables.min.js' %}"></script>
+  <!-- page_datatable-->
+  <script src="{% static 'assets/js/js-datatables/datatables/datatable.custom.js' %}"></script>
+  <!-- page_datatable1-->
+  <script src="{% static 'assets/js/js-datatables/datatables/datatable.custom1.js' %}"></script>
+  <!-- page_datatable-->
+  <script src="{% static 'assets/js/datatable/datatables/datatable.custom.js' %}"></script>
+  <!-- theme_customizer-->
+  <script src="{% static 'assets/js/theme-customizer/customizer.js' %}"></script>
+  <!-- tilt-->
+  <script src="{% static 'assets/js/animation/tilt/tilt.jquery.js' %}"></script>
+  <!-- page_tilt-->
+  <script src="{% static 'assets/js/animation/tilt/tilt-custom.js' %}"></script>
+  <!-- dashboard_1-->
+  <script src="{% static 'assets/js/dashboard/dashboard_1.js' %}"></script>
+
+
+  <!-- slick-->
+  <script src="{% static 'assets/js/slick/slick.min.js' %}"></script>
+  <script src="{% static 'assets/js/slick/slick.js' %}"></script>
+  <!-- datatable-->
+  <script src="{% static 'assets/js/datatable/datatables/jquery.dataTables.min.js' %}"></script>
+  <!-- datatable_extension-->
+  <script src="{% static 'assets/js/datatable/datatable-extension/dataTables.buttons.min.js' %}"></script>
+  <script src="{% static 'assets/js/datatable/datatable-extension/jszip.min.js' %}"></script>
+  <script src="{% static 'assets/js/datatable/datatable-extension/buttons.colVis.min.js' %}"></script>
+  <script src="{% static 'assets/js/datatable/datatable-extension/pdfmake.min.js' %}"></script>
+  <script src="{% static 'assets/js/datatable/datatable-extension/vfs_fonts.js' %}"></script>
+  <script src="{% static 'assets/js/datatable/datatable-extension/dataTables.autoFill.min.js' %}"></script>
+  <script src="{% static 'assets/js/datatable/datatable-extension/dataTables.select.min.js' %}"></script>
+  <script src="{% static 'assets/js/datatable/datatable-extension/buttons.bootstrap4.min.js' %}"></script>
+  <script src="{% static 'assets/js/datatable/datatable-extension/buttons.html5.min.js' %}"></script>
+  <script src="{% static 'assets/js/datatable/datatable-extension/buttons.print.min.js' %}"></script>
+  <script src="{% static 'assets/js/datatable/datatable-extension/dataTables.bootstrap4.min.js' %}"></script>
+  <script src="{% static 'assets/js/datatable/datatable-extension/dataTables.responsive.min.js' %}"></script>
+  <script src="{% static 'assets/js/datatable/datatable-extension/responsive.bootstrap4.min.js' %}"></script>
+  <script src="{% static 'assets/js/datatable/datatable-extension/dataTables.keyTable.min.js' %}"></script>
+  <script src="{% static 'assets/js/datatable/datatable-extension/dataTables.colReorder.min.js' %}"></script>
+  <script src="{% static 'assets/js/datatable/datatable-extension/dataTables.fixedHeader.min.js' %}"></script>
+  <script src="{% static 'assets/js/datatable/datatable-extension/dataTables.rowReorder.min.js' %}"></script>
+  <script src="{% static 'assets/js/datatable/datatable-extension/dataTables.scroller.min.js' %}"></script>
+  <script src="{% static 'assets/js/datatable/datatable-extension/custom.js' %}"></script>
+
+  <!-- datatable-->
+  <script src="{% static 'assets/js/datatable/datatables/jquery.dataTables.min.js' %}"></script>
+  <!-- page_datatable -->
+  <script src="{% static 'assets/js/js-datatables/datatables/datatable.custom.js' %}"></script>
+  <!-- page_datatable-->
+  <!-- <script src="{% static 'assets/js/datatable/datatables/datatable.custom.js' %}"></script> -->
+  <!-- theme_customizer-->
+  <script src="{% static 'assets/js/theme-customizer/customizer.js' %}"></script>
+
+  <!-- custom script -->
+  <script src="{% static 'assets/js/script.js' %}"></script>
+
+
+  <script>
+   const employees = [
+    //{ sl: 1, name: "Ravi Sharma", email: "ravi.sharma@example.com", mobile: "9876543210", status: "active", loginTime: "09:00", logoutTime: "18:00", image: "https://randomuser.me/api/portraits/men/1.jpg" },
+    { sl: 1, name: "Ravi Sharma", email: "ravi.sharma@example.com", mobile: "9876543210", status: "active", loginTime: "09:00", logoutTime: "18:00", image: "https://thumbs.dreamstime.com/b/falling-drop-rain-blue-earth-image-water-splash-crown-shape-water-splash-crown-shape-falling-drop-earth-140453719.jpg" },
+    { sl: 2, name: "Anita Verma", email: "anita.verma@example.com", mobile: "9876543211", status: "inactive", loginTime: "09:15", logoutTime: "17:45", image: "https://randomuser.me/api/portraits/women/2.jpg" },
+    { sl: 3, name: "Mohit Gupta", email: "mohit.gupta@example.com", mobile: "9876543212", status: "active", loginTime: "08:45", logoutTime: "17:30", image: "https://randomuser.me/api/portraits/men/3.jpg" },
+    { sl: 4, name: "Pooja Rani", email: "pooja.rani@example.com", mobile: "9876543213", status: "inactive", loginTime: "10:00", logoutTime: "18:15", image: "https://randomuser.me/api/portraits/women/4.jpg" },
+    { sl: 5, name: "Aman Singh", email: "aman.singh@example.com", mobile: "9876543214", status: "active", loginTime: "09:30", logoutTime: "18:30", image: "https://randomuser.me/api/portraits/men/5.jpg" },
+    { sl: 6, name: "Neha Mehta", email: "neha.mehta@example.com", mobile: "9876543215", status: "active", loginTime: "09:00", logoutTime: "18:00", image: "https://randomuser.me/api/portraits/women/6.jpg" },
+    { sl: 7, name: "Rakesh Kumar", email: "rakesh.kumar@example.com", mobile: "9876543216", status: "inactive", loginTime: "10:15", logoutTime: "17:45", image: "https://randomuser.me/api/portraits/men/7.jpg" },
+    { sl: 8, name: "Swati Joshi", email: "swati.joshi@example.com", mobile: "9876543217", status: "active", loginTime: "09:10", logoutTime: "18:05", image: "https://randomuser.me/api/portraits/women/8.jpg" },
+    { sl: 9, name: "Deepak Yadav", email: "deepak.yadav@example.com", mobile: "9876543218", status: "active", loginTime: "08:50", logoutTime: "17:50", image: "https://randomuser.me/api/portraits/men/9.jpg" },
+    { sl: 10, name: "Kriti Desai", email: "kriti.desai@example.com", mobile: "9876543219", status: "inactive", loginTime: "10:00", logoutTime: "18:10", image: "https://randomuser.me/api/portraits/women/10.jpg" },
+
+    { sl: 11, name: "Vikas Jain", email: "vikas.jain@example.com", mobile: "9876543220", status: "active", loginTime: "09:05", logoutTime: "18:00", image: "https://randomuser.me/api/portraits/men/11.jpg" },
+    { sl: 12, name: "Meena Kumari", email: "meena.kumari@example.com", mobile: "9876543221", status: "inactive", loginTime: "10:30", logoutTime: "17:00", image: "https://randomuser.me/api/portraits/women/12.jpg" },
+    { sl: 13, name: "Saurabh Mishra", email: "saurabh.mishra@example.com", mobile: "9876543222", status: "active", loginTime: "08:55", logoutTime: "17:45", image: "https://randomuser.me/api/portraits/men/13.jpg" },
+    { sl: 14, name: "Alka Sinha", email: "alka.sinha@example.com", mobile: "9876543223", status: "inactive", loginTime: "10:20", logoutTime: "17:30", image: "https://randomuser.me/api/portraits/women/14.jpg" },
+    { sl: 15, name: "Nikhil Raj", email: "nikhil.raj@example.com", mobile: "9876543224", status: "active", loginTime: "09:00", logoutTime: "18:00", image: "https://randomuser.me/api/portraits/men/15.jpg" },
+
+    { sl: 16, name: "Shruti Agarwal", email: "shruti.agarwal@example.com", mobile: "9876543225", status: "active", loginTime: "09:10", logoutTime: "18:20", image: "https://randomuser.me/api/portraits/women/16.jpg" },
+    { sl: 17, name: "Harsh Vardhan", email: "harsh.vardhan@example.com", mobile: "9876543226", status: "inactive", loginTime: "10:05", logoutTime: "17:40", image: "https://randomuser.me/api/portraits/men/17.jpg" },
+    { sl: 18, name: "Jyoti Kaur", email: "jyoti.kaur@example.com", mobile: "9876543227", status: "active", loginTime: "08:40", logoutTime: "17:30", image: "https://randomuser.me/api/portraits/women/18.jpg" },
+    { sl: 19, name: "Rohan Bhandari", email: "rohan.bhandari@example.com", mobile: "9876543228", status: "active", loginTime: "09:00", logoutTime: "17:55", image: "https://randomuser.me/api/portraits/men/19.jpg" },
+    { sl: 20, name: "Tanya Kapoor", email: "tanya.kapoor@example.com", mobile: "9876543229", status: "inactive", loginTime: "10:25", logoutTime: "17:35", image: "https://randomuser.me/api/portraits/women/20.jpg" }
+  ];
+
+    const tbody = document.getElementById("table-body");
+
+    employees.forEach(emp => {
+
+      // const parts = emp.date.split('/'); // [yyyy, mm, dd]
+      //const formattedDate = `${parts[2]}/${parts[1]}/${parts[0]}`; 
+
+      tbody.innerHTML += `
+      <tr>
+        <td>${emp.sl}</td>
+        <td>${emp.name}</td>
+        <td>${emp.email}</td>
+        <td>${emp.mobile}</td>
+        <td>${emp.status}</td>
+        <td>${emp.loginTime}</td>
+        <td>${emp.logoutTime}</td>
+       <td><img src="${emp.image}" width="50" height="50" style="border-radius: 50%; object-fit: cover; cursor: pointer;" onclick="openImageModal('${emp.image}', '${emp.name}')"></td>
+        <td>
+          <button class= "btn btn-primary">View map</button>
+        </td>
+      </tr>`;
+    });
+
+    function openImageModal(imageSrc, name) {
+      const modal = document.getElementById('imageModal');
+      const modalImg = document.getElementById('modalImage');
+      const caption = document.getElementById('imageCaption');
+      
+      modal.style.display = "flex";
+      modalImg.src = imageSrc;
+      caption.textContent = name;
+    }
+
+    function closeImageModal() {
+      document.getElementById('imageModal').style.display = "none";
+    }
+
+    // Close modal when clicking outside the image
+    document.getElementById('imageModal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeImageModal();
+      }
+    });
+
+  </script>
+
+</body>
+
+</html>

@@ -10,6 +10,10 @@ router.register(r'createUserList', views.CreateUserViewSet)
 router.register(r'createTaskList', views.Create_task_Viewset)
 
 urlpatterns = [
+    
+    # admin urls 
+    
+    
     # path('', views.index, name='index'),
     path('', views.admin_login, name='admin_login'),
     path('admin_logout/', views.admin_logout, name='admin_logout'),
@@ -38,6 +42,18 @@ urlpatterns = [
     path('telecaller/delete/<int:id>/', views.tc_delete, name='tc_delete'),
     path('teamlead/delete/<int:id>/', views.tl_delete, name='tl_delete'),
     path('groundstaff/delete/<int:id>/', views.gs_delete, name='gs_delete'),
+
+    # telecaller urls 
+    
+    path('tc_dashboard/', views.tc_dashboard, name='tc_dashboard'),
+    path('tc_teamlead/', views.tc_teamlead, name='tc_teamlead'),
+    path('tc_groundstaff/', views.tc_groundstaff, name='tc_groundstaff'),
+    path('tc_tl_login/', views.tc_tl_login, name='tc_tl_login'),
+    path('tc_gs_login/', views.tc_gs_login, name='tc_gs_login'),
+    path('tc_assign_task/', views.tc_assign_task, name='tc_assign_task'),
+    path('tc_pending_task/', views.tc_pending_task, name='tc_pending_task'),
+    path('tc_complete_task/', views.tc_complete_task, name='tc_complete_task'),
+    path('tc_leave/', views.tc_leave, name='tc_leave'),
     
     
     # api urls

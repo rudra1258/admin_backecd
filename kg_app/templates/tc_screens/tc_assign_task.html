@@ -1,0 +1,2194 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Admiro admin is super flexible, powerful, clean &amp; modern responsive bootstrap 5 admin template with unlimited possibilities.">
+    <meta name="keywords"
+        content="admin template, Admiro admin template, best javascript admin, dashboard template, bootstrap admin template, responsive admin template, web app">
+    <meta name="author" content="pixelstrap">
+    <title>Task List</title>
+    <!-- Favicon icon-->
+    <link rel="icon" href="{% static 'assets/img/favicon.png' %}" type="image/x-icon">
+    <link rel="shortcut icon" href="{% static 'assets/img/favicon.png' %}" type="image/x-icon">
+    <!-- Google font-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link
+        href="../../css2?family=Nunito+Sans:opsz,wght@6..12,200;6..12,300;6..12,400;6..12,500;6..12,600;6..12,700;6..12,800;6..12,900;6..12,1000&amp;display=swap"
+        rel="stylesheet">
+    <!-- Flag icon css -->
+    <link rel="stylesheet" href="{% static 'assets/css/vendors/flag-icon.css' %}">
+    <!-- iconly-icon-->
+    <link rel="stylesheet" href="{% static 'assets/css/iconly-icon.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/bulk-style.css' %}">
+    <!-- iconly-icon-->
+    <link rel="stylesheet" href="{% static 'assets/css/themify.css' %}">
+    <!--fontawesome-->
+    <link rel="stylesheet" href="{% static 'assets/css/fontawesome-min.css' %}">
+    <!-- Whether Icon css-->
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/vendors/weather-icons/weather-icons.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/vendors/scrollbar.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/vendors/slick.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/vendors/slick-theme.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/vendors/datatables.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/vendors/datatable-extension.css' %}">
+    <!-- App css -->
+    <link id="color" rel="stylesheet" href="{% static 'assets/css/color-1.css' %}" media="screen">
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+
+
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+        integrity="sha512-…(hash)…”" crossorigin=" anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+        integrity="sha512-…(hash)…”" crossorigin=" anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="https://cdn.iconly.io/iconly.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/iconly@latest/css/iconly.css" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+        integrity="sha512-KNuNk+LZ8e2j+ozhRtX7sMGu0j1qFeIslMo7k3M5lVZhcN7sVbG7ByAzt+BrgrbM5nxp7/ECYtJ8O5E2+8Y0eA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdn.iconly.io/your-generated-hash/iconly.css">
+
+
+
+
+    <style>
+        /*.dataTables_filter {
+            display: none;
+        }*/
+
+        .sidebar-pannle-main {
+            display: none;
+        }
+
+        .margin_left_auto {
+            margin-left: auto;
+        }
+
+        .no-scroll-popup {
+            overflow: visible !important;
+        }
+
+        .swal2-popup {
+            overflow: visible !important;
+        }
+
+        .swal2-html-container {
+            overflow: visible !important;
+            max-height: none !important;
+        }
+
+        #basic-9 {
+            width: auto !important;
+            table-layout: auto;
+        }
+
+        #basic-9 th,
+        #basic-9 td {
+            white-space: nowrap;
+            padding: 8px 12px;
+        }
+
+        #basic-9 {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /*#basic-9_filter {
+            position: fixed;
+            top: 0;
+            right: 0;
+            background: white;
+            z-index: 1000;
+            padding: 15px;
+            width: auto;
+        }*/
+
+        /* Fix the search/length controls at top 
+        #basic-9_wrapper .dataTables_length,
+        #basic-9_wrapper .dataTables_filter {
+            position: sticky;
+            top: 0;
+            background: white;
+            z-index: 10;
+            padding: 10px 0;
+        }
+
+        .dataTables_info,
+        .dataTables_paginate {
+            position: sticky;
+            bottom: 0;
+            background: white;
+            z-index: 10;
+            padding: 10px 0;
+        }*/
+
+        .card-header {
+            background: #9594f1;
+        }
+
+
+        .filter-container {
+            background: #9594f1;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .filter-row {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .filter-group {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .filter-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .filter-group select {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            background: white;
+        }
+
+        .filter-group select:disabled {
+            background: #f0f0f0;
+            cursor: not-allowed;
+        }
+
+        .btn-reset {
+            padding: 8px 20px;
+            background: #e40611;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 24px;
+        }
+
+        .btn-reset:hover {
+            background: #da828e;
+        }
+
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+        }
+
+        .header h1 {
+            margin-bottom: 15px;
+        }
+
+        .filter-section {
+            display: flex;
+            gap: 15px;
+            align-items: flex-end;
+            flex-wrap: wrap;
+        }
+
+        .filter-group {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .filter-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .filter-group select {
+            width: 100%;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .btn-reset {
+            padding: 8px 20px;
+            background: white;
+            color: #667eea;
+            border: 2px solid white;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-reset:hover {
+            background: transparent;
+            color: white;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        thead {
+            background: #f8f9fa;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        th {
+            padding: 12px 8px;
+            text-align: left;
+            font-weight: 600;
+            color: #333;
+            border-bottom: 2px solid #dee2e6;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 10px 8px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        tbody tr {
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        tbody tr:hover {
+            background: #f8f9ff;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+            font-size: 16px;
+        }
+
+        .btn {
+            padding: 5px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            margin-right: 5px;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: #007bff;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #0056b3;
+        }
+
+        .btn-warning {
+            background: #ffc107;
+            color: #333;
+        }
+
+        .btn-warning:hover {
+            background: #e0a800;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 2% auto;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 1200px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 8px 8px 0 0;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+        }
+
+        .close {
+            color: white;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .close:hover {
+            transform: scale(1.2);
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        /* Row Details Section */
+        .row-details {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            border-left: 4px solid #667eea;
+        }
+
+        .row-details h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .detail-item {
+            background: white;
+            padding: 12px;
+            border-radius: 6px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .detail-label {
+            font-weight: 600;
+            color: #555;
+            font-size: 12px;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .detail-value {
+            color: #333;
+            font-size: 14px;
+            word-break: break-word;
+        }
+
+        /* Form Styles */
+        .form-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .form-section h3 {
+            color: #333;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #555;
+            font-size: 14px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .modal-footer {
+            padding: 20px;
+            background: #f8f9fa;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            border-radius: 0 0 8px 8px;
+        }
+
+        .btn-cancel,
+        .btn-save {
+            padding: 10px 25px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-cancel {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-cancel:hover {
+            background: #5a6268;
+        }
+
+        .btn-save {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-save:hover {
+            background: #218838;
+        }
+
+        /* Category Section Styles */
+        .category-section {
+            padding: 20px;
+            background: white;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .category-section h3 {
+            margin-bottom: 15px;
+            color: #333;
+            font-size: 18px;
+        }
+
+        .category-scroll {
+            overflow-x: auto;
+            overflow-y: hidden;
+            scrollbar-width: thin;
+            scrollbar-color: #667eea #f0f0f0;
+        }
+
+        .category-scroll::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .category-scroll::-webkit-scrollbar-track {
+            background: #f0f0f0;
+            border-radius: 4px;
+        }
+
+        .category-scroll::-webkit-scrollbar-thumb {
+            background: #667eea;
+            border-radius: 4px;
+        }
+
+        .category-scroll::-webkit-scrollbar-thumb:hover {
+            background: #5568d3;
+        }
+
+        .category-grid {
+            display: flex;
+            gap: 15px;
+            padding-bottom: 10px;
+        }
+
+        .category-card {
+            min-width: 200px;
+            flex-shrink: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+        }
+
+        .category-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .category-code {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+
+        .category-desc {
+            font-size: 13px;
+            line-height: 1.4;
+            opacity: 0.95;
+        }
+
+
+        /*history table css*/
+        .popup-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .popup-overlay.active {
+        display: flex;
+    }
+
+    .popup-container {
+        background: white;
+        border-radius: 8px;
+        width: 95%;
+        max-width: 1200px;
+        max-height: 85vh;
+        overflow: hidden;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        animation: slideDown 0.3s ease;
+    }
+
+    @keyframes slideDown {
+        from {
+            transform: translateY(-50px);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
+    .popup-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px;
+        border-bottom: 2px solid #f0f0f0;
+        background-color: #f8f9fa;
+    }
+
+    .popup-header h2 {
+        margin: 0;
+        color: #333;
+        font-size: 24px;
+    }
+
+    .close-btn {
+        font-size: 32px;
+        color: #666;
+        cursor: pointer;
+        transition: color 0.3s;
+        line-height: 1;
+    }
+
+    .close-btn:hover {
+        color: #ff0000;
+    }
+
+    .popup-body {
+        padding: 20px;
+        overflow-y: auto;
+        max-height: calc(85vh - 80px);
+    }
+
+    .history-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+        font-size: 14px;    
+        border: 0.5px solid #e3e3e3;
+    }
+
+    .history-table thead {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+
+    .history-table th,
+    .history-table td {
+        padding: 12px 8px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .history-table th {
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 12px;
+        color: white;
+    }
+
+    .history-table tbody tr:hover {
+        background-color: #f5f5f5;
+    }
+
+    .history-table tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    .history-table a {
+        color: #007bff;
+        text-decoration: none;
+    }
+
+    .history-table a:hover {
+        text-decoration: underline;
+    }
+
+    .category-card {
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .category-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .category-card.active {
+        border: 2px solid #007bff;
+        background-color: #f0f8ff;
+    }
+
+    .category-count {
+        background-color: #007bff;
+        color: white;
+        padding: 3px 10px;
+        border-radius: 12px;
+        font-size: 0.85em;
+        font-weight: 600;
+        min-width: 28px;
+        text-align: center;
+        margin-left: 20px;
+        gap: 6px; /* Gap between dash and number */
+    }
+
+    .category-card.active .category-count {
+        background-color: #0056b3;
+    }
+
+    .category-card:hover .category-count {
+        background-color: #0056b3;
+    }
+
+    .no-data-message {
+        display: none;
+        justify-content: center;
+        align-items: center;
+        padding: 60px 20px;
+        margin: 20px 0;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        border: 2px dashed #dee2e6;
+    }
+
+    .no-data-content {
+        text-align: center;
+        color: #6c757d;
+    }
+
+    .no-data-content svg {
+        color: #adb5bd;
+        margin-bottom: 20px;
+    }
+
+    .no-data-content h3 {
+        font-size: 1.5em;
+        margin-bottom: 10px;
+        color: #495057;
+    }
+
+    .no-data-content p {
+        font-size: 1em;
+        color: #6c757d;
+        margin: 0;
+    }
+
+
+    .count-separator {
+        opacity: 0.7;
+        margin: 0 2px;
+    }
+
+
+    </style>
+
+</head>
+
+
+
+
+
+<body>
+    <!-- page-wrapper Start-->
+    <!-- tap on top starts-->
+    <div class="tap-top">
+        <i class="fa-solid fa-angle-up"></i>
+    </div>
+    <!-- tap on tap ends-->
+    <!-- loader-->
+    <div class="loader-wrapper">
+        <div class="loader"><span></span><span></span><span></span><span></span><span></span></div>
+    </div>
+
+
+    <div class="page-wrapper compact-wrapper" id="pageWrapper">
+
+        <!-- this is header section -->
+        {% include "tc_common/tc_header.html" %}
+        <!--header section end -->
+
+
+
+
+
+        <!-- Page Body Start-->
+        <div class="page-body-wrapper">
+            <!-- Page sidebar start-->
+            {% include "tc_common/tc_sidebar.html" %}
+            <!-- Page sidebar end-->
+
+            <!-- body section start  -->
+            <div class="page-body">
+                <div class="container-fluid">
+                    <div class="page-title">
+                        <div class="row">
+                            <!-- table start -->
+                            <div class="col-sm-12">
+                                <div class="card">
+                                    <div class="card-header pb-0 card-no-border">
+
+                                        <h3>MY TASK LIST</h3>
+
+
+
+                                    </div>
+                                    <div class="filter-container">
+                                        <div class="filter-row">
+                                            <div class="filter-group">
+                                                <label for="columnSelect">Select Column:</label>
+                                                <select id="columnSelect">
+                                                    <option value="">-- Select Column --</option>
+                                                </select>
+                                            </div>
+                                            <div class="filter-group">
+                                                <label for="valueSelect">Select Value:</label>
+                                                <select id="valueSelect" disabled>
+                                                    <option value="">-- Select Value --</option>
+                                                </select>
+                                            </div>
+                                            <button class="btn-reset" onclick="resetFilters()">Reset Filters</button>
+                                        </div>
+                                    </div>
+
+                                    <!-- Category Section -->
+                                    <div class="category-section">
+                                        <h3>Status Categories</h3>
+                                        <div class="category-scroll">
+                                            <div class="category-grid">
+                                                <div class="category-card" data-category="ALL">
+                                                    <div class="category-code">ALL</div>
+                                                    <div class="category-desc">All Lists</div>
+                                                </div>
+                                                <div class="category-card" data-category="CB">
+                                                    <div class="category-code">CB</div>
+                                                    <div class="category-desc">The customer asked us to call back</div>
+                                                </div>
+                                                <div class="category-card" data-category="DISP">
+                                                    <div class="category-code">DISP</div>
+                                                    <div class="category-desc">Disputed cases</div>
+                                                </div>
+                                                <div class="category-card" data-category="EXP">
+                                                    <div class="category-code">EXP</div>
+                                                    <div class="category-desc">Death</div>
+                                                </div>
+                                                <div class="category-card" data-category="NC">
+                                                    <div class="category-code">NC</div>
+                                                    <div class="category-desc">Not contact/Invalid/Incoming call off
+                                                    </div>
+                                                </div>
+                                                <div class="category-card"  data-category="NITP">
+                                                    <div class="category-code">NITP</div>
+                                                    <div class="category-desc">Customer having no intension to repay
+                                                        loans / Intentional issues</div>
+                                                </div>
+                                                <div class="category-card" data-category="OS">
+                                                    <div class="category-code">OS</div>
+                                                    <div class="category-desc">Out of station</div>
+                                                </div>
+                                                <div class="category-card" data-category="PAID">
+                                                    <div class="category-code">PAID</div>
+                                                    <div class="category-desc">Paid</div>
+                                                </div>
+                                                <div class="category-card" data-category="PTP">
+                                                    <div class="category-code">PTP</div>
+                                                    <div class="category-desc">Promised to pay</div>
+                                                </div>
+                                                <div class="category-card" data-category="REPO">
+                                                    <div class="category-code">REPO</div>
+                                                    <div class="category-desc">Vehicle repossession</div>
+                                                </div>
+                                                <div class="category-card" data-category="RNR">
+                                                    <div class="category-code">RNR</div>
+                                                    <div class="category-desc">Customer not responding the call</div>
+                                                </div>
+                                                <div class="category-card" data-category="RTP">
+                                                    <div class="category-code">RTP</div>
+                                                    <div class="category-desc">Refused to pay</div>
+                                                </div>
+                                                <div class="category-card" data-category="SHIFT">
+                                                    <div class="category-code">SHIFT</div>
+                                                    <div class="category-desc">Shifted the address</div>
+                                                </div>
+                                                <div class="category-card" data-category="SKIP">
+                                                    <div class="category-code">SKIP</div>
+                                                    <div class="category-desc">Skip the address</div>
+                                                </div>
+                                                <div class="category-card" data-category="VISIT">
+                                                    <div class="category-code">VISIT</div>
+                                                    <div class="category-desc">Not visit</div>
+                                                </div>
+                                                <div class="category-card" data-category="RE-VISIT">
+                                                    <div class="category-code">RE-VISIT</div>
+                                                    <div class="category-desc">Need to group visit</div>
+                                                </div>
+                                                <div class="category-card" data-category="WIP">
+                                                    <div class="category-code">WIP</div>
+                                                    <div class="category-desc">Working progress</div>
+                                                </div>
+                                                <div class="category-card" data-category="N-OFF">
+                                                    <div class="category-code">N-OFF</div>
+                                                    <div class="category-desc">Number off</div>
+                                                </div>
+                                                <div class="category-card" data-category="ANF">
+                                                    <div class="category-code">ANF</div>
+                                                    <div class="category-desc">Address not found</div>
+                                                </div>
+                                                <div class="category-card" data-category="FRAUD">
+                                                    <div class="category-code">FRAUD</div>
+                                                    <div class="category-desc">Potential fraud</div>
+                                                </div>
+                                                <div class="category-card" data-category="PS">
+                                                    <div class="category-code">PS</div>
+                                                    <div class="category-desc">Product sold</div>
+                                                </div>
+                                                <div class="category-card" data-category="CF">
+                                                    <div class="category-code">CF</div>
+                                                    <div class="category-desc">Cash funding</div>
+                                                </div>
+                                                <div class="category-card" data-category="FP">
+                                                    <div class="category-code">FP</div>
+                                                    <div class="category-desc">Financial problem</div>
+                                                </div>
+                                                <div class="category-card" data-category="WS">
+                                                    <div class="category-code">WS</div>
+                                                    <div class="category-desc">Wants settlement</div>
+                                                </div>
+                                                <div class="category-card" data-category="NO JOB">
+                                                    <div class="category-code">NO JOB</div>
+                                                    <div class="category-desc">Jobless</div>
+                                                </div>
+                                                <div class="category-card" data-category="MP">
+                                                    <div class="category-code">MP</div>
+                                                    <div class="category-desc">Medical problems</div>
+                                                </div>
+                                                <div class="category-card" data-category="MD">
+                                                    <div class="category-code">MD</div>
+                                                    <div class="category-desc">Multiple loan availed & market defaulter
+                                                    </div>
+                                                </div>
+                                                <div class="category-card" data-category="IC">
+                                                    <div class="category-code">IC</div>
+                                                    <div class="category-desc">Insurance claim</div>
+                                                </div>
+                                                <div class="category-card" data-category="3P">
+                                                    <div class="category-code">3P</div>
+                                                    <div class="category-desc">3rd party case</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="display dataTable" id="basic-9">
+                                                <thead style="background:#f8f9fa;">
+                                                    <tr>
+                                                        <th>Sl</th>
+                                                        <th>Agreement ID</th>
+                                                        <th>Customer Name</th>
+                                                        <th>Category</th>
+                                                        <th>Product</th>
+                                                        <th>TC Name</th>
+                                                        <th>Branch</th>
+                                                        <th>Count of Cases</th>
+                                                        <th>Old/New</th>
+                                                        <th>Bucket</th>
+                                                        <th>Mode</th>
+                                                        <th>NPA Status</th>
+                                                        <th>POS</th>
+                                                        <th>EMI Amount</th>
+                                                        <th>EMI Due Amount</th>
+                                                        <th>Total Charges</th>
+                                                        <th>Receipt Amount</th>
+                                                        <th>Receipt Date</th>
+                                                        <th>BCC Pending</th>
+                                                        <th>Penal Pending</th>
+                                                        <th>Disbursement Amount</th>
+                                                        <th>Loan Amount</th>
+                                                        <th>Disbursement Date</th>
+                                                        <th>EMI Start Date</th>
+                                                        <th>EMI End Date</th>
+                                                        <th>EMI Cycle Date</th>
+                                                        <th>Make</th>
+                                                        <th>Manufacturer Description</th>
+                                                        <th>Registration Number</th>
+                                                        <th>Age</th>
+                                                        <th>Employer</th>
+                                                        <th>Father Name</th>
+                                                        <th>FE Name</th>
+                                                        <th>FE Mobile Number</th>
+                                                        <th>Customer Number</th>
+                                                        <th>Customer Address</th>
+                                                        <th>Customer Office Address</th>
+                                                        <th>PIN Code</th>
+                                                        <th>Reference Details</th>
+                                                        <th>Collection Manager Name</th>
+                                                        <th>Finance Company Name</th>
+                                                        {% comment %} <th>Action</th> {% endcomment %}
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="table-body"></tbody>
+                                            </table>
+                                            <div id="task-table-container">
+                                                <!-- Your table or data display here -->
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Modal -->
+                                    <div id="detailModal" class="modal">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h2>Case Details & Update</h2>
+                                                <span class="close" onclick="closeModal()">&times;</span>
+                                            </div>
+                                            <div class="modal-body">
+                                                <!-- Row Details Section -->
+                                                <div class="row-details" id="rowDetailsSection">
+                                                    <h3>Current Case Information</h3>
+                                                    <div class="details-grid" id="rowDetailsGrid">
+                                                        <!-- Details will be populated here -->
+                                                    </div>
+                                                </div>
+
+                                                <!-- Form Section -->
+                                                <form id="detailForm" method="post" action="{% url 'kg_app:update_task' %}" enctype="multipart/form-data">
+                                                    {% csrf_token %}
+                                                    <div class="form-section">
+                                                        <h3>Contact Information</h3>
+                                                        <div class="form-grid">
+                                                            <div class="form-group">
+                                                                <label>Agreement Id</label>
+                                                                <input type="text" id="agreementIdInput" name="agreement_id" value="" readonly>
+                                                            </div>
+                                                            <input type="text" id="task_id" name="task_id" value="" readonly hidden>
+                                                            <div class="form-group">
+                                                                <label>Code</label>
+                                                                <select id="code" name="code" required>
+                                                                    <option value="" selected disabled>Select Code</option>
+                                                                    <option value="CB">CB - THE CUSTOMER ASKED US TO CALL BACK</option>
+                                                                    <option value="DISP">DISP - DISPUTED CASES</option>
+                                                                    <option value="EXP">EXP - DEATH</option>
+                                                                    <option value="NC">NC - NOT CONTACT/INVALID/INCOMING CALL OFF</option>
+                                                                    <option value="NITP">NITP - CUSTOMER HAVING NO INTENSION TO REPAY LOANS / INTENTIONAL ISSUES</option>
+                                                                    <option value="OS">OS - OUT OF STATION</option>
+                                                                    <option value="PAID">PAID - PAID</option>
+                                                                    <option value="PTP">PTP - PROMISED TO PAY</option>
+                                                                    <option value="REPO">REPO - VEHICLE REPOSSESSION</option>
+                                                                    <option value="RNR">RNR - CUSTOMER NOT RESPONDING THE CALL</option>
+                                                                    <option value="RTP">RTP - REFUSED TO PAY</option>
+                                                                    <option value="SHIFT">SHIFT - SHIFTED THE ADDRESS</option>
+                                                                    <option value="SKIP">SKIP - SKIP THE ADDRESS</option>
+                                                                    <option value="VISIT">VISIT - NOT VISIT</option>
+                                                                    <option value="RE-VISIT">RE-VISIT - NEED TO GROUP VISIT</option>
+                                                                    <option value="WIP">WIP - WORKING PROGRESS</option>
+                                                                    <option value="N-OFF">N-OFF - NUMBER OFF</option>
+                                                                    <option value="ANF">ANF - ADDRESS NOT FOUND</option>
+                                                                    <option value="FRAUD">FRAUD - POTENTIAL FRAUD</option>
+                                                                    <option value="PS">PS - PRODUCT SOLD</option>
+                                                                    <option value="CF">CF - CASH FUNDING</option>
+                                                                    <option value="FP">FP - FINANCIAL PROBLEM</option>
+                                                                    <option value="WS">WS - WANTS SETTLEMENT</option>
+                                                                    <option value="NO JOB">NO JOB - JOBLESS</option>
+                                                                    <option value="MP">MP - MEDICAL PROBLEMS</option>
+                                                                    <option value="MD">MD - MULTIPLE LOAN AVAILED & MARKET DEFAULTER</option>
+                                                                    <option value="IC">IC - INSURANCE CLAIM</option>
+                                                                    <option value="3P">3P - 3RD PARTY CASE</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label>New Mobile Number</label>
+                                                                <input type="tel" id="newMobileNumber" name="newMobileNumber" placeholder="Enter mobile number" required>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-section">
+                                                        <h3>Projection Details</h3>
+                                                        <div class="form-grid">
+                                                            <div class="form-group">
+                                                                <label>Projection (Y/D/N)</label>
+                                                                <select id="projection" name="projection" required >
+                                                                    <option value="" selected disabled>Select</option>
+                                                                    <option value="Yes">Yes</option>
+                                                                    <option value="Delayed">Delayed</option>
+                                                                    <option value="No">No</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label>Promise Date</label>
+                                                                <input type="datetime-local" id="promise_date" name="promise_date" required>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label>Promise Amount</label>
+                                                                <input type="number" id="promiseAmount" name="promise_amt" placeholder="00000/-" required>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-section">
+                                                        <h3>Remarks</h3>
+                                                        <div class="form-grid">
+                                                            <div class="form-group">
+                                                                <label>Customer Remarks</label>
+                                                                <textarea id="customerRemarks" placeholder="Enter customer remarks" name="customer_remark" required></textarea>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label>Reference Remarks</label>
+                                                                <textarea id="referenceRemarks" placeholder="Enter reference remarks" name="referencr_remark" required></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-section">
+                                                        <h3>Visit Details</h3>
+                                                        <div class="form-grid">
+                                                            <div class="form-group">
+                                                                <label>Need Group Visit (Y/N)</label>
+                                                                <select id="needGroupVisit" name="need_group_visit"required>
+                                                                    <option value="" selected disabled>--Select--</option>
+                                                                    <option value="Yes">Yes</option>
+                                                                    <option value="No">No</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label>Projection (Y/Y2/Y3/D/N)</label>
+                                                                <select id="projectionExtended" name="visit_projection">
+                                                                    <option value="">Select</option>
+                                                                    <option value="Yess">Yes</option>
+                                                                    <option value="Yes2">Yes 2</option>
+                                                                    <option value="Yes3">Yes 3</option>
+                                                                    <option value="Delayed">Delayed</option>
+                                                                    <option value="No">No</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label>Visit Status (Y/N)</label>
+                                                                <select id="visitStatus" name="visit_status" required>
+                                                                    <option value="" selected disabled>Select</option>
+                                                                    <option value="Yes">Yes</option>
+                                                                    <option value="No">No</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-section">
+                                                        <h3>Customer & Vehicle Status</h3>
+                                                        <div class="form-grid">
+                                                            <div class="form-group">
+                                                                <label>Customer Available (Y/N)</label>
+                                                                <select id="customerAvailable" name="customer_available">
+                                                                    <option value="" selected disabled>Select</option>
+                                                                    <option value="Yes">Yes</option>
+                                                                    <option value="No">No</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label>Vehicle Available (Y/N)</label>
+                                                                <select id="vehicleAvailable" name="vehicle_available">
+                                                                    <option value="" selected disabled>Select</option>
+                                                                    <option value="Yes">Yes</option>
+                                                                    <option value="No">No</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label>3rd Party Status (Y/N)</label>
+                                                                <select id="thirdPartyStatus" name="third_party_status">
+                                                                    <option value="" selected disabled>Select</option>
+                                                                    <option value="Yes">Yes</option>
+                                                                    <option value="No">No</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label>3rd Party Details</label>
+                                                                <input type="text" id="thirdPartyDetails" name="third_party_details" placeholder="Enter details">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-section">
+                                                        <h3>Location & Status</h3>
+                                                        <div class="form-grid">
+                                                            <div class="form-group">
+                                                                <label>New Update Address</label>
+                                                                <textarea id="newUpdateAddress" name="new_update_address" placeholder="Enter new address" required></textarea>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label>Location Photo</label>
+                                                                <input type="file" id="locationPhoto" accept="image/*" name="location_image" required>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label>Status (ST/RB/NR/RF)</label>
+                                                                <select id="status" required name="location_status">
+                                                                    <option value="" selected disabled>Select</option>
+                                                                    <option value="ST">ST</option>
+                                                                    <option value="RB">RB</option>
+                                                                    <option value="NR">NR</option>
+                                                                    <option value="RF">RF</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-section">
+                                                        <h3>Payment Details</h3>
+                                                        <div class="form-grid">
+                                                            <div class="form-group">
+                                                                <label>Payment</label>
+                                                                <input type="text" id="payment" name="payment_info" required placeholder="Enter payment info">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label>Payment Mode</label>
+                                                                <select id="paymentMode" name="payment_mode" required>
+                                                                    <option value="" selected disabled>Select</option>
+                                                                    <option value="Cash">Cash</option>
+                                                                    <option value="Online">Online</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label>Payment Amount</label>
+                                                                <input type="number" id="paymentAmount" name="payment_amount" required placeholder="00000/-">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label>Payment Date</label>
+                                                                <input type="datetime-local" id="paymentDate" name="payment_date" required>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        
+                                                        <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+                                                        <button class="btn-save" type="submit">Save Changes</button>
+                                                    </div>
+                                                </form>
+                                                    <input type="text" id="agreementIdInputs" name="agreement_id" value="" readonly hidden> 
+                                                    <button class="btn-cancel" onclick="openHistoryPopup(this)" >History</button>
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+
+                                    <!-- Popup Modal -->
+                                    <div id="historyPopup" class="popup-overlay">
+                                        <div class="popup-container">
+                                            <div class="popup-header">
+                                                <h2>Task Update History</h2>
+                                                <span class="close-btn" onclick="closeHistoryPopup()">&times;</span>
+                                            </div>
+                                            <div class="popup-body">
+                                                <!-- <div id="loadingMessage" style="text-align: center; padding: 20px;">
+                                                    <p>Loading history...</p>
+                                                </div>
+                                                <div id="noDataMessage" style="text-align: center; padding: 20px; display: none;">
+                                                    <p>No history found for this agreement.</p>
+                                                </div> -->
+                                                <div id="historyTableContainer" >
+                                                    <table class="history-table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Sl</th>
+                                                                <th>Updated By</th>
+                                                                <th>Agreement Id</th>
+                                                                <th>Code</th>
+                                                                <th>New Mobile Number</th>
+                                                                <th>Projection</th>
+                                                                <th>Promise Date</th>
+                                                                <th>Promise Amount</th>
+                                                                <th>Customer Remark</th>
+                                                                <th>Reference Remark</th>
+                                                                <th>Need Group Visit</th>
+                                                                <th>Visit Projection</th>
+                                                                <th>Visit Status</th>
+                                                                <th>Customer Available</th>
+                                                                <th>Vehicle Available</th>
+                                                                <th>3rd Party Status</th>
+                                                                <th>3rd Party Details</th>
+                                                                <th>New Updated Address</th>
+                                                                <th>Location Photo</th>
+                                                                <th>Location Status</th>
+                                                                <th>Payment Info</th>
+                                                                <th>Payment Mode</th>
+                                                                <th>Payment Amount</th>
+                                                                <th>Payment Date</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="historyTableBody">
+                                                            <!-- Data will be loaded here dynamically -->
+                                                             <!-- {% for data in updated_task_list %}
+                                                             <tr>
+                                                                <td>{{forloop.counter}}</td>
+                                                                <td>{{data.updated_by}}</td>
+                                                                <td>{{data.agreement_id}}</td>
+                                                                <td>{{data.projection}}</td>
+                                                                <td>{{data.promise_date}}</td>
+                                                                <td>{{data.promise_amount}}</td>
+                                                                <td>{{data.customer_remark}}</td>
+                                                                <td>{{data.visit_status}}</td>
+                                                                <td>{{data.location_status}}</td>
+                                                                <td>{{data.payment_mode}}</td>
+                                                                <td>{{data.new_mobile_number}}</td>
+                                                                <td>{{data.location_image}}</td>
+                                                             </tr>
+                                                             {% endfor %} -->
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Container-fluid starts-->
+            {% include "tc_common/tc_footer.html" %}
+        </div>
+        <!-- page body end  -->
+
+    </div>
+
+
+
+
+    <!-- jquery-->
+    <script src="{% static 'assets/js/vendors/jquery/jquery.min.js' %}"></script>
+    <!-- bootstrap js-->
+    <script src="{% static 'assets/js/vendors/bootstrap/dist/js/bootstrap.bundle.min.js' %}" defer=""></script>
+    <script src="{% static 'assets/js/vendors/bootstrap/dist/js/popper.min.js' %}" defer=""></script>
+    <!--fontawesome-->
+    <script src="{% static 'assets/js/vendors/font-awesome/fontawesome-min.js' %}"></script>
+    <!-- feather-->
+    <script src="{% static 'assets/js/vendors/feather-icon/feather.min.js' %}"></script>
+    <script src="{% static 'assets/js/vendors/feather-icon/custom-script.js' %}"></script>
+    <!-- sidebar -->
+    <script src="{% static 'assets/js/sidebar.js' %}"></script>
+    <!-- sweet aleart  -->
+    <script src="{% static 'assets/js/sweetalert/sweetalert2.min.js' %}"></script>
+    <script src="{% static 'assets/js/sweetalert/sweetalert-custom.js' %}"></script>
+    <!-- height_equal-->
+    <script src="{% static 'assets/js/height-equal.js' %}"></script>
+    <!-- config-->
+    <script src="{% static 'assets/js/config.js' %}"></script>
+    <!-- apex-->
+    <script src="{% static 'assets/js/chart/apex-chart/apex-chart.js' %}"></script>
+    <script src="{% static 'assets/js/chart/apex-chart/stock-prices.js' %}"></script>
+    <!-- scrollbar-->
+    <script src="{% static 'assets/js/scrollbar/simplebar.js' %}"></script>
+    <script src="{% static 'assets/js/scrollbar/custom.js' %}"></script>
+    <!-- slick-->
+    <script src="{% static 'assets/js/slick/slick.min.js' %}"></script>
+    <script src="{% static 'assets/js/slick/slick.js' %}"></script>
+    <!-- data_table-->
+    <script src="{% static 'assets/js/js-datatables/datatables/jquery.dataTables.min.js' %}"></script>
+    <!-- page_datatable-->
+    <script src="{% static 'assets/js/js-datatables/datatables/datatable.custom.js' %}"></script>
+    <!-- page_datatable1-->
+    <script src="{% static 'assets/js/js-datatables/datatables/datatable.custom1.js' %}"></script>
+    <!-- page_datatable-->
+    <script src="{% static 'assets/js/datatable/datatables/datatable.custom.js' %}"></script>
+    <!-- theme_customizer-->
+    <script src="{% static 'assets/js/theme-customizer/customizer.js' %}"></script>
+    <!-- tilt-->
+    <script src="{% static 'assets/js/animation/tilt/tilt.jquery.js' %}"></script>
+    <!-- page_tilt-->
+    <script src="{% static 'assets/js/animation/tilt/tilt-custom.js' %}"></script>
+    <!-- dashboard_1-->
+    <script src="{% static 'assets/js/dashboard/dashboard_1.js' %}"></script>
+
+
+
+
+
+
+    <!-- slick-->
+    <script src="{% static 'assets/js/slick/slick.min.js' %}"></script>
+    <script src="{% static 'assets/js/slick/slick.js' %}"></script>
+    <!-- datatable-->
+    <script src="{% static 'assets/js/datatable/datatables/jquery.dataTables.min.js' %}"></script>
+    <!-- datatable_extension-->
+    <script src="{% static 'assets/js/datatable/datatable-extension/dataTables.buttons.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/jszip.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/buttons.colVis.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/pdfmake.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/vfs_fonts.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/dataTables.autoFill.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/dataTables.select.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/buttons.bootstrap4.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/buttons.html5.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/buttons.print.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/dataTables.bootstrap4.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/dataTables.responsive.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/responsive.bootstrap4.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/dataTables.keyTable.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/dataTables.colReorder.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/dataTables.fixedHeader.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/dataTables.rowReorder.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/dataTables.scroller.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/custom.js' %}"></script>
+
+    <!-- datatable-->
+    <script src="{% static 'assets/js/datatable/datatables/jquery.dataTables.min.js' %}"></script>
+    <!-- page_datatable -->
+    <script src="{% static 'assets/js/js-datatables/datatables/datatable.custom.js' %}"></script>
+    <!-- page_datatable-->
+    <!-- <script src="{% static 'assets/js/datatable/datatables/datatable.custom.js' %}"></script> -->
+    <!-- theme_customizer-->
+    <script src="{% static 'assets/js/theme-customizer/customizer.js' %}"></script>
+
+    <!-- custom script -->
+    <script src="{% static 'assets/js/script.js' %}"></script>
+
+
+
+
+
+
+<script>
+
+    //updateCategoryCounts(); // Initial call to set counts on page load
+
+     
+   
+   // Function to count tasks by category
+    function getCategoryCounts() {
+        const counts = {};
+        allTasks.forEach(task => {
+            const category = task.category || 'UNKNOWN';
+            counts[category] = (counts[category] || 0) + 1;
+        });
+        // Add total count for ALL
+        counts['ALL'] = allTasks.length;
+        return counts;
+    }
+
+    // Function to update category counts in the UI
+    function updateCategoryCounts() {
+        const counts = getCategoryCounts();
+        const categoryCards = document.querySelectorAll('.category-card');
+        
+        categoryCards.forEach(card => {
+            const categoryCode = card.getAttribute('data-category');
+            const count = counts[categoryCode] || 0;
+            
+            // Check if count badge already exists in the card
+            let countBadge = card.querySelector('.category-count');
+            if (!countBadge) {
+                countBadge = document.createElement('span');
+                countBadge.className = 'category-count';
+                card.querySelector('.category-code').appendChild(countBadge);
+            }
+            countBadge.innerHTML = '<span class="count-separator"></span>' + count;
+        });
+    }
+
+    // Function to show/hide no data message
+    function toggleNoDataMessage(show) {
+        let noDataMessage = document.getElementById('no-data-message');
+        
+        if (show) {
+            if (!noDataMessage) {
+                // Create the no data message element
+                noDataMessage = document.createElement('div');
+                noDataMessage.id = 'no-data-message';
+                noDataMessage.className = 'no-data-message';
+                noDataMessage.innerHTML = `
+                    <div class="no-data-content">
+                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="8" x2="12" y2="12"></line>
+                            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                        </svg>
+                        <h3>No Data Found</h3>
+                        <p>No records found for the selected category.</p>
+                    </div>
+                `;
+                
+                // Insert after the category scroll section or before your table
+                const categoryScroll = document.querySelector('.category-scroll');
+                if (categoryScroll && categoryScroll.parentNode) {
+                    categoryScroll.parentNode.insertBefore(noDataMessage, categoryScroll.nextSibling);
+                }
+            }
+            noDataMessage.style.display = 'flex';
+        } else {
+            if (noDataMessage) {
+                noDataMessage.style.display = 'none';
+            }
+        }
+    }
+
+    // Function to filter tasks by category
+    function filterByCategory(categoryCode) {
+        if (categoryCode === 'ALL') {
+            filteredTasks = [...allTasks];
+        } else {
+            filteredTasks = allTasks.filter(task => task.category === categoryCode);
+        }
+        
+        console.log('Filtered tasks for category ' + categoryCode + ':', filteredTasks.length);
+        
+        // Show/hide no data message
+        if (filteredTasks.length === 0) {
+            toggleNoDataMessage(true);
+            // Hide your table/data display
+            const tableContainer = document.getElementById('task-table-container'); // Replace with your actual table container ID
+            if (tableContainer) {
+                tableContainer.style.display = 'none';
+            }
+        } else {
+            toggleNoDataMessage(false);
+            // Show your table/data display
+            const tableContainer = document.getElementById('task-table-container'); // Replace with your actual table container ID
+            if (tableContainer) {
+                tableContainer.style.display = 'block';
+            }
+            // Call your function to update the display/table
+            renderTable(); // Replace with your actual function name
+        }
+    }
+
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        // Update counts on page load
+        updateCategoryCounts();
+        
+        const categoryCards = document.querySelectorAll('.category-card');
+        
+        // Set ALL as active by default
+        if (categoryCards.length > 0) {
+            categoryCards[0].classList.add('active');
+        }
+        
+        categoryCards.forEach(card => {
+            card.addEventListener('click', function() {
+                // Remove active class from all cards
+                categoryCards.forEach(c => c.classList.remove('active'));
+                
+                // Add active class to clicked card
+                this.classList.add('active');
+                
+                // Get the category code from data attribute
+                const categoryCode = this.getAttribute('data-category');
+                
+                console.log('Clicked category:', categoryCode);
+                
+                // Filter tasks
+                filterByCategory(categoryCode);
+            });
+        });
+    });
+
+    const columnMapping = {
+        "Sl": "sl",
+        "Agreement ID": "aggrement_id",
+        "Customer Name": "customer_name",
+        "Product": "product_type",
+        "TC Name": "tc_name",
+        "Branch": "branch",
+        "Count of Cases": "count_of_cases",
+        "Old/New": "old_or_new",
+        "Bucket": "bucket",
+        "Mode": "mode",
+        "NPA Status": "npa_status",
+        "POS": "pos_amount",
+        "EMI Amount": "emi_amount",
+        "EMI Due Amount": "emi_due_amount",
+        "Total Charges": "total_charges",
+        "Receipt Amount": "recipt_amount",
+        "Receipt Date": "recipt_date",
+        "BCC Pending": "bcc_pending",
+        "Penal Pending": "penal_pending",
+        "Disbursement Amount": "disbursement_amount",
+        "Loan Amount": "loan_amount",
+        "Disbursement Date": "disbursement_date",
+        "EMI Start Date": "emi_start_date",
+        "EMI End Date": "emi_end_date",
+        "EMI Cycle Date": "emi_cycle_date",
+        "Make": "make",
+        "Manufacturer Description": "manufacturer_description",
+        "Registration Number": "registration_number",
+        "Age": "vehicle_age",
+        "Employer": "employer",
+        "Father Name": "father_name",
+        "FE Name": "fe_name",
+        "FE Mobile Number": "fe_mobile_number",
+        "Customer Number": "customer_mobile_number",
+        "Customer Address": "customer_address",
+        "Customer Office Address": "customer_office_address",
+        "PIN Code": "pin_code",
+        "Reference Details": "reference_details",
+        "Collection Manager Name": "collection_manager_name",
+        "Finance Company Name": "finance_company_name"
+    };
+
+    const fieldLabels = {
+        'sl': 'Sl',
+        'aggrement_id': 'Agreement ID',
+        'customer_name': 'Customer Name',
+        'product_type': 'Product Type',
+        'tc_name': 'TC Name',
+        'branch': 'Branch',
+        'count_of_cases': 'Count of Cases',
+        'old_or_new': 'Old/New',
+        'bucket': 'Bucket',
+        'mode': 'Mode',
+        'npa_status': 'NPA Status',
+        'pos_amount': 'POS Amount',
+        'emi_amount': 'EMI Amount',
+        'emi_due_amount': 'EMI Due Amount',
+        'total_charges': 'Total Charges',
+        'recipt_amount': 'Receipt Amount',
+        'recipt_date': 'Receipt Date',
+        'bcc_pending': 'BCC Pending',
+        'penal_pending': 'Penal Pending',
+        'disbursement_amount': 'Disbursement Amount',
+        'loan_amount': 'Loan Amount',
+        'disbursement_date': 'Disbursement Date',
+        'emi_start_date': 'EMI Start Date',
+        'emi_end_date': 'EMI End Date',
+        'emi_cycle_date': 'EMI Cycle Date',
+        'make': 'Make',
+        'manufacturer_description': 'Manufacturer Description',
+        'registration_number': 'Registration Number',
+        'vehicle_age': 'Vehicle Age',
+        'employer': 'Employer',
+        'father_name': 'Father Name',
+        'fe_name': 'FE Name',
+        'fe_mobile_number': 'FE Mobile Number',
+        'customer_mobile_number': 'Customer Mobile Number',
+        'customer_address': 'Customer Address',
+        'customer_office_address': 'Customer Office Address',
+        'pin_code': 'Pin Code',
+        'reference_details': 'Reference Details',
+        'collection_manager_name': 'Collection Manager Name',
+        'finance_company_name': 'Finance Company Name'
+    };
+
+    // Convert Django task_list to JavaScript array
+    const allTasks = [
+        {% for task in task_list %}
+        {
+            sl: {{ forloop.counter }},
+            aggrement_id: "{{ task.aggrement_id|default:'' }}",
+            task_id: "{{ task.task_id|default:'' }}",
+            customer_name: "{{ task.customer_name|default:'' }}",
+            category: "{{ task.category|default:'' }}",
+            product_type: "{{ task.product_type|default:'' }}",
+            tc_name: "{{ task.tc_name|default:'' }}",
+            branch: "{{ task.branch|default:'' }}",
+            count_of_cases: "{{ task.count_of_cases|default:'' }}",
+            old_or_new: "{{ task.old_or_new|default:'' }}",
+            bucket: "{{ task.bucket|default:'' }}",
+            mode: "{{ task.mode|default:'' }}",
+            npa_status: "{{ task.npa_status|default:'' }}",
+            pos_amount: "{{ task.pos_amount|default:'' }}",
+            emi_amount: "{{ task.emi_amount|default:'' }}",
+            emi_due_amount: "{{ task.emi_due_amount|default:'' }}",
+            total_charges: "{{ task.total_charges|default:'' }}",
+            recipt_amount: "{{ task.recipt_amount|default:'' }}",
+            recipt_date: "{{ task.recipt_date|default:'' }}",
+            bcc_pending: "{{ task.bcc_pending|default:'' }}",
+            penal_pending: "{{ task.penal_pending|default:'' }}",
+            disbursement_amount: "{{ task.disbursement_amount|default:'' }}",
+            loan_amount: "{{ task.loan_amount|default:'' }}",
+            disbursement_date: "{{ task.disbursement_date|default:'' }}",
+            emi_start_date: "{{ task.emi_start_date|default:'' }}",
+            emi_end_date: "{{ task.emi_end_date|default:'' }}",
+            emi_cycle_date: "{{ task.emi_cycle_date|default:'' }}",
+            make: "{{ task.make|default:'' }}",
+            manufacturer_description: "{{ task.manufacturer_description|default:'' }}",
+            registration_number: "{{ task.registration_number|default:'' }}",
+            vehicle_age: "{{ task.vehicle_age|default:'' }}",
+            employer: "{{ task.employer|default:'' }}",
+            father_name: "{{ task.father_name|default:'' }}",
+            fe_name: "{{ task.fe_name|default:'' }}",
+            fe_mobile_number: "{{ task.fe_mobile_number|default:'' }}",
+            customer_mobile_number: "{{ task.customer_mobile_number|default:'' }}",
+            customer_address: "{{ task.customer_address|default:'' }}",
+            customer_office_address: "{{ task.customer_office_address|default:'' }}",
+            pin_code: "{{ task.pin_code|default:'' }}",
+            reference_details: "{{ task.reference_details|default:'' }}",
+            collection_manager_name: "{{ task.collection_manager_name|default:'' }}",
+            finance_company_name: "{{ task.finance_company_name|default:'' }}"
+        }{% if not forloop.last %},{% endif %}
+        {% endfor %}
+    ];
+
+    let filteredTasks = [...allTasks];
+    let currentTask = null;
+
+    function initializeFilters() {
+        const columnSelect = document.getElementById('columnSelect');
+        
+        if (!columnSelect) return;
+
+        Object.keys(columnMapping).forEach(displayName => {
+            const option = document.createElement('option');
+            option.value = displayName;
+            option.textContent = displayName;
+            columnSelect.appendChild(option);
+        });
+
+        columnSelect.addEventListener('change', onColumnChange);
+        const valueSelect = document.getElementById('valueSelect');
+        if (valueSelect) {
+            valueSelect.addEventListener('change', onValueChange);
+        }
+    }
+
+    function onColumnChange(e) {
+        const selectedColumn = e.target.value;
+        const valueSelect = document.getElementById('valueSelect');
+
+        if (!valueSelect) return;
+
+        valueSelect.innerHTML = '<option value="">-- Select Value --</option>';
+
+        if (!selectedColumn) {
+            valueSelect.disabled = true;
+            return;
+        }
+
+        valueSelect.disabled = false;
+
+        const fieldKey = columnMapping[selectedColumn];
+        const uniqueValues = [...new Set(allTasks.map(task => task[fieldKey]))].filter(v => v).sort();
+
+        uniqueValues.forEach(value => {
+            const option = document.createElement('option');
+            option.value = value;
+            option.textContent = value;
+            valueSelect.appendChild(option);
+        });
+    }
+
+    function onValueChange(e) {
+        const selectedColumn = document.getElementById('columnSelect').value;
+        const selectedValue = e.target.value;
+
+        if (!selectedColumn || !selectedValue) {
+            filteredTasks = [...allTasks];
+        } else {
+            const fieldKey = columnMapping[selectedColumn];
+            filteredTasks = allTasks.filter(task => task[fieldKey] == selectedValue);
+        }
+
+        renderTable();
+    }
+
+    function resetFilters() {
+        document.getElementById('columnSelect').value = '';
+        const valueSelect = document.getElementById('valueSelect');
+        if (valueSelect) {
+            valueSelect.innerHTML = '<option value="">-- Select Value --</option>';
+            valueSelect.disabled = true;
+        }
+        filteredTasks = [...allTasks];
+        renderTable();
+    }
+
+    var global_aggrement_id = '';
+    function populateRowDetails(task) {
+        const detailsGrid = document.getElementById('rowDetailsGrid');
+        const agreementIdInput = document.getElementById('agreementIdInput');
+        const agreementIdInputs = document.getElementById('agreementIdInputs');
+        const taskIdInput = document.getElementById('task_id');
+        if (!detailsGrid) return;
+
+        if (agreementIdInput) {
+            agreementIdInput.value = task.aggrement_id || '';
+            global_aggrement_id = task.aggrement_id || '';
+        }
+        if (agreementIdInputs){
+            agreementIdInputs.value = task.aggrement_id || '';
+        }
+        if(taskIdInput){
+            taskIdInput.value = task.task_id || '';
+        }
+        
+        detailsGrid.innerHTML = '';
+        console.log('Populating details for task:', task.aggrement_id);
+
+        Object.keys(task).forEach(key => {
+            const detailItem = document.createElement('div');
+            detailItem.className = 'detail-item';
+
+            const label = document.createElement('div');
+            label.className = 'detail-label';
+            label.textContent = fieldLabels[key] || key;
+
+            const value = document.createElement('div');
+            value.className = 'detail-value';
+            value.textContent = task[key] || '-';
+
+            detailItem.appendChild(label);
+            detailItem.appendChild(value);
+            detailsGrid.appendChild(detailItem);
+        });
+    }
+
+    function openModal(task) {
+        currentTask = task;
+        populateRowDetails(task);
+        const modal = document.getElementById('detailModal');
+        if (modal) {
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+    }
+
+    function closeModal() {
+        const modal = document.getElementById('detailModal');
+        if (modal) {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+        const form = document.getElementById('detailForm');
+        if (form) form.reset();
+    }
+
+    function saveDetails() {
+        const formData = {
+            agreementId: currentTask.aggrement_id,
+            customerName: currentTask.customer_name,
+            code: document.getElementById('code')?.value || '',
+            newMobileNumber: document.getElementById('newMobileNumber')?.value || '',
+            projection: document.getElementById('projection')?.value || '',
+            promiseDate: document.getElementById('promiseDate')?.value || '',
+            promiseAmount: document.getElementById('promiseAmount')?.value || '',
+            customerRemarks: document.getElementById('customerRemarks')?.value || '',
+            referenceRemarks: document.getElementById('referenceRemarks')?.value || '',
+            needGroupVisit: document.getElementById('needGroupVisit')?.value || '',
+            projectionExtended: document.getElementById('projectionExtended')?.value || '',
+            visitStatus: document.getElementById('visitStatus')?.value || '',
+            customerAvailable: document.getElementById('customerAvailable')?.value || '',
+            vehicleAvailable: document.getElementById('vehicleAvailable')?.value || '',
+            thirdPartyStatus: document.getElementById('thirdPartyStatus')?.value || '',
+            thirdPartyDetails: document.getElementById('thirdPartyDetails')?.value || '',
+            newUpdateAddress: document.getElementById('newUpdateAddress')?.value || '',
+            status: document.getElementById('status')?.value || '',
+            payment: document.getElementById('payment')?.value || '',
+            paymentMode: document.getElementById('paymentMode')?.value || '',
+            paymentAmount: document.getElementById('paymentAmount')?.value || '',
+            paymentDate: document.getElementById('paymentDate')?.value || ''
+        };
+
+        console.log('Form Data:', formData);
+
+        // TODO: Send data to server via AJAX
+        // Example:
+        // fetch('/save-details/', {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //         'X-CSRFToken': getCookie('csrftoken')
+        //     },
+        //     body: JSON.stringify(formData)
+        // })
+        // .then(response => response.json())
+        // .then(data => {
+        //     alert('Details saved successfully!');
+        //     closeModal();
+        // });
+
+        alert('Details saved successfully for Agreement ID: ' + currentTask.aggrement_id);
+        closeModal();
+    }
+
+    // Helper function to get CSRF token
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    window.onclick = function(event) {
+        const modal = document.getElementById('detailModal');
+        if (event.target == modal) {
+            closeModal();
+        }
+    }
+
+    function renderTable() {
+        const tbody = document.getElementById('table-body');
+        if (!tbody) return;
+        
+        // Store the table reference
+        const table = document.getElementById('basic-9');
+        const isDataTable = $.fn.DataTable.isDataTable(table);
+        
+        // If DataTable is initialized, destroy it temporarily
+        let dtInstance;
+        if (isDataTable) {
+            dtInstance = $(table).DataTable();
+            dtInstance.destroy();
+        }
+        
+        // Clear tbody
+        tbody.innerHTML = '';
+        
+        if (filteredTasks.length === 0) {
+            tbody.innerHTML = '<tr class="no-results-row"><td colspan="40" style="text-align: center; padding: 40px; color: #999;">No results found</td></tr>';
+        } else {
+            // Render filtered tasks
+            filteredTasks.forEach((task) => {
+                const row = document.createElement('tr');
+                row.onclick = function() { openModal(task); };
+                row.style.cursor = 'pointer';
+
+                row.innerHTML = `
+                    <td>${task.sl}</td>
+                    <td>${task.aggrement_id}</td>
+                    <td>${task.customer_name}</td>
+                    <td>${task.category || 'NA'}</td>
+                    <td>${task.product_type}</td>
+                    <td>${task.tc_name}</td>
+                    <td>${task.branch}</td>
+                    <td>${task.count_of_cases}</td>
+                    <td>${task.old_or_new}</td>
+                    <td>${task.bucket}</td>
+                    <td>${task.mode}</td>
+                    <td>${task.npa_status}</td>
+                    <td>${task.pos_amount}</td>
+                    <td>${task.emi_amount}</td>
+                    <td>${task.emi_due_amount}</td>
+                    <td>${task.total_charges}</td>
+                    <td>${task.recipt_amount}</td>
+                    <td>${task.recipt_date}</td>
+                    <td>${task.bcc_pending}</td>
+                    <td>${task.penal_pending}</td>
+                    <td>${task.disbursement_amount}</td>
+                    <td>${task.loan_amount}</td>
+                    <td>${task.disbursement_date}</td>
+                    <td>${task.emi_start_date}</td>
+                    <td>${task.emi_end_date}</td>
+                    <td>${task.emi_cycle_date}</td>
+                    <td>${task.make}</td>
+                    <td>${task.manufacturer_description}</td>
+                    <td>${task.registration_number}</td>
+                    <td>${task.vehicle_age}</td>
+                    <td>${task.employer}</td>
+                    <td>${task.father_name}</td>
+                    <td>${task.fe_name}</td>
+                    <td>${task.fe_mobile_number}</td>
+                    <td>${task.customer_mobile_number}</td>
+                    <td>${task.customer_address}</td>
+                    <td>${task.customer_office_address}</td>
+                    <td>${task.pin_code}</td>
+                    <td>${task.reference_details}</td>
+                    <td>${task.collection_manager_name}</td>
+                    <td>${task.finance_company_name}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+        
+        // Re-initialize DataTable if it was initialized before
+        if (isDataTable) {
+            $(table).DataTable({
+                // Add your DataTable options here if you have any custom settings
+                // For example: pageLength: 10, searching: true, etc.
+            });
+        }
+    }
+
+    // Initialize when DOM is ready
+    document.addEventListener('DOMContentLoaded', function() {
+        initializeFilters();
+        renderTable(); // Initial render of all tasks
+    });
+</script>
+
+    <!-- <script>
+    document.querySelector(".sweet-26").onclick = function () {
+        (async () => {
+          const { value: fruit } = await Swal.fire({
+            title: 'Select field validation',
+            input: 'select',
+            inputOptions: {
+              'Fruits': {
+                apples: 'Apples',
+                bananas: 'Bananas',
+                grapes: 'Grapes',
+                oranges: 'Oranges'
+              },
+              'Vegetables': {
+                potato: 'Potato',
+                broccoli: 'Broccoli',
+                carrot: 'Carrot'
+              },
+              'icecream': 'Ice cream'
+            },
+            inputPlaceholder: 'Select a fruit',
+            showCancelButton: true,
+            inputValidator: (value) => {
+              return new Promise((resolve) => {
+                if (value === 'oranges') {
+                  resolve()
+                } else {
+                  resolve('You need to select oranges :)')
+                }
+              })
+            }
+          })
+          if (fruit) {
+            Swal.fire(`You selected: ${fruit}`)
+          }
+          })()
+      };
+  </script> -->
+
+  <script>
+    
+    const updatedTaskList = {{ updated_task_list_json|safe }};
+
+    function openHistoryPopup(button) {
+        console.log("*********************************************************** global_aggrement_id ",global_aggrement_id);
+    const agreementId = button.getAttribute('data-agreement-id');
+    document.getElementById('historyPopup').classList.add('active');
+    
+    // Show loading message
+    //document.getElementById('loadingMessage').style.display = 'block';
+    //document.getElementById('noDataMessage').style.display = 'none';
+    //document.getElementById('historyTableContainer').style.display = 'none';
+    
+    // Load history data
+    loadHistoryData(global_aggrement_id);
+    }
+
+    
+    function loadHistoryData(agreementId) {
+            const tableBody = document.getElementById('historyTableBody');
+            
+            // Clear existing data
+            tableBody.innerHTML = '';
+            console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& - global_aggrement_id", global_aggrement_id)            
+            
+            
+            // Filter data by agreement_id
+            const filteredData = updatedTaskList.filter(task => 
+                task.agreement_id === agreementId || 
+                task.agreement_id === String(agreementId)
+            );
+            
+            // Check if no data found
+            if (filteredData.length === 0) {
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="12" style="text-align: center; padding: 20px;">
+                            No history found for Agreement ID: ${agreementId}
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            // Populate table with filtered data
+            filteredData.forEach((data, index) => {
+                const row = document.createElement('tr');
+                // Format the image display
+                let imageDisplay = '-';
+                if (data.location_image) {
+                    // Handle the image path - Django usually serves media files from MEDIA_URL
+                    const imagePath = data.location_image.startsWith('/media/') 
+                        ? data.location_image 
+                        : '/media/' + data.location_image;
+                    
+                    imageDisplay = `<img src="${imagePath}" 
+                                        alt="Location" 
+                                        class="image-thumbnail" 
+                                        style="width: 50px; height: 50px; cursor: pointer;"
+                                        onclick="window.open('${imagePath}', '_blank')">`;
+                }
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${data.updated_by || '-'}</td>
+                    <td>${data.agreement_id || '-'}</td>
+                    <td>${data.code || '-'}</td>
+                    <td>${data.new_mobile_number || '-'}</td>
+                    <td>${data.projection || '-'}</td>
+                    <td>${data.promise_date || '-'}</td>
+                    <td>${data.promise_amount || '-'}</td>
+                    <td>${data.customer_remark || '-'}</td>
+                    <td>${data.reference_remark || '-'}</td>
+                    <td>${data.need_group_visit || '-'}</td>
+                    <td>${data.visit_projection || '-'}</td>
+                    <td>${data.visit_status || '-'}</td>
+                    <td>${data.customer_available || '-'}</td>
+                    <td>${data.vehicle_available || '-'}</td>
+                    <td>${data.third_party_status || '-'}</td>
+                    <td>${data.third_party_details || '-'}</td>
+                    <td>${data.new_update_address || '-'}</td>
+                    <td>${imageDisplay || '-'}</td>
+                    <td>${data.location_status || '-'}</td>
+                    <td>${data.payment_info || '-'}</td>
+                    <td>${data.payment_mode || '-'}</td>
+                    <td>${data.payment_amount || '-'}</td>
+                    <td>${data.payment_date || '-'}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+    }
+
+    function closeHistoryPopup() {
+        document.getElementById('historyPopup').classList.remove('active');
+    }
+
+    
+
+    // Close popup when clicking outside
+    document.getElementById('historyPopup').addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeHistoryPopup();
+        }
+    });
+
+    // Close with Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeHistoryPopup();
+        }
+    });
+  </script>
+
+
+</body>
+
+</html>

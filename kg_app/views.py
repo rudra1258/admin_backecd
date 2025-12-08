@@ -72,32 +72,32 @@ def admin_login(request):
         email = request.POST.get('email')
         password = request.POST.get('password')
         remember_me = request.POST.get('remember_me')
-        print("Login attempt with email:", email)
-        print("Password entered:", password)
         
+        print("Login attempt with email:", email)
+        
+        # Try admin login first
         try:
-            # Check if user exists
             admin_user = admin_user_model.objects.get(email=email)
             
-            print("password of user:", admin_user)
+            print("Admin user found:", admin_user.username)
             print("Provided password:", password)
-            print("Stored hashed password:", admin_user.email)
             
             # Verify password
-            if (password == admin_user.password):
-                
+            if password == admin_user.password:
                 # Set session
                 request.session['admin_id'] = admin_user.admin_id
                 request.session['admin_username'] = admin_user.username
                 request.session['admin_email'] = admin_user.email
                 
-                
+                # Set session expiry based on remember_me
+                if not remember_me:
+                    request.session.set_expiry(0)
                 
                 # Return JSON response for success
                 return JsonResponse({
                     'success': True,
                     'message': 'Login successful!',
-                    'redirect_url': '/dashboard/'  # Change this to your actual dashboard URL
+                    'redirect_url': '/dashboard/' 
                 })
             else:
                 # Return JSON response for invalid password
@@ -107,11 +107,43 @@ def admin_login(request):
                 })  
                 
         except admin_user_model.DoesNotExist:
-            # Return JSON response for user not found
-            return JsonResponse({
-                'success': False,
-                'message': 'Invalid email or password!'
-            })
+            pass
+        # Try telecaller login if admin login didn't succeed
+        try:
+            user = CreateUser.objects.get(email=email)
+            
+            # Check if user role is allowed to login
+            allowed_roles = ['telecaller']
+            
+            if user.role not in allowed_roles:
+                return JsonResponse({
+                    'success': False,
+                    'message': 'Access denied. Only telecallers can login through this portal.'
+                })
+            
+            # Verify user password
+            if password == user.password:  # Use check_password() if hashed
+                # Set user session
+                request.session['tc_admin_id'] = user.admin_id.admin_id
+                request.session['user_type'] = user.role
+                request.session['user_id'] = user.id
+                request.session['username'] = user.username
+                request.session['tc_first_name'] = user.first_name
+                request.session['email'] = user.email
+                request.session['role'] = user.role
+                
+                # Set session expiry based on remember_me
+                if not remember_me:
+                    request.session.set_expiry(0)
+                
+                return JsonResponse({
+                    'success': True,
+                    'message': 'Telecaller login successful!',
+                    'redirect_url': '/tc_dashboard/'
+                })
+        except CreateUser.DoesNotExist:
+            pass
+    
     return render(request, 'index.html')
 
 def admin_logout(request):
@@ -989,3 +1021,134 @@ def gs_delete(request, id):
     emp.delete()
     return redirect('kg_app:groundstaff')   # change to your list page URL name
 
+
+
+
+
+
+
+#                ***********************
+#           *****                       *****
+#        ***                                 ***
+#      **                                       **
+#     **                                         **
+#    **            ***********************         **
+#    **           *     TELECALLER VIEW    *       **
+#    **            ***********************         **
+#     **                                         **
+#      **                                       **
+#        ***                                 ***
+#           *****                       *****
+#                ***********************
+
+
+
+def tc_dashboard(request):
+    session_tc_id = request.session.get("tc_admin_id")
+    # navigate to login page if not login
+    if not session_tc_id:
+        return render(request, 'index.html')
+    return render(request, "tc_screens/tc_dashboard.html")
+
+def tc_teamlead(request):
+    session_admin_id = request.session.get('tc_admin_id')
+    if not session_admin_id:
+        return render(request, 'index.html')
+    admin_id_pk = admin_user_model.objects.get(pk = session_admin_id)
+    caller_list = CreateUser.objects.filter(
+        admin_id = admin_id_pk,
+        role = 'teamlead'
+    )
+    return render(request, "tc_screens/tc_teamlead.html",{"data":caller_list})
+
+def tc_groundstaff(request):
+    session_admin_id = request.session.get('tc_admin_id')
+    if not session_admin_id:
+        return render(request, 'index.html')
+    admin_id_pk = admin_user_model.objects.get(pk = session_admin_id)
+    staff_list = CreateUser.objects.filter(
+        admin_id = admin_id_pk,
+        role = 'groundstaff'
+    )
+    return render(request, "tc_screens/tc_groundstaff.html",{"data":staff_list})
+
+def tc_tl_login(request):
+    session_admin_id = request.session.get("tc_admin_id")
+    # navigate to login page if not login
+    if not session_admin_id:
+        return render(request, 'index.html')
+    
+    return render(request, "tc_screens/tc_tl_login.html")
+
+def tc_gs_login(request):
+    session_admin_id = request.session.get("tc_admin_id")
+    # navigate to login page if not login
+    if not session_admin_id:
+        return render(request, 'index.html')
+    return render(request, "tc_screens/tc_gs_login.html")
+
+def tc_assign_task(request):
+    session_admin_id = request.session.get('tc_admin_id')
+    # navigate to login page if not login
+    if not session_admin_id:
+        return render(request, 'index.html')
+    admin_id_pk = admin_user_model.objects.get(pk = session_admin_id)
+    create_task_list = Create_task.objects.filter(
+        admin_id = admin_id_pk
+    )
+    update_task_list = task_update.objects.all()
+
+     # Convert queryset to JSON with all fields from your model
+    updated_task_list_json = json.dumps(list(update_task_list.values(
+        'task_update_id',
+        'updated_by',
+        'agreement_id',
+        'code',
+        'new_mobile_number',
+        'projection',
+        'promise_date',
+        'promise_amount',
+        'customer_remark',
+        'reference_remark',
+        'need_group_visit',
+        'visit_projection',
+        'visit_status',
+        'customer_available',
+        'vehicle_available',
+        'third_party_status',
+        'third_party_details',
+        'new_update_address',
+        'location_image',
+        'location_status',
+        'payment_info',
+        'payment_mode',
+        'payment_amount',
+        'payment_date'
+    )), default=str)
+    
+    return render(request, "tc_screens/tc_assign_task.html", {
+        "task_list":create_task_list, 
+        "updated_task_list":update_task_list,
+        "updated_task_list_json": updated_task_list_json
+        })
+
+def tc_pending_task(request):
+    session_admin_id = request.session.get("tc_admin_id")
+    # navigate to login page if not login
+    if not session_admin_id:
+        return render(request, 'index.html')
+    return render(request, "tc_screens/tc_pending_task.html")
+
+def tc_complete_task(request):
+    session_admin_id = request.session.get("tc_admin_id")
+    # navigate to login page if not login
+    if not session_admin_id:
+        return render(request, 'index.html')
+    return render(request, "tc_screens/tc_complete_task.html")
+
+def tc_leave(request):
+    session_admin_id = request.session.get("tc_admin_id")
+    # navigate to login page if not login
+    if not session_admin_id:
+        return render(request, 'index.html')
+    return render(request, "tc_screens/tc_leave.html")
