@@ -11,7 +11,7 @@
   <meta name="keywords"
     content="admin template, Admiro admin template, best javascript admin, dashboard template, bootstrap admin template, responsive admin template, web app">
   <meta name="author" content="pixelstrap">
-  <title>Teamlead Login</title>
+  <title>Feedback History</title>
   <!-- Favicon icon-->
   <link rel="icon" href="{% static 'assets/img/favicon.png' %}" type="image/x-icon">
   <link rel="shortcut icon" href="{% static 'assets/img/favicon.png' %}" type="image/x-icon">
@@ -45,13 +45,13 @@
 
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
-    integrity="sha512-…(hash)…” crossorigin=" anonymous" referrerpolicy="no-referrer" />
+    integrity="sha512-…(hash)…”" crossorigin=" anonymous" referrerpolicy="no-referrer" />
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
-    integrity="sha512-…(hash)…” crossorigin=" anonymous" referrerpolicy="no-referrer" />
+    integrity="sha512-…(hash)…”" crossorigin=" anonymous" referrerpolicy="no-referrer" />
 
   <link rel="stylesheet" href="https://cdn.iconly.io/iconly.css" />
-  <link rel="stylesheet" href="https://cdn.js' %}delivr.net/npm/iconly@latest/css/iconly.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/iconly@latest/css/iconly.css" />
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
     integrity="sha512-KNuNk+LZ8e2j+ozhRtX7sMGu0j1qFeIslMo7k3M5lVZhcN7sVbG7ByAzt+BrgrbM5nxp7/ECYtJ8O5E2+8Y0eA=="
@@ -59,6 +59,7 @@
 
 
   <link rel="stylesheet" href="https://cdn.iconly.io/your-generated-hash/iconly.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
 
 
@@ -75,17 +76,48 @@
     .margin_left_auto {
       margin-left: auto;
     }
+
+    .glass-btn {
+      padding: 12px 24px;
+      background: rgba(40, 167, 69, 0.15);
+      border: 1px solid rgba(40, 167, 69, 0.3);
+      backdrop-filter: blur(10px);
+      color: #28a745;
+      border-radius: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .glass-btn:hover {
+      background: rgba(40, 167, 69, 0.25);
+      transform: translateY(-2px);
+    }
+
+    .download-btn-wrapper {
+      display: flex;
+      justify-content: flex-end;
+      /* move to right */
+      margin-bottom: 10px;
+      /* spacing from table */
+    }
+
+    #basic-9 {
+      width: auto !important;
+      table-layout: auto;
+    }
+
+    #basic-9 th,
+    #basic-9 td {
+      white-space: nowrap;
+      padding: 8px 12px;
+    }
+
+    #basic-9 {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
   </style>
-
-  <!-- Image Modal -->
-  <div id="imageModal" style="display: none; position: fixed; z-index: 1000; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.9); justify-content: center; align-items: center;">
-    <span onclick="closeImageModal()" style="position: absolute; top: 20px; right: 40px; color: white; font-size: 40px; cursor: pointer; transition: 0.3s;">&times;</span>
-    <div style="text-align: center;">
-      <img id="modalImage" style="max-width: 90%; max-height: 80vh; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.5);">
-      <p id="imageCaption" style="color: white; font-size: 20px; margin-top: 15px;"></p>
-    </div>
-  </div>
-
 
 </head>
 
@@ -109,7 +141,7 @@
   <div class="page-wrapper compact-wrapper" id="pageWrapper">
 
     <!-- this is header section -->
-   {% include "common/header.html" %}
+    {% include "common/header.html"%}
     <!--header section end -->
 
 
@@ -119,7 +151,7 @@
     <!-- Page Body Start-->
     <div class="page-body-wrapper">
       <!-- Page sidebar start-->
-    {% include "common/sidebar.html" %}
+      {% include "common/sidebar.html"%}
       <!-- Page sidebar end-->
 
       <!-- body section start  -->
@@ -131,25 +163,77 @@
               <div class="col-sm-12">
                 <div class="card">
                   <div class="card-header pb-0 card-no-border">
-                    <h3>Team Lead</h3>
+                    <h3>Feedback History</h3>
                   </div>
                   <div class="card-body">
+                    <div class="download-btn-wrapper">
+                      <button id="downloadExcel" class="glass-btn">
+                        Download Excel
+                      </button>
+                    </div>
                     <div class="table-responsive">
                       <table class="display dataTable" id="basic-9">
                         <thead style="background:#f8f9fa;">
                           <tr>
                             <th>Sl</th>
-                            <th>Name</th>
-                            <th>Email ID</th>
-                            <th>Mobile Number</th>
-                            <th>Status</th>
-                            <th>Login Time</th>
-                            <th>Logout Time</th>
-                            <th>Image</th>
-                            <th>Action</th>
+                            <th>Updated By</th>
+                            <th>Updated Date</th>
+                            <th>Agreement Id</th>
+                            <th>Code</th>
+                            <th>New Mobile Number</th>
+                            <th>Projection</th>
+                            <th>Promise Date</th>
+                            <th>Promise Amount</th>
+                            <th>Customer Remark</th>
+                            <th>Reference Remark</th>
+                            <th>Need Group Visit</th>
+                            <th>Visit Projection</th>
+                            <th>Visit Status</th>
+                            <th>Customer Available</th>
+                            <th>Vehicle Available</th>
+                            <th>3rd Party Status</th>
+                            <th>3rd Party Details</th>
+                            <th>New Updated Address</th>
+                            <!-- <th>Location Photo</th> -->
+                            <th>Location Status</th>
+                            <th>Payment Info</th>
+                            <th>Payment Mode</th>
+                            <th>Payment Amount</th>
+                            <th>Payment Date</th>
                           </tr>
                         </thead>
-                        <tbody id="table-body"></tbody>
+                        <!-- <tbody id="table-body"> -->
+                        <tbody>
+                          {% for data in feedback %}
+                          <tr>
+                            <td>{{forloop.counter}}</td>
+                            <td>{{data.updated_by|capfirst }}</td>
+                            <td>{{data.updated_at}}</td>
+                            <td>{{data.agreement_id}}</td>
+                            <td>{{data.code}}</td>
+                            <td>{{data.new_mobile_number}}</td>
+                            <td>{{data.projection}}</td>
+                            <td>{{ data.promise_date|date:"d-m-Y h:i A"}}</td>
+                            <td>{{data.promise_amount}}</td>
+                            <td>{{data.customer_remark}}</td>
+                            <td>{{data.reference_remark}}</td>
+                            <td>{{data.need_group_visit}}</td>
+                            <td>{{data.visit_projection}}</td>
+                            <td>{{data.visit_status}}</td>
+                            <td>{{data.customer_available}}</td>
+                            <td>{{data.vehicle_available}}</td>
+                            <td>{{data.third_party_status}}</td>
+                            <td>{{data.third_party_details}}</td>
+                            <td>{{data.new_update_address}}</td>
+                            <!-- <td>{{data.location_image}}</td> -->
+                            <td>{{data.location_status}}</td>
+                            <td>{{data.payment_info}}</td>
+                            <td>{{data.payment_mode}}</td>
+                            <td>{{data.payment_amount}}</td>
+                            <td>{{data.payment_date|date:"d-m-Y h:i A"}}</td>
+                          </tr>
+                          {% endfor %}
+                        </tbody>
                       </table>
                     </div>
                   </div>
@@ -161,7 +245,7 @@
         </div>
       </div>
       <!-- Container-fluid starts-->
-   {% include "common/footer.html" %}
+      {% include "common/footer.html"%}
     </div>
     <!-- page body end  -->
 
@@ -253,78 +337,68 @@
 
 
   <script>
-   const employees = [
-    //{ sl: 1, name: "Ravi Sharma", email: "ravi.sharma@example.com", mobile: "9876543210", status: "active", loginTime: "09:00", logoutTime: "18:00", image: "https://randomuser.me/api/portraits/men/1.jpg" },
-    { sl: 1, name: "Ravi Sharma", email: "ravi.sharma@example.com", mobile: "9876543210", status: "active", loginTime: "09:00", logoutTime: "18:00", image: "https://thumbs.dreamstime.com/b/falling-drop-rain-blue-earth-image-water-splash-crown-shape-water-splash-crown-shape-falling-drop-earth-140453719.jpg" },
-    { sl: 2, name: "Anita Verma", email: "anita.verma@example.com", mobile: "9876543211", status: "inactive", loginTime: "09:15", logoutTime: "17:45", image: "https://randomuser.me/api/portraits/women/2.jpg" },
-    { sl: 3, name: "Mohit Gupta", email: "mohit.gupta@example.com", mobile: "9876543212", status: "active", loginTime: "08:45", logoutTime: "17:30", image: "https://randomuser.me/api/portraits/men/3.jpg" },
-    { sl: 4, name: "Pooja Rani", email: "pooja.rani@example.com", mobile: "9876543213", status: "inactive", loginTime: "10:00", logoutTime: "18:15", image: "https://randomuser.me/api/portraits/women/4.jpg" },
-    { sl: 5, name: "Aman Singh", email: "aman.singh@example.com", mobile: "9876543214", status: "active", loginTime: "09:30", logoutTime: "18:30", image: "https://randomuser.me/api/portraits/men/5.jpg" },
-    { sl: 6, name: "Neha Mehta", email: "neha.mehta@example.com", mobile: "9876543215", status: "active", loginTime: "09:00", logoutTime: "18:00", image: "https://randomuser.me/api/portraits/women/6.jpg" },
-    { sl: 7, name: "Rakesh Kumar", email: "rakesh.kumar@example.com", mobile: "9876543216", status: "inactive", loginTime: "10:15", logoutTime: "17:45", image: "https://randomuser.me/api/portraits/men/7.jpg" },
-    { sl: 8, name: "Swati Joshi", email: "swati.joshi@example.com", mobile: "9876543217", status: "active", loginTime: "09:10", logoutTime: "18:05", image: "https://randomuser.me/api/portraits/women/8.jpg" },
-    { sl: 9, name: "Deepak Yadav", email: "deepak.yadav@example.com", mobile: "9876543218", status: "active", loginTime: "08:50", logoutTime: "17:50", image: "https://randomuser.me/api/portraits/men/9.jpg" },
-    { sl: 10, name: "Kriti Desai", email: "kriti.desai@example.com", mobile: "9876543219", status: "inactive", loginTime: "10:00", logoutTime: "18:10", image: "https://randomuser.me/api/portraits/women/10.jpg" },
+    document.getElementById('downloadExcel').addEventListener('click', function () {
+      // Get the table
+      const table = document.getElementById('basic-9');
 
-    { sl: 11, name: "Vikas Jain", email: "vikas.jain@example.com", mobile: "9876543220", status: "active", loginTime: "09:05", logoutTime: "18:00", image: "https://randomuser.me/api/portraits/men/11.jpg" },
-    { sl: 12, name: "Meena Kumari", email: "meena.kumari@example.com", mobile: "9876543221", status: "inactive", loginTime: "10:30", logoutTime: "17:00", image: "https://randomuser.me/api/portraits/women/12.jpg" },
-    { sl: 13, name: "Saurabh Mishra", email: "saurabh.mishra@example.com", mobile: "9876543222", status: "active", loginTime: "08:55", logoutTime: "17:45", image: "https://randomuser.me/api/portraits/men/13.jpg" },
-    { sl: 14, name: "Alka Sinha", email: "alka.sinha@example.com", mobile: "9876543223", status: "inactive", loginTime: "10:20", logoutTime: "17:30", image: "https://randomuser.me/api/portraits/women/14.jpg" },
-    { sl: 15, name: "Nikhil Raj", email: "nikhil.raj@example.com", mobile: "9876543224", status: "active", loginTime: "09:00", logoutTime: "18:00", image: "https://randomuser.me/api/portraits/men/15.jpg" },
+      // Convert table to workbook
+      const wb = XLSX.utils.table_to_book(table, { sheet: "Feedback Data" });
 
-    { sl: 16, name: "Shruti Agarwal", email: "shruti.agarwal@example.com", mobile: "9876543225", status: "active", loginTime: "09:10", logoutTime: "18:20", image: "https://randomuser.me/api/portraits/women/16.jpg" },
-    { sl: 17, name: "Harsh Vardhan", email: "harsh.vardhan@example.com", mobile: "9876543226", status: "inactive", loginTime: "10:05", logoutTime: "17:40", image: "https://randomuser.me/api/portraits/men/17.jpg" },
-    { sl: 18, name: "Jyoti Kaur", email: "jyoti.kaur@example.com", mobile: "9876543227", status: "active", loginTime: "08:40", logoutTime: "17:30", image: "https://randomuser.me/api/portraits/women/18.jpg" },
-    { sl: 19, name: "Rohan Bhandari", email: "rohan.bhandari@example.com", mobile: "9876543228", status: "active", loginTime: "09:00", logoutTime: "17:55", image: "https://randomuser.me/api/portraits/men/19.jpg" },
-    { sl: 20, name: "Tanya Kapoor", email: "tanya.kapoor@example.com", mobile: "9876543229", status: "inactive", loginTime: "10:25", logoutTime: "17:35", image: "https://randomuser.me/api/portraits/women/20.jpg" }
-  ];
+      // Generate filename with current date
+      const date = new Date();
+      const filename = `feedback_data_${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}.xlsx`;
+
+      // Download the file
+      XLSX.writeFile(wb, filename);
+    });
+  </script>
+
+
+  <script>
+    const customers = [
+      { sl: 1, agreementId: "AG1031", customerName: "Aarav Nanda", mobile: "9845123476", email: "aarav.nanda@example.com", address: "Cuttack, Odisha", telecallerName: "Tanvi Behera", teamleadName: "Rupali Mohanty", groundStaffName: "Sourav Patra", status: "Active" },
+      { sl: 2, agreementId: "AG1032", customerName: "Ishita Reddy", mobile: "9812312345", email: "ishita.reddy@example.com", address: "Bhubaneswar, Odisha", telecallerName: "Amit Nayak", teamleadName: "Sujata Sethi", groundStaffName: "Bikram Dash", status: "Pending" },
+      { sl: 3, agreementId: "AG1033", customerName: "Karan Sahu", mobile: "9765432155", email: "karan.sahu@example.com", address: "Rourkela, Odisha", telecallerName: "Neha Rout", teamleadName: "Rajesh Patnaik", groundStaffName: "Chandan Behera", status: "Completed" },
+      { sl: 4, agreementId: "AG1034", customerName: "Mitali Mohanty", mobile: "9834021198", email: "mitali.mohanty@example.com", address: "Balasore, Odisha", telecallerName: "Tapan Sen", teamleadName: "Sneha Pradhan", groundStaffName: "Hari Nayak", status: "Follow-up" },
+      { sl: 5, agreementId: "AG1035", customerName: "Vivek Kumar", mobile: "9876543201", email: "vivek.kumar@example.com", address: "Berhampur, Odisha", telecallerName: "Sasmita Patra", teamleadName: "Abhinav Das", groundStaffName: "Madhusudan Reddy", status: "Active" },
+      { sl: 6, agreementId: "AG1036", customerName: "Nikita Sethi", mobile: "9812003456", email: "nikita.sethi@example.com", address: "Angul, Odisha", telecallerName: "Lalit Swain", teamleadName: "Sunil Mohanty", groundStaffName: "Rakesh Nayak", status: "Completed" },
+      { sl: 7, agreementId: "AG1037", customerName: "Akhil Patra", mobile: "9823456712", email: "akhil.patra@example.com", address: "Sambalpur, Odisha", telecallerName: "Manisha Das", teamleadName: "Rohit Sen", groundStaffName: "Prakash Rout", status: "Pending" },
+      { sl: 8, agreementId: "AG1038", customerName: "Shruti Nayak", mobile: "9877612345", email: "shruti.nayak@example.com", address: "Puri, Odisha", telecallerName: "Niharika Behera", teamleadName: "Madan Dash", groundStaffName: "Tapan Kumar", status: "Follow-up" },
+      { sl: 9, agreementId: "AG1039", customerName: "Rohit Swain", mobile: "9900112233", email: "rohit.swain@example.com", address: "Jharsuguda, Odisha", telecallerName: "Sushmita Rani", teamleadName: "Dilip Mohanty", groundStaffName: "Bijay Patra", status: "Active" },
+      { sl: 10, agreementId: "AG1040", customerName: "Anjali Das", mobile: "9812349087", email: "anjali.das@example.com", address: "Bhubaneswar, Odisha", telecallerName: "Rahul Behera", teamleadName: "Kalyani Patnaik", groundStaffName: "Jitesh Reddy", status: "Completed" },
+      { sl: 11, agreementId: "AG1041", customerName: "Sanjay Mohapatra", mobile: "9867543210", email: "sanjay.mohapatra@example.com", address: "Khurda, Odisha", telecallerName: "Lopamudra Nanda", teamleadName: "Ankit Nayak", groundStaffName: "Harish Sen", status: "Pending" },
+      { sl: 12, agreementId: "AG1042", customerName: "Kritika Patnaik", mobile: "9822009988", email: "kritika.patnaik@example.com", address: "Balangir, Odisha", telecallerName: "Manoj Rout", teamleadName: "Pallavi Sahu", groundStaffName: "Debasis Behera", status: "Follow-up" },
+      { sl: 13, agreementId: "AG1043", customerName: "Ramesh Swain", mobile: "9890022344", email: "ramesh.swain@example.com", address: "Cuttack, Odisha", telecallerName: "Sujata Patra", teamleadName: "Ritesh Das", groundStaffName: "Kishore Sen", status: "Active" },
+      { sl: 14, agreementId: "AG1044", customerName: "Poonam Rani", mobile: "9911445566", email: "poonam.rani@example.com", address: "Berhampur, Odisha", telecallerName: "Anurag Nayak", teamleadName: "Snehal Patnaik", groundStaffName: "Rohit Reddy", status: "Pending" },
+      { sl: 15, agreementId: "AG1045", customerName: "Deepak Sethi", mobile: "9887650011", email: "deepak.sethi@example.com", address: "Sambalpur, Odisha", telecallerName: "Ritika Behera", teamleadName: "Manas Sen", groundStaffName: "Gopal Patnaik", status: "Completed" }
+    ];
+
+
+
 
     const tbody = document.getElementById("table-body");
 
-    employees.forEach(emp => {
+    customers.forEach(emp => {
 
-      // const parts = emp.date.split('/'); // [yyyy, mm, dd]
-      //const formattedDate = `${parts[2]}/${parts[1]}/${parts[0]}`; 
+      //const parts = emp.joining.split('/'); // [yyyy, mm, dd]
+      //const formattedDate = `${parts[2]}/${parts[1]}/${parts[0]}`;
 
       tbody.innerHTML += `
       <tr>
         <td>${emp.sl}</td>
-        <td>${emp.name}</td>
-        <td>${emp.email}</td>
+        <td>${emp.agreementId}</td>
+        <td>${emp.customerName}</td>
         <td>${emp.mobile}</td>
+        <td>${emp.email}</td>
+        <td>${emp.address}</td>
+        <td>${emp.telecallerName}</td>
+        <td>${emp.teamleadName}</td>
+        <td>${emp.groundStaffName}</td>
         <td>${emp.status}</td>
-        <td>${emp.loginTime}</td>
-        <td>${emp.logoutTime}</td>
-       <td><img src="${emp.image}" width="50" height="50" style="border-radius: 50%; object-fit: cover; cursor: pointer;" onclick="openImageModal('${emp.image}', '${emp.name}')"></td>
-        <td>
-          <a href="https://www.google.com/maps?q=20.295136727143245,85.82908364419782" target="_blank">
-              <button class="btn btn-primary">View map</button>
-            </a>
-        </td>
+
+       
       </tr>`;
     });
-
-    function openImageModal(imageSrc, name) {
-      const modal = document.getElementById('imageModal');
-      const modalImg = document.getElementById('modalImage');
-      const caption = document.getElementById('imageCaption');
-      
-      modal.style.display = "flex";
-      modalImg.src = imageSrc;
-      caption.textContent = name;
-    }
-
-    function closeImageModal() {
-      document.getElementById('imageModal').style.display = "none";
-    }
-
-    // Close modal when clicking outside the image
-    document.getElementById('imageModal').addEventListener('click', function(e) {
-      if (e.target === this) {
-        closeImageModal();
-      }
-    });
-
   </script>
 
 </body>

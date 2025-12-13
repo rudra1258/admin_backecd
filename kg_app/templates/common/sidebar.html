@@ -32,7 +32,7 @@
                 <i class="fa-solid fa-chevron-right margin_left_auto"></i>
               </a>
               <ul class="sidebar-submenu">
-                <li> <a href="{% url "kg_app:telecaller" %}">Telecaller</a></li>
+                <li> <a href="{% url 'kg_app:telecaller' %}">Telecaller</a></li>
                 <li><a href="{% url 'kg_app:teamlead' %}">Team lead</a></li>
                 <li><a href="{% url 'kg_app:groundstaff' %}">Ground staff</a></li>
               </ul>
@@ -79,6 +79,16 @@
                   <use href="{% static 'assets/svg/iconly-sprite.svg' %}#Bookmark"></use>
                 </svg>
                 <h6 class="f-w-600">Task List</h6>
+              </a>
+            </li>
+
+            <li class="sidebar-list">
+              <!-- <i class="fa-solid fa-thumbtack"></i> -->
+              <a class="sidebar-link" href="{% url 'kg_app:feddback_history' %}">
+                <svg class="stroke-icon">
+                  <use href="{% static 'assets/svg/iconly-sprite.svg' %}#Star-kit"></use>
+                </svg>
+                <h6 class="f-w-600">Feedback History</h6>
               </a>
             </li>
 

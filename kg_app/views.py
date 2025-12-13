@@ -405,7 +405,8 @@ def assign_task(request):
         'payment_info',
         'payment_mode',
         'payment_amount',
-        'payment_date'
+        'payment_date',
+        'updated_at',
     )), default=str)
     
     return render(request, "assign_task.html", {
@@ -903,6 +904,7 @@ def update_task(request):
     return render(request, "assign_task.html")
 
 def dashboard(request):
+    notification(request)  # Call the notification function to update notifications
     session_admin_id = request.session.get("admin_id")
     # navigate to login page if not login
     if not session_admin_id:
@@ -1021,7 +1023,34 @@ def gs_delete(request, id):
     emp.delete()
     return redirect('kg_app:groundstaff')   # change to your list page URL name
 
-
+def feddback_history(request):
+    session_admin_id = request.session.get("admin_id")
+    # navigate to login page if not login
+    if not session_admin_id:
+        return render(request, 'index.html')
+    admin_id_pk = admin_user_model.objects.get(pk=session_admin_id)
+    
+    feedback = task_update.objects.filter(
+        admin_id = admin_id_pk
+    )
+    
+    return render(request, "feedback_history.html", {"feedback":feedback})
+    
+    
+def notification(request):
+    # Fetch 4 most recent task updates ordered by updated_at (most recent first)
+    # recent_updates = task_update.objects.select_related('admin_id', 'task_id').order_by('-updated_at')[:4]
+    recent_updates = task_update.objects.all()[:4]
+    
+    # Get the count of total updates (for the badge)
+    notification_count = task_update.objects.count()
+    
+    context = {
+        'recent_updates': recent_updates,
+        'notification_count': notification_count,
+    }
+    
+    return render(request, 'common/header.html', context)
 
 
 

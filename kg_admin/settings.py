@@ -63,6 +63,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'kg_app.context_processors.notification_context',
             ],
         },
     },
@@ -113,10 +114,13 @@ LANGUAGE_CODE = 'en-us'
 
 
 
-USE_I18N = True
+# USE_I18N = True
+USE_L10N = True
 
-TIME_ZONE = 'Asia/Kolkata'
+
 USE_TZ = True
+TIME_ZONE = 'Asia/Kolkata'
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/

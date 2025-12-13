@@ -23,16 +23,6 @@
           </div>
         </div>
       </form>
-
-      <!-- <div class="form-group-header d-lg-block d-none">
-            <div class="Typeahead Typeahead--twitterUsers">
-              <div class="u-posRelative d-flex align-items-center">
-                <input class="demo-input py-0 Typeahead-input form-control-plaintext w-100" type="text"
-                  placeholder="Type to Search..." name="q" title=""><i class="search-bg iconly-Search icli"></i>
-              </div>
-            </div>
-          </div> -->
-
     </div>
     <div class="nav-right">
       <ul class="header-right">
@@ -45,97 +35,62 @@
               <use href="{% static 'assets/svg/iconly-sprite.svg' %}#moondark"></use>
             </svg></a></li>
 
-        <!-- <li class="custom-dropdown">
+        <li class="custom-dropdown">
           <a href="javascript:void(0)">
             <svg>
               <use href="{% static 'assets/svg/iconly-sprite.svg' %}#notification"></use>
             </svg>
           </a>
-          <span class="badge rounded-pill badge-primary">4</span>
+          <span class="badge rounded-pill badge-primary">{{ notification_count|default:0 }}</span>
           <div class="custom-menu notification-dropdown py-0 overflow-hidden">
-            <h3 class="title bg-primary-light dropdown-title">Notification <span class="font-primary">View
-                all</span></h3>
+            <h3 class="title bg-primary-light dropdown-title">Notification 
+              <a href="{% url 'kg_app:feddback_history' %}" class="font-primary">
+                  View all
+              </a>
+            </h3>
             <ul class="activity-timeline">
+              {% for update in recent_updates %}
               <li class="d-flex align-items-start">
                 <div class="activity-line"></div>
                 <div class="activity-dot-primary"></div>
                 <div class="flex-grow-1">
-                  <h6 class="f-w-600 font-primary">30-04-2024<span>Today</span><span
-                      class="circle-dot-primary float-end">
+                  <h6 class="f-w-600 font-primary">
+                    {{ update.updated_at|date:"d-m-Y" }}
+                    <span>{{ update.updated_at|timesince }} ago</span>
+                    <span class="circle-dot-primary float-end">
                       <svg class="circle-color">
                         <use href="{% static 'assets/svg/iconly-sprite.svg' %}#circle"></use>
-                      </svg></span></h6>
-                  <h5>Alice Goodwin</h5>
-                  <p class="mb-0">Fashion should be fun. It shouldn't be labelled intellectual.</p>
+                      </svg>
+                    </span>
+                  </h6>
+                  <h5>{{ update.updated_by|default:"Admin"|capfirst  }} - Agreement: {{ update.agreement_id }}</h5>
+                  <p class="mb-0">
+                    Projection: {{ update.projection|default:"N/A" }} | 
+                    Status: {{ update.location_status|default:"N/A" }}
+                  </p>
                 </div>
               </li>
+              {% empty %}
               <li class="d-flex align-items-start">
-                <div class="activity-dot-secondary"></div>
-                <div class="flex-grow-1">
-                  <h6 class="f-w-600 font-secondary">28-06-2024<span>1 hour ago</span><span
-                      class="float-end circle-dot-secondary">
-                      <svg class="circle-color">
-                        <use href="{% static 'assets/svg/iconly-sprite.svg' %}#circle"></use>
-                      </svg></span></h6>
-                  <h5>Herry Venter</h5>
-                  <p>I am convinced that there can be luxury in simplicity.</p>
+                <div class="flex-grow-1 text-center py-3">
+                  <p class="mb-0">No recent updates available</p>
                 </div>
               </li>
-              <li class="d-flex align-items-start">
-                <div class="activity-dot-primary"></div>
-                <div class="flex-grow-1">
-                  <h6 class="f-w-600 font-primary">04-08-2024<span>Today</span><span
-                      class="float-end circle-dot-primary">
-                      <svg class="circle-color">
-                        <use href="{% static 'assets/svg/iconly-sprite.svg' %}#circle"></use>
-                      </svg></span></h6>
-                  <h5>Loain Deo</h5>
-                  <p>I feel that things happen for open new opportunities.</p>
-                </div>
-              </li>
-              <li class="d-flex align-items-start">
-                <div class="activity-dot-secondary"></div>
-                <div class="flex-grow-1">
-                  <h6 class="f-w-600 font-secondary">12-11-2024<span>Yesterday</span><span
-                      class="float-end circle-dot-secondary">
-                      <svg class="circle-color">
-                        <use href="{% static 'assets/svg/iconly-sprite.svg' %}#circle"></use>
-                      </svg></span></h6>
-                  <h5>Fenter Jessy</h5>
-                  <p>Sometimes the simplest things are the most profound.</p>
-                </div>
-              </li>
+              {% endfor %}
             </ul>
           </div>
-        </li> -->
         </li>
 
         <li class="profile-nav custom-dropdown">
           <div class="user-wrap">
             <div class="user-img"><img src="{% static 'assets/images/profile.png' %}" alt="user"></div>
             <div class="user-content">
-              <!-- <h6>Manas Moharana</h6> -->
               <h6>{{ request.session.admin_username }}</h6>
               <p class="mb-0">Admin<i class="fa-solid fa-chevron-down"></i></p>
             </div>
           </div>
           <div class="custom-menu overflow-hidden">
             <ul class="profile-body">
-              <!-- <li class="d-flex">
-                <svg class="svg-color">
-                  <use href="{% static 'assets/svg/iconly-sprite.svg' %}#Profile"></use>
-                </svg><a class="ms-2" href="user-profile.html">Account</a>
-              </li>
-              <li class="d-flex">
-                <svg class="svg-color">
-                  <use href="{% static 'assets/svg/iconly-sprite.svg' %}#Message"></use>
-                </svg><a class="ms-2" href="letter-box.html">Inbox</a>
-              </li>
-              <li class="d-flex">
-                <svg class="svg-color">
-                  <use href="{% static 'assets/svg/iconly-sprite.svg' %}#Document"></use>
-                </svg><a class="ms-2" href="to-do.html">Task</a>
-              </li> -->
               <li class="d-flex">
                 <svg class="svg-color">
                   <use href="{% static 'assets/svg/iconly-sprite.svg' %}#Login"></use>
@@ -151,7 +106,7 @@
 
 <script>
   function refreshAndLogout() {
-    location.reload(); // refresh the page
+    location.reload();
     window.location.href = "{% url 'kg_app:admin_logout' %}";
   }
 </script>

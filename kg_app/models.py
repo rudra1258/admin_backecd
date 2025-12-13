@@ -113,7 +113,7 @@ class task_update(models.Model):
     
     # projection details 
     projection = models.CharField(max_length = 100)
-    promise_date = models.CharField(max_length = 20)
+    promise_date = models.DateTimeField(max_length = 20)
     promise_amount = models.CharField(max_length = 30)
     
     # remark 
@@ -140,7 +140,10 @@ class task_update(models.Model):
     payment_info = models.CharField(max_length = 500)
     payment_mode = models.CharField(max_length = 50)
     payment_amount = models.CharField(max_length = 30)
-    payment_date = models.CharField(max_length = 20)
+    payment_date = models.DateTimeField(max_length = 20)
+    
+    # update 
+    updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)
     
     
     
