@@ -1080,10 +1080,7 @@
                                                     <div class="form-section">
                                                         <h3>Contact Information</h3>
                                                         <div class="form-grid">
-                                                            <div class="form-group">
-                                                                <label>Agreement Id</label>
-                                                                <input type="text" id="agreementIdInput" name="agreement_id" value="" readonly>
-                                                            </div>
+                                                            <input type="text" id="agreementIdInput" name="agreement_id" value="" readonly hidden>
                                                             <input type="text" id="task_id" name="task_id" value="" readonly hidden>
                                                             <div class="form-group">
                                                                 <label>Code</label>
@@ -1129,22 +1126,22 @@
                                                     <div class="form-section">
                                                         <h3>Projection Details</h3>
                                                         <div class="form-grid">
-                                                            <div class="form-group">
+                                                            <!-- <div class="form-group">
                                                                 <label>Projection (Y/D/N)</label>
                                                                 <select id="projection" name="projection" required >
                                                                     <option value="" selected disabled>Select</option>
                                                                     <option value="Yes">Yes</option>
-                                                                    <option value="Delayed">Delayed</option>
+                                                                    <option value="Doubt">Doubt</option>
                                                                     <option value="No">No</option>
                                                                 </select>
-                                                            </div>
+                                                            </div> -->
                                                             <div class="form-group">
                                                                 <label>Promise Date</label>
-                                                                <input type="datetime-local" id="promise_date" name="promise_date" required>
+                                                                <input type="datetime-local" id="promise_date" name="promise_date" >
                                                             </div>
                                                             <div class="form-group">
                                                                 <label>Promise Amount</label>
-                                                                <input type="number" id="promiseAmount" name="promise_amt" placeholder="00000/-" required>
+                                                                <input type="number" id="promiseAmount" name="promise_amt" placeholder="00000/-" >
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1168,7 +1165,7 @@
                                                         <div class="form-grid">
                                                             <div class="form-group">
                                                                 <label>Need Group Visit (Y/N)</label>
-                                                                <select id="needGroupVisit" name="need_group_visit"required>
+                                                                <select id="needGroupVisit" name="need_group_visit">
                                                                     <option value="" selected disabled>--Select--</option>
                                                                     <option value="Yes">Yes</option>
                                                                     <option value="No">No</option>
@@ -1176,22 +1173,22 @@
                                                             </div>
                                                             <div class="form-group">
                                                                 <label>Projection (Y/Y2/Y3/D/N)</label>
-                                                                <select id="projectionExtended" name="visit_projection">
+                                                                <select id="projectionExtended" name="visit_projection" required>
                                                                     <option value="">Select</option>
-                                                                    <option value="Yess">Yes</option>
-                                                                    <option value="Yes2">Yes 2</option>
-                                                                    <option value="Yes3">Yes 3</option>
-                                                                    <option value="Delayed">Delayed</option>
+                                                                    <option value="Yes (1 EMI)">Yes (1 EMI)</option>
+                                                                    <option value="Yes (2 EMI)">Yes (2 EMI)</option>
+                                                                    <option value="Yes (more than 2 emi / Normalization)">Yes (more than 2 emi / Normalization)</option>
+                                                                    <option value="Doubt">Doubt</option>
                                                                     <option value="No">No</option>
                                                                 </select>
                                                             </div>
                                                             <div class="form-group">
                                                                 <label>Visit Status (Y/N)</label>
-                                                                <select id="visitStatus" name="visit_status" required>
-                                                                    <option value="" selected disabled>Select</option>
+                                                                <input id="visitStatus" name="visit_status" readonly value="">
+                                                                <!-- <select id="visitStatus2" name="visit_status" required >
                                                                     <option value="Yes">Yes</option>
                                                                     <option value="No">No</option>
-                                                                </select>
+                                                                </select> -->
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1201,7 +1198,7 @@
                                                         <div class="form-grid">
                                                             <div class="form-group">
                                                                 <label>Customer Available (Y/N)</label>
-                                                                <select id="customerAvailable" name="customer_available">
+                                                                <select id="customerAvailable" name="customer_available" required>
                                                                     <option value="" selected disabled>Select</option>
                                                                     <option value="Yes">Yes</option>
                                                                     <option value="No">No</option>
@@ -1209,7 +1206,7 @@
                                                             </div>
                                                             <div class="form-group">
                                                                 <label>Vehicle Available (Y/N)</label>
-                                                                <select id="vehicleAvailable" name="vehicle_available">
+                                                                <select id="vehicleAvailable" name="vehicle_available" required>
                                                                     <option value="" selected disabled>Select</option>
                                                                     <option value="Yes">Yes</option>
                                                                     <option value="No">No</option>
@@ -1217,7 +1214,7 @@
                                                             </div>
                                                             <div class="form-group">
                                                                 <label>3rd Party Status (Y/N)</label>
-                                                                <select id="thirdPartyStatus" name="third_party_status">
+                                                                <select id="thirdPartyStatus" name="third_party_status" required>
                                                                     <option value="" selected disabled>Select</option>
                                                                     <option value="Yes">Yes</option>
                                                                     <option value="No">No</option>
@@ -1235,22 +1232,13 @@
                                                         <div class="form-grid">
                                                             <div class="form-group">
                                                                 <label>New Update Address</label>
-                                                                <textarea id="newUpdateAddress" name="new_update_address" placeholder="Enter new address" required></textarea>
+                                                                <textarea id="newUpdateAddress" name="new_update_address" placeholder="Enter new address" ></textarea>
                                                             </div>
                                                             <div class="form-group">
-                                                                <label>Location Photo</label>
-                                                                <input type="file" id="locationPhoto" accept="image/*" name="location_image" required>
+                                                                <label>Document</label>
+                                                                <input type="file" id="locationPhoto" accept=".pdf,.jpg,.jpeg" name="document_image" required>
                                                             </div>
-                                                            <div class="form-group">
-                                                                <label>Status (ST/RB/NR/RF)</label>
-                                                                <select id="status" required name="location_status">
-                                                                    <option value="" selected disabled>Select</option>
-                                                                    <option value="ST">ST</option>
-                                                                    <option value="RB">RB</option>
-                                                                    <option value="NR">NR</option>
-                                                                    <option value="RF">RF</option>
-                                                                </select>
-                                                            </div>
+                                                            
                                                         </div>
                                                     </div>
 
@@ -1258,12 +1246,21 @@
                                                         <h3>Payment Details</h3>
                                                         <div class="form-grid">
                                                             <div class="form-group">
-                                                                <label>Payment</label>
-                                                                <input type="text" id="payment" name="payment_info" required placeholder="Enter payment info">
+                                                                <label>Status (ST/RB/NR/RF)</label>
+                                                                <select id="status" required name="location_status">
+                                                                    <option value="RF" selected>RF - Roll Forward</option>
+                                                                    <option value="ST">ST - Stabilization</option>
+                                                                    <option value="RB">RB - Roll Back</option>
+                                                                    <option value="NR">NR - Normalization</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label>Recipt No.</label>
+                                                                <input type="text" id="payment" name="payment_info"  placeholder="Enter recipt number">
                                                             </div>
                                                             <div class="form-group">
                                                                 <label>Payment Mode</label>
-                                                                <select id="paymentMode" name="payment_mode" required>
+                                                                <select id="paymentMode" name="payment_mode" >
                                                                     <option value="" selected disabled>Select</option>
                                                                     <option value="Cash">Cash</option>
                                                                     <option value="Online">Online</option>
@@ -1271,11 +1268,11 @@
                                                             </div>
                                                             <div class="form-group">
                                                                 <label>Payment Amount</label>
-                                                                <input type="number" id="paymentAmount" name="payment_amount" required placeholder="00000/-">
+                                                                <input type="number" id="paymentAmount" name="payment_amount"  placeholder="00000/-">
                                                             </div>
                                                             <div class="form-group">
                                                                 <label>Payment Date</label>
-                                                                <input type="datetime-local" id="paymentDate" name="payment_date" required>
+                                                                <input type="datetime-local" id="paymentDate" name="payment_date" >
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1468,6 +1465,90 @@
 
 
 
+    <script>
+
+        // Get the status select element
+        const statusSelect = document.getElementById('status');
+
+        // Get all payment fields
+        const paymentFields = {
+            payment: document.getElementById('payment'),
+            paymentMode: document.getElementById('paymentMode'),
+            paymentAmount: document.getElementById('paymentAmount'),
+            paymentDate: document.getElementById('paymentDate')
+        };
+
+        // Function to update required status
+        function updateRequiredFields() {
+            const selectedStatus = statusSelect.value;
+            const isRequired = selectedStatus !== 'RF';
+            
+            // Update required attribute for all payment fields
+            Object.values(paymentFields).forEach(field => {
+                if (isRequired) {
+                    field.setAttribute('required', 'required');
+                } else {
+                    field.removeAttribute('required');
+                }
+            });
+            
+            console.log(`Status changed to: ${selectedStatus}, Fields required: ${isRequired}`);
+        }
+
+        // Add event listener to status select
+        statusSelect.addEventListener('change', updateRequiredFields);
+
+        // Initialize on page load
+        updateRequiredFields();
+
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const codeSelect = document.getElementById('code');
+            const promiseDateInput = document.getElementById('promise_date');
+            const promiseAmountInput = document.getElementById('promiseAmount');
+
+            function togglePromiseRequired() {
+                const selectedCode = codeSelect.value;
+
+                if (selectedCode === 'PTP') {
+                    promiseDateInput.setAttribute('required', 'required');
+                    promiseAmountInput.setAttribute('required', 'required');
+                } else {
+                    promiseDateInput.removeAttribute('required');
+                    promiseAmountInput.removeAttribute('required');
+                }
+            }
+
+            codeSelect.addEventListener('change', togglePromiseRequired);
+            togglePromiseRequired();
+
+            // New logic for status and payment details
+            const statusSelect = document.getElementById('status');
+            const paymentInput = document.getElementById('payment');
+            const paymentModeSelect = document.getElementById('paymentMode');
+            const paymentAmountInput = document.getElementById('paymentAmount');
+            const paymentDateInput = document.getElementById('paymentDate');
+
+            function togglePaymentRequired() {
+                const selectedStatus = statusSelect.value;
+
+                if (selectedStatus !== 'RF') {
+                    paymentInput.setAttribute('required', 'required');
+                    paymentModeSelect.setAttribute('required', 'required');
+                    paymentAmountInput.setAttribute('required', 'required');
+                    paymentDateInput.setAttribute('required', 'required');
+                } else {
+                    paymentInput.removeAttribute('required');
+                    paymentModeSelect.removeAttribute('required');
+                    paymentAmountInput.removeAttribute('required');
+                    paymentDateInput.removeAttribute('required');
+                }
+            }
+
+            statusSelect.addEventListener('change', togglePaymentRequired);
+            togglePaymentRequired();
+        });
+    </script>
 
 
 
@@ -1652,6 +1733,7 @@
     const fieldLabels = {
         'sl': 'Sl',
         'aggrement_id': 'Agreement ID',
+        'task_id': 'Task ID',
         'customer_name': 'Customer Name',
         'product_type': 'Product Type',
         'tc_name': 'TC Name',
@@ -1689,7 +1771,8 @@
         'pin_code': 'Pin Code',
         'reference_details': 'Reference Details',
         'collection_manager_name': 'Collection Manager Name',
-        'finance_company_name': 'Finance Company Name'
+        'finance_company_name': 'Finance Company Name',
+        'api_image_status': 'Visit Status'
     };
 
     // Convert Django task_list to JavaScript array
@@ -1703,6 +1786,8 @@
             category: "{{ task.category|default:'' }}",
             product_type: "{{ task.product_type|default:'' }}",
             tc_name: "{{ task.tc_name|default:'' }}",
+            fe_name: "{{ task.fe_name|default:'' }}",
+            fe_mobile_number: "{{ task.fe_mobile_number|default:'' }}",
             branch: "{{ task.branch|default:'' }}",
             count_of_cases: "{{ task.count_of_cases|default:'' }}",
             old_or_new: "{{ task.old_or_new|default:'' }}",
@@ -1713,8 +1798,7 @@
             emi_amount: "{{ task.emi_amount|default:'' }}",
             emi_due_amount: "{{ task.emi_due_amount|default:'' }}",
             total_charges: "{{ task.total_charges|default:'' }}",
-            recipt_amount: "{{ task.recipt_amount|default:'' }}",
-            recipt_date: "{{ task.recipt_date|default:'' }}",
+            
             bcc_pending: "{{ task.bcc_pending|default:'' }}",
             penal_pending: "{{ task.penal_pending|default:'' }}",
             disbursement_amount: "{{ task.disbursement_amount|default:'' }}",
@@ -1729,15 +1813,18 @@
             vehicle_age: "{{ task.vehicle_age|default:'' }}",
             employer: "{{ task.employer|default:'' }}",
             father_name: "{{ task.father_name|default:'' }}",
-            fe_name: "{{ task.fe_name|default:'' }}",
-            fe_mobile_number: "{{ task.fe_mobile_number|default:'' }}",
+            
             customer_mobile_number: "{{ task.customer_mobile_number|default:'' }}",
             customer_address: "{{ task.customer_address|default:'' }}",
             customer_office_address: "{{ task.customer_office_address|default:'' }}",
             pin_code: "{{ task.pin_code|default:'' }}",
             reference_details: "{{ task.reference_details|default:'' }}",
             collection_manager_name: "{{ task.collection_manager_name|default:'' }}",
-            finance_company_name: "{{ task.finance_company_name|default:'' }}"
+            finance_company_name: "{{ task.finance_company_name|default:'' }}",
+            recipt_amount: "{{ task.recipt_amount|default:'' }}",
+            recipt_date: "{{ task.recipt_date|default:'' }}",
+
+            api_image_status:"{{task.api_image_status}}"
         }{% if not forloop.last %},{% endif %}
         {% endfor %}
     ];
@@ -1820,9 +1907,13 @@
         const detailsGrid = document.getElementById('rowDetailsGrid');
         const agreementIdInput = document.getElementById('agreementIdInput');
         const agreementIdInputs = document.getElementById('agreementIdInputs');
+        const visitStatusInput = document.getElementById('visitStatus');
         const taskIdInput = document.getElementById('task_id');
         if (!detailsGrid) return;
 
+        if(visitStatusInput){
+            visitStatusInput.value = task.api_image_status || '';
+        }
         if (agreementIdInput) {
             agreementIdInput.value = task.aggrement_id || '';
             global_aggrement_id = task.aggrement_id || '';
@@ -1838,6 +1929,9 @@
         console.log('Populating details for task:', task.aggrement_id);
 
         Object.keys(task).forEach(key => {
+
+            if (key === 'sl' || key === 'task_id' || key ==='api_image_status') return;
+
             const detailItem = document.createElement('div');
             detailItem.className = 'detail-item';
 

@@ -841,7 +841,7 @@ def update_task(request):
         
         # location & status
         new_update_address = request.POST.get("new_update_address")
-        location_image = request.FILES.get("location_image")
+        document_image = request.FILES.get("document_image")
         location_status = request.POST.get("location_status")
 
         # payment details 
@@ -882,7 +882,7 @@ def update_task(request):
             
             # location and status 
             new_update_address = new_update_address,
-            location_image = location_image,
+            document_image = document_image,
             location_status = location_status,
             
             # payment details 
@@ -896,6 +896,8 @@ def update_task(request):
         # to update category in Create_task model later
         update = Create_task.objects.get(pk = task_id)
         update.category = code
+        update.status = location_status
+        update.new_mobile_number = new_mobile_number
         update.save()
         
         messages.success(request, 'task updated successfully')
@@ -1034,8 +1036,7 @@ def feddback_history(request):
         admin_id = admin_id_pk
     )
     
-    return render(request, "feedback_history.html", {"feedback":feedback})
-    
+    return render(request, "feedback_history.html", {"feedback":feedback})    
     
 def notification(request):
     # Fetch 4 most recent task updates ordered by updated_at (most recent first)
@@ -1181,3 +1182,73 @@ def tc_leave(request):
     if not session_admin_id:
         return render(request, 'index.html')
     return render(request, "tc_screens/tc_leave.html")
+
+
+
+
+#                ***********************
+#           *****                       *****
+#        ***                                 ***
+#      **                                       **
+#     **                                         **
+#    **            ***********************         **
+#    **           *     API VIEW            *       **
+#    **            ***********************         **
+#     **                                         **
+#      **                                       **
+#        ***                                 ***
+#           *****                       *****
+#                ***********************
+
+
+
+
+
+
+
+@api_view(['PATCH', 'POST'])
+def update_api_image_status_drf(request):
+    """
+    Update only the api_image_status field for a specific task
+    """
+    task_id = request.data.get('task_id')
+    new_status = request.data.get('api_image_status')
+    
+    # Validation
+    if not task_id:
+        return Response({
+            'success': False,
+            'message': 'task_id is required'
+        }, status=status.HTTP_400_BAD_REQUEST)
+    
+    if not new_status:
+        return Response({
+            'success': False,
+            'message': 'api_image_status is required'
+        }, status=status.HTTP_400_BAD_REQUEST)
+    
+    try:
+        task = Create_task.objects.get(task_id=task_id)
+        task.api_image_status = new_status
+        task.save(update_fields=['api_image_status'])
+        
+        return Response({
+            'success': True,
+            'message': 'API image status updated successfully',
+            'data': {
+                'task_id': task.task_id,
+                'api_image_status': task.api_image_status
+            }
+        }, status=status.HTTP_200_OK)
+        
+    except Create_task.DoesNotExist:
+        return Response({
+            'success': False,
+            'message': f'Task with id {task_id} not found'
+        }, status=status.HTTP_404_NOT_FOUND)
+        
+    except Exception as e:
+        return Response({
+            'success': False,
+            'message': f'Error: {str(e)}'
+        }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

@@ -93,7 +93,11 @@ class Create_task(models.Model):
     # collection details
     collection_manager_name = models.CharField(max_length = 100)
     finance_company_name = models.CharField(max_length = 200)
-
+    
+    status = models.CharField(max_length = 50, null=True, blank=True)
+    new_mobile_number = models.CharField(max_length = 20, null=True, blank=True)
+    
+    api_image_status = models.CharField(max_length = 20, null=True, blank=True, default='No')
 
 class task_update(models.Model):
     task_update_id = models.AutoField(primary_key = True)
@@ -108,39 +112,40 @@ class task_update(models.Model):
     agreement_id = models.CharField(max_length = 50)
     
     # contact information
-    code = models.CharField(max_length = 10)
-    new_mobile_number = models.CharField(max_length = 15)
+    code = models.CharField(max_length = 10, null = True, blank = True)
+    new_mobile_number = models.CharField(max_length = 15, null = True, blank = True)
     
     # projection details 
-    projection = models.CharField(max_length = 100)
-    promise_date = models.DateTimeField(max_length = 20)
-    promise_amount = models.CharField(max_length = 30)
+    projection = models.CharField(max_length = 100, null = True, blank = True)
+    promise_date = models.DateTimeField(max_length = 20, null = True, blank = True)
+    promise_amount = models.CharField(max_length = 30, null = True, blank = True)
     
     # remark 
-    customer_remark = models.CharField(max_length = 500)
-    reference_remark = models.CharField(max_length = 500)
+    customer_remark = models.CharField(max_length = 500, null = True, blank = True)
+    reference_remark = models.CharField(max_length = 500, null = True, blank = True)
     
     # visit details
-    need_group_visit = models.CharField(max_length = 10)
-    visit_projection = models.CharField(max_length = 100)
-    visit_status = models.CharField(max_length = 20)
+    need_group_visit = models.CharField(max_length = 10, null = True, blank = True)
+    visit_projection = models.CharField(max_length = 100, null = True, blank = True)
+    visit_status = models.CharField(max_length = 20, null = True, blank = True)
     
     # customer & vehicle details
-    customer_available = models.CharField(max_length = 20)
-    vehicle_available = models.CharField(max_length = 10)
-    third_party_status = models.CharField(max_length = 10)
-    third_party_details = models.CharField(max_length = 500)
+    customer_available = models.CharField(max_length = 20, null = True, blank = True)
+    vehicle_available = models.CharField(max_length = 10, null = True, blank = True)
+    third_party_status = models.CharField(max_length = 10, null = True, blank = True)
+    third_party_details = models.CharField(max_length = 500, null = True, blank = True)
     
     # location & status
-    new_update_address = models.CharField(max_length = 500)
+    new_update_address = models.CharField(max_length = 500, null=True, blank=True)
     location_image = models.ImageField(upload_to='location_image/', null=True, blank=True)
-    location_status = models.CharField(max_length = 20)
+    document_image = models.FileField( upload_to='documents/',null=True, blank=True )
+    location_status = models.CharField(max_length = 20, null = True, blank = True)
     
     # payment details
-    payment_info = models.CharField(max_length = 500)
-    payment_mode = models.CharField(max_length = 50)
-    payment_amount = models.CharField(max_length = 30)
-    payment_date = models.DateTimeField(max_length = 20)
+    payment_info = models.CharField(max_length = 500, null = True, blank = True)
+    payment_mode = models.CharField(max_length = 50, null=True, blank=True)
+    payment_amount = models.CharField(max_length = 30 , null=True, blank=True)
+    payment_date = models.DateTimeField(max_length = 20, null=True, blank=True)
     
     # update 
     updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)

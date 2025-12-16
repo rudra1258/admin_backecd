@@ -110,16 +110,29 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
+# LANGUAGE_CODE = 'en-us'
+
+
+
+# # USE_I18N = True
+# USE_L10N = True
+
+
+# USE_TZ = True
+# TIME_ZONE = 'Asia/Kolkata'
+
+
+
 LANGUAGE_CODE = 'en-us'
 
-
-
-# USE_I18N = True
-USE_L10N = True
-
-
-USE_TZ = True
+# Set timezone to Kolkata, India
 TIME_ZONE = 'Asia/Kolkata'
+
+# Enable timezone support
+USE_TZ = True
+
+
+USE_I18N = True
 
 
 # Static files (CSS, JavaScript, Images)

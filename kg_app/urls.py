@@ -60,6 +60,7 @@ urlpatterns = [
     # api urls
     path('', include(router.urls)),
     path('user/login/', views.user_login, name='user-login'),
+    path('api/update-image-status-drf/', views.update_api_image_status_drf, name='update_image_status_drf'),
     
 
 
