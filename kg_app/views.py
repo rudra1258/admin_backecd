@@ -1205,7 +1205,7 @@ def tc_leave(request):
 
 
 
-
+# api for updating api_image_status field in Create_task model
 @api_view(['PATCH', 'POST'])
 def update_api_image_status_drf(request):
     """
