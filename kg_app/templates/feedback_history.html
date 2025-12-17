@@ -337,6 +337,18 @@
 
 
   <script>
+
+    $(document).ready(function() {
+        // Destroy existing DataTable if it exists, then reinitialize
+        if ($.fn.DataTable.isDataTable('#basic-9')) {
+            $('#basic-9').DataTable().destroy();
+        }
+        
+        $('#basic-9').DataTable({
+            paging: false,
+        });
+    });
+
     document.getElementById('downloadExcel').addEventListener('click', function () {
       // Get the table
       const table = document.getElementById('basic-9');

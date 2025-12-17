@@ -1326,6 +1326,7 @@
                                                                 <th>3rd Party Details</th>
                                                                 <th>New Updated Address</th>
                                                                 <th>Location Photo</th>
+                                                                <th>Document</th>
                                                                 <th>Location Status</th>
                                                                 <th>Payment Info</th>
                                                                 <th>Payment Mode</th>
@@ -2231,6 +2232,34 @@
                                         style="width: 50px; height: 50px; cursor: pointer;"
                                         onclick="window.open('${imagePath}', '_blank')">`;
                 }
+
+                // Format the document display
+                let documentDisplay = '';
+                if (data.document_image) {
+                    const docPath = data.document_image.startsWith('/media/') 
+                        ? data.document_image 
+                        : '/media/' + data.document_image;
+                    
+                    // Get file extension
+                    const fileExt = docPath.split('.').pop().toLowerCase();
+                    
+                    // Choose icon based on file type
+                    let icon = '📄'; // Default document icon
+                    if (fileExt === 'pdf') icon = '📘';
+                    
+                    documentDisplay = `<a href="${docPath}" 
+                                        target="_blank" 
+                                        style="text-decoration: none; font-size: 24px;" 
+                                        title="View Document">
+                                        ${icon}
+                                    </a>`;
+                }
+                
+                // Combine both displays
+                const mediaDisplay = (imageDisplay !== '-' || documentDisplay !== '') 
+                    ? `${imageDisplay !== '-' ? imageDisplay : ''} ${documentDisplay}` 
+                    : '-';
+
                 row.innerHTML = `
                     <td>${index + 1}</td>
                     <td>${data.updated_by || '-'}</td>
@@ -2251,6 +2280,7 @@
                     <td>${data.third_party_details || '-'}</td>
                     <td>${data.new_update_address || '-'}</td>
                     <td>${imageDisplay || '-'}</td>
+                    <td>${documentDisplay || '-'}</td>
                     <td>${data.location_status || '-'}</td>
                     <td>${data.payment_info || '-'}</td>
                     <td>${data.payment_mode || '-'}</td>

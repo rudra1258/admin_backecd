@@ -55,12 +55,13 @@ urlpatterns = [
     path('tc_pending_task/', views.tc_pending_task, name='tc_pending_task'),
     path('tc_complete_task/', views.tc_complete_task, name='tc_complete_task'),
     path('tc_leave/', views.tc_leave, name='tc_leave'),
+    path('tc_feddback_history/', views.tc_feddback_history, name='tc_feddback_history'),
     
     
     # api urls
     path('', include(router.urls)),
     path('user/login/', views.user_login, name='user-login'),
-    path('api/update-image-status-drf/', views.update_api_image_status_drf, name='update_image_status_drf'),
+    path('update-image-status-drf/', views.update_api_image_status_drf, name='update_image_status_drf'),
     
 
 

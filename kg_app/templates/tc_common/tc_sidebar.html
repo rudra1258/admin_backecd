@@ -83,6 +83,16 @@
 
             <li class="sidebar-list">
               <!-- <i class="fa-solid fa-thumbtack"></i> -->
+              <a class="sidebar-link" href="{% url 'kg_app:tc_feddback_history' %}">
+                <svg class="stroke-icon">
+                  <use href="{% static 'assets/svg/iconly-sprite.svg' %}#Star-kit"></use>
+                </svg>
+                <h6 class="f-w-600">Feedback History</h6>
+              </a>
+            </li>
+
+            <li class="sidebar-list">
+              <!-- <i class="fa-solid fa-thumbtack"></i> -->
               <a class="sidebar-link" href="javascript:void(0)">
                 <svg class="stroke-icon">
                   <use href="{% static 'assets/svg/iconly-sprite.svg' %}#Info-circle"></use>

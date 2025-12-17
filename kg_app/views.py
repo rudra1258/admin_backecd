@@ -401,6 +401,7 @@ def assign_task(request):
         'third_party_details',
         'new_update_address',
         'location_image',
+        'document_image',
         'location_status',
         'payment_info',
         'payment_mode',
@@ -862,7 +863,7 @@ def update_task(request):
             
             # projection details 
             projection = projection,
-            promise_date = promise_date,
+            promise_date = promise_date if promise_date else None,
             promise_amount = promise_amount,
             
             # remark 
@@ -889,7 +890,7 @@ def update_task(request):
             payment_info = payment_info,
             payment_mode = payment_mode,
             payment_amount = payment_amount,
-            payment_date = payment_date
+            payment_date = payment_date if payment_date else None
             
         )
         
@@ -1149,6 +1150,7 @@ def tc_assign_task(request):
         'third_party_details',
         'new_update_address',
         'location_image',
+        'document_image',
         'location_status',
         'payment_info',
         'payment_mode',
@@ -1182,6 +1184,19 @@ def tc_leave(request):
     if not session_admin_id:
         return render(request, 'index.html')
     return render(request, "tc_screens/tc_leave.html")
+
+def tc_feddback_history(request):
+    session_admin_id = request.session.get("tc_admin_id")
+    # navigate to login page if not login
+    if not session_admin_id:
+        return render(request, 'index.html')
+    admin_id_pk = admin_user_model.objects.get(pk=session_admin_id)
+    
+    feedback = task_update.objects.filter(
+        admin_id = admin_id_pk
+    )
+    
+    return render(request, "tc_screens/tc_feedback_history.html", {"feedback":feedback})   
 
 
 

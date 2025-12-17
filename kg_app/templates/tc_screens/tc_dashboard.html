@@ -508,7 +508,7 @@
                 <div class="dashboard-container">
                     <div class="header">
                         <h1>🎯 Agency Telecaller Dashboard</h1>
-                        <div class="header-actions">
+                        <!-- <div class="header-actions">
                             <button class="btn btn-secondary"
                                 onclick="window.location.href='{% url 'kg_app:create_user' %}'">
                                 <span class="icon">👤</span> Create User
@@ -517,7 +517,7 @@
                                 onclick="window.location.href='{% url 'kg_app:create_task' %}'">
                                 <span class="icon">➕</span> Create Task
                             </button>
-                        </div>
+                        </div> -->
                     </div>
 
                     <div class="stats-grid">
@@ -547,7 +547,7 @@
                         <div class="panel">
                             <div class="panel-header">
                                 <h2>Employee Management</h2>
-                                <button class="btn btn-secondary btn-small">View All</button>
+                                <button class="btn btn-secondary btn-small" onclick="window.location.href='{% url 'kg_app:tc_tl_login' %}'">View All</button>
                             </div>
                             <div class="tabs">
                                 <button class="tab active" onclick="switchTab(event, 'telecaller')">
@@ -607,7 +607,10 @@
                         <div class="panel">
                             <div class="panel-header">
                                 <h2>Task Overview</h2>
-                                <button class="btn btn-secondary btn-small">
+                                <!-- <button class="btn btn-secondary btn-small">
+                                    Assign Task
+                                </button> -->
+                                <button class="btn btn-secondary btn-small" onclick="window.location.href='{% url 'kg_app:tc_assign_task' %}'">
                                     Assign Task
                                 </button>
                             </div>
@@ -697,21 +700,21 @@
                             </div>
                             <div class="quick-actions">
                                 <div class="action-card"
-                                    onclick="window.location.href='{% url 'kg_app:create_task' %}'">
-                                    <h3>📊 Create Task</h3>
-                                    <p>Add and assign new tasks</p>
+                                    onclick="window.location.href='{% url 'kg_app:tc_feddback_history' %}'">
+                                    <h3>📊 Feedback</h3>
+                                    <p>See all feedback at a glance</p>
                                 </div>
-                                <div class="action-card"
+                                <!-- <div class="action-card"
                                     onclick="window.location.href='{% url 'kg_app:create_user' %}'">
                                     <h3>🙎🏽 Create User</h3>
                                     <p>Add a new user to the system</p>
-                                </div>
-                                <div class="action-card" onclick="window.location.href='{% url 'kg_app:tc_login' %}'">
+                                </div> -->
+                                <div class="action-card" onclick="window.location.href='{% url 'kg_app:tc_tl_login' %}'">
                                     <h3>🔐 Login Status</h3>
                                     <p>Monitor your recent login activity</p>
                                 </div>
                                 <div class="action-card"
-                                    onclick="window.location.href='{% url 'kg_app:assign_task' %}'">
+                                    onclick="window.location.href='{% url 'kg_app:tc_assign_task' %}'">
                                     <h3>📋 Task List</h3>
                                     <p>View your task list</p>
                                 </div>
