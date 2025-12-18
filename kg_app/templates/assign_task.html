@@ -1262,7 +1262,7 @@
                                                             <div class="form-group">
                                                                 <label>Payment Mode</label>
                                                                 <select id="paymentMode" name="payment_mode" >
-                                                                    <option value="" selected disabled>Select</option>
+                                                                    <option value="" selected>Select</option>
                                                                     <option value="Cash">Cash</option>
                                                                     <option value="Online">Online</option>
                                                                 </select>
@@ -1513,7 +1513,9 @@
             function togglePromiseRequired() {
                 const selectedCode = codeSelect.value;
 
-                if (selectedCode === 'PTP') {
+                const requiredCodes = ['PTP', 'CB', 'RNR', 'WIP', 'WS']; // add all required codes here
+
+                if (requiredCodes.includes(selectedCode)) {
                     promiseDateInput.setAttribute('required', 'required');
                     promiseAmountInput.setAttribute('required', 'required');
                 } else {

@@ -923,7 +923,7 @@ def update_task(request):
         update.update_third_party_details = third_party_details if third_party_details else None
 
         # location & status
-        update.update_new_update_address = new_update_address if new_update_address else None
+        update.update_new_address = new_update_address if new_update_address else None
         update.update_location_status = location_status if location_status else None
 
         # payment details
@@ -1352,7 +1352,7 @@ def tc_update_task(request):
         update.update_third_party_details = third_party_details if third_party_details else None
 
         # location & status
-        update.update_new_update_address = new_update_address if new_update_address else None
+        update.update_new_address = new_update_address if new_update_address else None
         update.update_location_status = location_status if location_status else None
 
         # payment details
