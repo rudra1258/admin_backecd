@@ -17,3 +17,10 @@ class CreateTaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = Create_task
         fields = '__all__'
+        
+class GsLoginSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = GsLogin
+        fields = '__all__'
+    
+

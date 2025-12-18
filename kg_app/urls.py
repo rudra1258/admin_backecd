@@ -52,6 +52,7 @@ urlpatterns = [
     path('tc_tl_login/', views.tc_tl_login, name='tc_tl_login'),
     path('tc_gs_login/', views.tc_gs_login, name='tc_gs_login'),
     path('tc_assign_task/', views.tc_assign_task, name='tc_assign_task'),
+    path('tc_update_task/', views.tc_update_task, name='tc_update_task'),
     path('tc_pending_task/', views.tc_pending_task, name='tc_pending_task'),
     path('tc_complete_task/', views.tc_complete_task, name='tc_complete_task'),
     path('tc_leave/', views.tc_leave, name='tc_leave'),
@@ -62,7 +63,7 @@ urlpatterns = [
     path('', include(router.urls)),
     path('user/login/', views.user_login, name='user-login'),
     path('update-image-status-drf/', views.update_api_image_status_drf, name='update_image_status_drf'),
-    
+    path('gs-login/create/', views.create_gs_login, name='create_gs_login'),
 
 
 ]

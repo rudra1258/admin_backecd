@@ -6,8 +6,9 @@ from django.contrib.auth.hashers import check_password, make_password
 import pandas as pd
 from rest_framework import viewsets, status
 from .serializers import *
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, parser_classes
 from rest_framework.response import Response
+from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 import json
 import io
 from django.http import HttpResponse
@@ -218,6 +219,7 @@ def user_login(request):
                         'first_name': user.first_name,
                         'last_name': user.last_name,
                         'role': user.role,
+                        'my_admin_id': user.admin_id.admin_id,
                         'phone_number': user.phone_number
                     }
                 }, status=status.HTTP_200_OK)
@@ -379,11 +381,13 @@ def assign_task(request):
         admin_id = admin_id_pk
     )
     update_task_list = task_update.objects.all()
+    print(f"Task count: {create_task_list.count()}") 
 
      # Convert queryset to JSON with all fields from your model
     updated_task_list_json = json.dumps(list(update_task_list.values(
         'task_update_id',
         'updated_by',
+        'updated_at',
         'agreement_id',
         'code',
         'new_mobile_number',
@@ -403,7 +407,7 @@ def assign_task(request):
         'location_image',
         'document_image',
         'location_status',
-        'payment_info',
+        'recipt_no',
         'payment_mode',
         'payment_amount',
         'payment_date',
@@ -846,7 +850,7 @@ def update_task(request):
         location_status = request.POST.get("location_status")
 
         # payment details 
-        payment_info = request.POST.get("payment_info")
+        recipt_no = request.POST.get("recipt_no")
         payment_mode = request.POST.get("payment_mode")
         payment_amount = request.POST.get("payment_amount")
         payment_date = request.POST.get("payment_date")
@@ -887,18 +891,47 @@ def update_task(request):
             location_status = location_status,
             
             # payment details 
-            payment_info = payment_info,
+            recipt_no = recipt_no,
             payment_mode = payment_mode,
             payment_amount = payment_amount,
             payment_date = payment_date if payment_date else None
             
         )
         
-        # to update category in Create_task model later
-        update = Create_task.objects.get(pk = task_id)
-        update.category = code
-        update.status = location_status
-        update.new_mobile_number = new_mobile_number
+       # to update category in Create_task model later
+        update = Create_task.objects.get(pk=task_id)
+        update.category = code if code else None
+        update.status = location_status if location_status else None
+        update.new_mobile_number = new_mobile_number if new_mobile_number else None
+
+        # projection details - handle empty strings for date fields
+        update.update_promise_date = promise_date if promise_date and promise_date.strip() else None
+        update.update_promise_amount = promise_amount if promise_amount else None
+
+        # remark 
+        update.update_customer_remark = customer_remark if customer_remark else None
+        update.update_reference_remark = reference_remark if reference_remark else None
+
+        # visit details 
+        update.update_need_group_visit = need_group_visit if need_group_visit else None
+        update.update_visit_projection = visit_projection if visit_projection else None
+
+        # customer & vehicle details 
+        update.update_customer_available = customer_available if customer_available else None
+        update.update_vehicle_available = vehicle_available if vehicle_available else None
+        update.update_third_party_status = third_party_status if third_party_status else None
+        update.update_third_party_details = third_party_details if third_party_details else None
+
+        # location & status
+        update.update_new_update_address = new_update_address if new_update_address else None
+        update.update_location_status = location_status if location_status else None
+
+        # payment details
+        update.update_recipt_no = recipt_no if recipt_no else None
+        update.update_payment_mode = payment_mode if payment_mode else None
+        update.update_payment_amount = payment_amount if payment_amount else None
+        update.update_payment_date = payment_date if payment_date and payment_date.strip() else None
+
         update.save()
         
         messages.success(request, 'task updated successfully')
@@ -1133,6 +1166,7 @@ def tc_assign_task(request):
     updated_task_list_json = json.dumps(list(update_task_list.values(
         'task_update_id',
         'updated_by',
+        'updated_at',
         'agreement_id',
         'code',
         'new_mobile_number',
@@ -1152,7 +1186,7 @@ def tc_assign_task(request):
         'location_image',
         'document_image',
         'location_status',
-        'payment_info',
+        'recipt_no',
         'payment_mode',
         'payment_amount',
         'payment_date'
@@ -1196,7 +1230,143 @@ def tc_feddback_history(request):
         admin_id = admin_id_pk
     )
     
-    return render(request, "tc_screens/tc_feedback_history.html", {"feedback":feedback})   
+    return render(request, "tc_screens/tc_feedback_history.html", {"feedback":feedback})  
+
+def tc_update_task(request):
+    session_admin_id = request.session.get('tc_admin_id')
+    # navigate to login page if not login
+    if not session_admin_id:
+        return render(request, 'index.html')
+    session_admin_username= request.session.get('tc_first_name')
+    # navigate to login page if not login
+    if not session_admin_id:
+        return render(request, 'index.html')
+    admin_id_pk = admin_user_model.objects.get(pk = session_admin_id)
+    if request.method == "POST":
+        aggrement_id = request.POST.get("agreement_id")
+        print("Agreement ID for task update:", aggrement_id)
+        print("Agreement ID for task update:", request.POST)
+        task_id = request.POST.get("task_id")
+        model_task_id = Create_task.objects.get(pk = task_id)
+        
+        # contact information
+        code = request.POST.get("code")
+        new_mobile_number = request.POST.get("newMobileNumber")
+
+        # projection details 
+        projection = request.POST.get("projection")
+        promise_date = request.POST.get("promise_date")
+        promise_amount = request.POST.get("promise_amt")
+        
+        # remark 
+        customer_remark = request.POST.get("customer_remark")
+        reference_remark = request.POST.get("referencr_remark")
+        
+        #visit details
+        need_group_visit = request.POST.get("need_group_visit")
+        visit_projection = request.POST.get("visit_projection")
+        visit_status = request.POST.get("visit_status")
+        
+        # customer & vehicle details
+        customer_available = request.POST.get("customer_available")
+        vehicle_available = request.POST.get("vehicle_available")
+        third_party_status = request.POST.get("third_party_status")
+        third_party_details = request.POST.get("third_party_details")
+        
+        # location & status
+        new_update_address = request.POST.get("new_update_address")
+        document_image = request.FILES.get("document_image")
+        location_status = request.POST.get("location_status")
+
+        # payment details 
+        recipt_no = request.POST.get("recipt_no")
+        payment_mode = request.POST.get("payment_mode")
+        payment_amount = request.POST.get("payment_amount")
+        payment_date = request.POST.get("payment_date")
+        
+        task_update.objects.create(
+            updated_by = session_admin_username,
+            admin_id = admin_id_pk,
+            task_id = model_task_id,
+            agreement_id = aggrement_id,
+            
+            # contact information
+            code = code,
+            new_mobile_number = new_mobile_number,
+            
+            # projection details 
+            projection = projection,
+            promise_date = promise_date if promise_date else None,
+            promise_amount = promise_amount,
+            
+            # remark 
+            customer_remark = customer_remark,
+            reference_remark = reference_remark,
+            
+            # visit details
+            need_group_visit = need_group_visit,
+            visit_projection = visit_projection,
+            visit_status = visit_status,
+            
+            # customer & vehicle details
+            customer_available = customer_available,
+            vehicle_available = vehicle_available,
+            third_party_status = third_party_status,
+            third_party_details = third_party_details,
+            
+            # location and status 
+            new_update_address = new_update_address,
+            document_image = document_image,
+            location_status = location_status,
+            
+            # payment details 
+            recipt_no = recipt_no,
+            payment_mode = payment_mode,
+            payment_amount = payment_amount,
+            payment_date = payment_date if payment_date else None
+            
+        )
+        
+       # to update category in Create_task model later
+        update = Create_task.objects.get(pk=task_id)
+        update.category = code if code else None
+        update.status = location_status if location_status else None
+        update.new_mobile_number = new_mobile_number if new_mobile_number else None
+
+        # projection details - handle empty strings for date fields
+        update.update_promise_date = promise_date if promise_date and promise_date.strip() else None
+        update.update_promise_amount = promise_amount if promise_amount else None
+
+        # remark 
+        update.update_customer_remark = customer_remark if customer_remark else None
+        update.update_reference_remark = reference_remark if reference_remark else None
+
+        # visit details 
+        update.update_need_group_visit = need_group_visit if need_group_visit else None
+        update.update_visit_projection = visit_projection if visit_projection else None
+
+        # customer & vehicle details 
+        update.update_customer_available = customer_available if customer_available else None
+        update.update_vehicle_available = vehicle_available if vehicle_available else None
+        update.update_third_party_status = third_party_status if third_party_status else None
+        update.update_third_party_details = third_party_details if third_party_details else None
+
+        # location & status
+        update.update_new_update_address = new_update_address if new_update_address else None
+        update.update_location_status = location_status if location_status else None
+
+        # payment details
+        update.update_recipt_no = recipt_no if recipt_no else None
+        update.update_payment_mode = payment_mode if payment_mode else None
+        update.update_payment_amount = payment_amount if payment_amount else None
+        update.update_payment_date = payment_date if payment_date and payment_date.strip() else None
+
+        update.save()
+        
+        messages.success(request, 'task updated successfully')
+        return redirect("kg_app:tc_assign_task")
+          
+    return render(request, "tc_screens/tc_assign_task.html") 
 
 
 
@@ -1267,3 +1437,78 @@ def update_api_image_status_drf(request):
             'success': False,
             'message': f'Error: {str(e)}'
         }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+              
+        
+        
+@api_view(['POST'])
+def create_gs_login(request):
+    """
+    API to create a new GS Login record
+    Required fields: admin_id, name, email, mobile_no, status, image, longitude, latitude
+    """
+    try:
+        # Get data from request
+        admin_id = request.data.get('admin_id')
+        name = request.data.get('name')
+        email = request.data.get('email')
+        mobile_no = request.data.get('mobile_no')
+        status_value = request.data.get('status')
+        image = request.FILES.get('image')
+        longitude = request.data.get('longitude')
+        latitude = request.data.get('latitude')
+        login_time = request.data.get('login_time', None)
+        logout_time = request.data.get('logout_time', None)
+
+        # Validate required fields
+        if not all([admin_id, name, email, mobile_no, status_value, image, longitude, latitude]):
+            return Response({
+                'success': False,
+                'message': 'All fields are required: admin_id, name, email, mobile_no, status, image, longitude, latitude'
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+        # Check if email already exists
+        if GsLogin.objects.filter(email=email).exists():
+            return Response({
+                'success': False,
+                'message': 'Email already exists'
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+        # Check if mobile number already exists
+        if GsLogin.objects.filter(mobile_no=mobile_no).exists():
+            return Response({
+                'success': False,
+                'message': 'Mobile number already exists'
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+        # Create new GsLogin record
+        gs_login = GsLogin.objects.create(
+            admin_id=admin_id,
+            name=name,
+            email=email,
+            mobile_no=mobile_no,
+            status=status_value,
+            image=image,
+            longitude=longitude,
+            latitude=latitude,
+            login_time=login_time if login_time else None,
+            logout_time=logout_time if logout_time else None
+        )
+
+        # Serialize and return the created object
+        serializer = GsLoginSerializer(gs_login)
+        
+        return Response({
+            'success': True,
+            'message': 'GS Login record created successfully',
+            'data': serializer.data
+        }, status=status.HTTP_201_CREATED)
+
+    except Exception as e:
+        return Response({
+            'success': False,
+            'message': str(e)
+        }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+        
+        
+        

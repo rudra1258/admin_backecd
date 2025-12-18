@@ -94,10 +94,44 @@ class Create_task(models.Model):
     collection_manager_name = models.CharField(max_length = 100)
     finance_company_name = models.CharField(max_length = 200)
     
+    
+    # update details 
     status = models.CharField(max_length = 50, null=True, blank=True)
     new_mobile_number = models.CharField(max_length = 20, null=True, blank=True)
     
     api_image_status = models.CharField(max_length = 20, null=True, blank=True, default='No')
+
+
+    # auto fetch details update 
+    
+    # projection details 
+    update_promise_date = models.DateTimeField(null=True, blank=True)
+    update_promise_amount = models.CharField(max_length = 30, null=True, blank=True)
+    
+    # remark
+    update_customer_remark = models.CharField(max_length = 500, null=True, blank=True)
+    update_reference_remark = models.CharField(max_length = 500, null=True, blank=True)
+    
+    # visit details
+    update_need_group_visit = models.CharField(max_length = 10, null=True, blank=True)
+    update_visit_projection = models.CharField(max_length = 100, null=True, blank=True)
+    
+    # customer & vehicle details
+    update_customer_available = models.CharField(max_length = 20, null=True, blank=True)
+    update_vehicle_available = models.CharField(max_length = 10, null=True, blank=True)
+    update_third_party_status = models.CharField(max_length = 10, null=True, blank=True)
+    update_third_party_details = models.CharField(max_length = 500, null=True, blank=True)
+    
+    # location & status 
+    update_new_address = models.CharField(max_length = 1000, null=True, blank=True)
+    update_location_status = models.CharField(max_length = 20, null=True, blank=True)
+    
+    # payment details 
+    update_recipt_no = models.CharField(max_length = 500, null=True, blank=True)
+    update_payment_mode = models.CharField(max_length = 50, null=True, blank=True)
+    update_payment_amount = models.CharField(max_length = 30 , null=True, blank=True)
+    update_payment_date = models.DateTimeField(null=True, blank=True)
+    
 
 class task_update(models.Model):
     task_update_id = models.AutoField(primary_key = True)
@@ -142,7 +176,7 @@ class task_update(models.Model):
     location_status = models.CharField(max_length = 20, null = True, blank = True)
     
     # payment details
-    payment_info = models.CharField(max_length = 500, null = True, blank = True)
+    recipt_no = models.CharField(max_length = 500, null = True, blank = True)
     payment_mode = models.CharField(max_length = 50, null=True, blank=True)
     payment_amount = models.CharField(max_length = 30 , null=True, blank=True)
     payment_date = models.DateTimeField(null=True, blank=True)

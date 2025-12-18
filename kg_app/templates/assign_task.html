@@ -1041,6 +1041,7 @@
                                                         <th>FE Name</th>
                                                         <th>FE Mobile Number</th>
                                                         <th>Customer Number</th>
+                                                        <th>Updated Customer Number</th>
                                                         <th>Customer Address</th>
                                                         <th>Customer Office Address</th>
                                                         <th>PIN Code</th>
@@ -1084,7 +1085,7 @@
                                                             <input type="text" id="task_id" name="task_id" value="" readonly hidden>
                                                             <div class="form-group">
                                                                 <label>Code</label>
-                                                                <select id="code" name="code" required>
+                                                                <select id="code" name="code" required >
                                                                     <option value="" selected disabled>Select Code</option>
                                                                     <option value="CB">CB - THE CUSTOMER ASKED US TO CALL BACK</option>
                                                                     <option value="DISP">DISP - DISPUTED CASES</option>
@@ -1118,7 +1119,7 @@
                                                             </div>
                                                             <div class="form-group">
                                                                 <label>New Mobile Number</label>
-                                                                <input type="tel" id="newMobileNumber" name="newMobileNumber" placeholder="Enter mobile number" required>
+                                                                <input type="tel" id="newMobileNumber" name="newMobileNumber" placeholder="Enter mobile number" required value="">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1137,11 +1138,11 @@
                                                             </div> -->
                                                             <div class="form-group">
                                                                 <label>Promise Date</label>
-                                                                <input type="datetime-local" id="promise_date" name="promise_date" >
+                                                                <input type="datetime-local" id="promise_date" name="promise_date" value="">
                                                             </div>
                                                             <div class="form-group">
                                                                 <label>Promise Amount</label>
-                                                                <input type="number" id="promiseAmount" name="promise_amt" placeholder="00000/-" >
+                                                                <input type="number" id="promiseAmount" name="promise_amt" placeholder="00000/-" value="">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1256,7 +1257,7 @@
                                                             </div>
                                                             <div class="form-group">
                                                                 <label>Recipt No.</label>
-                                                                <input type="text" id="payment" name="payment_info"  placeholder="Enter recipt number">
+                                                                <input type="text" id="payment" name="recipt_no"  placeholder="Enter recipt number">
                                                             </div>
                                                             <div class="form-group">
                                                                 <label>Payment Mode</label>
@@ -1309,6 +1310,7 @@
                                                             <tr>
                                                                 <th>Sl</th>
                                                                 <th>Updated By</th>
+                                                                <th>Updated At</th>
                                                                 <th>Agreement Id</th>
                                                                 <th>Code</th>
                                                                 <th>New Mobile Number</th>
@@ -1773,7 +1775,25 @@
         'reference_details': 'Reference Details',
         'collection_manager_name': 'Collection Manager Name',
         'finance_company_name': 'Finance Company Name',
-        'api_image_status': 'Visit Status'
+        
+        'api_image_status': 'Visit Status',
+        'new_mobile_number': 'New Updated Mobile Number',
+        'update_promise_date': 'Promise Date',
+        'update_promise_amount': 'Promise Amount',
+        'update_customer_remark': 'Customer Remark',
+        'update_reference_remark': 'Reference Remark',
+        'update_need_group_visit': 'Need Group Visit',
+        'update_visit_projection': 'Visit Projection',
+        'update_customer_available': 'Customer Available',
+        'update_vehicle_available': 'Vehicle Available',
+        'update_third_party_status': '3rd Party Status',
+        'update_third_party_details': '3rd Party Details',
+        'update_new_address': 'New Updated Address',
+        'update_location_status': 'Location Status',
+        'update_recipt_no': 'Recipt No',
+        'update_payment_mode': 'Payment Mode',
+        'update_payment_amount': 'Payment Amount',
+        'update_payment_date': 'Payment Date',
     };
 
     // Convert Django task_list to JavaScript array
@@ -1816,16 +1836,47 @@
             father_name: "{{ task.father_name|default:'' }}",
             
             customer_mobile_number: "{{ task.customer_mobile_number|default:'' }}",
+            new_mobile_number:"{{task.new_mobile_number|default:'-' }}",
             customer_address: "{{ task.customer_address|default:'' }}",
+            update_new_address:"{{task.update_new_address|default:'-' }}",
             customer_office_address: "{{ task.customer_office_address|default:'' }}",
             pin_code: "{{ task.pin_code|default:'' }}",
             reference_details: "{{ task.reference_details|default:'' }}",
             collection_manager_name: "{{ task.collection_manager_name|default:'' }}",
             finance_company_name: "{{ task.finance_company_name|default:'' }}",
+            update_recipt_no:"{{task.update_recipt_no|default:'-' }}",
             recipt_amount: "{{ task.recipt_amount|default:'' }}",
             recipt_date: "{{ task.recipt_date|default:'' }}",
 
-            api_image_status:"{{task.api_image_status}}"
+            api_image_status:"{{task.api_image_status|default:'-' }}",
+
+
+            
+
+            update_promise_date:"{{task.update_promise_date|date:'Y-m-d\TH:i'|default:'-' }}",
+            update_promise_amount:"{{task.update_promise_amount|default:'-' }}",
+
+            update_customer_remark:"{{task.update_customer_remark|default:'-' }}",
+            update_reference_remark:"{{task.update_reference_remark|default:'-' }}",
+
+            update_need_group_visit:"{{task.update_need_group_visit|default:'-' }}",
+            update_visit_projection:"{{task.update_visit_projection|default:'-' }}",
+
+            update_customer_available:"{{task.update_customer_available|default:'-' }}",
+            update_vehicle_available:"{{task.update_vehicle_available|default:'-' }}",
+            update_third_party_status:"{{task.update_third_party_status|default:'-' }}",
+            update_third_party_details:"{{task.update_third_party_details|default:'-' }}",
+
+            
+            update_location_status:"{{task.update_location_status|default:'-' }}",
+
+            
+            update_payment_mode:"{{task.update_payment_mode|default:'-' }}",
+            update_payment_amount:"{{task.update_payment_amount|default:'-' }}",
+            update_payment_date:"{{task.update_payment_date|date:'Y-m-d\TH:i'|default:'-' }}",
+
+
+
         }{% if not forloop.last %},{% endif %}
         {% endfor %}
     ];
@@ -1910,28 +1961,192 @@
         const agreementIdInputs = document.getElementById('agreementIdInputs');
         const visitStatusInput = document.getElementById('visitStatus');
         const taskIdInput = document.getElementById('task_id');
+
+        const codeSelect = document.getElementById('code');
+        const newMobileNumber = document.getElementById('newMobileNumber');
+        const promise_date = document.getElementById('promise_date');
+        const paymentDate = document.getElementById('paymentDate');
+        const promiseAmount = document.getElementById('promiseAmount');
+        const customerRemarks = document.getElementById('customerRemarks');
+        const referenceRemarks = document.getElementById('referenceRemarks');
+        const needGroupVisit = document.getElementById('needGroupVisit');
+        const projectionExtended = document.getElementById('projectionExtended');
+
+        const customerAvailable = document.getElementById('customerAvailable');
+        const vehicleAvailable = document.getElementById('vehicleAvailable');
+        const thirdPartyStatus = document.getElementById('thirdPartyStatus');
+        const thirdPartyDetails = document.getElementById('thirdPartyDetails');
+
+        const newUpdateAddress = document.getElementById('newUpdateAddress');
+
+        const locationStatus = document.getElementById('status');
+        const reciptNo = document.getElementById('payment');
+        const paymentMode = document.getElementById('paymentMode');
+        const paymentAmount = document.getElementById('paymentAmount');
+
+
         if (!detailsGrid) return;
 
         if(visitStatusInput){
             visitStatusInput.value = task.api_image_status || '';
         }
+
         if (agreementIdInput) {
             agreementIdInput.value = task.aggrement_id || '';
             global_aggrement_id = task.aggrement_id || '';
         }
+
         if (agreementIdInputs){
             agreementIdInputs.value = task.aggrement_id || '';
         }
+
         if(taskIdInput){
             taskIdInput.value = task.task_id || '';
         }
+
+        if(promiseAmount){
+            promiseAmount.value = task.update_promise_amount || '';
+        }
+        
+
+        if(promise_date && task.update_promise_date){
+            promise_date.value = task.update_promise_date;
+        }
+
+        if(paymentDate && task.update_payment_date){
+            paymentDate.value = task.update_payment_date;
+        }
+
+        // Set the code dropdown value from task.category
+        if(codeSelect && task.category){
+            codeSelect.value = task.category;
+            
+            // If the value doesn't match any option, you might want to handle it
+            if(codeSelect.value !== task.category) {
+                console.warn(`Category value "${task.category}" not found in dropdown options`);
+                // Optionally, you can add the value dynamically or set to default
+                codeSelect.value = ''; // Reset to default if not found
+            }
+        }
+
+        if(newMobileNumber){
+            newMobileNumber.value = task.new_mobile_number || '';
+        }
+
+        if(customerRemarks){
+            customerRemarks.value = task.update_customer_remark && task.update_customer_remark !== '-' 
+                ? task.update_customer_remark 
+                : '';
+        }
+
+        if(referenceRemarks){
+            referenceRemarks.value = task.update_reference_remark && task.update_reference_remark !== '-' 
+                ? task.update_reference_remark 
+                : '';
+        }
+
+        // Set need group visit
+        if(needGroupVisit){
+            if(task.update_need_group_visit && task.update_need_group_visit !== '-'){
+                needGroupVisit.value = task.update_need_group_visit;
+            } else {
+                needGroupVisit.value = '';
+            }
+        }
+
+        if(projectionExtended){
+            projectionExtended.value = task.update_visit_projection && task.update_visit_projection !== '-' 
+                ? task.update_visit_projection 
+                : '';
+        }
+        // Set customer available
+        if(customerAvailable){
+            customerAvailable.value = task.update_customer_available && task.update_customer_available !== '-' 
+                ? task.update_customer_available 
+                : '';
+        }
+
+        // Set vehicle available
+        if(vehicleAvailable){
+            vehicleAvailable.value = task.update_vehicle_available && task.update_vehicle_available !== '-' 
+                ? task.update_vehicle_available 
+                : '';
+        }
+
+        // Set third party status
+        if(thirdPartyStatus){
+            thirdPartyStatus.value = task.update_third_party_status && task.update_third_party_status !== '-' 
+                ? task.update_third_party_status 
+                : '';
+        }
+
+        // Set third party details
+        if(thirdPartyDetails){
+            thirdPartyDetails.value = task.update_third_party_details && task.update_third_party_details !== '-' 
+                ? task.update_third_party_details 
+                : '';
+        }
+
+        if(newUpdateAddress){
+            newUpdateAddress.value = task.update_new_address && task.update_new_address !== '-' 
+                ? task.update_new_address 
+                : '';
+        }
+
+        if(locationStatus){
+            locationStatus.value = task.update_location_status && task.update_location_status !== '-' 
+                ? task.update_location_status 
+                : 'RF'; // Default to RF as it's selected in HTML
+        }
+
+        if(reciptNo){
+            reciptNo.value = task.update_recipt_no && task.update_recipt_no !== '-' 
+                ? task.update_recipt_no 
+                : '';
+        }
+
+        if(paymentMode){
+            paymentMode.value = task.update_payment_mode && task.update_payment_mode !== '-' 
+                ? task.update_payment_mode 
+                : '';
+        }
+
+        if(paymentAmount){
+            paymentAmount.value = task.update_payment_amount && task.update_payment_amount !== '-' 
+                ? task.update_payment_amount 
+                : '';
+        }
+
+
+
+
+
+
         
         detailsGrid.innerHTML = '';
         console.log('Populating details for task:', task.aggrement_id);
 
         Object.keys(task).forEach(key => {
 
-            if (key === 'sl' || key === 'task_id' || key ==='api_image_status') return;
+            if (
+                key === 'sl' || 
+                key === 'task_id' || 
+                key ==='api_image_status' ||
+                key ==='update_promise_date' ||
+                key ==='update_promise_amount' ||
+                key ==='update_customer_remark' ||
+                key ==='update_reference_remark' ||
+                key ==='update_need_group_visit' ||
+                key ==='update_visit_projection' ||
+                key ==='update_customer_available' ||
+                key ==='update_vehicle_available' ||
+                key ==='update_third_party_status' ||
+                key ==='update_third_party_details' ||
+                key ==='update_location_status' ||
+                key ==='update_payment_mode' ||
+                key ==='update_payment_amount' ||
+                key ==='update_payment_date' 
+                ) return;
 
             const detailItem = document.createElement('div');
             detailItem.className = 'detail-item';
@@ -2104,6 +2319,7 @@
                     <td>${task.fe_name}</td>
                     <td>${task.fe_mobile_number}</td>
                     <td>${task.customer_mobile_number}</td>
+                    <td>${task.new_mobile_number}</td>
                     <td>${task.customer_address}</td>
                     <td>${task.customer_office_address}</td>
                     <td>${task.pin_code}</td>
@@ -2260,14 +2476,41 @@
                     ? `${imageDisplay !== '-' ? imageDisplay : ''} ${documentDisplay}` 
                     : '-';
 
+                function formatDateTime(dateString) {
+                    if (!dateString || dateString === '-') return '-';
+                    
+                    try {
+                        const date = new Date(dateString);
+                        
+                        if (isNaN(date.getTime())) return '-';
+                        
+                        const day = String(date.getDate()).padStart(2, '0');
+                        const month = String(date.getMonth() + 1).padStart(2, '0');
+                        const year = date.getFullYear();
+                        let hours = date.getHours();
+                        const minutes = String(date.getMinutes()).padStart(2, '0');
+                        const ampm = hours >= 12 ? 'PM' : 'AM';
+                        
+                        hours = hours % 12;
+                        hours = hours ? hours : 12; // 0 should be 12
+                        hours = String(hours).padStart(2, '0');
+                        
+                        return `${day}-${month}-${year} ${hours}:${minutes} ${ampm}`;
+                    } catch (error) {
+                        console.error('Error formatting date:', error);
+                        return '-';
+                    }
+                }
+
                 row.innerHTML = `
                     <td>${index + 1}</td>
                     <td>${data.updated_by || '-'}</td>
+                     <td>${formatDateTime(data.updated_at)}</td>
                     <td>${data.agreement_id || '-'}</td>
                     <td>${data.code || '-'}</td>
                     <td>${data.new_mobile_number || '-'}</td>
                     <td>${data.projection || '-'}</td>
-                    <td>${data.promise_date || '-'}</td>
+                    <td>${formatDateTime(data.promise_date)}</td>
                     <td>${data.promise_amount || '-'}</td>
                     <td>${data.customer_remark || '-'}</td>
                     <td>${data.reference_remark || '-'}</td>
@@ -2282,11 +2525,10 @@
                     <td>${imageDisplay || '-'}</td>
                     <td>${documentDisplay || '-'}</td>
                     <td>${data.location_status || '-'}</td>
-                    <td>${data.payment_info || '-'}</td>
+                    <td>${data.recipt_no || '-'}</td>
                     <td>${data.payment_mode || '-'}</td>
                     <td>${data.payment_amount || '-'}</td>
-                    <td>${data.payment_date || '-'}</td>
-                    <!-- <td>${data.updated_at || '-'}</td> -->
+                    <td>${formatDateTime(data.payment_date)}</td>
                 `;
                 tableBody.appendChild(row);
             });
