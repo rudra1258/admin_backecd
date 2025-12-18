@@ -1791,7 +1791,7 @@
         'update_third_party_status': '3rd Party Status',
         'update_third_party_details': '3rd Party Details',
         'update_new_address': 'New Updated Address',
-        'update_location_status': 'Location Status',
+        'update_location_status': 'Mode',
         'update_recipt_no': 'Recipt No',
         'update_payment_mode': 'Payment Mode',
         'update_payment_amount': 'Payment Amount',
@@ -1816,6 +1816,7 @@
             old_or_new: "{{ task.old_or_new|default:'' }}",
             bucket: "{{ task.bucket|default:'' }}",
             mode: "{{ task.mode|default:'' }}",
+            update_location_status:"{{task.update_location_status|default:'-' }}",
             npa_status: "{{ task.npa_status|default:'' }}",
             pos_amount: "{{ task.pos_amount|default:'' }}",
             emi_amount: "{{ task.emi_amount|default:'' }}",
@@ -1849,6 +1850,8 @@
             update_recipt_no:"{{task.update_recipt_no|default:'-' }}",
             recipt_amount: "{{ task.recipt_amount|default:'' }}",
             recipt_date: "{{ task.recipt_date|default:'' }}",
+            update_payment_amount:"{{task.update_payment_amount|default:'-' }}",
+            update_payment_date:"{{task.update_payment_date|date:'d-m-Y h:i A'|default:'-' }}",
 
             api_image_status:"{{task.api_image_status|default:'-' }}",
 
@@ -1870,12 +1873,11 @@
             update_third_party_details:"{{task.update_third_party_details|default:'-' }}",
 
             
-            update_location_status:"{{task.update_location_status|default:'-' }}",
+            
 
             
             update_payment_mode:"{{task.update_payment_mode|default:'-' }}",
-            update_payment_amount:"{{task.update_payment_amount|default:'-' }}",
-            update_payment_date:"{{task.update_payment_date|date:'Y-m-d\TH:i'|default:'-' }}",
+            
 
 
 
@@ -2144,10 +2146,10 @@
                 key ==='update_vehicle_available' ||
                 key ==='update_third_party_status' ||
                 key ==='update_third_party_details' ||
-                key ==='update_location_status' ||
                 key ==='update_payment_mode' ||
-                key ==='update_payment_amount' ||
-                key ==='update_payment_date' 
+                key ==='recipt_amount' ||
+                key ==='recipt_date' ||
+                key ==='mode' 
                 ) return;
 
             const detailItem = document.createElement('div');
