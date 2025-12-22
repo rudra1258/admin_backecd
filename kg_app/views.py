@@ -194,48 +194,6 @@ def create_user(request):
 class CreateUserViewSet(viewsets.ModelViewSet):
     queryset = CreateUser.objects.all()
     serializer_class = UserListSerializer
-    
-# User Login API
-@api_view(['POST'])
-def user_login(request):
-    serializer = UserLoginSerializer(data = request.data)
-    
-    if serializer.is_valid():
-        email = serializer.validated_data['email']
-        password = serializer.validated_data['password']
-        
-        try:
-            user = CreateUser.objects.get(email=email)
-            
-            # Check if password matches (plain text comparison for now)
-            if user.password == password:
-                return Response({
-                    'success': True,
-                    'message': 'User login successful',
-                    'data': {
-                        'id': user.id,
-                        'username': user.username,
-                        'email': user.email,
-                        'first_name': user.first_name,
-                        'last_name': user.last_name,
-                        'role': user.role,
-                        'my_admin_id': user.admin_id.admin_id,
-                        'phone_number': user.phone_number
-                    }
-                }, status=status.HTTP_200_OK)
-            else:
-                return Response({
-                    'success': False,
-                    'message': 'Invalid credentials'
-                }, status=status.HTTP_401_UNAUTHORIZED)
-                
-        except CreateUser.DoesNotExist:
-            return Response({
-                'success': False,
-                'message': 'User not found'
-            }, status=status.HTTP_404_NOT_FOUND)
-    
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 def import_users_from_excel(request):
     session_admin_id = request.session.get("admin_id")
@@ -1510,5 +1468,53 @@ def create_gs_login(request):
         }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
         
+ # User Login API
+
+
+
+@api_view(['POST'])
+def user_login(request):
+    serializer = UserLoginSerializer(data = request.data)
+    
+    if serializer.is_valid():
+        email = serializer.validated_data['email']
+        password = serializer.validated_data['password']
         
+        try:
+            user = CreateUser.objects.get(email=email)
+            
+            if user.role == 'telecaller':
+                return Response({
+                    'success': False,
+                    'message': 'Telecaller users are not allowed to login here'
+                }, status=status.HTTP_401_UNAUTHORIZED)
+            # Check if password matches (plain text comparison for now)
+            if user.password == password:
+                return Response({
+                    'success': True,
+                    'message': 'User login successful',
+                    'data': {
+                        'id': user.id,
+                        'username': user.username,
+                        'email': user.email,
+                        'first_name': user.first_name,
+                        'last_name': user.last_name,
+                        'role': user.role,
+                        'my_admin_id': user.admin_id.admin_id,
+                        'phone_number': user.phone_number
+                    }
+                }, status=status.HTTP_200_OK)
+            else:
+                return Response({
+                    'success': False,
+                    'message': 'Invalid user Id or password'
+                }, status=status.HTTP_401_UNAUTHORIZED)
+                
+        except CreateUser.DoesNotExist:
+            return Response({
+                'success': False,
+                'message': 'User not found'
+            }, status=status.HTTP_404_NOT_FOUND)
+    
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)       
         
