@@ -1273,12 +1273,11 @@
                                                             </div>
                                                             <div class="form-group">
                                                                 <label>Payment Date</label>
-                                                                <input type="datetime-local" id="paymentDate" name="payment_date" >
+                                                                <input type="datetime-local" id="paymentDate" name="payment_date" value="">
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
-                                                        
                                                         <button class="btn-cancel" onclick="closeModal()">Cancel</button>
                                                         <button class="btn-save" type="submit">Save Changes</button>
                                                     </div>
@@ -1877,6 +1876,9 @@
 
             
             update_payment_mode:"{{task.update_payment_mode|default:'-' }}",
+            update_payment_amount:"{{task.update_payment_amount|default:'-' }}",
+            update_payment_date:"{{task.update_payment_date|date:'Y-m-d\TH:i'|default:'-' }}",
+
             
 
 
@@ -2015,10 +2017,12 @@
 
         if(promise_date && task.update_promise_date){
             promise_date.value = task.update_promise_date;
+            console.log('Setting promise date to:-------------------------------------------------------------------', task.update_promise_date);
         }
 
         if(paymentDate && task.update_payment_date){
             paymentDate.value = task.update_payment_date;
+            console.log('Setting payment date to:-------------------------------------------------------------------', task.update_payment_date);
         }
 
         // Set the code dropdown value from task.category
@@ -2122,11 +2126,6 @@
         }
 
 
-
-
-
-
-        
         detailsGrid.innerHTML = '';
         console.log('Populating details for task:', task.aggrement_id);
 
@@ -2152,6 +2151,8 @@
                 key ==='mode' 
                 ) return;
 
+            
+
             const detailItem = document.createElement('div');
             detailItem.className = 'detail-item';
 
@@ -2161,11 +2162,33 @@
 
             const value = document.createElement('div');
             value.className = 'detail-value';
-            value.textContent = task[key] || '-';
+            // 🔥 Format payment_date
+            if (key === 'update_payment_date') {
+                value.textContent = formatDateTime(task[key]);
+            } else {
+                value.textContent = task[key] || '-';
+            }
 
             detailItem.appendChild(label);
             detailItem.appendChild(value);
             detailsGrid.appendChild(detailItem);
+        });
+    }
+
+    function formatDateTime(value) {
+        if (!value || typeof value !== 'string') return '-';
+
+        // Handles: 2025-12-23T23:35
+        const date = new Date(value);
+        if (isNaN(date)) return value;
+
+        return date.toLocaleString('en-US', {
+            month: 'short',   // Dec
+            day: '2-digit',   // 23
+            year: 'numeric',  // 2025
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: true      // AM / PM
         });
     }
 

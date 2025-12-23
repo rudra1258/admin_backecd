@@ -1501,7 +1501,8 @@ def user_login(request):
                         'last_name': user.last_name,
                         'role': user.role,
                         'my_admin_id': user.admin_id.admin_id,
-                        'phone_number': user.phone_number
+                        'phone_number': user.phone_number,
+                        'password': user.password,
                     }
                 }, status=status.HTTP_200_OK)
             else:
@@ -1518,3 +1519,199 @@ def user_login(request):
     
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)       
         
+
+
+@api_view(['GET'])
+def get_tasks(request):
+    """
+    GET endpoint to retrieve tasks with optional admin_id filter
+    URL: /api/tasks/get/?admin_id=<id>
+    """
+    admin_id = request.query_params.get('admin_id', None)
+    
+    if admin_id:
+        tasks = Create_task.objects.filter(admin_id=admin_id)
+    else:
+        tasks = Create_task.objects.all()
+    
+    serializer = TaskSerializer(tasks, many=True)
+    
+    return Response({
+        'success': True,
+        'count': len(serializer.data),
+        'data': serializer.data
+    }, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def get_task_by_id(request, task_id):
+    """
+    GET endpoint to retrieve a single task by task_id
+    URL: /api/tasks/get/<task_id>/
+    """
+    try:
+        task = Create_task.objects.get(task_id=task_id)
+    except Create_task.DoesNotExist:
+        return Response({
+            'success': False,
+            'message': 'Task not found'
+        }, status=status.HTTP_404_NOT_FOUND)
+    
+    # Optional: Filter by admin_id if provided
+    admin_id = request.query_params.get('admin_id', None)
+    if admin_id and str(task.admin_id.id) != admin_id:
+        return Response({
+            'success': False,
+            'message': 'Unauthorized access'
+        }, status=status.HTTP_403_FORBIDDEN)
+    
+    serializer = TaskSerializer(task)
+    return Response({
+        'success': True,
+        'data': serializer.data
+    }, status=status.HTTP_200_OK)
+
+
+@api_view(['PUT', 'PATCH'])
+def update_api_task(request, task_id):
+    """
+    PUT/PATCH endpoint to update a task by task_id
+    URL: /api/tasks/update/<task_id>/
+    """
+    try:
+        task = Create_task.objects.get(task_id=task_id)
+    except Create_task.DoesNotExist:
+        return Response({
+            'success': False,
+            'message': 'Task not found'
+        }, status=status.HTTP_404_NOT_FOUND)
+    
+    # Optional: Filter by admin_id if provided
+    admin_id = request.query_params.get('admin_id', None)
+    if admin_id and str(task.admin_id.id) != admin_id:
+        return Response({
+            'success': False,
+            'message': 'Unauthorized access to update this task'
+        }, status=status.HTTP_403_FORBIDDEN)
+    
+    # Use partial=True for PATCH requests
+    partial = request.method == 'PATCH'
+    serializer = TaskUpdateSerializer(task, data=request.data, partial=partial)
+    
+    if serializer.is_valid():
+        serializer.save()
+        return Response({
+            'success': True,
+            'message': 'Task updated successfully'
+            # 'data': serializer.data
+        }, status=status.HTTP_200_OK)
+    
+    return Response({
+        'success': False,
+        'message': 'Validation error',
+        'errors': serializer.errors
+    }, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+
+@api_view(['GET'])
+def get_task_updates(request):
+    """
+    GET endpoint to retrieve task updates with filters
+    URL: /api/task-updates/get/
+    Query Parameters:
+        - admin_id: Filter by admin ID
+        - task_id: Filter by task ID
+        - agreement_id: Filter by agreement ID
+    """
+    admin_id = request.query_params.get('admin_id', None)
+    task_id = request.query_params.get('task_id', None)
+    agreement_id = request.query_params.get('agreement_id', None)
+    
+    # Start with all task updates
+    task_updates = task_update.objects.all()
+    
+    # Apply filters
+    if admin_id:
+        task_updates = task_updates.filter(admin_id=admin_id)
+    
+    if task_id:
+        task_updates = task_updates.filter(task_id=task_id)
+    
+    if agreement_id:
+        task_updates = task_updates.filter(agreement_id=agreement_id)
+    
+    # Order by latest first
+    task_updates = task_updates.order_by('-updated_at')
+    
+    serializer = TaskUpdateSerializer(task_updates, many=True)
+    
+    return Response({
+        'success': True,
+        'count': len(serializer.data),
+        'data': serializer.data
+    }, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def get_task_update_by_id(request, task_update_id):
+    """
+    GET endpoint to retrieve a single task update by ID
+    URL: /api/task-updates/get/<task_update_id>/
+    """
+    try:
+        task_update_obj = task_update.objects.get(task_update_id=task_update_id)
+    except task_update.DoesNotExist:
+        return Response({
+            'success': False,
+            'message': 'Task update not found'
+        }, status=status.HTTP_404_NOT_FOUND)
+    
+    # Optional: Filter by admin_id if provided
+    admin_id = request.query_params.get('admin_id', None)
+    if admin_id and str(task_update_obj.admin_id.id) != admin_id:
+        return Response({
+            'success': False,
+            'message': 'Unauthorized access'
+        }, status=status.HTTP_403_FORBIDDEN)
+    
+    serializer = TaskUpdateSerializer(task_update_obj)
+    return Response({
+        'success': True,
+        'data': serializer.data
+    }, status=status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+@parser_classes([MultiPartParser, FormParser, JSONParser])
+def create_task_update(request):
+    """
+    POST endpoint to create a new task update
+    URL: /api/task-updates/create/
+    Supports both JSON and multipart/form-data (for file uploads)
+    """
+    serializer = TaskUpdateCreateSerializer(data=request.data)
+    
+    if serializer.is_valid():
+        task_update_obj = serializer.save()
+        
+        # Return the created object with all details
+        response_serializer = TaskUpdateSerializer(task_update_obj)
+        
+        return Response({
+            'success': True,
+            'message': 'Task update created successfully',
+            'data': response_serializer.data
+        }, status=status.HTTP_201_CREATED)
+    
+    return Response({
+        'success': False,
+        'message': 'Validation error',
+        'errors': serializer.errors
+    }, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+

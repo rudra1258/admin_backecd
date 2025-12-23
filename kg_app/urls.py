@@ -63,7 +63,89 @@ urlpatterns = [
     path('', include(router.urls)),
     path('user/login/', views.user_login, name='user-login'),
     path('update-image-status-drf/', views.update_api_image_status_drf, name='update_image_status_drf'),
-    path('gs-login/create/', views.create_gs_login, name='create_gs_login'),
+    path('gs-login/create/', views.create_gs_login, name='create_gs_login'),#http://127.0.0.1:8000/api/v1/gs-login/create/
+    
+    # task GET endpoints
+    path('tasks/get/', views.get_tasks, name='get_tasks'),#http://127.0.0.1:8000/api/v1/tasks/get/
+    path('tasks/get/<int:task_id>/', views.get_task_by_id, name='get_task_by_id'), #http://127.0.0.1:8000/api/v1/tasks/get/?admin_id=1
+    
+    
+    # task UPDATE endpoint
+    path('tasks/update/<int:task_id>/', views.update_api_task, name='update_task'),#http://127.0.0.1:8000/api/v1/tasks/update/5/
+    
+    
+    # GET endpoints for task updates
+    path('task-updates/get/', views.get_task_updates, name='get_task_updates'),
+    path('task-updates/get/<int:task_update_id>/', views.get_task_update_by_id, name='get_task_update_by_id'),
+    
+    # POST endpoint for creating task update
+    path('task-updates/create/', views.create_task_update, name='create_task_update'),
+    
+    #TODO: api testing
+    # Example Usage: above 3 urls
+    """
+    1. Get all task updates:
+    GET /api/task-updates/get/
 
+    2. Get task updates filtered by admin_id:
+    GET /api/task-updates/get/?admin_id=1
 
+    3. Get task updates filtered by task_id:
+    GET /api/task-updates/get/?task_id=5
+
+    4. Get task updates filtered by agreement_id:
+    GET /api/task-updates/get/?agreement_id=AGR12345
+
+    5. Get task updates with multiple filters:
+    GET /api/task-updates/get/?admin_id=1&task_id=5
+
+    6. Get single task update by ID:
+    GET /api/task-updates/get/10/
+
+    7. Create task update (JSON - without files):
+    POST /api/task-updates/create/
+    Content-Type: application/json
+    
+    Body:
+    {
+        "updated_by": "John Doe",
+        "admin_id": 1,
+        "task_id": 5,
+        "agreement_id": "AGR12345",
+        "code": "CODE001",
+        "new_mobile_number": "9876543210",
+        "projection": "Payment Expected",
+        "promise_date": "2024-12-30T10:00:00",
+        "promise_amount": "25000",
+        "customer_remark": "Customer agreed to pay",
+        "reference_remark": "Reference confirmed",
+        "need_group_visit": "Yes",
+        "visit_projection": "Visit scheduled",
+        "visit_status": "Pending",
+        "customer_available": "Yes",
+        "vehicle_available": "Yes",
+        "third_party_status": "No",
+        "third_party_details": "",
+        "new_update_address": "123 New Street, Mumbai",
+        "location_status": "Verified",
+        "recipt_no": "RCPT123",
+        "payment_mode": "UPI",
+        "payment_amount": "15000",
+        "payment_date": "2024-12-23T14:30:00"
+    }
+
+    8. Create task update (Form Data - with files):
+    POST /api/task-updates/create/
+    Content-Type: multipart/form-data
+    
+    Form Data:
+    - updated_by: "John Doe"
+    - admin_id: 1
+    - task_id: 5
+    - agreement_id: "AGR12345"
+    - location_image: [file upload]
+    - document_image: [file upload]
+    - customer_remark: "Customer agreed to pay"
+    - ... (other fields)
+    """
 ]
