@@ -1418,25 +1418,25 @@ def create_gs_login(request):
         logout_time = request.data.get('logout_time', None)
 
         # Validate required fields
-        if not all([admin_id, name, email, mobile_no, status_value, image, longitude, latitude]):
+        if not all([admin_id, name, email, mobile_no, status_value, image, longitude, latitude, login_time, logout_time]):
             return Response({
                 'success': False,
-                'message': 'All fields are required: admin_id, name, email, mobile_no, status, image, longitude, latitude'
+                'message': 'All fields are required: admin_id, name, email, mobile_no, status_value, image, longitude, latitude, login_time, logout_time'
             }, status=status.HTTP_400_BAD_REQUEST)
 
         # Check if email already exists
-        if GsLogin.objects.filter(email=email).exists():
-            return Response({
-                'success': False,
-                'message': 'Email already exists'
-            }, status=status.HTTP_400_BAD_REQUEST)
+        # if GsLogin.objects.filter(email=email).exists():
+        #     return Response({
+        #         'success': False,
+        #         'message': 'Email already exists'
+        #     }, status=status.HTTP_400_BAD_REQUEST)
 
-        # Check if mobile number already exists
-        if GsLogin.objects.filter(mobile_no=mobile_no).exists():
-            return Response({
-                'success': False,
-                'message': 'Mobile number already exists'
-            }, status=status.HTTP_400_BAD_REQUEST)
+        # # Check if mobile number already exists
+        # if GsLogin.objects.filter(mobile_no=mobile_no).exists():
+        #     return Response({
+        #         'success': False,
+        #         'message': 'Mobile number already exists'
+        #     }, status=status.HTTP_400_BAD_REQUEST)
 
         # Create new GsLogin record
         gs_login = GsLogin.objects.create(

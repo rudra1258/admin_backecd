@@ -78,8 +78,14 @@ urlpatterns = [
     path('task-updates/get/', views.get_task_updates, name='get_task_updates'),
     path('task-updates/get/<int:task_update_id>/', views.get_task_update_by_id, name='get_task_update_by_id'),
     
+    # filter by task id 
+    # https://admin-backecd-2.onrender.com/api/v1/task-updates/get/?task_id=4
+    # filter by admin id 
+    # https://admin-backecd-2.onrender.com/api/v1/task-updates/get/?admin_id=1
+    
+    
     # POST endpoint for creating task update
-    path('task-updates/create/', views.create_task_update, name='create_task_update'),
+    path('task-updates/create/', views.create_task_update, name='create_task_update'),#https://admin-backecd-2.onrender.com/api/v1/task-updates/create/
     
     #TODO: api testing
     # Example Usage: above 3 urls
