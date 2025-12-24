@@ -1418,10 +1418,10 @@ def create_gs_login(request):
         logout_time = request.data.get('logout_time', None)
 
         # Validate required fields
-        if not all([admin_id, name, email, mobile_no, status_value, image, longitude, latitude, login_time, logout_time]):
+        if not all([admin_id, name, email, mobile_no, status_value, image, longitude, latitude, login_time]):
             return Response({
                 'success': False,
-                'message': 'All fields are required: admin_id, name, email, mobile_no, status_value, image, longitude, latitude, login_time, logout_time'
+                'message': 'All fields are required: admin_id, name, email, mobile_no, status, image, longitude, latitude, login_time'
             }, status=status.HTTP_400_BAD_REQUEST)
 
         # Check if email already exists
