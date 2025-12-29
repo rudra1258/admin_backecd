@@ -193,6 +193,7 @@ class task_update(models.Model):
 
 class TcLogin(models.Model):
     tc_login_id = models.AutoField(primary_key=True)
+    user_id = models.ForeignKey(CreateUser, on_delete = models.CASCADE, null=True, blank=True )
 
     admin_id = models.CharField(max_length=20) 
     name = models.CharField(max_length=100)
@@ -212,10 +213,11 @@ class TcLogin(models.Model):
 
 class TlLogin(models.Model):
     tl_login_id = models.AutoField(primary_key=True)   # Primary Key
+    user_id = models.ForeignKey(CreateUser, on_delete = models.CASCADE, null=True, blank=True)
     admin_id = models.CharField(max_length=50)         # Admin ID
     name = models.CharField(max_length=100)            # Name
-    email = models.EmailField(unique=True)             # Email (unique)
-    mobile_no = models.CharField(max_length=15, unique=True)  # Mobile (unique)
+    email = models.EmailField(max_length=100)             # Email (unique)
+    mobile_no = models.CharField(max_length=15)  # Mobile (unique)
     
     status = models.CharField(max_length=20)           # Active / Inactive
     
@@ -235,10 +237,11 @@ class TlLogin(models.Model):
 
 class GsLogin(models.Model):
     gs_login_id = models.AutoField(primary_key=True)
+    user_id = models.ForeignKey(CreateUser, on_delete = models.CASCADE, null=True, blank=True)
     admin_id = models.CharField(max_length=50)
     name = models.CharField(max_length=100)
-    email = models.EmailField(unique=True)
-    mobile_no = models.CharField(max_length=15, unique=True)
+    email = models.EmailField(max_length = 100)
+    mobile_no = models.CharField(max_length=15, )
     status = models.CharField(max_length=20)  # Active / Inactive
     login_time = models.DateTimeField(null=True, blank=True)
     logout_time = models.DateTimeField(null=True, blank=True)

@@ -912,6 +912,7 @@ def dashboard(request):
     tl_login = TlLogin.objects.all()
     gs_login = GsLogin.objects.all()
     login_status_len = len(tc_login) + len(tl_login) + len(gs_login)
+    # login_status_len = 5
     print("Total login status entries:", login_status_len)
     
     task_list = Create_task.objects.all()
@@ -1406,6 +1407,7 @@ def create_gs_login(request):
     """
     try:
         # Get data from request
+        user_id = request.data.get('user_id')
         admin_id = request.data.get('admin_id')
         name = request.data.get('name')
         email = request.data.get('email')
@@ -1418,10 +1420,10 @@ def create_gs_login(request):
         logout_time = request.data.get('logout_time', None)
 
         # Validate required fields
-        if not all([admin_id, name, email, mobile_no, status_value, image, longitude, latitude, login_time]):
+        if not all([user_id, admin_id, name, email, mobile_no, status_value, image, longitude, latitude, login_time]):
             return Response({
                 'success': False,
-                'message': 'All fields are required: admin_id, name, email, mobile_no, status, image, longitude, latitude, login_time'
+                'message': 'All fields are required: user_id, admin_id, name, email, mobile_no, status, image, longitude, latitude, login_time'
             }, status=status.HTTP_400_BAD_REQUEST)
 
         # Check if email already exists
@@ -1439,7 +1441,16 @@ def create_gs_login(request):
         #     }, status=status.HTTP_400_BAD_REQUEST)
 
         # Create new GsLogin record
+        try:
+            user = CreateUser.objects.get(pk=user_id)
+        except CreateUser.DoesNotExist:
+            return Response({
+                'success': False,
+                'message': f'User with id {user_id} does not exist'
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
         gs_login = GsLogin.objects.create(
+            user_id=user,
             admin_id=admin_id,
             name=name,
             email=email,
@@ -1468,10 +1479,10 @@ def create_gs_login(request):
         }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
         
+
+
+
  # User Login API
-
-
-
 @api_view(['POST'])
 def user_login(request):
     serializer = UserLoginSerializer(data = request.data)
