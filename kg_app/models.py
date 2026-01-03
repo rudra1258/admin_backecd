@@ -8,6 +8,10 @@ class admin_user_model(models.Model):
     mobile_number = models.CharField(max_length=15)
     password = models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
+    user_count = models.IntegerField(default=50)
+    login_status = models.BooleanField(default = True)
+    active_session_key = models.CharField(max_length=255, null=True, blank=True) 
+    last_login_device = models.CharField(max_length=255, null=True, blank=True) 
     
     def __str__(self):
         return f"{self.username}"
@@ -32,6 +36,8 @@ class CreateUser(models.Model):
     address = models.CharField(max_length=255, blank=True, null=True)
     password = models.CharField(max_length=100)
     created_at = models.DateField(auto_now_add=True)
+    active_session_key = models.CharField(max_length=255, null=True, blank=True) 
+    last_login_device = models.CharField(max_length=255, null=True, blank=True)
 
     def __str__(self):
         return f"{self.first_name} {self.last_name} - {self.role}"
@@ -45,11 +51,13 @@ class Create_task(models.Model):
     # category section
     category = models.CharField(max_length = 100, null=True, blank=True)
     
+    
     # aggrement information
     aggrement_id = models.CharField(max_length = 50)
     customer_name = models.CharField(max_length = 100)
     product_type = models.CharField(max_length = 50)
     tc_name = models.CharField(max_length = 100)
+    tc_userName = models.CharField(max_length = 100, null = True, blank = True, default = "-")
     branch = models.CharField(max_length = 100)
     count_of_cases = models.CharField(max_length = 20)
     old_or_new = models.CharField(max_length = 20)
@@ -83,6 +91,7 @@ class Create_task(models.Model):
     employer = models.CharField(max_length = 100, null=True, blank=True)
     father_name = models.CharField(max_length = 50)
     fe_name = models.CharField(max_length = 50)
+    fe_userName = models.CharField(max_length = 100, null = True, blank = True, default = "-")
     fe_mobile_number = models.CharField(max_length = 10)
     customer_mobile_number = models.CharField(max_length = 10)
     pin_code = models.CharField(max_length = 6)

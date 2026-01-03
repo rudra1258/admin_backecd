@@ -77,7 +77,7 @@ class TaskUpdateSerializer(serializers.ModelSerializer):
 
 
 # Serializer for task creation & get
-class TaskUpdateSerializer(serializers.ModelSerializer):
+class TaskUpdateSerializer1(serializers.ModelSerializer):
     # Read-only fields to display related data
     admin_name = serializers.CharField(source='admin_id.username', read_only=True)
     task_customer_name = serializers.CharField(source='task_id.customer_name', read_only=True)

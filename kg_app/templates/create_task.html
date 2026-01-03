@@ -937,11 +937,15 @@
                                     <select id="tc_name" name="tc_name" required>
                                         <option value="" disabled selected>--select--</option>
                                         {% for user in users %}
-                                        <option value="{{ user.first_name }} {{ user.last_name }}">
+                                        <option value="{{ user.first_name }} {{ user.last_name }}" data-username="{{ user.username }}">
                                             {{ user.first_name }} {{ user.last_name }}
                                         </option>
                                         {% endfor %}
                                     </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="userName">TC User Name *</label>
+                                    <input type="text" id="userName" name="user_name" value="" required readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="branch">Branch *</label>
@@ -1088,9 +1092,24 @@
                                     <label for="fatherName">Father's Name</label>
                                     <input type="text" id="fatherName" value="" name="father_name">
                                 </div>
-                                <div class="form-group">
+                                <!-- <div class="form-group">
                                     <label for="feName">FE Name</label>
                                     <input type="text" id="feName" value="" name="fe_name">
+                                </div> -->
+                                <div class="form-group">
+                                    <label for="gs_name">FE Name*</label>
+                                    <select id="gs_name" name="gs_name" required>
+                                        <option value="" disabled selected>--select--</option>
+                                        {% for user in gs_users %}
+                                        <option value="{{ user.first_name }} {{ user.last_name }}" data-username="{{ user.username }}">
+                                            {{ user.first_name }} {{ user.last_name }}
+                                        </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="gs_userName">FE User Name *</label>
+                                    <input type="text" id="gs_userName" name="gs_user_name" value="" required readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="feMobile">FE Mobile Number</label>
@@ -1243,6 +1262,19 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script>
+
+        document.getElementById('tc_name').addEventListener('change', function() {
+            const selectedOption = this.options[this.selectedIndex];
+            const username = selectedOption.getAttribute('data-username');
+            document.getElementById('userName').value = username || '';
+        });
+
+        document.getElementById('gs_name').addEventListener('change', function() {
+            const selectedOption = this.options[this.selectedIndex];
+            const username = selectedOption.getAttribute('data-username');
+            document.getElementById('gs_userName').value = username || '';
+        });
+
         // Excel file upload handler
         document.getElementById('excelFile').addEventListener('change', function (e) {
             const file = e.target.files[0];

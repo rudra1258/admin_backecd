@@ -4,13 +4,17 @@ from django.utils.html import format_html
 
 # Register your models here.
 
-admin.site.site_header = "MK Association Superadmin"
+admin.site.site_header = "STAFFLYNK Superadmin"
 admin.site.site_title = "My Admin Portal"
 admin.site.index_title = "Welcome to My Admin Dashboard"
 
 
-admin.site.register(admin_user_model)
 admin.site.register(task_update)
+
+@admin.register(admin_user_model)
+class AdminUserModelAdmin(admin.ModelAdmin):
+    list_display = ("username", "email", "mobile_number", "created_at")
+    search_fields = ("username","email")
 
 @admin.register(CreateUser)
 class CreateUserAdmin(admin.ModelAdmin):

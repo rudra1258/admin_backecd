@@ -49,6 +49,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'kg_app.middleware.SingleDeviceMiddleware',
 ]
 
 ROOT_URLCONF = 'kg_admin.urls'

@@ -12,6 +12,7 @@ from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 import json
 import io
 from django.http import HttpResponse
+from django.contrib.sessions.models import Session
 
 # Create your views here.
 
@@ -61,6 +62,93 @@ from django.http import HttpResponse
     
 #     return render(request, 'index.html')
 
+# def admin_login(request):
+#     print("Admin login view called")
+    
+#     # If GET request, show the login page
+#     if request.method == 'GET':
+#         return render(request, 'index.html')
+    
+#     # If POST request, handle login
+#     if request.method == 'POST':
+#         email = request.POST.get('email')
+#         password = request.POST.get('password')
+#         remember_me = request.POST.get('remember_me')
+        
+#         print("Login attempt with email:", email)
+        
+#         # Try admin login first
+#         try:
+#             admin_user = admin_user_model.objects.get(email=email)
+            
+#             print("Admin user found:", admin_user.username)
+#             print("Provided password:", password)
+            
+#             # Verify password
+#             if password == admin_user.password:
+#                 # Set session
+#                 request.session['admin_id'] = admin_user.admin_id
+#                 request.session['admin_username'] = admin_user.username
+#                 request.session['admin_email'] = admin_user.email
+                
+#                 # Set session expiry based on remember_me
+#                 if not remember_me:
+#                     request.session.set_expiry(0)
+                
+#                 # Return JSON response for success
+#                 return JsonResponse({
+#                     'success': True,
+#                     'message': 'Login successful!',
+#                     'redirect_url': '/dashboard/' 
+#                 })
+#             else:
+#                 # Return JSON response for invalid password
+#                 return JsonResponse({
+#                     'success': False,
+#                     'message': 'Invalid email or password!'
+#                 })  
+                
+#         except admin_user_model.DoesNotExist:
+#             pass
+#         # Try telecaller login if admin login didn't succeed
+#         try:
+#             user = CreateUser.objects.get(email=email)
+            
+#             # Check if user role is allowed to login
+#             allowed_roles = ['telecaller']
+            
+#             if user.role not in allowed_roles:
+#                 return JsonResponse({
+#                     'success': False,
+#                     'message': 'Access denied. Only telecallers can login through this portal.'
+#                 })
+            
+#             # Verify user password
+#             if password == user.password:  # Use check_password() if hashed
+#                 # Set user session
+#                 request.session['tc_admin_id'] = user.admin_id.admin_id
+#                 request.session['user_type'] = user.role
+#                 request.session['user_id'] = user.id
+#                 request.session['username'] = user.username
+#                 request.session['tc_first_name'] = user.first_name
+#                 request.session['email'] = user.email
+#                 request.session['role'] = user.role
+                
+#                 # Set session expiry based on remember_me
+#                 if not remember_me:
+#                     request.session.set_expiry(0)
+                
+#                 return JsonResponse({
+#                     'success': True,
+#                     'message': 'Telecaller login successful!',
+#                     'redirect_url': '/tc_dashboard/'
+#                 })
+#         except CreateUser.DoesNotExist:
+#             pass
+    
+#     return render(request, 'index.html')
+
+
 def admin_login(request):
     print("Admin login view called")
     
@@ -72,9 +160,11 @@ def admin_login(request):
     if request.method == 'POST':
         email = request.POST.get('email')
         password = request.POST.get('password')
-        remember_me = request.POST.get('remember_me')
         
         print("Login attempt with email:", email)
+        
+        # Get current session key (if exists)
+        current_session_key = request.session.session_key
         
         # Try admin login first
         try:
@@ -85,14 +175,53 @@ def admin_login(request):
             
             # Verify password
             if password == admin_user.password:
+                # Check if user is already logged in on another device
+                if admin_user.active_session_key:
+                    # If it's the same session, allow login (browser was closed without logout)
+                    if admin_user.active_session_key == current_session_key:
+                        # Same device, just update session
+                        request.session['admin_id'] = admin_user.admin_id
+                        request.session['admin_username'] = admin_user.username
+                        request.session['admin_email'] = admin_user.email
+                        
+                        return JsonResponse({
+                            'success': True,
+                            'message': 'Login successful!',
+                            'redirect_url': '/dashboard/' 
+                        })
+                    
+                    # Different session - check if it's still valid
+                    from django.contrib.sessions.models import Session
+                    try:
+                        existing_session = Session.objects.get(session_key=admin_user.active_session_key)
+                        # Session exists and is valid - deny new login
+                        return JsonResponse({
+                            'success': False,
+                            'message': 'You are already logged in on another device. Please logout from that device first.'
+                        })
+                    except Session.DoesNotExist:
+                        # Old session expired, allow new login
+                        pass
+                
+                # Clear any old session data
+                if admin_user.active_session_key and admin_user.active_session_key != current_session_key:
+                    try:
+                        from django.contrib.sessions.models import Session
+                        Session.objects.filter(session_key=admin_user.active_session_key).delete()
+                    except:
+                        pass
+                
                 # Set session
                 request.session['admin_id'] = admin_user.admin_id
                 request.session['admin_username'] = admin_user.username
                 request.session['admin_email'] = admin_user.email
                 
-                # Set session expiry based on remember_me
-                if not remember_me:
-                    request.session.set_expiry(0)
+                # Save session first to generate session key
+                request.session.save()
+                
+                # Update user with new session key
+                admin_user.active_session_key = request.session.session_key
+                admin_user.save()
                 
                 # Return JSON response for success
                 return JsonResponse({
@@ -109,6 +238,7 @@ def admin_login(request):
                 
         except admin_user_model.DoesNotExist:
             pass
+            
         # Try telecaller login if admin login didn't succeed
         try:
             user = CreateUser.objects.get(email=email)
@@ -123,7 +253,49 @@ def admin_login(request):
                 })
             
             # Verify user password
-            if password == user.password:  # Use check_password() if hashed
+            if password == user.password:
+                # Get current session key
+                current_session_key = request.session.session_key
+                
+                # Check if user is already logged in on another device
+                if user.active_session_key:
+                    # If it's the same session, allow login
+                    if user.active_session_key == current_session_key:
+                        request.session['tc_admin_id'] = user.admin_id.admin_id
+                        request.session['user_type'] = user.role
+                        request.session['user_id'] = user.id
+                        request.session['username'] = user.username
+                        request.session['tc_first_name'] = user.first_name
+                        request.session['email'] = user.email
+                        request.session['role'] = user.role
+                        
+                        return JsonResponse({
+                            'success': True,
+                            'message': 'Telecaller login successful!',
+                            'redirect_url': '/tc_dashboard/'
+                        })
+                    
+                    # Different session - check if it's still valid
+                    from django.contrib.sessions.models import Session
+                    try:
+                        existing_session = Session.objects.get(session_key=user.active_session_key)
+                        # Session exists and is valid - deny new login
+                        return JsonResponse({
+                            'success': False,
+                            'message': 'You are already logged in on another device. Please logout from that device first.'
+                        })
+                    except Session.DoesNotExist:
+                        # Old session expired, allow new login
+                        pass
+                
+                # Clear any old session data
+                if user.active_session_key and user.active_session_key != current_session_key:
+                    try:
+                        from django.contrib.sessions.models import Session
+                        Session.objects.filter(session_key=user.active_session_key).delete()
+                    except:
+                        pass
+                
                 # Set user session
                 request.session['tc_admin_id'] = user.admin_id.admin_id
                 request.session['user_type'] = user.role
@@ -133,9 +305,12 @@ def admin_login(request):
                 request.session['email'] = user.email
                 request.session['role'] = user.role
                 
-                # Set session expiry based on remember_me
-                if not remember_me:
-                    request.session.set_expiry(0)
+                # Save session first to generate session key
+                request.session.save()
+                
+                # Update user with new session key
+                user.active_session_key = request.session.session_key
+                user.save()
                 
                 return JsonResponse({
                     'success': True,
@@ -144,13 +319,41 @@ def admin_login(request):
                 })
         except CreateUser.DoesNotExist:
             pass
+        
+        # If we reach here, login failed
+        return JsonResponse({
+            'success': False,
+            'message': 'Invalid email or password!'
+        })
     
     return render(request, 'index.html')
 
 def admin_logout(request):
+    # Get user info before clearing session
+    admin_id = request.session.get('admin_id')
+    user_id = request.session.get('user_id')
+    
+    # Clear session key from database
+    if admin_id:
+        try:
+            admin_user = admin_user_model.objects.get(admin_id=admin_id)
+            admin_user.active_session_key = None
+            admin_user.save()
+        except admin_user_model.DoesNotExist:
+            pass
+    
+    if user_id:
+        try:
+            user = CreateUser.objects.get(id=user_id)
+            user.active_session_key = None
+            user.save()
+        except CreateUser.DoesNotExist:
+            pass
+    
+    # Clear session
     request.session.flush()
-    # return redirect('kg_app:admin_login')
-    return render(request, 'index.html')
+    
+    return redirect('/')
 
 def create_user(request):
     session_admin_id = request.session.get("admin_id")
@@ -159,8 +362,8 @@ def create_user(request):
         return render(request, 'index.html')
     admin_id_pk = admin_user_model.objects.get(pk=session_admin_id)
     
-    
     print(f"session admin id by admin_user_model primary key- {admin_id_pk}")
+    
     if request.method == "POST":
         first_name = request.POST.get("fname")
         last_name = request.POST.get("lname")
@@ -171,23 +374,49 @@ def create_user(request):
         address = request.POST.get("address")
         password = request.POST.get("pass_word")
 
-        CreateUser.objects.create(
-            admin_id = admin_id_pk,
-            first_name = first_name,
-            last_name = last_name,
-            email = email,
-            phone_number = phone_number,
-            role = role,
-            username = username,
-            address = address,
-            password = password
-        )
-        # Add success message
-        messages.success(request, 'User created successfully!')
-        return redirect("kg_app:create_user")
+        try:
+            # Check if username already exists
+            if CreateUser.objects.filter(username=username).exists():
+                messages.error(request, 'Username already exists. Please choose a different username.')
+                admins = admin_user_model.objects.all()
+                return render(request, "create_user.html", {
+                    "admins": admins,
+                    "form_data": request.POST  # Pass form data back to preserve user input
+                })
+            
+            # Check if email already exists
+            if CreateUser.objects.filter(email=email).exists():
+                messages.error(request, 'Email already exists. Please use a different email.')
+                admins = admin_user_model.objects.all()
+                return render(request, "create_user.html", {
+                    "admins": admins,
+                    "form_data": request.POST
+                })
+
+            CreateUser.objects.create(
+                admin_id=admin_id_pk,
+                first_name=first_name,
+                last_name=last_name,
+                email=email,
+                phone_number=phone_number,
+                role=role,
+                username=username,
+                address=address,
+                password=password
+            )
+            # Add success message
+            messages.success(request, 'User created successfully!')
+            return redirect("kg_app:create_user")
+            
+        except Exception as e:
+            messages.error(request, f'An error occurred: {str(e)}')
+            admins = admin_user_model.objects.all()
+            return render(request, "create_user.html", {
+                "admins": admins,
+                "form_data": request.POST
+            })
 
     admins = admin_user_model.objects.all()
-    # return redirect("kg_app:create_user")
     return render(request, "create_user.html", {"admins": admins})
 
 # api like view for CreateUser model
@@ -399,6 +628,11 @@ def create_task(request):
         role='telecaller'
     )
     
+    gs_user_list = CreateUser.objects.filter(
+        admin_id=admin_id_pk,
+        role='groundstaff'
+    )
+    
     if request.method == "POST":    
         print("FULL POST:", request.POST)
         
@@ -441,7 +675,7 @@ def create_task(request):
         # customer details
         employer = request.POST.get("employer")
         father_name = request.POST.get("father_name")
-        fe_name = request.POST.get("fe_name")
+        fe_name = request.POST.get("gs_name")
         fe_Mobile = request.POST.get("fe_Mobile")
         customer_number = request.POST.get("customer_number")
         pin_code = request.POST.get("pin_code")
@@ -509,7 +743,7 @@ def create_task(request):
         return redirect("kg_app:create_task")
     
     
-    return render(request, "create_task.html", {"users": user_list})
+    return render(request, "create_task.html", {"users": user_list, "gs_users": gs_user_list})
 
 #create task list api function
 class Create_task_Viewset(viewsets.ModelViewSet):
@@ -1709,7 +1943,7 @@ def create_task_update(request):
         task_update_obj = serializer.save()
         
         # Return the created object with all details
-        response_serializer = TaskUpdateSerializer(task_update_obj)
+        response_serializer = TaskUpdateSerializer1(task_update_obj)
         
         return Response({
             'success': True,
@@ -1722,7 +1956,7 @@ def create_task_update(request):
         'message': 'Validation error',
         'errors': serializer.errors
     }, status=status.HTTP_400_BAD_REQUEST)
-
+       
 
 
 
