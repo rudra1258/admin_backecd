@@ -1929,6 +1929,7 @@ def get_task_update_by_id(request, task_update_id):
     }, status=status.HTTP_200_OK)
 
 
+
 @api_view(['POST'])
 @parser_classes([MultiPartParser, FormParser, JSONParser])
 def create_task_update(request):
