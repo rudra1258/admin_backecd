@@ -121,10 +121,6 @@
 
 </head>
 
-
-
-
-
 <body>
   <!-- page-wrapper Start-->
   <!-- tap on top starts-->
@@ -181,7 +177,6 @@
                             <th>Agreement Id</th>
                             <th>Code</th>
                             <th>New Mobile Number</th>
-                            <th>Projection</th>
                             <th>Promise Date</th>
                             <th>Promise Amount</th>
                             <th>Customer Remark</th>
@@ -196,10 +191,11 @@
                             <th>New Updated Address</th>
                             <!-- <th>Location Photo</th> -->
                             <th>Location Status</th>
-                            <th>Payment Info</th>
+                            <th>Receipt No</th>
                             <th>Payment Mode</th>
                             <th>Payment Amount</th>
                             <th>Payment Date</th>
+                            <th>View Map</th>
                           </tr>
                         </thead>
                         <!-- <tbody id="table-body"> -->
@@ -212,7 +208,6 @@
                             <td>{{data.agreement_id}}</td>
                             <td>{{data.code}}</td>
                             <td>{{data.new_mobile_number}}</td>
-                            <td>{{data.projection}}</td>
                             <td>{{ data.promise_date|date:"d-m-Y h:i A"}}</td>
                             <td>{{data.promise_amount}}</td>
                             <td>{{data.customer_remark}}</td>
@@ -227,10 +222,26 @@
                             <td>{{data.new_update_address}}</td>
                             <!-- <td>{{data.location_image}}</td> -->
                             <td>{{data.location_status}}</td>
-                            <td>{{data.payment_info}}</td>
+                            <td>{{data.recipt_no}}</td>
                             <td>{{data.payment_mode}}</td>
                             <td>{{data.payment_amount}}</td>
                             <td>{{data.payment_date|date:"d-m-Y h:i A"}}</td>
+                            <td style="text-align: center;">
+                                {% if data.latitude and data.longitude %}
+                                    <a href="https://www.google.com/maps?q={{data.latitude}},{{data.longitude}}" 
+                                      target="_blank" 
+                                      rel="noopener noreferrer"
+                                      title="View location: {{data.latitude}}, {{data.longitude}}"
+                                      style="color: #1a73e8; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; padding: 6px 12px; border-radius: 4px; background: #e8f0fe; transition: all 0.2s;">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 4px;">
+                                            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                                        </svg>
+                                        Map
+                                    </a>
+                                {% else %}
+                                    <span >N/A</span>
+                                {% endif %}
+                            </td>
                           </tr>
                           {% endfor %}
                         </tbody>

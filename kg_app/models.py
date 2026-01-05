@@ -141,6 +141,10 @@ class Create_task(models.Model):
     update_payment_amount = models.CharField(max_length = 30 , null=True, blank=True)
     update_payment_date = models.DateTimeField(null=True, blank=True)
     
+    # location update from mobile
+    latitude = models.CharField(max_length = 50, null=True, blank=True)
+    longitude = models.CharField(max_length = 50, null=True, blank=True)
+    
 
 class task_update(models.Model):
     task_update_id = models.AutoField(primary_key = True)
@@ -192,6 +196,10 @@ class task_update(models.Model):
     
     # update 
     updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)
+    
+    # location update from mobile 
+    latitude = models.CharField(max_length = 50, null=True, blank=True)
+    longitude = models.CharField(max_length = 50, null=True, blank=True)
     
     
     

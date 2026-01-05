@@ -1012,6 +1012,8 @@
                                                         <th>Category</th>
                                                         <th>Product</th>
                                                         <th>TC Name</th>
+                                                        <th>View Map</th>
+
                                                         <th>Branch</th>
                                                         <th>Count of Cases</th>
                                                         <th>Old/New</th>
@@ -1048,7 +1050,6 @@
                                                         <th>Reference Details</th>
                                                         <th>Collection Manager Name</th>
                                                         <th>Finance Company Name</th>
-                                                        {% comment %} <th>Action</th> {% endcomment %}
                                                     </tr>
                                                 </thead>
                                                 <tbody id="table-body"></tbody>
@@ -1795,6 +1796,8 @@
         'update_payment_mode': 'Payment Mode',
         'update_payment_amount': 'Payment Amount',
         'update_payment_date': 'Payment Date',
+        'latitude': 'Latitude',
+        'longitude': 'Longitude'
     };
 
     // Convert Django task_list to JavaScript array
@@ -1878,6 +1881,10 @@
             update_payment_mode:"{{task.update_payment_mode|default:'-' }}",
             update_payment_amount:"{{task.update_payment_amount|default:'-' }}",
             update_payment_date:"{{task.update_payment_date|date:'Y-m-d\TH:i'|default:'-' }}",
+
+
+            latitude:"{{task.latitude|default:''}}",
+            longitude:"{{task.longitude|default:''}}",
 
             
 
@@ -2148,7 +2155,9 @@
                 key ==='update_payment_mode' ||
                 key ==='recipt_amount' ||
                 key ==='recipt_date' ||
-                key ==='mode' 
+                key ==='mode' ||
+                key ==='latitude' ||
+                key ==='longitude' 
                 ) return;
 
             
@@ -2317,6 +2326,20 @@
                     <td>${task.category || 'NA'}</td>
                     <td>${task.product_type}</td>
                     <td>${task.tc_name}</td>
+                    <td style="text-align: center;">
+                        ${task.latitude && task.longitude ? `
+                            <a href="https://www.google.com/maps?q=${task.latitude},${task.longitude}" 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            title="View location: ${task.latitude}, ${task.longitude}"
+                            style="color: #1a73e8; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; padding: 6px 12px; border-radius: 4px; background: #e8f0fe; transition: all 0.2s;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 4px;">
+                                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                                </svg>
+                                Map
+                            </a>
+                        ` : '<span>N/A</span>'}
+                    </td>
                     <td>${task.branch}</td>
                     <td>${task.count_of_cases}</td>
                     <td>${task.old_or_new}</td>

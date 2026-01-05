@@ -13,6 +13,8 @@ import json
 import io
 from django.http import HttpResponse
 from django.contrib.sessions.models import Session
+from rest_framework.views import APIView
+
 
 # Create your views here.
 
@@ -1841,7 +1843,7 @@ def update_api_task(request, task_id):
     
     # Use partial=True for PATCH requests
     partial = request.method == 'PATCH'
-    serializer = TaskUpdateSerializer(task, data=request.data, partial=partial)
+    serializer = TaskUpdateSerializerMain(task, data=request.data, partial=partial)
     
     if serializer.is_valid():
         serializer.save()
@@ -1931,7 +1933,7 @@ def get_task_update_by_id(request, task_update_id):
 
 
 @api_view(['POST'])
-@parser_classes([MultiPartParser, FormParser, JSONParser])
+@parser_classes([MultiPartParser, FormParser])
 def create_task_update(request):
     """
     POST endpoint to create a new task update
@@ -1958,6 +1960,28 @@ def create_task_update(request):
         'errors': serializer.errors
     }, status=status.HTTP_400_BAD_REQUEST)
        
+class TaskUpdateCreateAPI(APIView):
 
+    def post(self, request):
+        serializer = TaskUpdateSerializer(data=request.data)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(
+                {
+                    "success": True,
+                    "message": "Task update created successfully",
+                    "data": serializer.data
+                },
+                status=status.HTTP_201_CREATED
+            )
+
+        return Response(
+            {
+                "success": False,
+                "errors": serializer.errors
+            },
+            status=status.HTTP_400_BAD_REQUEST
+        )
 
 

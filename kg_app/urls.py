@@ -1,6 +1,7 @@
 from django.urls import path, include
 from . import views
 from rest_framework import routers
+from .views import TaskUpdateCreateAPI
 
 app_name = 'kg_app'  # important for namespacing URLs
 
@@ -85,7 +86,10 @@ urlpatterns = [
     
     
     # POST endpoint for creating task update
+    # NOT WORKING DON'T USE THIS url
     path('task-updates/create/', views.create_task_update, name='create_task_update'),#https://admin-backecd-2.onrender.com/api/v1/task-updates/create/
+
+    path('task-update/create/', TaskUpdateCreateAPI.as_view(), name='task-update-create'),
     
     #TODO: api testing
     # Example Usage: above 3 urls

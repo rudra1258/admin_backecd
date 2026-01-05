@@ -32,7 +32,7 @@ class TaskSerializer(serializers.ModelSerializer):
         fields = '__all__'
         read_only_fields = ['task_id']
 
-class TaskUpdateSerializer(serializers.ModelSerializer):
+class TaskUpdateSerializerMain(serializers.ModelSerializer):
     class Meta:
         model = Create_task
         fields = [
@@ -69,6 +69,10 @@ class TaskUpdateSerializer(serializers.ModelSerializer):
             'update_payment_mode',
             'update_payment_amount',
             'update_payment_date',
+            
+            # location details for mobile 
+            'latitude',
+            'longitude',
         ]
     
 
@@ -110,8 +114,8 @@ class TaskUpdateCreateSerializer(serializers.ModelSerializer):
             'third_party_status',
             'third_party_details',
             'new_update_address',
-            'location_image',
-            'document_image',
+            # 'location_image',
+            # 'document_image',
             'location_status',
             'recipt_no',
             'payment_mode',
@@ -132,6 +136,16 @@ class TaskUpdateCreateSerializer(serializers.ModelSerializer):
         return value
 
 
+class TaskUpdateSerializer(serializers.ModelSerializer):
+    admin_id = serializers.PrimaryKeyRelatedField(
+        queryset=admin_user_model.objects.all()
+    )
+    task_id = serializers.PrimaryKeyRelatedField(
+        queryset=Create_task.objects.all()
+    )
 
+    class Meta:
+        model = task_update
+        fields = "__all__"
 
 
