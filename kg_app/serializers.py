@@ -9,28 +9,30 @@ class UserListSerializer(serializers.ModelSerializer):
         # fields = '__all__'
         fields = ['id','admin_id', 'first_name', 'last_name', 'email', 'phone_number', 'role', 'username', 'address', 'password', 'created_at']
 
+
 class UserLoginSerializer(serializers.Serializer):
     email = serializers.CharField()
     password = serializers.CharField(write_only=True)
+ 
     
 class CreateTaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = Create_task
         fields = '__all__'
+ 
         
 class GsLoginSerializer(serializers.ModelSerializer):
     class Meta:
         model = GsLogin
         fields = '__all__'
         
-
-
 # get & update task serializer 
 class TaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = Create_task
         fields = '__all__'
         read_only_fields = ['task_id']
+
 
 class TaskUpdateSerializerMain(serializers.ModelSerializer):
     class Meta:
@@ -76,10 +78,6 @@ class TaskUpdateSerializerMain(serializers.ModelSerializer):
         ]
     
 
-
-
-
-
 # Serializer for task creation & get
 class TaskUpdateSerializer1(serializers.ModelSerializer):
     # Read-only fields to display related data
@@ -90,6 +88,7 @@ class TaskUpdateSerializer1(serializers.ModelSerializer):
         model = task_update
         fields = '__all__'
         read_only_fields = ['task_update_id', 'updated_at']
+
 
 class TaskUpdateCreateSerializer(serializers.ModelSerializer):
     class Meta:
@@ -148,4 +147,22 @@ class TaskUpdateSerializer(serializers.ModelSerializer):
         model = task_update
         fields = "__all__"
 
+# update login status for mobile to prevent multiple login
+class UpdateMobileLoginSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CreateUser
+        fields = ['isMobile_login']
+
+#gs punch in update serializer
+class GsLoginUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = GsLogin
+        fields = [
+            'status',
+            'login_time',
+            'logout_time',
+            'image',
+            'latitude',
+            'longitude',
+        ]
 

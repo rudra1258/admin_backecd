@@ -1,6 +1,8 @@
 from django.shortcuts import redirect
 from django.contrib.sessions.models import Session
-from .models import admin_user_model, CreateUser
+from django.utils import timezone
+from datetime import timedelta
+from .models import *
 
 class SingleDeviceMiddleware:
     def __init__(self, get_response):
@@ -40,5 +42,33 @@ class SingleDeviceMiddleware:
                 request.session.flush()
                 return redirect('/')
         
+        response = self.get_response(request)
+        return response
+    
+    
+    
+class AutoLogoutMiddleware:
+    """
+    Automatically set GS users to Inactive
+    if login_time is older than 10 hours.
+    Runs on every request.
+    """
+
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+
+        expiry_time = timezone.now() - timedelta(hours=10)
+
+        # 🔥 One SQL query updates all expired users
+        GsLogin.objects.filter(
+            status="Active",
+            login_time__lte=expiry_time
+        ).update(
+            status="Inactive",
+            logout_time=timezone.now()
+        )
+
         response = self.get_response(request)
         return response

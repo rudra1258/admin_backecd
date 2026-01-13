@@ -1,15 +1,41 @@
 {% load static %}
 
+<style>
+  #currentDateTime {
+    font-size: 13px;
+    font-weight: 600;
+    color: #1e40af;
+    white-space: nowrap;
+  }
+</style>
+
+<style>
+  .header-info h4 {
+    margin: 0;
+    font-weight: 600;
+    color: #0f172a;
+  }
+
+  .header-info span {
+    font-size: 13px;
+    color: #2563eb;
+  }
+</style>
+
 <header class="page-header row">
-  <div class="logo-wrapper d-flex align-items-right col-auto"><a href="{% url 'kg_app:dashboard' %}"><img class="light-logo img-fluid"
-        src="{% static 'assets/img/logo-3.png' %}" alt="logo"><img class="dark-logo img-fluid"
-        src="{% static 'assets/img/logo-3.png' %}" alt="logo"></a><a class="close-btn toggle-sidebar"
-      href="javascript:void(0)">
+  <div class="logo-wrapper d-flex align-items-right col-auto"><a href="{% url 'kg_app:dashboard' %}"><img
+        class="light-logo img-fluid" src="{% static 'assets/img/logo-3.png' %}" alt="logo"><img
+        class="dark-logo img-fluid" src="{% static 'assets/img/logo-3.png' %}" alt="logo"></a><a
+      class="close-btn toggle-sidebar" href="javascript:void(0)">
       <svg class="svg-color">
         <use href="{% static 'assets/svg/iconly-sprite.svg' %}#Category"></use>
       </svg></a></div>
   <div class="page-main-header col">
     <div class="header-left">
+      <div class="header-info">
+        <h4 id="greetingText"></h4>
+        
+      </div>
       <form class="form-inline search-full col" action="#" method="get">
         <div class="form-group w-100">
           <div class="Typeahead Typeahead--twitterUsers">
@@ -26,15 +52,21 @@
     </div>
     <div class="nav-right">
       <ul class="header-right">
-        <li class="search d-lg-none d-flex"> <a href="javascript:void(0)">
+        <!-- <li class="search d-lg-none d-flex"> <a href="javascript:void(0)">
             <svg>
               <use href="{% static 'assets/svg/iconly-sprite.svg' %}#Search"></use>
-            </svg></a></li>
+            </svg></a>
+        </li> -->
+
+        
+        <span id="currentDateTime"></span>
         <li> <a class="dark-mode" href="javascript:void(0)">
             <svg>
               <use href="{% static 'assets/svg/iconly-sprite.svg' %}#moondark"></use>
-            </svg></a></li>
+            </svg></a>
+        </li>
 
+            
         <li class="custom-dropdown">
           <a href="javascript:void(0)">
             <svg>
@@ -43,9 +75,9 @@
           </a>
           <span class="badge rounded-pill badge-primary">{{ notification_count|default:0 }}</span>
           <div class="custom-menu notification-dropdown py-0 overflow-hidden">
-            <h3 class="title bg-primary-light dropdown-title">Notification 
+            <h3 class="title bg-primary-light dropdown-title">Notification
               <a href="{% url 'kg_app:feddback_history' %}" class="font-primary">
-                  View all
+                View all
               </a>
             </h3>
             <ul class="activity-timeline">
@@ -63,9 +95,9 @@
                       </svg>
                     </span>
                   </h6>
-                  <h5>{{ update.updated_by|default:"Admin"|capfirst  }} - Agreement: {{ update.agreement_id }}</h5>
+                  <h5>{{ update.updated_by|default:"Admin"|capfirst }} - Agreement: {{ update.agreement_id }}</h5>
                   <p class="mb-0">
-                    Projection: {{ update.projection|default:"N/A" }} | 
+                    Projection: {{ update.projection|default:"N/A" }} |
                     Status: {{ update.location_status|default:"N/A" }}
                   </p>
                 </div>
@@ -109,4 +141,59 @@
     location.reload();
     window.location.href = "{% url 'kg_app:admin_logout' %}";
   }
+</script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+
+    // Get username from Django session
+    let userName = "{{ request.session.admin_username|default:'User'|escapejs }}";
+
+    // Trim + Capitalize first letter
+    function capitalizeFirstLetter(name) {
+      name = name.trim();
+      if (name.length === 0) return "User";
+      return name[0].toUpperCase() + name.slice(1);
+    }
+
+    userName = capitalizeFirstLetter(userName);
+
+    function updateGreetingAndTime() {
+      const now = new Date();
+
+      // 🇮🇳 Force Indian Time
+      const indianTime = new Date(
+        now.toLocaleString("en-US", { timeZone: "Asia/Kolkata" })
+      );
+
+      const hour = indianTime.getHours();
+      let greeting = "Hello";
+
+      if (hour >= 5 && hour < 12) greeting = "Good Morning";
+      else if (hour >= 12 && hour < 17) greeting = "Good Afternoon";
+      else if (hour >= 17 && hour < 21) greeting = "Good Evening";
+      else greeting = "Good Night";
+
+      document.getElementById("greetingText").innerText =
+        greeting + ", " + userName;
+
+      document.getElementById("currentDateTime").innerText =
+        indianTime.toLocaleString("en-IN", {
+          year: "numeric",
+          month: "short",
+          day: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+          hour12: true
+        });
+    }
+
+    // Run immediately
+    updateGreetingAndTime();
+
+    // Update every second
+    setInterval(updateGreetingAndTime, 1000);
+
+  });
 </script>

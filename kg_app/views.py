@@ -1139,19 +1139,20 @@ def dashboard(request):
     # navigate to login page if not login
     if not session_admin_id:
         return render(request, 'index.html')
+    admin_id_pk = admin_user_model.objects.get(pk = session_admin_id)
     
-    create_user_list = CreateUser.objects.all()
+    create_user_list = CreateUser.objects.filter(admin_id = admin_id_pk)
     user_length = len(create_user_list)
     print("Total users:", user_length)
     
-    tc_login = TcLogin.objects.all()
-    tl_login = TlLogin.objects.all()
-    gs_login = GsLogin.objects.all()
+    tc_login = TcLogin.objects.filter(admin_id = session_admin_id)
+    tl_login = TlLogin.objects.filter(admin_id = session_admin_id)
+    gs_login = GsLogin.objects.filter(admin_id = session_admin_id)
     login_status_len = len(tc_login) + len(tl_login) + len(gs_login)
     # login_status_len = 5
     print("Total login status entries:", login_status_len)
     
-    task_list = Create_task.objects.all()
+    task_list = Create_task.objects.filter(admin_id = session_admin_id)
     task_length = len(task_list)
     return render(request, "dashboard.html", {
         "user_length":user_length, 
@@ -1750,6 +1751,7 @@ def user_login(request):
                         'my_admin_id': user.admin_id.admin_id,
                         'phone_number': user.phone_number,
                         'password': user.password,
+                        'isMobile_login': user.isMobile_login,
                     }
                 }, status=status.HTTP_200_OK)
             else:
@@ -1983,5 +1985,101 @@ class TaskUpdateCreateAPI(APIView):
             },
             status=status.HTTP_400_BAD_REQUEST
         )
+
+
+
+class UpdateMobileLoginAPI(APIView):
+    def patch(self, request, user_id):
+        user = get_object_or_404(CreateUser, id=user_id)
+
+        serializer = UpdateMobileLoginSerializer(
+            user,
+            data=request.data,
+            partial=True
+        )
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(
+                {
+                    "status": True,
+                    "message": "Mobile login status updated successfully",
+                    "data": serializer.data
+                },
+                status=status.HTTP_200_OK
+            )
+
+        return Response(
+            {
+                "status": False,
+                "errors": serializer.errors
+            },
+            status=status.HTTP_400_BAD_REQUEST
+        )
+
+
+@api_view(['GET'])
+def get_gs_login_by_user_id(request, user_id):
+    try:
+        gs_login = GsLogin.objects.get(user_id=user_id)
+
+        data = {
+            "gs_login_id": gs_login.gs_login_id,
+            "user_id": gs_login.user_id.id if gs_login.user_id else None,
+            "admin_id": gs_login.admin_id,
+            "name": gs_login.name,
+            "email": gs_login.email,
+            "mobile_no": gs_login.mobile_no,
+            "status": gs_login.status,
+            "login_time": gs_login.login_time,
+            "logout_time": gs_login.logout_time,
+            "image": gs_login.image.name if gs_login.image else None,
+            "latitude": gs_login.latitude,
+            "longitude": gs_login.longitude,
+        }
+
+        return Response({
+            "status": True,
+            "message": "GS login fetched successfully",
+            "data": data
+        }, status=status.HTTP_200_OK)
+
+    except GsLogin.DoesNotExist:
+        return Response({
+            "status": False,
+            "message": "No GS login found for this user"
+        }, status=status.HTTP_404_NOT_FOUND)
+
+
+
+@api_view(['PATCH'])
+@parser_classes([MultiPartParser, FormParser])
+def update_gs_login(request, gs_login_id):
+    try:
+        gs_login = GsLogin.objects.get(gs_login_id=gs_login_id)
+    except GsLogin.DoesNotExist:
+        return Response({
+            "status": False,
+            "message": "GS Login not found"
+        }, status=status.HTTP_404_NOT_FOUND)
+
+    serializer = GsLoginUpdateSerializer(
+        gs_login,
+        data=request.data,
+        partial=True
+    )
+
+    if serializer.is_valid():
+        serializer.save()
+        return Response({
+            "status": True,
+            "message": "GS login updated successfully",
+            "data": serializer.data
+        })
+
+    return Response({
+        "status": False,
+        "errors": serializer.errors
+    }, status=status.HTTP_400_BAD_REQUEST)
 
 

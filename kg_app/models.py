@@ -1,4 +1,6 @@
 from django.db import models
+from django.utils import timezone
+from datetime import timedelta
 
 # Create your models here.
 class admin_user_model(models.Model):
@@ -38,6 +40,7 @@ class CreateUser(models.Model):
     created_at = models.DateField(auto_now_add=True)
     active_session_key = models.CharField(max_length=255, null=True, blank=True) 
     last_login_device = models.CharField(max_length=255, null=True, blank=True)
+    isMobile_login = models.CharField(max_length=10, null=True, blank=True, default='No')
 
     def __str__(self):
         return f"{self.first_name} {self.last_name} - {self.role}"
@@ -217,7 +220,7 @@ class TcLogin(models.Model):
     email = models.EmailField(unique=True)
     mobile_no = models.CharField(max_length=15, unique=True)
 
-    status = models.CharField(max_length=20)  
+    status = models.CharField(max_length=20, default="Inactive")  
     login_time = models.DateTimeField(null=True, blank=True)
     logout_time = models.DateTimeField(null=True, blank=True)
 
@@ -236,7 +239,7 @@ class TlLogin(models.Model):
     email = models.EmailField(max_length=100)             # Email (unique)
     mobile_no = models.CharField(max_length=15)  # Mobile (unique)
     
-    status = models.CharField(max_length=20)           # Active / Inactive
+    status = models.CharField(max_length=20, default="Inactive")           # Active / Inactive
     
     login_time = models.DateTimeField(null=True, blank=True)   # Login Time
     logout_time = models.DateTimeField(null=True, blank=True)  # Logout Time
@@ -259,7 +262,7 @@ class GsLogin(models.Model):
     name = models.CharField(max_length=100)
     email = models.EmailField(max_length = 100)
     mobile_no = models.CharField(max_length=15, )
-    status = models.CharField(max_length=20)  # Active / Inactive
+    status = models.CharField(max_length=20, default="Inactive")  # Active / Inactive
     login_time = models.DateTimeField(null=True, blank=True)
     logout_time = models.DateTimeField(null=True, blank=True)
 
@@ -267,6 +270,7 @@ class GsLogin(models.Model):
 
     longitude = models.CharField(max_length=50, null=True, blank=True)
     latitude = models.CharField(max_length=50, null=True, blank=True)
+    
 
     def __str__(self):
         return f"{self.name} ({self.email})"

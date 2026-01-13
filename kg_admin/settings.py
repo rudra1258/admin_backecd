@@ -50,6 +50,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'kg_app.middleware.SingleDeviceMiddleware',
+    'kg_app.middleware.AutoLogoutMiddleware',
 ]
 
 ROOT_URLCONF = 'kg_admin.urls'

@@ -1,7 +1,7 @@
 from django.urls import path, include
 from . import views
 from rest_framework import routers
-from .views import TaskUpdateCreateAPI
+from .views import *
 
 app_name = 'kg_app'  # important for namespacing URLs
 
@@ -91,7 +91,7 @@ urlpatterns = [
 
     path('task-update/create/', TaskUpdateCreateAPI.as_view(), name='task-update-create'),
     
-    #TODO: api testing
+    #TODO: api testing -> done
     # Example Usage: above 3 urls
     
     # 1. Get all task updates:
@@ -158,4 +158,31 @@ urlpatterns = [
     # - customer_remark: "Customer agreed to pay"
     # - ... (other fields)
     
+    
+    
+    # to update mobile login status to prevent multiple login
+    path( 'update-mobile-login/<int:user_id>/', UpdateMobileLoginAPI.as_view(), name='update-mobile-login' ),
+    # demo link : http://127.0.0.1:8000/api/v1/update-mobile-login/17/
+    # api body : 
+    # {
+    #     "isMobile_login": "Yes"
+    # }
+    
+    # api response 
+    # {
+    #     "status": true,
+    #     "message": "Mobile login status updated successfully",
+    #     "data": {
+    #         "isMobile_login": "Yes"
+    #     }
+    # }
+    
+    # to get gs punch in details by gs User Id user id
+    # method get - -
+    path( 'gs-login/<int:user_id>/', get_gs_login_by_user_id, name='get_gs_login_by_user_id' ),
+    # http://127.0.0.1:8000/api/v1/gs-login/23/
+    
+    # to update gs login details by gs_login_id
+    path('gs-punch-in/update/<int:gs_login_id>/', update_gs_login, name='update_gs_login' )
+    # http://127.0.0.1:8000/api/v1/gs-punch-in/update/4/
 ]
