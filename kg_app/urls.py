@@ -188,8 +188,10 @@ urlpatterns = [
     # http://127.0.0.1:8000/api/v1/gs-login/23/
     
     # to update gs login details by gs_login_id
-    path('gs-punch-in/update/<int:gs_login_id>/', update_gs_login, name='update_gs_login' ),
+    # path('gs-punch-in/update/<int:gs_login_id>/', update_gs_login, name='update_gs_login' ),
     # http://127.0.0.1:8000/api/v1/gs-punch-in/update/4/
+    
+     path('update-gs-login/<int:gs_login_id>/', views.update_gs_login, name='update_gs_login'),
 
 
     path('leave-request/create/', LeaveRequestCreateAPIView.as_view(), name='leave-request-create'),

@@ -154,15 +154,31 @@ class UpdateMobileLoginSerializer(serializers.ModelSerializer):
         fields = ['isMobile_login']
 
 #gs punch in update serializer
+# class GsLoginUpdateSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = GsLogin
+#         fields = [
+#             'status',
+#             'login_time',
+#             'logout_time',
+#             'image',
+#             'latitude',
+#             'longitude',
+#         ]
+
+
 class GsLoginUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = GsLogin
         fields = [
+            'name',
+            'email',
+            'mobile_no',
             'status',
             'login_time',
             'logout_time',
             'image',
-            'latitude',
+            'longitude',
             'longitude',
         ]
 
