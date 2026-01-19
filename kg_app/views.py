@@ -2276,13 +2276,8 @@ def get_gs_login_by_user_id(request, user_id):
 @api_view(['PATCH'])
 @parser_classes([MultiPartParser, FormParser])
 def update_gs_login(request, gs_login_id):
-    try:
-        gs_login = GsLogin.objects.get(gs_login_id=gs_login_id)
-    except GsLogin.DoesNotExist:
-        return Response({
-            "status": False,
-            "message": "GS Login not found"
-        }, status=status.HTTP_404_NOT_FOUND)
+
+    gs_login = get_object_or_404(GsLogin, pk=gs_login_id)
 
     serializer = GsLoginUpdateSerializer(
         gs_login,
@@ -2292,16 +2287,22 @@ def update_gs_login(request, gs_login_id):
 
     if serializer.is_valid():
         serializer.save()
-        return Response({
-            "status": True,
-            "message": "GS login updated successfully",
-            "data": serializer.data
-        })
+        return Response(
+            {
+                "status": True,
+                "message": "GS login updated successfully",
+                "data": serializer.data
+            },
+            status=status.HTTP_200_OK
+        )
 
-    return Response({
-        "status": False,
-        "errors": serializer.errors
-    }, status=status.HTTP_400_BAD_REQUEST)
+    return Response(
+        {
+            "status": False,
+            "errors": serializer.errors
+        },
+        status=status.HTTP_400_BAD_REQUEST
+    )
 
 
 class LeaveRequestCreateAPIView(APIView):
