@@ -153,18 +153,7 @@ class UpdateMobileLoginSerializer(serializers.ModelSerializer):
         model = CreateUser
         fields = ['isMobile_login']
 
-#gs punch in update serializer
-# class GsLoginUpdateSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = GsLogin
-#         fields = [
-#             'status',
-#             'login_time',
-#             'logout_time',
-#             'image',
-#             'latitude',
-#             'longitude',
-#         ]
+
 
 
 class GsLoginUpdateSerializer(serializers.ModelSerializer):
@@ -178,7 +167,7 @@ class GsLoginUpdateSerializer(serializers.ModelSerializer):
             'login_time',
             'logout_time',
             'image',
-            'longitude',
+            'latitude',
             'longitude',
         ]
 
