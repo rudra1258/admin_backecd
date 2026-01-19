@@ -87,3 +87,8 @@ class GsLoginAdmin(admin.ModelAdmin):
     image_preview.short_description = "Image"
     
     
+@admin.register(leave_request)
+class LeaveRequestAdmin(admin.ModelAdmin):
+    list_display = ("admin_id","user_name","user_email","user_mobile","role","leave_status","submit_time")
+    search_fields = ("user_id","user_role","admin_id","leave_status")
+    list_filter = ("leave_status","submit_time","from_date","to_date","admin_id")

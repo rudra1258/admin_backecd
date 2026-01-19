@@ -14,6 +14,7 @@ import io
 from django.http import HttpResponse
 from django.contrib.sessions.models import Session
 from rest_framework.views import APIView
+from django.db.models import Q
 
 
 # Create your views here.
@@ -614,7 +615,24 @@ def complete_task(request):
     # navigate to login page if not login
     if not session_admin_id:
         return render(request, 'index.html')
-    return render(request, "complete_task.html")
+    
+    admin_id_pk = admin_user_model.objects.get(pk = session_admin_id)
+    create_task_list = Create_task.objects.filter(
+        admin_id=admin_id_pk
+    ).exclude(
+        Q(update_location_status="RF") | Q(update_location_status__isnull=True)
+    )
+    
+    return render(request, "complete_task.html", {"task_list": create_task_list})
+
+def task_delete_complete(request, id):
+    session_admin_id = request.session.get("admin_id")
+    # navigate to login page if not login
+    if not session_admin_id:
+        return render(request, 'index.html')
+    emp = get_object_or_404(Create_task, task_id=id)
+    emp.delete()
+    return redirect('kg_app:complete_task')
 
 def create_task(request):
     session_admin_id = request.session.get("admin_id")
@@ -645,6 +663,7 @@ def create_task(request):
         customer_name = request.POST.get("customer_name")
         product_type = request.POST.get("prodduct_type")
         tc_name = request.POST.get("tc_name")
+        tc_userName = request.POST.get("user_name")
         branch = request.POST.get("branch")
         count_of_cases = request.POST.get("count_of_cases")
         old_or_new = request.POST.get("old_or_new")
@@ -679,6 +698,7 @@ def create_task(request):
         father_name = request.POST.get("father_name")
         fe_name = request.POST.get("gs_name")
         fe_Mobile = request.POST.get("fe_Mobile")
+        fe_userName = request.POST.get("gs_user_name")
         customer_number = request.POST.get("customer_number")
         pin_code = request.POST.get("pin_code")
         customer_address = request.POST.get("customer_address")
@@ -697,6 +717,7 @@ def create_task(request):
             customer_name=customer_name,
             product_type=product_type,
             tc_name=tc_name,
+            tc_userName=tc_userName,
             branch=branch,
             count_of_cases=count_of_cases,
             old_or_new=old_or_new,
@@ -730,6 +751,7 @@ def create_task(request):
             employer = employer,
             father_name = father_name,
             fe_name = fe_name,
+            fe_userName = fe_userName,
             fe_mobile_number = fe_Mobile,
             customer_mobile_number = customer_number,
             pin_code = pin_code,
@@ -1142,8 +1164,36 @@ def dashboard(request):
     admin_id_pk = admin_user_model.objects.get(pk = session_admin_id)
     
     create_user_list = CreateUser.objects.filter(admin_id = admin_id_pk)
+    create_task_list = Create_task.objects.filter(admin_id = admin_id_pk)[:3]
     user_length = len(create_user_list)
     print("Total users:", user_length)
+    
+    # Filter users by role
+    telecallers_queryset = create_user_list.filter(role='telecaller')
+    teamleads_queryset = create_user_list.filter(role='teamlead')
+    groundstaff_queryset = create_user_list.filter(role='groundstaff')
+    
+    telecallers = list(telecallers_queryset[:5].values(
+        'id', 'first_name', 'last_name', 'username', 'email', 'phone_number', 'active_session_key'
+    ))
+    
+    teamleads = list(teamleads_queryset[:5].values(
+        'id', 'first_name', 'last_name', 'username', 'email', 'phone_number', 'active_session_key'
+    ))
+    
+    groundstaff = list(groundstaff_queryset[:5].values(
+        'id', 'first_name', 'last_name', 'username', 'email', 'phone_number', 'active_session_key'
+    ))
+    
+    # Add online/offline status based on active_session_key
+    for user in telecallers:
+        user['status'] = 'online' if user['active_session_key'] else 'offline'
+    
+    for user in teamleads:
+        user['status'] = 'online' if user['active_session_key'] else 'offline'
+    
+    for user in groundstaff:
+        user['status'] = 'online' if user['active_session_key'] else 'offline'
     
     tc_login = TcLogin.objects.filter(admin_id = session_admin_id)
     tl_login = TlLogin.objects.filter(admin_id = session_admin_id)
@@ -1154,10 +1204,35 @@ def dashboard(request):
     
     task_list = Create_task.objects.filter(admin_id = session_admin_id)
     task_length = len(task_list)
+    
+    # Convert to JSON for JavaScript
+    telecallers_json = json.dumps(telecallers)
+    teamleads_json = json.dumps(teamleads)
+    groundstaff_json = json.dumps(groundstaff)
+    
+    leave_requests = leave_request.objects.filter(
+        admin_id = admin_id_pk,
+        leave_status = 'Pending'
+    )
+    
+    leave_request_data = leave_request.objects.filter(
+        admin_id=admin_id_pk
+    ).order_by('-submit_time')[:3]
+    print(f"Pending leave requests count: {leave_request_data}")
+
+    leave_requests_length = len(leave_requests)
+    
     return render(request, "dashboard.html", {
         "user_length":user_length, 
         "login_status_len":login_status_len,
-        "task_length":task_length
+        "leave_requests_length":leave_requests_length,
+        "leave_request_data":leave_request_data,
+        "task_length":task_length,
+        "user_list":create_user_list,
+        "task_list":create_task_list,
+        "telecallers_json": telecallers_json,
+        "teamleads_json": teamleads_json,
+        "groundstaff_json": groundstaff_json,
         })
 
 def groundstaff(request):
@@ -1176,28 +1251,172 @@ def gs_login(request):
     # navigate to login page if not login
     if not session_admin_id:
         return render(request, 'index.html')
-    return render(request, "gs_login.html")
+    
+    login_status = GsLogin.objects.filter(admin_id = session_admin_id).order_by('-login_time')
+    
+    print(f"Ground Staff Login Status Count: {login_status.count()}")
+    
+    return render(request, "gs_login.html", {"login_status":login_status})
 
 def leave(request):
     session_admin_id = request.session.get("admin_id")
     # navigate to login page if not login
     if not session_admin_id:
         return render(request, 'index.html')
+    
+    leave_request_list = leave_request.objects.filter(admin_id = session_admin_id).order_by('-submit_time')
+    return render(request, "leave.html", {"leave_request_list":leave_request_list})
+
+def get_leave_details(request):
+    if request.method == 'GET':
+        leave_id = request.GET.get('leave_id')
+        try:
+            leave = leave_request.objects.get(leave_id=leave_id)
+            data = {
+                'success': True,
+                'data': {
+                    'leave_id': leave.leave_id,
+                    'user_name': leave.user_name,
+                    'user_email': leave.user_email,
+                    'user_mobile': leave.user_mobile,
+                    'role': leave.role,
+                    'leave_type': leave.leave_type,
+                    'from_date': leave.from_date.strftime('%Y-%m-%d'),
+                    'to_date': leave.to_date.strftime('%Y-%m-%d'),
+                    'full_day_half': leave.full_day_half,
+                    'leave_reason': leave.leave_reason,
+                    'leave_desc': leave.leave_desc,
+                    'leave_status': leave.leave_status,
+                    'submit_time': leave.submit_time.strftime('%Y-%m-%d %H:%M:%S'),
+                    'reject_reason': leave.reject_reason
+                }
+            }
+            return JsonResponse(data)
+        except leave_request.DoesNotExist:
+            return JsonResponse({'success': False, 'message': 'Leave request not found'})
+    return JsonResponse({'success': False, 'message': 'Invalid request method'})
+
+def approve_leave(request):
+    if request.method == 'POST':
+        # Get the session admin_id
+        session_admin_id = request.session.get("admin_id")
+        
+        # Check if admin is logged in
+        if not session_admin_id:
+            return render(request, 'index.html')
+        
+        leave_id = request.POST.get('leave_id')
+        
+        print(f"Approving leave ID: {leave_id} by admin ID: {session_admin_id}")
+        
+        try:
+            # Filter by leave_id, admin_id, and ensure status is Pending
+            leave = leave_request.objects.get(
+                leave_id=leave_id,
+                leave_status='Pending'
+            )
+            
+            # Update status to Approved
+            leave.leave_status = 'Approved'
+            leave.save()
+            
+            return redirect("kg_app:leave")
+
+            
+        except leave_request.DoesNotExist:
+            return JsonResponse({
+                'success': False, 
+                'message': 'Leave request not found or already processed'
+            })
+        except Exception as e:
+            return JsonResponse({
+                'success': False, 
+                'message': f'Error: {str(e)}'
+            })
+    
     return render(request, "leave.html")
+
+def reject_leave(request):
+    if request.method == 'POST':
+        # Get the session admin_id
+        session_admin_id = request.session.get("admin_id")
+        
+        # Check if admin is logged in
+        if not session_admin_id:
+            return render(request, 'index.html')
+        
+        # leave_id = request.POST.get('leave_id')
+        reject_reason = request.POST.get('reject_reason')
+        
+        leave_id = request.POST.get('rej_leave_id')
+        
+        print(f"Approving leave ID: {leave_id} by admin ID: {session_admin_id}")
+        
+        # Validate reject reason
+        if not reject_reason or not reject_reason.strip():
+            return JsonResponse({'success': False, 'message': 'Rejection reason is mandatory'})
+        
+        try:
+            # Filter by leave_id, admin_id, and ensure status is Pending
+            leave = leave_request.objects.get(
+                leave_id=leave_id,
+                leave_status='Pending'
+            )
+            
+            # Update status to Rejected and save reason
+            leave.leave_status = 'Rejected'
+            leave.reject_reason = reject_reason
+            leave.save()
+            
+            return redirect("kg_app:leave")
+            
+        except leave_request.DoesNotExist:
+            return JsonResponse({
+                'success': False, 
+                'message': 'Leave request not found or already processed'
+            })
+        except Exception as e:
+            return JsonResponse({
+                'success': False, 
+                'message': f'Error: {str(e)}'
+            })
+    
+    return JsonResponse({'success': False, 'message': 'Invalid request method'})
 
 def pending_task(request):
     session_admin_id = request.session.get("admin_id")
     # navigate to login page if not login
     if not session_admin_id:
         return render(request, 'index.html')
-    return render(request, "pending_task.html")
+    
+    admin_id_pk = admin_user_model.objects.get(pk = session_admin_id)
+    create_task_list = Create_task.objects.filter(
+        admin_id=admin_id_pk
+    ).filter(
+        Q(update_location_status = "RF") |
+        Q(update_location_status__isnull = True) |
+        Q(update_location_status = "")
+    )
+    
+    return render(request, "pending_task.html", {"create_task_list" : create_task_list})
+
+def task_delete(request, id):
+    session_admin_id = request.session.get("admin_id")
+    # navigate to login page if not login
+    if not session_admin_id:
+        return render(request, 'index.html')
+    emp = get_object_or_404(Create_task, task_id=id)
+    emp.delete()
+    return redirect('kg_app:pending_task')   # change to your list page URL name
 
 def tc_login(request):
     session_admin_id = request.session.get("admin_id")
     # navigate to login page if not login
     if not session_admin_id:
         return render(request, 'index.html')
-    return render(request, "tc_login.html")
+    
+    login_status = TcLogin.objects.filter(admin_id = session_admin_id).order_by('-login_time')
+    return render(request, "tc_login.html", {"login_status":login_status})
 
 def teamlead(request):
     session_admin_id = request.session.get('admin_id')
@@ -1226,7 +1445,9 @@ def tl_login(request):
     # navigate to login page if not login
     if not session_admin_id:
         return render(request, 'index.html')
-    return render(request, "tl_login.html")
+    
+    login_status = TlLogin.objects.filter(admin_id = session_admin_id).order_by('-login_time')
+    return render(request, "tl_login.html", {"login_status":login_status})
 
 def tc_delete(request, id):
     session_admin_id = request.session.get("admin_id")
@@ -2083,3 +2304,43 @@ def update_gs_login(request, gs_login_id):
     }, status=status.HTTP_400_BAD_REQUEST)
 
 
+class LeaveRequestCreateAPIView(APIView):
+
+    def post(self, request):
+        serializer = LeaveRequestSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(
+                {
+                    "message": "Leave request created successfully",
+                    "data": serializer.data
+                },
+                status=status.HTTP_201_CREATED
+            )
+        return Response(
+            serializer.errors,
+            status=status.HTTP_400_BAD_REQUEST
+        )
+
+
+
+
+class LeaveRequestByUserAPIView(APIView):
+
+    def get(self, request, user_id):
+        leaves = leave_request.objects.filter(user_id=user_id)
+
+        if not leaves.exists():
+            return Response(
+                {"message": "No leave requests found for this user"},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        serializer = LeaveRequestSerializer(leaves, many=True)
+        return Response(
+            {
+                "message": "Leave requests fetched successfully",
+                "data": serializer.data
+            },
+            status=status.HTTP_200_OK
+        )

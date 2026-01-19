@@ -138,7 +138,19 @@
                             <th>Logout Time</th>
                           </tr>
                         </thead>
-                        <tbody id="table-body"></tbody>
+                        <tbody>
+                          {% for data in login_status %}
+                          <tr>
+                            <td>{{forloop.counter}}</td>
+                            <td>{{data.name|capfirst }}</td>
+                            <td>{{data.email}}</td>
+                            <td>{{data.mobile_no}}</td>
+                            <td>{{data.status}}</td>
+                            <td>{{ data.login_time|date:"d-m-Y h:i A"|default:"N/A"}}</td>
+                            <td>{{ data.logout_time|date:"d-m-Y h:i A"|default:"N/A"}}</td>
+                          </tr>
+                          {% endfor %}
+                        </tbody>
                       </table>
                     </div>
                   </div>

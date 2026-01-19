@@ -166,3 +166,33 @@ class GsLoginUpdateSerializer(serializers.ModelSerializer):
             'longitude',
         ]
 
+# leave request post method 
+class LeaveRequestSerializer(serializers.ModelSerializer):
+    admin_id = serializers.PrimaryKeyRelatedField(
+        queryset=admin_user_model.objects.all()
+    )
+    user_id = serializers.PrimaryKeyRelatedField(
+        queryset=CreateUser.objects.all()
+    )
+
+    class Meta:
+        model = leave_request
+        fields = [
+            'leave_id',
+            'admin_id',
+            'user_id',
+            'user_name',
+            'user_email',
+            'user_mobile',
+            'role',
+            'leave_type',
+            'from_date',
+            'to_date',
+            'full_day_half',
+            'leave_reason',
+            'leave_desc',
+            'leave_status',
+            'submit_time',
+            'reject_reason',
+        ]
+        read_only_fields = ['leave_id', 'submit_time', 'leave_status']

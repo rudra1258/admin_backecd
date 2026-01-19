@@ -28,6 +28,9 @@ urlpatterns = [
     path('groundstaff/', views.groundstaff, name='groundstaff'),
     path('gs_login/', views.gs_login, name='gs_login'),
     path('leave/', views.leave, name='leave'),
+    path('get-leave-details/', views.get_leave_details, name='get_leave_details'),
+    path('approve_leave/', views.approve_leave, name='approve_leave'),
+    path('reject_leave/', views.reject_leave, name='reject_leave'),
     path('pending_task/', views.pending_task, name='pending_task'),
     path('tc_login/', views.tc_login, name='tc_login'),
     path('teamlead/', views.teamlead, name='teamlead'),
@@ -44,6 +47,8 @@ urlpatterns = [
     path('telecaller/delete/<int:id>/', views.tc_delete, name='tc_delete'),
     path('teamlead/delete/<int:id>/', views.tl_delete, name='tl_delete'),
     path('groundstaff/delete/<int:id>/', views.gs_delete, name='gs_delete'),
+    path('task/delete/<int:id>/', views.task_delete, name='task_delete'),
+    path('complete_task/delete/<int:id>/', views.task_delete_complete, name='task_delete_complete'),
 
     # telecaller urls 
     
@@ -183,6 +188,17 @@ urlpatterns = [
     # http://127.0.0.1:8000/api/v1/gs-login/23/
     
     # to update gs login details by gs_login_id
-    path('gs-punch-in/update/<int:gs_login_id>/', update_gs_login, name='update_gs_login' )
+    path('gs-punch-in/update/<int:gs_login_id>/', update_gs_login, name='update_gs_login' ),
     # http://127.0.0.1:8000/api/v1/gs-punch-in/update/4/
+
+
+    path('leave-request/create/', LeaveRequestCreateAPIView.as_view(), name='leave-request-create'),
+    # http://127.0.0.1:8000/api/v1/leave-request/create/
+    
+    
+    path('leave-request/user/<int:user_id>/', LeaveRequestByUserAPIView.as_view(), name='leave-request-by-user'),
+    # http://127.0.0.1:8000/api/v1/leave-request/user/10/
+
+
+
 ]

@@ -275,3 +275,24 @@ class GsLogin(models.Model):
     def __str__(self):
         return f"{self.name} ({self.email})"
 
+
+
+class leave_request(models.Model):
+    leave_id = models.AutoField(primary_key=True)
+    admin_id = models.ForeignKey(admin_user_model, on_delete = models.CASCADE)
+    user_id = models.ForeignKey(CreateUser, on_delete = models.CASCADE)
+    user_name = models.CharField(max_length=100)
+    user_email = models.CharField()
+    user_mobile = models.CharField(max_length=15)
+    role = models.CharField(max_length=50)
+    leave_type = models.CharField(max_length=50)
+    from_date = models.DateField()
+    to_date = models.DateField()
+    full_day_half = models.CharField(max_length=15)
+    leave_reason = models.TextField()
+    leave_desc = models.TextField()
+    leave_status = models.CharField(max_length=20, default="Pending")
+    submit_time = models.DateTimeField(auto_now_add=True)
+    reject_reason = models.TextField(null=True, blank=True)
+
+    

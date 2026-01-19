@@ -130,17 +130,42 @@
                           <tr>
                             <th>Sl</th>
                             <th>Agreement Id</th>
+                            <th>Category</th>
                             <th>Customer Name</th>
                             <th>Mobile Number</th>
-                            <th>Email id</th>
-                            <th>Address</th>
-                            <th>Telecaller Name</th>
-                            <th>Teamlead Name </th>
-                            <th>Ground staff name</th>
+                            <th>TC Name</th>
+                            <th>FE Name</th>
                             <th>Status</th>
+                            <th>Action</th>
                           </tr>
                         </thead>
-                        <tbody id="table-body"></tbody>
+                        <tbody>
+                          {% for task in task_list %}
+                          <tr>
+                            <td>{{forloop.counter}}</td>
+                            <td>{{task.aggrement_id}}</td>
+                            <td>{{task.category}}</td>
+                            <td>{{task.customer_name}}</td>
+                            <td>{{task.customer_mobile_number}}</td>
+                            <td>{{task.tc_name}}</td>
+                            <td>{{task.fe_name}}</td>
+                            <td>{{task.update_location_status}}</td>
+                            <td>
+                              <ul class="action" style="display:flex;gap:10px;list-style:none;padding:0;margin:0;">
+                                <li class="delete">
+                                  <form method="post" action="{% url 'kg_app:task_delete_complete' task.task_id %}"
+                                    onsubmit="return confirm('Delete this record?');" style="display:inline;">
+                                    {% csrf_token %}
+                                    <button type="submit" style="background:none;border:0;cursor:pointer;color:red;">
+                                      <i class="fa-solid fa-trash-can"></i>
+                                    </button>
+                                  </form>
+                                </li>
+                              </ul>
+                            </td>
+                          </tr>
+                          {% endfor %}
+                        </tbody>
                       </table>
                     </div>
                   </div>
