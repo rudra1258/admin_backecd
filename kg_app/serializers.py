@@ -26,6 +26,11 @@ class GsLoginSerializer(serializers.ModelSerializer):
         model = GsLogin
         fields = '__all__'
         
+class TlLoginSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TlLogin
+        fields = '__all__'  
+        
 # get & update task serializer 
 class TaskSerializer(serializers.ModelSerializer):
     class Meta:
@@ -159,6 +164,21 @@ class UpdateMobileLoginSerializer(serializers.ModelSerializer):
 class GsLoginUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = GsLogin
+        fields = [
+            'name',
+            'email',
+            'mobile_no',
+            'status',
+            'login_time',
+            'logout_time',
+            'image',
+            'latitude',
+            'longitude',
+        ]
+        
+class TlLoginUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TlLogin
         fields = [
             'name',
             'email',

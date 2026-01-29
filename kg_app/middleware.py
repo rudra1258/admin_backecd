@@ -69,6 +69,22 @@ class AutoLogoutMiddleware:
             status="Inactive",
             logout_time=timezone.now()
         )
+        
+        TlLogin.objects.filter(
+            status="Active",
+            login_time__lte=expiry_time
+        ).update(
+            status="Inactive",
+            logout_time=timezone.now()
+        )
+        
+        TcLogin.objects.filter(
+            status="Active",
+            login_time__lte=expiry_time
+        ).update(
+            status="Inactive",
+            logout_time=timezone.now()
+        )
 
         response = self.get_response(request)
         return response

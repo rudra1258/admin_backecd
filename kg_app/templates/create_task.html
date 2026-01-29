@@ -1108,6 +1108,17 @@
                                     </select>
                                 </div>
                                 <div class="form-group">
+                                    <label for="gs_name">FE Name*</label>
+                                    <select id="gs_name" name="gs_name" required>
+                                        <option value="" disabled selected>--select--</option>
+                                        {% for user in gs_users %}
+                                        <option value="{{ user.first_name }} {{ user.last_name }}" data-username="{{ user.username }}">
+                                            {{ user.first_name }} {{ user.last_name }}
+                                        </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="form-group">
                                     <label for="gs_userName">FE User Name *</label>
                                     <input type="text" id="gs_userName" name="gs_user_name" value="" required readonly>
                                 </div>

@@ -315,6 +315,19 @@ def admin_login(request):
                 user.active_session_key = request.session.session_key
                 user.save()
                 
+                # Create or update TcLogin record
+                TcLogin.objects.update_or_create(
+                    user_id=user,
+                    defaults={
+                        'admin_id': user.admin_id.admin_id,
+                        'name': user.first_name,
+                        'email': user.email,
+                        'mobile_no': user.phone_number,
+                        'status': 'Active',
+                        'login_time': timezone.now(),
+                    }
+                )
+                
                 return JsonResponse({
                     'success': True,
                     'message': 'Telecaller login successful!',
@@ -351,6 +364,16 @@ def admin_logout(request):
             user.active_session_key = None
             user.save()
         except CreateUser.DoesNotExist:
+            pass
+        
+    if user_id:
+        tc_id_pk = CreateUser.objects.get(pk=user_id)
+        try:
+            tc_login = TcLogin.objects.get(user_id_id=tc_id_pk)
+            tc_login.status = 'Inactive'
+            tc_login.logout_time = timezone.now()
+            tc_login.save()
+        except TcLogin.DoesNotExist:
             pass
     
     # Clear session
@@ -653,6 +676,11 @@ def create_task(request):
         role='groundstaff'
     )
     
+    tl_user_list = CreateUser.objects.filter(
+        admin_id=admin_id_pk,
+        role='teamlead'
+    )
+    
     if request.method == "POST":    
         print("FULL POST:", request.POST)
         
@@ -767,7 +795,11 @@ def create_task(request):
         return redirect("kg_app:create_task")
     
     
-    return render(request, "create_task.html", {"users": user_list, "gs_users": gs_user_list})
+    return render(request, "create_task.html", {
+        "users": user_list, 
+        "gs_users": gs_user_list,
+        "tc_user_list": tl_user_list,
+        })
 
 #create task list api function
 class Create_task_Viewset(viewsets.ModelViewSet):
@@ -806,7 +838,8 @@ def import_tasks_from_excel(request):
                 'emi_start_date', 'emi_end_date', 'emi_cycle_date', 'make', 
                 'father_name', 'fe_name', 'fe_mobile_number', 'customer_mobile_number', 
                 'pin_code', 'customer_address', 'customer_office_address', 
-                'reference_details', 'collection_manager_name', 'finance_company_name'
+                'reference_details', 'collection_manager_name', 'finance_company_name','fe_userName',
+                'tc_userName'
             ]
             
             # Check if all required columns exist
@@ -856,6 +889,7 @@ def import_tasks_from_excel(request):
                         customer_name=str(row['customer_name']).strip(),
                         product_type=str(row['product_type']).strip(),
                         tc_name=str(row['tc_name']).strip(),
+                        tc_userName=str(row['tc_userName']).strip(),
                         branch=str(row['branch']).strip(),
                         count_of_cases=str(row['count_of_cases']).strip(),
                         old_or_new=str(row['old_or_new']).strip(),
@@ -889,6 +923,7 @@ def import_tasks_from_excel(request):
                         employer=str(row.get('employer', '')).strip() if pd.notna(row.get('employer')) else '',
                         father_name=str(row['father_name']).strip(),
                         fe_name=str(row['fe_name']).strip(),
+                        fe_userName=str(row['fe_userName']).strip(),
                         fe_mobile_number=fe_mobile,
                         customer_mobile_number=customer_mobile,
                         pin_code=pin_code,
@@ -940,6 +975,7 @@ def download_task_sample_excel(request):
         'customer_name': ['John Doe', 'Jane Smith'],
         'product_type': ['Auto Loan', 'Personal Loan'],
         'tc_name': ['TC001', 'TC002'],
+        'tc_userName': ['TC-002', 'TC-003'],
         'branch': ['Mumbai', 'Delhi'],
         'count_of_cases': ['5', '3'],
         'old_or_new': ['New', 'Old'],
@@ -973,6 +1009,7 @@ def download_task_sample_excel(request):
         'employer': ['ABC Corp', 'XYZ Ltd'],
         'father_name': ['Robert Doe', 'David Smith'],
         'fe_name': ['Agent A', 'Agent B'],
+        'fe_userName': ['FE-002', 'FE-003'],
         'fe_mobile_number': ['9876543210', '8765432109'],
         'customer_mobile_number': ['9123456789', '8234567890'],
         'pin_code': ['400001', '110001'],
@@ -1941,6 +1978,88 @@ def create_gs_login(request):
 
 
  # User Login API
+
+
+@api_view(['POST'])
+def create_tl_login(request):
+    """
+    API to create a new GS Login record
+    Required fields: admin_id, name, email, mobile_no, status, image, longitude, latitude
+    """
+    try:
+        # Get data from request
+        user_id = request.data.get('user_id')
+        admin_id = request.data.get('admin_id')
+        name = request.data.get('name')
+        email = request.data.get('email')
+        mobile_no = request.data.get('mobile_no')
+        status_value = request.data.get('status')
+        image = request.FILES.get('image')
+        longitude = request.data.get('longitude')
+        latitude = request.data.get('latitude')
+        login_time = request.data.get('login_time', None)
+        logout_time = request.data.get('logout_time', None)
+
+        # Validate required fields
+        if not all([user_id, admin_id, name, email, mobile_no, status_value, image, longitude, latitude, login_time]):
+            return Response({
+                'success': False,
+                'message': 'All fields are required: user_id, admin_id, name, email, mobile_no, status, image, longitude, latitude, login_time'
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+        # Check if email already exists
+        # if GsLogin.objects.filter(email=email).exists():
+        #     return Response({
+        #         'success': False,
+        #         'message': 'Email already exists'
+        #     }, status=status.HTTP_400_BAD_REQUEST)
+
+        # # Check if mobile number already exists
+        # if GsLogin.objects.filter(mobile_no=mobile_no).exists():
+        #     return Response({
+        #         'success': False,
+        #         'message': 'Mobile number already exists'
+        #     }, status=status.HTTP_400_BAD_REQUEST)
+
+        # Create new GsLogin record
+        try:
+            user = CreateUser.objects.get(pk=user_id)
+        except CreateUser.DoesNotExist:
+            return Response({
+                'success': False,
+                'message': f'User with id {user_id} does not exist'
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        tl_login = TlLogin.objects.create(
+            user_id=user,
+            admin_id=admin_id,
+            name=name,
+            email=email,
+            mobile_no=mobile_no,
+            status=status_value,
+            image=image,
+            longitude=longitude,
+            latitude=latitude,
+            login_time=login_time if login_time else None,
+            logout_time=logout_time if logout_time else None
+        )
+
+        # Serialize and return the created object
+        serializer = TlLoginSerializer(tl_login)
+        
+        return Response({
+            'success': True,
+            'message': 'TL Login record created successfully',
+            'data': serializer.data
+        }, status=status.HTTP_201_CREATED)
+
+    except Exception as e:
+        return Response({
+            'success': False,
+            'message': str(e)
+        }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
 @api_view(['POST'])
 def user_login(request):
     serializer = UserLoginSerializer(data = request.data)
@@ -2270,6 +2389,38 @@ def get_gs_login_by_user_id(request, user_id):
             "status": False,
             "message": "No GS login found for this user"
         }, status=status.HTTP_404_NOT_FOUND)
+        
+@api_view(['GET'])
+def get_tl_login_by_user_id(request, user_id):
+    try:
+        tl_login = TlLogin.objects.get(user_id=user_id)
+
+        data = {
+            "tl_login_id": tl_login.tl_login_id,
+            "user_id": tl_login.user_id.id if tl_login.user_id else None,
+            "admin_id": tl_login.admin_id,
+            "name": tl_login.name,
+            "email": tl_login.email,
+            "mobile_no": tl_login.mobile_no,
+            "status": tl_login.status,
+            "login_time": tl_login.login_time,
+            "logout_time": tl_login.logout_time,
+            "image": tl_login.image.name if tl_login.image else None,
+            "latitude": tl_login.latitude,
+            "longitude": tl_login.longitude,
+        }
+
+        return Response({
+            "status": True,
+            "message": "GS login fetched successfully",
+            "data": data
+        }, status=status.HTTP_200_OK)
+
+    except GsLogin.DoesNotExist:
+        return Response({
+            "status": False,
+            "message": "No GS login found for this user"
+        }, status=status.HTTP_404_NOT_FOUND)
 
 
 
@@ -2320,6 +2471,36 @@ def update_gs_login(request, gs_login_id):
 
     serializer = GsLoginUpdateSerializer(
         gs_login,
+        data=request.data,
+        partial=True   # 🔥 THIS makes PATCH work
+    )
+
+    if serializer.is_valid():
+        serializer.save()
+        return Response(
+            {
+                "message": "GS Login updated successfully",
+                "data": serializer.data
+            },
+            status=status.HTTP_200_OK
+        )
+
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['PATCH'])
+@parser_classes([JSONParser, MultiPartParser, FormParser])
+def update_tl_login(request, tl_login_id):
+    try:
+        tl_login = TlLogin.objects.get(tl_login_id=tl_login_id)
+    except TlLogin.DoesNotExist:
+        return Response(
+            {"error": "GS Login not found"},
+            status=status.HTTP_404_NOT_FOUND
+        )
+
+    serializer = TlLoginUpdateSerializer(
+        tl_login,
         data=request.data,
         partial=True   # 🔥 THIS makes PATCH work
     )

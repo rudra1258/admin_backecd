@@ -20,6 +20,32 @@
     font-size: 13px;
     color: #2563eb;
   }
+
+  .tooltip-wrapper {
+    position: relative;
+    display: inline-block;
+  }
+
+  .tooltip-text {
+    position: absolute;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #000;
+    color: #fff;
+    padding: 4px 8px;
+    font-size: 12px;
+    border-radius: 4px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+  }
+
+  .tooltip-wrapper:hover .tooltip-text {
+    opacity: 1;
+  }
+
 </style>
 
 <header class="page-header row">
@@ -64,6 +90,14 @@
             <svg>
               <use href="{% static 'assets/svg/iconly-sprite.svg' %}#moondark"></use>
             </svg></a>
+        </li>
+        <li>
+          <a href="{% static 'assets/apk/app-release.apk' %}" download title="Download APK">
+            <svg>
+              <use href="{% static 'assets/svg/iconly-sprite.svg' %}#Arrow--Download" title="Download APK"></use>
+            </svg>
+            <span class="tooltip-text">Download APK</span>
+          </a>
         </li>
 
             

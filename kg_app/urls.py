@@ -70,6 +70,7 @@ urlpatterns = [
     path('user/login/', views.user_login, name='user-login'),
     path('update-image-status-drf/', views.update_api_image_status_drf, name='update_image_status_drf'),
     path('gs-login/create/', views.create_gs_login, name='create_gs_login'),#http://127.0.0.1:8000/api/v1/gs-login/create/
+    path('tl-login/create/', views.create_tl_login, name='create_tl_login'),#http://127.0.0.1:8000/api/v1/tl-login/create/
     
     # task GET endpoints
     path('tasks/get/', views.get_tasks, name='get_tasks'),#http://127.0.0.1:8000/api/v1/tasks/get/
@@ -185,6 +186,7 @@ urlpatterns = [
     # to get gs punch in details by gs User Id user id
     # method get - -
     path( 'gs-login/<int:user_id>/', get_gs_login_by_user_id, name='get_gs_login_by_user_id' ),
+    path( 'tl-login/<int:user_id>/', get_tl_login_by_user_id, name='get_tl_login_by_user_id' ),
     # http://127.0.0.1:8000/api/v1/gs-login/23/
     
     # to update gs login details by gs_login_id
@@ -192,6 +194,7 @@ urlpatterns = [
     # http://127.0.0.1:8000/api/v1/gs-punch-in/update/4/
     
      path('update-gs-login/<int:gs_login_id>/', views.update_gs_login, name='update_gs_login'),
+     path('update-tl-login/<int:tl_login_id>/', views.update_tl_login, name='update_tl_login'),
 
 
     path('leave-request/create/', LeaveRequestCreateAPIView.as_view(), name='leave-request-create'),
