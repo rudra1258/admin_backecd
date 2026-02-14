@@ -105,17 +105,26 @@
                 <li> <a href="{% url 'kg_app:tc_pending_task' %}">Pending</a></li>
                 <li> <a href="{% url 'kg_app:tc_complete_task' %}">Completed</a></li>
               </ul>
-            </li>
+            </li>      
 
             <li class="sidebar-list">
               <!-- <i class="fa-solid fa-thumbtack"></i> -->
-              <a class="sidebar-link" href="{% url 'kg_app:tc_leave' %}">
+              <a class="sidebar-link" href="javascript:void(0)">
                 <svg class="stroke-icon">
                   <use href="{% static 'assets/svg/iconly-sprite.svg' %}#Bookmark"></use>
                 </svg>
-                <h6 class="f-w-600">Leave Request</h6>
+                <h6 class="f-w-600">Leaves</h6>
+                <!-- <i class="iconly-Arrow-Right-2 icli"></i> -->
+                <i class="fa-solid fa-chevron-right margin_left_auto"></i>
               </a>
+              <ul class="sidebar-submenu">
+                <li> <a href="{% url 'kg_app:tc_leave_apply' %}">Apply</a></li>
+                <li> <a href="{% url 'kg_app:tc_leave_list' %}">My Leaves</a></li>
+              </ul>
             </li>
+
+            
+
           </ul>
         </div>
         <div class="right-arrow" id="right-arrow"><i data-feather="arrow-right"></i></div>

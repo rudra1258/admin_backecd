@@ -39,6 +39,8 @@ class TaskSerializer(serializers.ModelSerializer):
         read_only_fields = ['task_id']
 
 
+
+
 class TaskUpdateSerializerMain(serializers.ModelSerializer):
     class Meta:
         model = Create_task

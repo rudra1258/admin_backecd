@@ -10,6 +10,9 @@
       </svg></a></div>
   <div class="page-main-header col">
     <div class="header-left">
+      <div class="header-info">
+        <h4 id="greetingText"></h4>
+      </div>
       <form class="form-inline search-full col" action="#" method="get">
         <div class="form-group w-100">
           <div class="Typeahead Typeahead--twitterUsers">
@@ -36,6 +39,7 @@
     </div>
     <div class="nav-right">
       <ul class="header-right">
+        <span id="currentDateTime"></span>
         <li class="search d-lg-none d-flex"> <a href="javascript:void(0)">
             <svg>
               <use href="{% static 'assets/svg/iconly-sprite.svg' %}#Search"></use>
@@ -137,4 +141,59 @@
     location.reload(); // refresh the page
     window.location.href = "{% url 'kg_app:admin_logout' %}";
   }
+</script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+
+    // Get username from Django session
+    let userName = "{{ request.session.tc_first_name|default:'User'|escapejs }}";
+
+    // Trim + Capitalize first letter
+    function capitalizeFirstLetter(name) {
+      name = name.trim();
+      if (name.length === 0) return "User";
+      return name[0].toUpperCase() + name.slice(1);
+    }
+
+    userName = capitalizeFirstLetter(userName);
+
+    function updateGreetingAndTime() {
+      const now = new Date();
+
+      // 🇮🇳 Force Indian Time
+      const indianTime = new Date(
+        now.toLocaleString("en-US", { timeZone: "Asia/Kolkata" })
+      );
+
+      const hour = indianTime.getHours();
+      let greeting = "Hello";
+
+      if (hour >= 5 && hour < 12) greeting = "Good Morning";
+      else if (hour >= 12 && hour < 17) greeting = "Good Afternoon";
+      else if (hour >= 17 && hour < 21) greeting = "Good Evening";
+      else greeting = "Good Night";
+
+      document.getElementById("greetingText").innerText =
+        greeting + ", " + userName;
+
+      document.getElementById("currentDateTime").innerText =
+        indianTime.toLocaleString("en-IN", {
+          year: "numeric",
+          month: "short",
+          day: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+          hour12: true
+        });
+    }
+
+    // Run immediately
+    updateGreetingAndTime();
+
+    // Update every second
+    setInterval(updateGreetingAndTime, 1000);
+
+  });
 </script>

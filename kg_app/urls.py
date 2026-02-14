@@ -63,6 +63,8 @@ urlpatterns = [
     path('tc_complete_task/', views.tc_complete_task, name='tc_complete_task'),
     path('tc_leave/', views.tc_leave, name='tc_leave'),
     path('tc_feddback_history/', views.tc_feddback_history, name='tc_feddback_history'),
+    path('tc_leave_apply/', views.tc_leave_apply, name='tc_leave_apply'),
+    path('tc_leave_list/', views.tc_leave_list, name='tc_leave_list'),
     
     
     # api urls

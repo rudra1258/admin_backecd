@@ -725,8 +725,10 @@ def create_task(request):
         employer = request.POST.get("employer")
         father_name = request.POST.get("father_name")
         fe_name = request.POST.get("gs_name")
+        tl_name = request.POST.get("tl_name")
         fe_Mobile = request.POST.get("fe_Mobile")
         fe_userName = request.POST.get("gs_user_name")
+        tl_userName = request.POST.get("tl_user_name")
         customer_number = request.POST.get("customer_number")
         pin_code = request.POST.get("pin_code")
         customer_address = request.POST.get("customer_address")
@@ -779,6 +781,8 @@ def create_task(request):
             employer = employer,
             father_name = father_name,
             fe_name = fe_name,
+            tl_name = tl_name,
+            tl_userName = tl_userName,
             fe_userName = fe_userName,
             fe_mobile_number = fe_Mobile,
             customer_mobile_number = customer_number,
@@ -839,7 +843,7 @@ def import_tasks_from_excel(request):
                 'father_name', 'fe_name', 'fe_mobile_number', 'customer_mobile_number', 
                 'pin_code', 'customer_address', 'customer_office_address', 
                 'reference_details', 'collection_manager_name', 'finance_company_name','fe_userName',
-                'tc_userName'
+                'tc_userName','tl_name', 'tl_userName',
             ]
             
             # Check if all required columns exist
@@ -924,6 +928,8 @@ def import_tasks_from_excel(request):
                         father_name=str(row['father_name']).strip(),
                         fe_name=str(row['fe_name']).strip(),
                         fe_userName=str(row['fe_userName']).strip(),
+                        tl_name=str(row['tl_name']).strip(),
+                        tl_userName=str(row['tl_userName']).strip(),
                         fe_mobile_number=fe_mobile,
                         customer_mobile_number=customer_mobile,
                         pin_code=pin_code,
@@ -1010,6 +1016,8 @@ def download_task_sample_excel(request):
         'father_name': ['Robert Doe', 'David Smith'],
         'fe_name': ['Agent A', 'Agent B'],
         'fe_userName': ['FE-002', 'FE-003'],
+        'tl_name': ['TL A', 'TL B'],
+        'tl_userName': ['TL-002', 'TL-003'],
         'fe_mobile_number': ['9876543210', '8765432109'],
         'customer_mobile_number': ['9123456789', '8234567890'],
         'pin_code': ['400001', '110001'],
@@ -1562,11 +1570,89 @@ def notification(request):
 
 
 def tc_dashboard(request):
-    session_tc_id = request.session.get("tc_admin_id")
+    session_tc_admin_id = request.session.get("tc_admin_id")
+    session_tc_username = request.session.get("username")
+    session_tc_user_id = request.session.get("user_id")
     # navigate to login page if not login
-    if not session_tc_id:
+    if not session_tc_admin_id:
         return render(request, 'index.html')
-    return render(request, "tc_screens/tc_dashboard.html")
+    
+    admin_id_pk = admin_user_model.objects.get(pk = session_tc_admin_id)
+    user_id_pk = CreateUser.objects.get(pk = session_tc_user_id)
+    
+    create_user_list = CreateUser.objects.filter(admin_id = admin_id_pk).exclude(role='telecaller')
+    create_task_list = Create_task.objects.filter(admin_id = admin_id_pk, tc_userName = session_tc_username)[:3]
+    user_length = len(create_user_list)
+    print("Total users:", user_length)
+    
+    # Filter users by role
+    telecallers_queryset = create_user_list.filter(role='telecaller')
+    teamleads_queryset = create_user_list.filter(role='teamlead')
+    groundstaff_queryset = create_user_list.filter(role='groundstaff')
+    
+    telecallers = list(telecallers_queryset[:5].values(
+        'id', 'first_name', 'last_name', 'username', 'email', 'phone_number', 'active_session_key'
+    ))
+    
+    teamleads = list(teamleads_queryset[:5].values(
+        'id', 'first_name', 'last_name', 'username', 'email', 'phone_number', 'active_session_key'
+    ))
+    
+    groundstaff = list(groundstaff_queryset[:5].values(
+        'id', 'first_name', 'last_name', 'username', 'email', 'phone_number', 'active_session_key'
+    ))
+    
+    # Add online/offline status based on active_session_key
+    for user in telecallers:
+        user['status'] = 'online' if user['active_session_key'] else 'offline'
+    
+    for user in teamleads:
+        user['status'] = 'online' if user['active_session_key'] else 'offline'
+    
+    for user in groundstaff:
+        user['status'] = 'online' if user['active_session_key'] else 'offline'
+    
+    tc_login = TcLogin.objects.filter(admin_id = session_tc_admin_id, status = 'Active')
+    tl_login = TlLogin.objects.filter(admin_id = session_tc_admin_id, status = 'Active')
+    gs_login = GsLogin.objects.filter(admin_id = session_tc_admin_id, status = 'Active')
+    login_status_len = len(tl_login) + len(gs_login)
+    # login_status_len = 5
+    print("Total login status entries:", login_status_len)
+    
+    task_list = Create_task.objects.filter(admin_id = session_tc_admin_id)
+    task_length = len(task_list)
+    
+    # Convert to JSON for JavaScript
+    telecallers_json = json.dumps(telecallers)
+    teamleads_json = json.dumps(teamleads)
+    groundstaff_json = json.dumps(groundstaff)
+    
+    leave_requests = leave_request.objects.filter(
+        admin_id = admin_id_pk,
+        user_id = user_id_pk,
+        leave_status = 'Pending'
+    )
+    
+    leave_request_data = leave_request.objects.filter(
+        admin_id=admin_id_pk,
+        user_id = user_id_pk,
+    ).order_by('-submit_time')[:3]
+    print(f"Pending leave requests count: {leave_request_data}")
+
+    leave_requests_length = len(leave_requests)
+    
+    return render(request, "tc_screens/tc_dashboard.html",{
+        "user_length":user_length, 
+        "login_status_len":login_status_len,
+        "leave_requests_length":leave_requests_length,
+        "leave_request_data":leave_request_data,
+        "task_length":task_length,
+        "user_list":create_user_list,
+        "task_list":create_task_list,
+        "telecallers_json": telecallers_json,
+        "teamleads_json": teamleads_json,
+        "groundstaff_json": groundstaff_json,
+        })
 
 def tc_teamlead(request):
     session_admin_id = request.session.get('tc_admin_id')
@@ -1595,24 +1681,28 @@ def tc_tl_login(request):
     # navigate to login page if not login
     if not session_admin_id:
         return render(request, 'index.html')
+    login_status = TlLogin.objects.filter(admin_id = session_admin_id).order_by('-login_time')
     
-    return render(request, "tc_screens/tc_tl_login.html")
+    return render(request, "tc_screens/tc_tl_login.html",{"login_status":login_status})
 
 def tc_gs_login(request):
     session_admin_id = request.session.get("tc_admin_id")
     # navigate to login page if not login
     if not session_admin_id:
         return render(request, 'index.html')
-    return render(request, "tc_screens/tc_gs_login.html")
+    login_status = GsLogin.objects.filter(admin_id = session_admin_id).order_by('-login_time')
+    return render(request, "tc_screens/tc_gs_login.html", {"login_status":login_status})
 
 def tc_assign_task(request):
     session_admin_id = request.session.get('tc_admin_id')
+    session_tc_username = request.session.get('username')
     # navigate to login page if not login
     if not session_admin_id:
         return render(request, 'index.html')
     admin_id_pk = admin_user_model.objects.get(pk = session_admin_id)
     create_task_list = Create_task.objects.filter(
-        admin_id = admin_id_pk
+        admin_id = admin_id_pk,
+        tc_userName = session_tc_username
     )
     update_task_list = task_update.objects.all()
 
@@ -1822,6 +1912,76 @@ def tc_update_task(request):
           
     return render(request, "tc_screens/tc_assign_task.html") 
 
+def tc_leave_apply(request):
+    session_admin_id = request.session.get("tc_admin_id")
+    session_user_id = request.session.get("user_id")
+    # navigate to login page if not login
+    if not session_admin_id:
+        return render(request, 'index.html')
+    if request.method == "POST":
+        admin_id_pk = admin_user_model.objects.get(pk = session_admin_id)
+        user_id = CreateUser.objects.get(pk = session_user_id)
+        user_name = request.POST.get("user_name")
+        user_email = request.POST.get("user_email")
+        user_mobile = request.POST.get("user_mobile")
+        role = request.POST.get("role")
+        leave_type = request.POST.get("leave_type")
+        from_date = request.POST.get("from_date")
+        to_date = request.POST.get("to_date")
+        full_day_half = request.POST.get("full_day_half")
+        leave_reason = request.POST.get("leave_reason")
+        leave_desc = request.POST.get("leave_desc")
+
+        leave_request.objects.create(
+            admin_id = admin_id_pk,
+            user_id = user_id,
+            user_name = user_name,
+            user_email = user_email,
+            user_mobile = user_mobile,
+            role = role,
+            leave_type = leave_type,
+            from_date = from_date if from_date else None,
+            to_date = to_date if to_date else None,
+            full_day_half = full_day_half,
+            leave_reason = leave_reason,
+            leave_desc = leave_desc
+        )
+        
+        messages.success(request, 'Leave applied successfully')
+        return redirect("kg_app:tc_leave_apply")
+    return render(request, "tc_screens/tc_leave_apply.html")
+
+def tc_leave_list(request):
+    session_admin_id = request.session.get("tc_admin_id")
+    session_user_id = request.session.get("user_id")
+    # navigate to login page if not login
+    if not session_admin_id:
+        return render(request, 'index.html')
+    user_id = CreateUser.objects.get(pk = session_user_id)
+    
+    leave_request_list = leave_request.objects.filter(
+        user_id = user_id
+    ).order_by('-submit_time')
+    approved_request_list = leave_request_list.filter(
+        user_id = user_id,
+        leave_status='Approved'
+        )
+    pending_request_list = leave_request_list.filter(
+        user_id = user_id,
+        leave_status='Pending'
+        )
+    rejected_request_list = leave_request_list.filter(
+        user_id = user_id,
+        leave_status='Rejected'
+        )
+    
+    
+    return render(request, "tc_screens/tc_leave_list.html", {
+        "leave_request_list":leave_request_list,
+        "approved_request_list":approved_request_list,
+        "pending_request_list":pending_request_list,
+        "rejected_request_list":rejected_request_list
+        })
 
 
 

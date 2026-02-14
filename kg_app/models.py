@@ -95,6 +95,8 @@ class Create_task(models.Model):
     father_name = models.CharField(max_length = 50)
     fe_name = models.CharField(max_length = 50)
     fe_userName = models.CharField(max_length = 100, null = True, blank = True, default = "-")
+    tl_name = models.CharField(max_length = 50, null = True, blank = True, default = "-")
+    tl_userName = models.CharField(max_length = 100, null = True, blank = True, default = "-")
     fe_mobile_number = models.CharField(max_length = 10)
     customer_mobile_number = models.CharField(max_length = 10)
     pin_code = models.CharField(max_length = 6)

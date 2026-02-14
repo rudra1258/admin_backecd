@@ -507,17 +507,7 @@
             <div class="page-body">
                 <div class="dashboard-container">
                     <div class="header">
-                        <h1>🎯 Agency Telecaller Dashboard</h1>
-                        <!-- <div class="header-actions">
-                            <button class="btn btn-secondary"
-                                onclick="window.location.href='{% url 'kg_app:create_user' %}'">
-                                <span class="icon">👤</span> Create User
-                            </button>
-                            <button class="btn btn-primary"
-                                onclick="window.location.href='{% url 'kg_app:create_task' %}'">
-                                <span class="icon">➕</span> Create Task
-                            </button>
-                        </div> -->
+                        <h1>🎯 Telecaller Dashboard</h1>
                     </div>
 
                     <div class="stats-grid">
@@ -538,7 +528,7 @@
                         </div>
                         <div class="stat-card">
                             <h3>Leave Requests</h3>
-                            <div class="number">12</div>
+                            <div class="number">{{leave_requests_length}}</div>
                             <div class="subtitle">Awaiting approval</div>
                         </div>
                     </div>
@@ -547,151 +537,69 @@
                         <div class="panel">
                             <div class="panel-header">
                                 <h2>Employee Management</h2>
-                                <button class="btn btn-secondary btn-small" onclick="window.location.href='{% url 'kg_app:tc_tl_login' %}'">View All</button>
+                                <button class="btn btn-secondary btn-small"
+                                    onclick="window.location.href='{% url 'kg_app:tc_tl_login' %}'">View All</button>
                             </div>
                             <div class="tabs">
-                                <!-- <button class="tab active" onclick="switchTab(event, 'telecaller')">
-                                    Telecallers
-                                </button> -->
-                                <button class="tab" onclick="switchTab(event, 'teamlead')">
+                                <button class="tab" data-role="teamlead">
                                     Team Leads
                                 </button>
-                                <button class="tab" onclick="switchTab(event, 'ground')">
+                                <button class="tab" data-role="ground">
                                     Ground Staff
                                 </button>
                             </div>
                             <div class="user-list" id="userList">
-                                <div class="user-item">
-                                    <div class="user-info">
-                                        <div class="user-avatar">RK</div>
-                                        <div class="user-details">
-                                            <h4>Rohit Kumar</h4>
-                                            <p>Telecaller • ID: TC001</p>
-                                        </div>
-                                    </div>
-                                    <span class="status-badge status-online">Online</span>
-                                </div>
-                                <div class="user-item">
-                                    <div class="user-info">
-                                        <div class="user-avatar">PS</div>
-                                        <div class="user-details">
-                                            <h4>Priya Sharma</h4>
-                                            <p>Telecaller • ID: TC002</p>
-                                        </div>
-                                    </div>
-                                    <span class="status-badge status-online">Online</span>
-                                </div>
-                                <div class="user-item">
-                                    <div class="user-info">
-                                        <div class="user-avatar">AV</div>
-                                        <div class="user-details">
-                                            <h4>Amit Verma</h4>
-                                            <p>Telecaller • ID: TC003</p>
-                                        </div>
-                                    </div>
-                                    <span class="status-badge status-offline">Offline</span>
-                                </div>
-                                <div class="user-item">
-                                    <div class="user-info">
-                                        <div class="user-avatar">SK</div>
-                                        <div class="user-details">
-                                            <h4>Sneha Kapoor</h4>
-                                            <p>Telecaller • ID: TC004</p>
-                                        </div>
-                                    </div>
-                                    <span class="status-badge status-online">Online</span>
-                                </div>
+
                             </div>
                         </div>
 
                         <div class="panel">
                             <div class="panel-header">
                                 <h2>Task Overview</h2>
-                                <!-- <button class="btn btn-secondary btn-small">
-                                    Assign Task
-                                </button> -->
-                                <button class="btn btn-secondary btn-small" onclick="window.location.href='{% url 'kg_app:tc_assign_task' %}'">
-                                    Assign Task
+                                <button class="btn btn-secondary btn-small"
+                                    onclick="window.location.href='{% url 'kg_app:tc_assign_task' %}'">
+                                    View Task
                                 </button>
                             </div>
+
+                            {% for task in task_list %}
                             <div class="task-item">
                                 <div class="task-header">
-                                    <div class="task-title">Client Follow-up Campaign</div>
-                                    <span class="status-badge status-in-progress">In Progress</span>
+                                    <div class="task-title">{{task.product_type}}</div>
+                                    <span class="status-badge status-in-progress">{{ task.category|default:"N/A"}}</span>
                                 </div>
                                 <div class="task-meta">
-                                    <span>👤 Rajesh Kumar</span>
-                                    <span>📅 Due: Oct 28</span>
+                                    <span>👤 {{task.customer_name}}</span>
+                                    <span>📞 {{task.customer_mobile_number}}</span>
                                 </div>
                             </div>
-                            <div class="task-item">
-                                <div class="task-header">
-                                    <div class="task-title">Market Survey - Zone A</div>
-                                    <span class="status-badge status-pending">Pending</span>
-                                </div>
-                                <div class="task-meta">
-                                    <span>👤 Vikram Singh</span>
-                                    <span>📅 Due: Oct 27</span>
-                                </div>
-                            </div>
-                            <div class="task-item">
-                                <div class="task-header">
-                                    <div class="task-title">Monthly Report Compilation</div>
-                                    <span class="status-badge status-completed">Completed</span>
-                                </div>
-                                <div class="task-meta">
-                                    <span>👤 Neha Gupta</span>
-                                    <span>📅 Completed: Oct 25</span>
-                                </div>
-                            </div>
-                            <div class="task-item">
-                                <div class="task-header">
-                                    <div class="task-title">Database Update Project</div>
-                                    <span class="status-badge status-in-progress">In Progress</span>
-                                </div>
-                                <div class="task-meta">
-                                    <span>👤 Team Lead - Sales</span>
-                                    <span>📅 Due: Oct 30</span>
-                                </div>
-                            </div>
+                            {% endfor %}
                         </div>
                     </div>
 
                     <div class="main-grid">
                         <div class="panel">
                             <div class="panel-header">
-                                <h2>Leave Requests</h2>
+                                <h2>Leave Requests</h2><button class="btn btn-secondary btn-small"
+                                    onclick="window.location.href='{% url 'kg_app:tc_leave_list' %}'">
+                                    View Leave Requests
+                                </button>
                             </div>
+                            {% for leave in leave_request_data %}
                             <div class="leave-item">
                                 <div class="leave-info">
-                                    <h4>Rahul Mehta</h4>
-                                    <p>Ground Staff • 3 days • Nov 1-3, 2025</p>
+                                    <h4>{{leave.user_name}}</h4>
+                                    <p>{{leave.role}} • {{leave.leave_type}} • {{leave.from_date}}</p>
                                 </div>
                                 <div class="leave-actions">
-                                    <button class="btn btn-approve btn-small">Approve</button>
-                                    <button class="btn btn-reject btn-small">Reject</button>
+                                    <span class="premium-badge">
+                                        <span class="badge-dot"></span>
+                                        {{leave.leave_status}}
+                                    </span>
                                 </div>
                             </div>
-                            <div class="leave-item">
-                                <div class="leave-info">
-                                    <h4>Anjali Desai</h4>
-                                    <p>Telecaller • 2 days • Oct 29-30, 2025</p>
-                                </div>
-                                <div class="leave-actions">
-                                    <button class="btn btn-approve btn-small">Approve</button>
-                                    <button class="btn btn-reject btn-small">Reject</button>
-                                </div>
-                            </div>
-                            <div class="leave-item">
-                                <div class="leave-info">
-                                    <h4>Karan Patel</h4>
-                                    <p>Team Lead • 5 days • Nov 5-9, 2025</p>
-                                </div>
-                                <div class="leave-actions">
-                                    <button class="btn btn-approve btn-small">Approve</button>
-                                    <button class="btn btn-reject btn-small">Reject</button>
-                                </div>
-                            </div>
+                            {% endfor %}
+
                         </div>
 
                         <div class="panel">
@@ -699,12 +607,12 @@
                                 <h2>Quick Actions</h2>
                             </div>
                             <div class="quick-actions">
-                                <div class="action-card"
-                                    onclick="window.location.href='{% url 'kg_app:tc_feddback_history' %}'">
-                                    <h3>📊 Feedback</h3>
-                                    <p>See all feedback at a glance</p>
-                                </div>
                                 <!-- <div class="action-card"
+                                    onclick="window.location.href='{% url 'kg_app:create_task' %}'">
+                                    <h3>📊 Create Task</h3>
+                                    <p>Add and assign new tasks</p>
+                                </div>
+                                <div class="action-card"
                                     onclick="window.location.href='{% url 'kg_app:create_user' %}'">
                                     <h3>🙎🏽 Create User</h3>
                                     <p>Add a new user to the system</p>
@@ -802,52 +710,44 @@
             location.reload();
         }
 
+        // Get data from Django template
+        const users = {
+            //telecaller: JSON.parse('{{ telecallers_json|escapejs }}'),
+            teamlead: JSON.parse('{{ teamleads_json|escapejs }}'),
+            ground: JSON.parse('{{ groundstaff_json|escapejs }}')
+        };
 
-        function switchTab(event, type) {
+        const roleNames = {
+            //telecaller: "Telecaller",
+            teamlead: "Team Lead",
+            ground: "Ground Staff",
+        };
+
+        function switchTab(type) {
+            // Remove active class from all tabs
             const tabs = document.querySelectorAll(".tab");
             tabs.forEach((tab) => tab.classList.remove("active"));
+
+            // Add active class to clicked tab
             event.target.classList.add("active");
 
             const userList = document.getElementById("userList");
 
-            const users = {
-                telecaller: [
-                    { name: "Rohit Kumar", id: "TC001", status: "online" },
-                    { name: "Priya Sharma", id: "TC002", status: "online" },
-                    { name: "Amit Verma", id: "TC003", status: "offline" },
-                    { name: "Sneha Kapoor", id: "TC004", status: "online" },
-                ],
-                teamlead: [
-                    { name: "Vikram Singh", id: "TL001", status: "online" },
-                    { name: "Neha Gupta", id: "TL002", status: "online" },
-                    { name: "Arjun Malhotra", id: "TL003", status: "offline" },
-                ],
-                ground: [
-                    { name: "Rahul Mehta", id: "GS001", status: "online" },
-                    { name: "Pooja Reddy", id: "GS002", status: "offline" },
-                    { name: "Sanjay Joshi", id: "GS003", status: "online" },
-                    { name: "Meera Nair", id: "GS004", status: "online" },
-                ],
-            };
-
-            const roleNames = {
-                telecaller: "Telecaller",
-                teamlead: "Team Lead",
-                ground: "Ground Staff",
-            };
+            // Check if there are users for this role
+            if (!users[type] || users[type].length === 0) {
+                userList.innerHTML = '<div class="user-item"><p>No users found for this role.</p></div>';
+                return;
+            }
 
             userList.innerHTML = users[type]
                 .map(
                     (user) => `
                 <div class="user-item">
                     <div class="user-info">
-                        <div class="user-avatar">${user.name
-                            .split(" ")
-                            .map((n) => n[0])
-                            .join("")}</div>
+                        <div class="user-avatar">${(user.first_name.charAt(0) + user.last_name.charAt(0)).toUpperCase()}</div>
                         <div class="user-details">
-                            <h4>${user.name}</h4>
-                            <p>${roleNames[type]} • ID: ${user.id}</p>
+                            <h4>${user.first_name} ${user.last_name}</h4>
+                            <p>${roleNames[type]} • ID: ${user.username}</p>
                         </div>
                     </div>
                     <span class="status-badge status-${user.status}">${user.status === "online" ? "Online" : "Offline"
@@ -857,6 +757,55 @@
                 )
                 .join("");
         }
+
+        // Initialize tabs on page load
+        document.addEventListener('DOMContentLoaded', function () {
+            const tabButtons = document.querySelectorAll('.tab');
+
+            tabButtons.forEach((button, index) => {
+                button.addEventListener('click', function () {
+                    // Remove active from all
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    // Add active to clicked
+                    this.classList.add('active');
+
+                    // Determine which type based on button
+                    let type = 'telecaller';
+                    if (index === 0) type = 'teamlead';
+                    if (index === 1 ) type = 'ground';
+
+                    const userList = document.getElementById("userList");
+
+                    if (!users[type] || users[type].length === 0) {
+                        userList.innerHTML = '<div class="user-item"><p>No users found for this role.</p></div>';
+                        return;
+                    }
+
+                    userList.innerHTML = users[type]
+                        .map(
+                            (user) => `
+                    <div class="user-item">
+                        <div class="user-info">
+                            <div class="user-avatar">${(user.first_name.charAt(0) + user.last_name.charAt(0)).toUpperCase()}</div>
+                            <div class="user-details">
+                                <h4>${user.first_name} ${user.last_name}</h4>
+                                <p>${roleNames[type]} • ID: ${user.username}</p>
+                            </div>
+                        </div>
+                        <span class="status-badge status-${user.status}">${user.status === "online" ? "Online" : "Offline"
+                                }</span>
+                    </div>
+                `
+                        )
+                        .join("");
+                });
+            });
+
+            // Trigger click on first tab to load initial data
+            if (tabButtons.length > 0) {
+                tabButtons[0].click();
+            }
+        });
     </script>
 </body>
 

@@ -113,7 +113,7 @@
   <div class="page-wrapper compact-wrapper" id="pageWrapper">
 
     <!-- this is header section -->
-    {% include 'tc_common/tc_header.html' %}
+    {% include 'common/header.html' %}
     <!--header section end -->
 
 
@@ -153,7 +153,36 @@
                             <th>Action</th>
                           </tr>
                         </thead>
-                        <tbody id="table-body"></tbody>
+                        <tbody >
+                          {% for data in login_status %}
+                          <tr>
+                            <td>{{forloop.counter}}</td>
+                            <td>{{data.name|capfirst }}</td>
+                            <td>{{data.email}}</td>
+                            <td>{{data.mobile_no}}</td>
+                            <td>{{data.status}}</td>
+                            <td>{{ data.login_time|date:"d-m-Y h:i A"|default:"N/A"}}</td>
+                            <td>{{ data.logout_time|date:"d-m-Y h:i A"|default:"N/A"}}</td>
+                            <td><img src="{{data.image.url}}" width="50" height="50" style="border-radius: 50%; object-fit: cover; cursor: pointer;" onclick="openImageModal('{{data.image.url}}', '{{data.name}}')"></td>
+                            <td style="text-align: center;">
+                                {% if data.latitude and data.longitude %}
+                                    <a href="https://www.google.com/maps?q={{data.latitude}},{{data.longitude}}" 
+                                      target="_blank" 
+                                      rel="noopener noreferrer"
+                                      title="View location: {{data.latitude}}, {{data.longitude}}"
+                                      style="color: #1a73e8; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; padding: 6px 12px; border-radius: 4px; background: #e8f0fe; transition: all 0.2s;">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 4px;">
+                                            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                                        </svg>
+                                        Map
+                                    </a>
+                                {% else %}
+                                    <span >N/A</span>
+                                {% endif %}
+                            </td>
+                          </tr>
+                          {% endfor %}
+                        </tbody>
                       </table>
                     </div>
                   </div>

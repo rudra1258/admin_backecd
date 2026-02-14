@@ -1107,11 +1107,16 @@
                                         {% endfor %}
                                     </select>
                                 </div>
+                                
                                 <div class="form-group">
-                                    <label for="gs_name">FE Name*</label>
-                                    <select id="gs_name" name="gs_name" required>
+                                    <label for="gs_userName">FE User Name *</label>
+                                    <input type="text" id="gs_userName" name="gs_user_name" value="" required readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label for="tl_name">TL Name*</label>
+                                    <select id="tl_name" name="tl_name" required>
                                         <option value="" disabled selected>--select--</option>
-                                        {% for user in gs_users %}
+                                        {% for user in tc_user_list %}
                                         <option value="{{ user.first_name }} {{ user.last_name }}" data-username="{{ user.username }}">
                                             {{ user.first_name }} {{ user.last_name }}
                                         </option>
@@ -1119,8 +1124,8 @@
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="gs_userName">FE User Name *</label>
-                                    <input type="text" id="gs_userName" name="gs_user_name" value="" required readonly>
+                                    <label for="tl_userName">TL User Name *</label>
+                                    <input type="text" id="tl_userName" name="tl_user_name" value="" required readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="feMobile">FE Mobile Number</label>
@@ -1284,6 +1289,12 @@
             const selectedOption = this.options[this.selectedIndex];
             const username = selectedOption.getAttribute('data-username');
             document.getElementById('gs_userName').value = username || '';
+        });
+
+        document.getElementById('tl_name').addEventListener('change', function() {
+            const selectedOption = this.options[this.selectedIndex];
+            const username = selectedOption.getAttribute('data-username');
+            document.getElementById('tl_userName').value = username || '';
         });
 
         // Excel file upload handler
