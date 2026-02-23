@@ -45,7 +45,6 @@
   .tooltip-wrapper:hover .tooltip-text {
     opacity: 1;
   }
-
 </style>
 
 <header class="page-header row">
@@ -83,16 +82,16 @@
             </svg></a>
         </li> -->
 
-        
+
         <span id="currentDateTime"></span>
         <li> <a class="dark-mode" href="javascript:void(0)">
             <svg>
               <use href="{% static 'assets/svg/iconly-sprite.svg' %}#moondark"></use>
             </svg></a>
         </li>
-        
+
         <li>
-          <a href="{% static 'assets/apk/app-release_(1.0.1).apk' %}" download title="Download APK">
+          <a href="{% static 'assets/apk/app-release_(1.0.2).apk' %}" download title="Download APK">
             <svg>
               <use href="{% static 'assets/svg/iconly-sprite.svg' %}#Arrow--Download" title="Download APK"></use>
             </svg>
@@ -100,7 +99,7 @@
           </a>
         </li>
 
-            
+
         <li class="custom-dropdown">
           <a href="javascript:void(0)">
             <svg>
@@ -160,7 +159,14 @@
               <li class="d-flex">
                 <svg class="svg-color">
                   <use href="{% static 'assets/svg/iconly-sprite.svg' %}#Login"></use>
-                </svg><a class="ms-2" onclick="refreshAndLogout()">Log Out</a>
+                </svg><a class="ms-2" onclick="confirmLogout()">Log Out</a>
+              </li>
+            </ul>
+            <ul class="profile-body">
+              <li class="d-flex">
+                <svg class="svg-color">
+                  <use href="{% static 'assets/svg/iconly-sprite.svg' %}#Profile"></use>
+                </svg><a class="ms-2" href="{% url 'kg_app:admin_profie' %}">Profile</a>
               </li>
             </ul>
           </div>
@@ -170,9 +176,37 @@
   </div>
 </header>
 
+<!-- sweet alert -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script>
+  function confirmLogout() {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You will be logged out of the system!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Logout!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+
+        Swal.fire({
+          title: "Logged Out!",
+          text: "You have been successfully logged out.",
+          icon: "success",
+          timer: 1500,
+          showConfirmButton: false
+        }).then(() => {
+          refreshAndLogout();  // 🔥 Call your logout function here
+        });
+
+      }
+    });
+  }
+
   function refreshAndLogout() {
-    location.reload();
     window.location.href = "{% url 'kg_app:admin_logout' %}";
   }
 </script>

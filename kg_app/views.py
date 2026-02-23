@@ -186,6 +186,7 @@ def admin_login(request):
                         request.session['admin_id'] = admin_user.admin_id
                         request.session['admin_username'] = admin_user.username
                         request.session['admin_email'] = admin_user.email
+                        request.session['admin_user_count'] = admin_user.user_count
                         
                         return JsonResponse({
                             'success': True,
@@ -383,10 +384,24 @@ def admin_logout(request):
 
 def create_user(request):
     session_admin_id = request.session.get("admin_id")
+    session_admin_user_count = request.session.get("admin_user_count")
     # navigate to login page if not login
     if not session_admin_id:
         return render(request, 'index.html')
     admin_id_pk = admin_user_model.objects.get(pk=session_admin_id)
+    userList = CreateUser.objects.filter(admin_id=admin_id_pk)
+    print(f"Session admin user count: {session_admin_user_count}, Current user count: {userList.count()}")
+    if session_admin_user_count == userList.count():
+        messages.error(request, "User limit reached. Can't create more users.")
+        admins = admin_user_model.objects.all()
+        return render(request, "create_user.html")
+    
+    
+    
+    if session_admin_user_count == userList.count():
+        messages.error(request, "User limit reached. Can't create more users.")
+        admins = admin_user_model.objects.all()
+        return render(request, "create_user.html")
     
     print(f"session admin id by admin_user_model primary key- {admin_id_pk}")
     
@@ -432,6 +447,12 @@ def create_user(request):
             )
             # Add success message
             messages.success(request, 'User created successfully!')
+            userList = CreateUser.objects.filter(admin_id=admin_id_pk)
+            print(f"Session admin user count: {session_admin_user_count}, Current user count: {userList.count()}")
+            if session_admin_user_count == userList.count():
+                messages.error(request, "User limit reached. Can't create more users.")
+                admins = admin_user_model.objects.all()
+                return render(request, "create_user.html")
             return redirect("kg_app:create_user")
             
         except Exception as e:
@@ -1548,6 +1569,43 @@ def notification(request):
     }
     
     return render(request, 'common/header.html', context)
+
+def admin_profie(request):
+    session_admin_id = request.session.get("admin_id")
+    # navigate to login page if not login
+    if not session_admin_id:
+        return render(request, 'index.html')
+    admin_id_pk = admin_user_model.objects.get(pk=session_admin_id)
+    user_list = CreateUser.objects.filter(admin_id = admin_id_pk)
+    telecaller_list = user_list.filter(role='telecaller')
+    teamlead_list = user_list.filter(role='teamlead')
+    groundstaff_list = user_list.filter(role='groundstaff')
+    
+    remaining_users = admin_id_pk.user_count - user_list.count()
+    
+    remaining_percentage = round((user_list.count() / admin_id_pk.user_count) * 100, 2)
+    telecaller_percentage = round((telecaller_list.count() / admin_id_pk.user_count) * 100, 2)
+    teamlead_percentage = round((teamlead_list.count() / admin_id_pk.user_count) * 100, 2)
+    groundstaff_percentage = round((groundstaff_list.count() / admin_id_pk.user_count) * 100, 2)
+    
+    print("remaining users - ", remaining_users)
+    print("admin user count - ", admin_id_pk.user_count)
+    print("user lict - ", user_list.count())
+    
+    print("remaining percentage - ", remaining_percentage)
+    
+    return render(request, "admin_profile.html", {
+        "admin": admin_id_pk,
+        "user_list_length": user_list.count(),
+        "telecaller_list_length": telecaller_list.count(),
+        "teamlead_list_length": teamlead_list.count(),
+        "groundstaff_list_length": groundstaff_list.count(),
+        "remaining_users": remaining_users,
+        "remaining_percentage": remaining_percentage,
+        "telecaller_percentage": telecaller_percentage,
+        "teamlead_percentage": teamlead_percentage,
+        "groundstaff_percentage": groundstaff_percentage,
+        }) 
 
 
 

@@ -1,0 +1,1760 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Profile</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+
+    <!-- Favicon icon-->
+    <link rel="icon" href="{% static 'assets/img/favicon.png' %}" type="image/x-icon">
+    <link rel="shortcut icon" href="{% static 'assets/img/favicon.png' %}" type="image/x-icon">
+    <!-- Google font-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link
+        href="../../css2?family=Nunito+Sans:opsz,wght@6..12,200;6..12,300;6..12,400;6..12,500;6..12,600;6..12,700;6..12,800;6..12,900;6..12,1000&amp;display=swap"
+        rel="stylesheet">
+    <!-- Flag icon css -->
+    <link rel="stylesheet" href="{% static 'assets/css/vendors/flag-icon.css' %}">
+    <!-- iconly-icon-->
+    <link rel="stylesheet" href="{% static 'assets/css/iconly-icon.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/bulk-style.css' %}">
+    <!-- iconly-icon-->
+    <link rel="stylesheet" href="{% static 'assets/css/themify.css' %}">
+    <!--fontawesome-->
+    <link rel="stylesheet" href="{% static 'assets/css/fontawesome-min.css' %}">
+    <!-- Whether Icon css-->
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/vendors/weather-icons/weather-icons.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/vendors/scrollbar.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/vendors/slick.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/vendors/slick-theme.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/vendors/datatables.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/vendors/datatable-extension.css' %}">
+    <!-- App css -->
+    <link id="color" rel="stylesheet" href="{% static 'assets/css/color-1.css' %}" media="screen">
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+        integrity="sha512-…(hash)…”" crossorigin=" anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+        integrity="sha512-…(hash)…”" crossorigin=" anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="https://cdn.iconly.io/iconly.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/iconly@latest/css/iconly.css" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+        integrity="sha512-KNuNk+LZ8e2j+ozhRtX7sMGu0j1qFeIslMo7k3M5lVZhcN7sVbG7ByAzt+BrgrbM5nxp7/ECYtJ8O5E2+8Y0eA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+
+    <link rel="stylesheet" href="https://cdn.iconly.io/your-generated-hash/iconly.css">
+
+    <style>
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #f0f4fb;
+            --white: #ffffff;
+            --blue-50: #eff6ff;
+            --blue-100: #dbeafe;
+            --blue-200: #bfdbfe;
+            --blue-300: #93c5fd;
+            --blue-400: #60a5fa;
+            --blue-500: #3b82f6;
+            --blue-600: #2563eb;
+            --blue-700: #1d4ed8;
+            --slate-300: #cbd5e1;
+            --slate-400: #94a3b8;
+            --slate-500: #64748b;
+            --slate-600: #475569;
+            --slate-700: #334155;
+            --slate-800: #1e293b;
+            --green: #10b981;
+            --green-light: #d1fae5;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+            --shadow: 0 4px 16px rgba(37, 99, 235, 0.08), 0 1px 4px rgba(0, 0, 0, 0.04);
+            --shadow-lg: 0 12px 40px rgba(37, 99, 235, 0.14), 0 4px 12px rgba(0, 0, 0, 0.06);
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--bg);
+            color: var(--slate-800);
+            min-height: 100vh;
+        }
+
+        .sidebar-pannle-main {
+            display: none;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: var(--white);
+            border-bottom: 1px solid var(--blue-100);
+            padding: 0 40px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 800;
+            font-size: 17px;
+            color: var(--blue-600);
+            letter-spacing: -0.3px;
+        }
+
+        .brand-icon {
+            width: 34px;
+            height: 34px;
+            background: linear-gradient(135deg, var(--blue-500), var(--blue-700));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            color: white;
+        }
+
+        .navbar-links {
+            display: flex;
+            gap: 4px;
+        }
+
+        .nav-item {
+            padding: 7px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--slate-500);
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .nav-item:hover {
+            background: var(--blue-50);
+            color: var(--blue-600);
+        }
+
+        .nav-item.active {
+            background: var(--blue-50);
+            color: var(--blue-600);
+            font-weight: 700;
+        }
+
+        .navbar-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .icon-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 9px;
+            border: 1px solid var(--blue-100);
+            background: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 15px;
+            transition: all 0.15s;
+        }
+
+        .icon-btn:hover {
+            background: var(--blue-50);
+            border-color: var(--blue-200);
+        }
+
+        /* Page */
+        .page {
+            max-width: 1060px;
+            margin: 0 auto;
+            padding: 32px 24px;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            color: var(--slate-400);
+            margin-bottom: 26px;
+            opacity: 0;
+            animation: fadeUp 0.5s ease 0.05s forwards;
+        }
+
+        .breadcrumb strong {
+            color: var(--slate-600);
+            font-weight: 600;
+        }
+
+        /* Layout */
+        .layout {
+            display: grid;
+            grid-template-columns: 290px 1fr;
+            gap: 18px;
+            align-items: start;
+        }
+
+        .left-col {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .right-col {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        /* Card base */
+        .card {
+            background: var(--white);
+            border-radius: 18px;
+            border: 1px solid rgba(219, 234, 254, 0.9);
+            box-shadow: var(--shadow);
+        }
+
+        /* Profile Card */
+        .profile-card {
+            overflow: hidden;
+            opacity: 0;
+            animation: fadeUp 0.5s ease 0.1s forwards;
+        }
+
+        .banner {
+            height: 76px;
+            background: linear-gradient(120deg, var(--blue-600) 0%, var(--blue-400) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .banner::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(45deg,
+                    transparent,
+                    transparent 20px,
+                    rgba(255, 255, 255, 0.04) 20px,
+                    rgba(255, 255, 255, 0.04) 40px);
+        }
+
+        .profile-body {
+            padding: 0 22px 22px;
+            text-align: center;
+        }
+
+        .avatar-wrap {
+            display: inline-block;
+            margin-top: -34px;
+            margin-bottom: 12px;
+            position: relative;
+        }
+
+        .avatar {
+            width: 68px;
+            height: 68px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--blue-500), var(--blue-700));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            font-weight: 800;
+            color: white;
+            border: 4px solid white;
+            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);
+            letter-spacing: -1px;
+        }
+
+        .online-dot {
+            position: absolute;
+            bottom: 3px;
+            right: 3px;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: var(--green);
+            border: 3px solid white;
+            box-shadow: 0 0 6px rgba(16, 185, 129, 0.5);
+        }
+
+        .admin-name {
+            font-size: 19px;
+            font-weight: 800;
+            color: var(--slate-800);
+            letter-spacing: -0.4px;
+            margin-bottom: 5px;
+        }
+
+        .role-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: var(--blue-50);
+            color: var(--blue-600);
+            border: 1px solid var(--blue-200);
+            border-radius: 20px;
+            padding: 3px 12px;
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .admin-id-tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--slate-400);
+            margin-bottom: 14px;
+            display: block;
+        }
+
+        .online-pill {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--green);
+            background: var(--green-light);
+            border-radius: 8px;
+            padding: 8px;
+            margin-bottom: 16px;
+        }
+
+        .blink-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--green);
+            animation: blink 1.5s infinite;
+        }
+
+        @keyframes blink {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.3;
+            }
+        }
+
+        .hr {
+            height: 1px;
+            background: var(--blue-100);
+            margin-bottom: 14px;
+        }
+
+        .edit-btn {
+            width: 100%;
+            padding: 11px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--blue-500), var(--blue-700));
+            color: white;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            letter-spacing: 0.01em;
+        }
+
+        .edit-btn:hover {
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.35);
+            transform: translateY(-1px);
+        }
+
+        /* Contact Info Card */
+        .info-card {
+            opacity: 0;
+            animation: fadeUp 0.5s ease 0.2s forwards;
+        }
+
+        .card-header {
+            padding: 14px 18px 10px;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--slate-400);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            border-bottom: 1px solid var(--blue-100);
+        }
+
+        .info-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 13px 18px;
+            border-bottom: 1px solid rgba(219, 234, 254, 0.5);
+            transition: background 0.15s;
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-row:hover {
+            background: var(--blue-50);
+        }
+
+        .info-icon {
+            width: 34px;
+            height: 34px;
+            border-radius: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .ib {
+            background: var(--blue-50);
+        }
+
+        .ip {
+            background: #f5f3ff;
+        }
+
+        .ig {
+            background: #ecfdf5;
+        }
+
+        .io {
+            background: #fff7ed;
+        }
+
+        .info-label {
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--slate-400);
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            margin-bottom: 2px;
+        }
+
+        .info-value {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--slate-700);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Stats Row */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+            opacity: 0;
+            animation: fadeUp 0.5s ease 0.15s forwards;
+        }
+
+        .stat-card {
+            background: var(--white);
+            border-radius: 16px;
+            border: 1px solid rgba(219, 234, 254, 0.9);
+            box-shadow: var(--shadow);
+            padding: 18px;
+            cursor: default;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .stat-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--slate-400);
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        .stat-icon {
+            width: 34px;
+            height: 34px;
+            border-radius: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+        }
+
+        .stat-val {
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: -1px;
+            color: var(--slate-800);
+            margin-bottom: 3px;
+        }
+
+        .stat-desc {
+            font-size: 11px;
+            color: var(--slate-400);
+            font-weight: 500;
+        }
+
+        /* Detail Card */
+        .detail-card {
+            background: var(--white);
+            border-radius: 18px;
+            border: 1px solid rgba(219, 234, 254, 0.9);
+            box-shadow: var(--shadow);
+            opacity: 0;
+            animation: fadeUp 0.5s ease 0.25s forwards;
+        }
+
+        .detail-head {
+            padding: 18px 22px 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--blue-100);
+        }
+
+        .detail-title {
+            font-size: 15px;
+            font-weight: 800;
+            color: var(--slate-800);
+            letter-spacing: -0.2px;
+        }
+
+        .detail-sub {
+            font-size: 12px;
+            color: var(--slate-400);
+            font-weight: 500;
+            margin-top: 2px;
+        }
+
+        .tag {
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 20px;
+            background: var(--blue-50);
+            color: var(--blue-600);
+            border: 1px solid var(--blue-200);
+        }
+
+        .fields-grid {
+            padding: 18px 22px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .field {
+            padding: 13px 15px;
+            border-radius: 11px;
+            background: var(--bg);
+            border: 1px solid var(--blue-100);
+            transition: border-color 0.15s;
+        }
+
+        .field:hover {
+            border-color: var(--blue-300);
+        }
+
+        .field-key {
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--slate-400);
+            letter-spacing: 0.07em;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .field-val {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--slate-700);
+        }
+
+        .field-val.mono {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: var(--blue-600);
+            word-break: break-all;
+        }
+
+        /* Session Card */
+        .session-card {
+            background: var(--white);
+            border-radius: 18px;
+            border: 1px solid rgba(219, 234, 254, 0.9);
+            box-shadow: var(--shadow);
+            padding: 18px 22px;
+            opacity: 0;
+            animation: fadeUp 0.5s ease 0.35s forwards;
+        }
+
+        .sec-title {
+            font-size: 14px;
+            font-weight: 800;
+            color: var(--slate-800);
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .session-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .sbox {
+            padding: 14px 16px;
+            border-radius: 12px;
+            background: var(--blue-50);
+            border: 1px solid var(--blue-100);
+        }
+
+        .sbox-label {
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--slate-400);
+            letter-spacing: 0.07em;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .device-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .device-emoji {
+            font-size: 24px;
+        }
+
+        .device-name {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--slate-700);
+        }
+
+        .device-sub {
+            font-size: 11px;
+            color: var(--slate-400);
+            margin-top: 2px;
+        }
+
+        .key-display {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--blue-600);
+            cursor: pointer;
+            user-select: none;
+            word-break: break-all;
+            line-height: 1.5;
+        }
+
+        .reveal-hint {
+            font-size: 10px;
+            color: var(--blue-400);
+            margin-bottom: 6px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .reveal-hint:hover {
+            color: var(--blue-600);
+        }
+
+        /* Activity Card */
+        .activity-card {
+            background: var(--white);
+            border-radius: 18px;
+            border: 1px solid rgba(219, 234, 254, 0.9);
+            box-shadow: var(--shadow);
+            padding: 18px 22px;
+            opacity: 0;
+            animation: fadeUp 0.5s ease 0.45s forwards;
+        }
+
+        .act-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .act-title {
+            font-size: 14px;
+            font-weight: 800;
+            color: var(--slate-800);
+        }
+
+        .act-sub {
+            font-size: 12px;
+            color: var(--slate-400);
+            font-weight: 500;
+        }
+
+        .bars-wrap {
+            display: flex;
+            align-items: flex-end;
+            gap: 8px;
+            height: 60px;
+        }
+
+        .bar {
+            flex: 1;
+            border-radius: 6px 6px 0 0;
+            background: linear-gradient(to top, var(--blue-600), var(--blue-300));
+            min-height: 4px;
+            transition: height 0.9s cubic-bezier(0.23, 1, 0.32, 1);
+            cursor: pointer;
+            opacity: 0.7;
+        }
+
+        .bar:hover {
+            opacity: 1;
+        }
+
+        .bar.today {
+            opacity: 1;
+            background: linear-gradient(to top, var(--blue-700), var(--blue-400));
+            box-shadow: 0 -3px 10px rgba(37, 99, 235, 0.25);
+        }
+
+        .bar-labels {
+            display: flex;
+            gap: 8px;
+            margin-top: 6px;
+        }
+
+        .blabel {
+            flex: 1;
+            text-align: center;
+            font-size: 10px;
+            color: var(--slate-400);
+            font-weight: 600;
+        }
+
+        .blabel.today {
+            color: var(--blue-600);
+            font-weight: 700;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(14px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 800px) {
+            .layout {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-row {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .fields-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .session-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .navbar-links {
+                display: none;
+            }
+        }
+    </style>
+
+    <style>
+        /* ── STAT CARD ── */
+        .stat-card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 20px 22px 18px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, .07);
+            cursor: pointer;
+            position: relative;
+            transition: box-shadow .25s, transform .25s;
+            user-select: none;
+        }
+
+        .stat-card:hover {
+            box-shadow: 0 8px 30px rgba(79, 124, 255, .18);
+            transform: translateY(-2px);
+        }
+
+        .stat-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            color: #9aa3b2;
+        }
+
+        .stat-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #e8edff, #d5deff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+        }
+
+        .stat-val {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1a1f36;
+            line-height: 1;
+            margin-bottom: 4px;
+        }
+
+        .stat-desc {
+            font-size: 11.5px;
+            color: #b0b8c9;
+            font-weight: 400;
+        }
+
+        /* ── TOOLTIP HINT ── */
+        .hint-badge {
+            position: absolute;
+            bottom: -9px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(90deg, #4f7cff, #7c5cfc);
+            color: #fff;
+            font-size: 9px;
+            font-weight: 600;
+            letter-spacing: .06em;
+            padding: 3px 10px;
+            border-radius: 20px;
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity .2s;
+            pointer-events: none;
+        }
+
+        .stat-card:hover .hint-badge {
+            opacity: 1;
+        }
+
+        /* ── POPUP ── */
+        .popup-wrap {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .22s;
+        }
+
+        .popup-wrap.open {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .popup-backdrop {
+            position: absolute;
+            inset: 0;
+            background: rgba(15, 22, 45, .45);
+            backdrop-filter: blur(6px);
+        }
+
+        .popup {
+            position: relative;
+            z-index: 1;
+            background: #fff;
+            border-radius: 24px;
+            padding: 32px 28px 28px;
+            width: 360px;
+            box-shadow: 0 24px 80px rgba(0, 0, 0, .22);
+            transform: scale(.92) translateY(16px);
+            transition: transform .28s cubic-bezier(.34, 1.56, .64, 1);
+        }
+
+        .popup-wrap.open .popup {
+            transform: scale(1) translateY(0);
+        }
+
+        /* header */
+        .popup-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 22px;
+        }
+
+        .popup-title {
+            font-size: 17px;
+            font-weight: 700;
+            color: #1a1f36;
+            line-height: 1.2;
+        }
+
+        .popup-sub {
+            font-size: 12px;
+            color: #9aa3b2;
+            margin-top: 3px;
+            font-weight: 400;
+        }
+
+        .popup-close {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: none;
+            background: #f2f4f8;
+            color: #6b7799;
+            font-size: 17px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background .15s, color .15s;
+            flex-shrink: 0;
+        }
+
+        .popup-close:hover {
+            background: #ffe5e5;
+            color: #e5484d;
+        }
+
+        /* total pill */
+        .total-pill {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: linear-gradient(135deg, #4f7cff 0%, #7c5cfc 100%);
+            border-radius: 14px;
+            padding: 14px 18px;
+            margin-bottom: 18px;
+            color: #fff;
+        }
+
+        .total-pill-label {
+            font-size: 12px;
+            font-weight: 500;
+            opacity: .85;
+        }
+
+        .total-pill-val {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .total-pill-sub {
+            font-size: 10.5px;
+            opacity: .65;
+            margin-top: 2px;
+        }
+
+        /* bar */
+        .progress-bar-wrap {
+            background: rgba(255, 255, 255, .2);
+            border-radius: 20px;
+            height: 6px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, .9);
+            transition: width 1s cubic-bezier(.4, 0, .2, 1);
+        }
+
+        /* user rows */
+        .user-rows {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .user-row {
+            border-radius: 14px;
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            position: relative;
+            overflow: hidden;
+            transition: transform .18s;
+            cursor: default;
+        }
+
+        .user-row:hover {
+            transform: translateX(4px);
+        }
+
+        .user-row.telecaller {
+            background: #f0f4ff;
+        }
+
+        .user-row.teamlead {
+            background: #f0fdf6;
+        }
+
+        .user-row.groundstaff {
+            background: #fff7ed;
+        }
+
+        .row-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 19px;
+            flex-shrink: 0;
+        }
+
+        .telecaller .row-icon {
+            background: #dce7ff;
+        }
+
+        .teamlead .row-icon {
+            background: #d1fae5;
+        }
+
+        .groundstaff .row-icon {
+            background: #ffe8cc;
+        }
+
+        .row-info {
+            flex: 1;
+        }
+
+        .row-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: #1a1f36;
+            margin-bottom: 4px;
+        }
+
+        .row-bar-bg {
+            height: 5px;
+            border-radius: 10px;
+            background: rgba(0, 0, 0, .07);
+            overflow: hidden;
+        }
+
+        .row-bar-fill {
+            height: 100%;
+            border-radius: 10px;
+            transition: width 1.1s cubic-bezier(.4, 0, .2, 1);
+        }
+
+        .telecaller .row-bar-fill {
+            background: linear-gradient(90deg, #4f7cff, #a5bcff);
+        }
+
+        .teamlead .row-bar-fill {
+            background: linear-gradient(90deg, #10b981, #6ee7b7);
+        }
+
+        .groundstaff .row-bar-fill {
+            background: linear-gradient(90deg, #f97316, #fdba74);
+        }
+
+        .row-count {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 20px;
+            font-weight: 700;
+            flex-shrink: 0;
+            line-height: 1;
+        }
+
+        .telecaller .row-count {
+            color: #4f7cff;
+        }
+
+        .teamlead .row-count {
+            color: #10b981;
+        }
+
+        .groundstaff .row-count {
+            color: #f97316;
+        }
+
+        .row-pct {
+            font-size: 10px;
+            font-weight: 500;
+            margin-top: 1px;
+            text-align: right;
+        }
+
+        .telecaller .row-pct {
+            color: #7a9bff;
+        }
+
+        .teamlead .row-pct {
+            color: #34d399;
+        }
+
+        .groundstaff .row-pct {
+            color: #fb923c;
+        }
+
+        /* divider */
+        .divider {
+            height: 1px;
+            background: #f0f2f7;
+            margin: 18px 0 14px;
+        }
+
+        /* footer */
+        .popup-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-note {
+            font-size: 11px;
+            color: #b0b8c9;
+        }
+
+        .footer-note span {
+            color: #4f7cff;
+            font-weight: 600;
+        }
+
+        .live-dot {
+            display: inline-block;
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #10b981;
+            margin-right: 5px;
+            animation: pulse 1.6s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: .5;
+                transform: scale(1.4);
+            }
+        }
+
+        /* responsive placement — if triggered from card use positioning */
+    </style>
+
+</head>
+
+<body>
+
+    <!-- page-wrapper Start-->
+    <!-- tap on top starts-->
+    <div class="tap-top">
+        <i class="fa-solid fa-angle-up"></i>
+    </div>
+    <!-- tap on tap ends-->
+    <!-- loader-->
+    <div class="loader-wrapper">
+        <div class="loader"><span></span><span></span><span></span><span></span><span></span></div>
+    </div>
+
+
+
+
+    <div class="page-wrapper compact-wrapper" id="pageWrapper">
+
+        <!-- this is header section -->
+        {% include 'common/header.html' %}
+        <!--header section end -->
+
+
+
+
+
+        <!-- Page Body Start-->
+        <div class="page-body-wrapper">
+            <!-- Page sidebar start-->
+            {% include 'common/sidebar.html' %}
+            <!-- Page sidebar end-->
+
+            <!-- body section start  -->
+            <div class="">
+                <div class="container-fluid">
+                    <div class="">
+                        <div class="row">
+                            <div class="page">
+
+                                <div class="breadcrumb">
+                                    Dashboard &nbsp;›&nbsp; <strong>My Profile</strong>
+                                </div>
+
+                                <div class="layout">
+
+                                    <!-- LEFT -->
+                                    <div class="left-col">
+
+                                        <div class="card profile-card">
+                                            <div class="banner"></div>
+                                            <div class="profile-body">
+                                                <div class="avatar-wrap">
+                                                    <div class="avatar" id="avatarInitials">{{ admin.username|slice:":1"|upper }}</div>
+                                                    <div class="online-dot"></div>
+                                                </div>
+                                                <div class="admin-name" id="adminName">{{admin.username|upper}}</div>
+                                                <div class="role-badge">🛡️ Super Admin</div>
+                                                <span class="admin-id-tag"
+                                                    id="adminIdTag">{{admin.admin_system_id|upper}}</span>
+                                                <div class="online-pill">
+                                                    <div class="blink-dot"></div>
+                                                    Currently Online
+                                                </div>
+                                                <div class="hr"></div>
+                                                <button class="edit-btn" onclick="confirmLogout()">
+                                                    ⏻ &nbsp; Logout
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <div class="card info-card">
+                                            <div class="card-header">Contact Info</div>
+                                            <div class="info-row">
+                                                <div class="info-icon ib">📧</div>
+                                                <div>
+                                                    <div class="info-label">Email</div>
+                                                    <div class="info-value" id="adminEmail">{{admin.email}}</div>
+                                                </div>
+                                            </div>
+                                            <div class="info-row">
+                                                <div class="info-icon ip">📱</div>
+                                                <div>
+                                                    <div class="info-label">Mobile</div>
+                                                    <div class="info-value" id="adminMobile">+91 {{admin.mobile_number}}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="info-row">
+                                                <div class="info-icon ig">📅</div>
+                                                <div>
+                                                    <div class="info-label">Member Since</div>
+                                                    <div class="info-value" id="adminCreated">{{admin.created_at}}</div>
+                                                </div>
+                                            </div>
+                                            <div class="info-row">
+                                                <div class="info-icon io">🔐</div>
+                                                <div>
+                                                    <div class="info-label">Login Status</div>
+                                                    <div class="info-value" style="color:var(--green);">✓ Active Session
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <!-- RIGHT -->
+                                    <div class="right-col">
+
+                                        <div class="stats-row">
+
+                                            <!-- STAT CARD -->
+                                            <div class="stat-card" id="statCard" onclick="openPopup()">
+                                                <div class="stat-top">
+                                                    <div class="stat-label">Total Users</div>
+                                                    <div class="stat-icon">👥</div>
+                                                </div>
+                                                <div class="stat-val" id="userCount">
+                                                    {{user_list_length}}/{{admin.user_count}}</div>
+                                                <div class="stat-desc">Managed accounts</div>
+                                                <div class="hint-badge">Click to see breakdown</div>
+                                            </div>
+                                            <div class="stat-card">
+                                                <div class="stat-top">
+                                                    <div class="stat-label">Admin ID</div>
+                                                    <div class="stat-icon ip">🆔</div>
+                                                </div>
+                                                <div class="stat-val" style="color:var(--blue-600);" id="adminIdNum">
+                                                    {{admin.admin_system_id}}
+                                                </div>
+                                                <div class="stat-desc">System identifier</div>
+                                            </div>
+                                            <div class="stat-card">
+                                                <div class="stat-top">
+                                                    <div class="stat-label">Status</div>
+                                                    <div class="stat-icon ig">✅</div>
+                                                </div>
+                                                <div class="stat-val"
+                                                    style="color:var(--green);font-size:16px;padding-top:6px;letter-spacing:0;">
+                                                    Active</div>
+                                                <div class="stat-desc">Session running</div>
+                                            </div>
+                                        </div>
+
+                                        <div class="detail-card">
+                                            <div class="detail-head">
+                                                <div>
+                                                    <div class="detail-title">Account Details</div>
+                                                    <div class="detail-sub">Full admin record information</div>
+                                                </div>
+                                                <span class="tag">Admin Record</span>
+                                            </div>
+                                            <div class="fields-grid">
+                                                <div class="field">
+                                                    <div class="field-key">Username</div>
+                                                    <div class="field-val" id="dUsername">{{admin.username}}</div>
+                                                </div>
+                                                <div class="field">
+                                                    <div class="field-key">Email Address</div>
+                                                    <div class="field-val" id="dEmail">{{admin.email}}</div>
+                                                </div>
+                                                <div class="field">
+                                                    <div class="field-key">Mobile Number</div>
+                                                    <div class="field-val" id="dMobile">+91 {{admin.mobile_number}}
+                                                    </div>
+                                                </div>
+                                                <div class="field">
+                                                    <div class="field-key">Created At</div>
+                                                    <div class="field-val" id="dCreated">{{admin.created_at}}</div>
+                                                </div>
+                                                <div class="field">
+                                                    <div class="field-key">User Limit</div>
+                                                    <div class="field-val" id="dUserCount">{{admin.user_count}} users
+                                                    </div>
+                                                </div>
+                                                <div class="field">
+                                                    <div class="field-key">Login Status</div>
+                                                    <div class="field-val" style="color:var(--green);">🟢 Logged In
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="session-card">
+                                            <div class="sec-title">Session & Device</div>
+                                            <div class="session-grid">
+                                                <div class="sbox">
+                                                    <div class="sbox-label">Last Login Device</div>
+                                                    <div class="device-row">
+                                                        <div class="device-emoji" id="deviceEmoji">💻</div>
+                                                        <div>
+                                                            <div class="device-name" id="deviceName">Chrome · Windows
+                                                            </div>
+                                                            <div class="device-sub">Active session</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="sbox">
+                                                    <div class="sbox-label">Session Key</div>
+                                                    <div class="reveal-hint" onclick="toggleKey()">Click to reveal
+                                                    </div>
+                                                    <div class="key-display" id="keyDisplay">•••••••••••••••••••</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- POPUP -->
+            <div class="popup-wrap" id="popupWrap">
+                <div class="popup-backdrop" onclick="closePopup()"></div>
+                <div class="popup">
+                    <div class="popup-header">
+                        <div>
+                            <div class="popup-title">User Breakdown</div>
+                            <div class="popup-sub">Live team distribution overview</div>
+                        </div>
+                        <button class="popup-close" onclick="closePopup()">✕</button>
+                    </div>
+
+                    <!-- Total pill -->
+                    <div class="total-pill">
+                        <div>
+                            <div class="total-pill-label">Total Active Users</div>
+                            <div class="total-pill-val">{{user_list_length}} <span style="font-size:13px;opacity:.7">/
+                                    {{admin.user_count}}</span></div>
+                            <div class="total-pill-sub">{{remaining_users}} slots remaining</div>
+                        </div>
+                        <div style="text-align:right;min-width:80px;">
+                            <div style="font-size:11px;opacity:.7;margin-bottom:6px;">Capacity Used</div>
+                            <div style="font-size:20px;font-weight:700;">{{remaining_percentage}}%</div>
+                            <div class="progress-bar-wrap">
+                                <div class="progress-bar-fill" id="totalBar" style="width:0%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Rows -->
+                    <div class="user-rows">
+
+                        <div class="user-row telecaller">
+                            <div class="row-icon">📞</div>
+                            <div class="row-info">
+                                <div class="row-name">Telecallers</div>
+                                <div class="row-bar-bg">
+                                    <div class="row-bar-fill" id="bar1" style="width:0%"></div>
+                                </div>
+                            </div>
+                            <div style="text-align:right;">
+                                <div class="row-count">{{telecaller_list_length}}</div>
+                                <div class="row-pct telecaller">{{telecaller_percentage}}%</div>
+                            </div>
+                        </div>
+
+                        <div class="user-row teamlead">
+                            <div class="row-icon">🎯</div>
+                            <div class="row-info">
+                                <div class="row-name">Team Leads</div>
+                                <div class="row-bar-bg">
+                                    <div class="row-bar-fill" id="bar2" style="width:0%"></div>
+                                </div>
+                            </div>
+                            <div style="text-align:right;">
+                                <div class="row-count">{{teamlead_list_length}}</div>
+                                <div class="row-pct teamlead">{{teamlead_percentage}}%</div>
+                            </div>
+                        </div>
+
+                        <div class="user-row groundstaff">
+                            <div class="row-icon">🛠️</div>
+                            <div class="row-info">
+                                <div class="row-name">Ground Staff</div>
+                                <div class="row-bar-bg">
+                                    <div class="row-bar-fill" id="bar3" style="width:0%"></div>
+                                </div>
+                            </div>
+                            <div style="text-align:right;">
+                                <div class="row-count">{{groundstaff_list_length}}</div>
+                                <div class="row-pct groundstaff">{{groundstaff_percentage}}%</div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="divider"></div>
+
+                    <div class="popup-footer">
+                        <div class="footer-note">
+                            <span class="live-dot"></span>
+                            Last updated <span>just now</span>
+                        </div>
+                        <div class="footer-note">Limit: <span>{{admin.user_count}} users</span></div>
+                    </div>
+                </div>
+            </div>
+            <!-- Container-fluid starts-->
+            {% include 'common/footer.html' %}
+        </div>
+        <!-- page body end  -->
+
+    </div>
+
+
+
+
+
+    <!-- jquery-->
+    <script src="{% static 'assets/js/vendors/jquery/jquery.min.js' %}"></script>
+    <!-- bootstrap js-->
+    <script src="{% static 'assets/js/vendors/bootstrap/dist/js/bootstrap.bundle.min.js' %}" defer=""></script>
+    <script src="{% static 'assets/js/vendors/bootstrap/dist/js/popper.min.js' %}" defer=""></script>
+    <!--fontawesome-->
+    <script src="{% static 'assets/js/vendors/font-awesome/fontawesome-min.js' %}"></script>
+    <!-- feather-->
+    <script src="{% static 'assets/js/vendors/feather-icon/feather.min.js' %}"></script>
+    <script src="{% static 'assets/js/vendors/feather-icon/custom-script.js' %}"></script>
+    <!-- sidebar -->
+    <script src="{% static 'assets/js/sidebar.js' %}"></script>
+    <!-- height_equal-->
+    <script src="{% static 'assets/js/height-equal.js' %}"></script>
+    <!-- config-->
+    <script src="{% static 'assets/js/config.js' %}"></script>
+    <!-- apex-->
+    <script src="{% static 'assets/js/chart/apex-chart/apex-chart.js' %}"></script>
+    <script src="{% static 'assets/js/chart/apex-chart/stock-prices.js' %}"></script>
+    <!-- scrollbar-->
+    <script src="{% static 'assets/js/scrollbar/simplebar.js' %}"></script>
+    <script src="{% static 'assets/js/scrollbar/custom.js' %}"></script>
+    <!-- slick-->
+    <script src="{% static 'assets/js/slick/slick.min.js' %}"></script>
+    <script src="{% static 'assets/js/slick/slick.js' %}"></script>
+    <!-- data_table-->
+    <script src="{% static 'assets/js/js-datatables/datatables/jquery.dataTables.min.js' %}"></script>
+    <!-- page_datatable-->
+    <script src="{% static 'assets/js/js-datatables/datatables/datatable.custom.js' %}"></script>
+    <!-- page_datatable1-->
+    <script src="{% static 'assets/js/js-datatables/datatables/datatable.custom1.js' %}"></script>
+    <!-- page_datatable-->
+    <script src="{% static 'assets/js/datatable/datatables/datatable.custom.js' %}"></script>
+    <!-- theme_customizer-->
+    <script src="{% static 'assets/js/theme-customizer/customizer.js' %}"></script>
+    <!-- tilt-->
+    <script src="{% static 'assets/js/animation/tilt/tilt.jquery.js' %}"></script>
+    <!-- page_tilt-->
+    <script src="{% static 'assets/js/animation/tilt/tilt-custom.js' %}"></script>
+    <!-- dashboard_1-->
+    <script src="{% static 'assets/js/dashboard/dashboard_1.js' %}"></script>
+
+
+    <!-- slick-->
+    <script src="{% static 'assets/js/slick/slick.min.js' %}"></script>
+    <script src="{% static 'assets/js/slick/slick.js' %}"></script>
+    <!-- datatable-->
+    <script src="{% static 'assets/js/datatable/datatables/jquery.dataTables.min.js' %}"></script>
+    <!-- datatable_extension-->
+    <script src="{% static 'assets/js/datatable/datatable-extension/dataTables.buttons.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/jszip.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/buttons.colVis.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/pdfmake.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/vfs_fonts.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/dataTables.autoFill.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/dataTables.select.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/buttons.bootstrap4.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/buttons.html5.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/buttons.print.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/dataTables.bootstrap4.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/dataTables.responsive.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/responsive.bootstrap4.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/dataTables.keyTable.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/dataTables.colReorder.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/dataTables.fixedHeader.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/dataTables.rowReorder.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/dataTables.scroller.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/custom.js' %}"></script>
+
+    <!-- datatable-->
+    <script src="{% static 'assets/js/datatable/datatables/jquery.dataTables.min.js' %}"></script>
+    <!-- page_datatable -->
+    <script src="{% static 'assets/js/js-datatables/datatables/datatable.custom.js' %}"></script>
+    <!-- page_datatable-->
+    <!-- <script src="{% static 'assets/js/datatable/datatables/datatable.custom.js' %}"></script> -->
+    <!-- theme_customizer-->
+    <script src="{% static 'assets/js/theme-customizer/customizer.js' %}"></script>
+
+    <!-- custom script -->
+    <script src="{% static 'assets/js/script.js' %}"></script>
+
+    <!-- sweet alert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        function openPopup() {
+            document.getElementById('popupWrap').classList.add('open');
+            setTimeout(() => {
+                document.getElementById('totalBar').style.width = '{{remaining_percentage}}%';
+                document.getElementById('bar1').style.width = '{{telecaller_percentage}}%';
+                document.getElementById('bar2').style.width = '{{teamlead_percentage}}%';
+                document.getElementById('bar3').style.width = '{{groundstaff_percentage}}%';
+            }, 80);
+        }
+
+        function closePopup() {
+            const wrap = document.getElementById('popupWrap');
+            wrap.classList.remove('open');
+            // reset bars for re-animation
+            setTimeout(() => {
+                document.getElementById('totalBar').style.width = '0%';
+                document.getElementById('bar1').style.width = '0%';
+                document.getElementById('bar2').style.width = '0%';
+                document.getElementById('bar3').style.width = '0%';
+            }, 250);
+        }
+
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') closePopup(); });
+    </script>
+
+    <script>
+        function confirmLogout() {
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You will be logged out of the system!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, Logout!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+
+                    Swal.fire({
+                        title: "Logged Out!",
+                        text: "You have been successfully logged out.",
+                        icon: "success",
+                        timer: 1500,
+                        showConfirmButton: false
+                    }).then(() => {
+                        refreshAndLogout();  // 🔥 Call your logout function here
+                    });
+
+                }
+            });
+        }
+
+        function refreshAndLogout() {
+            window.location.href = "{% url 'kg_app:admin_logout' %}";
+        }
+    </script>
+
+    <script>
+        // Animate bars
+        window.addEventListener('load', () => {
+            document.querySelectorAll('.bar').forEach((b, i) => {
+                const h = b.dataset.h + '%';
+                b.style.height = '0%';
+                setTimeout(() => { b.style.height = h; }, 150 + i * 65);
+            });
+        });
+
+        // Toggle session key
+        let revealed = false;
+        window._sessionKey = "{{ admin.active_session_key|escapejs }}";
+        function toggleKey() {
+            revealed = !revealed;
+            document.getElementById('keyDisplay').textContent = revealed
+                ? (window._sessionKey || 'No Key Found')
+                : '•••••••••••••••••••';
+            document.querySelector('.reveal-hint').textContent =
+                revealed ? 'Hide' : 'Click to reveal';
+        }
+
+        // Load data from Django
+        function loadAdminData(data) {
+            if (!data) return;
+            if (data.username) {
+                const initials = data.username.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
+                document.getElementById('avatarInitials').textContent = initials;
+                document.getElementById('adminName').textContent = data.username;
+                document.getElementById('dUsername').textContent = data.username;
+            }
+            if (data.email) {
+                document.getElementById('adminEmail').textContent = data.email;
+                document.getElementById('dEmail').textContent = data.email;
+            }
+            if (data.mobile_number) {
+                document.getElementById('adminMobile').textContent = data.mobile_number;
+                document.getElementById('dMobile').textContent = data.mobile_number;
+            }
+            if (data.admin_id !== undefined) {
+                const padded = String(data.admin_id).padStart(4, '0');
+                document.getElementById('adminIdTag').textContent = `ADM-${padded}`;
+                document.getElementById('adminIdNum').textContent = String(data.admin_id).padStart(3, '0');
+            }
+            if (data.user_count !== undefined) {
+                document.getElementById('userCount').textContent = data.user_count;
+                document.getElementById('dUserCount').textContent = `${data.user_count} users`;
+            }
+            if (data.created_at) {
+                const d = new Date(data.created_at);
+                const fmt = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                document.getElementById('adminCreated').textContent = fmt;
+                document.getElementById('dCreated').textContent = fmt;
+            }
+            if (data.last_login_device) {
+                document.getElementById('deviceName').textContent = data.last_login_device;
+                document.getElementById('deviceEmoji').textContent =
+                    data.last_login_device.toLowerCase().includes('mobile') ? '📱' : '💻';
+            }
+            if (data.active_session_key) {
+                window._sessionKey = data.active_session_key;
+            }
+        }
+
+        // ─── Django Integration ───────────────────────────────────────────
+        // Uncomment and place in your Django template:
+        //
+        // loadAdminData({
+        //   username: "{{ admin.username }}",
+        //   email: "{{ admin.email }}",
+        //   mobile_number: "{{ admin.mobile_number }}",
+        //   admin_id: {{ admin.admin_id }},
+        //   user_count: {{ admin.user_count }},
+        //   created_at: "{{ admin.created_at|date:'c' }}",
+        //   last_login_device: "{{ admin.last_login_device|default:'' }}",
+        //   active_session_key: "{{ admin.active_session_key|default:'' }}",
+        // });
+    </script>
+
+
+</body>
+
+</html>

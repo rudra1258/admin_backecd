@@ -6,6 +6,7 @@ from datetime import timedelta
 class admin_user_model(models.Model):
     admin_id = models.AutoField(primary_key=True)
     username = models.CharField(max_length=100)
+    admin_system_id = models.CharField(max_length=50, null=True, blank=True, default='ADMIN-001')
     email = models.EmailField(unique=True)
     mobile_number = models.CharField(max_length=15)
     password = models.CharField(max_length=100)
