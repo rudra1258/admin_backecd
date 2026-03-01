@@ -181,6 +181,7 @@
                           <tr>
                             <th>Sl</th>
                             <th>Updated By</th>
+                            <th>Role</th>
                             <th>Updated Date</th>
                             <th>Agreement Id</th>
                             <th>Code</th>
@@ -212,6 +213,7 @@
                           <tr>
                             <td>{{forloop.counter}}</td>
                             <td>{{data.updated_by|capfirst }}</td>
+                            <td>{{data.updated_by_role|capfirst }}</td>
                             <td>{{data.updated_at}}</td>
                             <td>{{data.agreement_id}}</td>
                             <td>{{data.code}}</td>

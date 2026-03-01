@@ -6,6 +6,7 @@ from datetime import timedelta
 class admin_user_model(models.Model):
     admin_id = models.AutoField(primary_key=True)
     username = models.CharField(max_length=100)
+    role = models.CharField(max_length=20, default='admin')
     admin_system_id = models.CharField(max_length=50, null=True, blank=True, default='ADMIN-001')
     email = models.EmailField(unique=True)
     mobile_number = models.CharField(max_length=15)
@@ -42,6 +43,7 @@ class CreateUser(models.Model):
     active_session_key = models.CharField(max_length=255, null=True, blank=True) 
     last_login_device = models.CharField(max_length=255, null=True, blank=True)
     isMobile_login = models.CharField(max_length=10, null=True, blank=True, default='No')
+    login_status = models.CharField(max_length=10, null=True, blank=True, default='Inactive')
 
     def __str__(self):
         return f"{self.first_name} {self.last_name} - {self.role}"
@@ -151,11 +153,15 @@ class Create_task(models.Model):
     latitude = models.CharField(max_length = 50, null=True, blank=True)
     longitude = models.CharField(max_length = 50, null=True, blank=True)
     
+    submit_time = models.DateTimeField(auto_now_add=True)
+    updated_time = models.DateTimeField(auto_now=True)
+    
 
 class task_update(models.Model):
     task_update_id = models.AutoField(primary_key = True)
     
     updated_by = models.CharField(max_length = 100, null = True, blank = True)
+    updated_by_role = models.CharField(max_length = 50, null=True, blank=True, default = '-')
     
     #data form admin table
     admin_id = models.ForeignKey(admin_user_model, on_delete = models.CASCADE)

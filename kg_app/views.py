@@ -621,6 +621,7 @@ def assign_task(request):
     updated_task_list_json = json.dumps(list(update_task_list.values(
         'task_update_id',
         'updated_by',
+        'updated_by_role',
         'updated_at',
         'agreement_id',
         'code',
@@ -1139,6 +1140,7 @@ def update_task(request):
         
         task_update.objects.create(
             updated_by = session_admin_username,
+            updated_by_role = admin_id_pk.role,
             admin_id = admin_id_pk,
             task_id = model_task_id,
             agreement_id = aggrement_id,
@@ -1230,7 +1232,7 @@ def dashboard(request):
     admin_id_pk = admin_user_model.objects.get(pk = session_admin_id)
     
     create_user_list = CreateUser.objects.filter(admin_id = admin_id_pk)
-    create_task_list = Create_task.objects.filter(admin_id = admin_id_pk)[:3]
+    create_task_list = Create_task.objects.filter(admin_id = admin_id_pk).order_by('-submit_time')[:3]
     user_length = len(create_user_list)
     print("Total users:", user_length)
     
@@ -1240,15 +1242,15 @@ def dashboard(request):
     groundstaff_queryset = create_user_list.filter(role='groundstaff')
     
     telecallers = list(telecallers_queryset[:5].values(
-        'id', 'first_name', 'last_name', 'username', 'email', 'phone_number', 'active_session_key'
+        'id', 'first_name', 'last_name', 'username', 'email', 'phone_number', 'active_session_key', 'login_status'
     ))
     
     teamleads = list(teamleads_queryset[:5].values(
-        'id', 'first_name', 'last_name', 'username', 'email', 'phone_number', 'active_session_key'
+        'id', 'first_name', 'last_name', 'username', 'email', 'phone_number', 'active_session_key', 'login_status'
     ))
     
     groundstaff = list(groundstaff_queryset[:5].values(
-        'id', 'first_name', 'last_name', 'username', 'email', 'phone_number', 'active_session_key'
+        'id', 'first_name', 'last_name', 'username', 'email', 'phone_number', 'active_session_key', 'login_status'
     ))
     
     # Add online/offline status based on active_session_key
@@ -1330,7 +1332,10 @@ def leave(request):
     if not session_admin_id:
         return render(request, 'index.html')
     
-    leave_request_list = leave_request.objects.filter(admin_id = session_admin_id).order_by('-submit_time')
+    leave_request_list = leave_request.objects.filter(
+        admin_id = session_admin_id,
+        role = 'telecaller'
+        ).order_by('-submit_time')
     return render(request, "leave.html", {"leave_request_list":leave_request_list})
 
 def get_leave_details(request):
@@ -1549,9 +1554,13 @@ def feddback_history(request):
         return render(request, 'index.html')
     admin_id_pk = admin_user_model.objects.get(pk=session_admin_id)
     
-    feedback = task_update.objects.filter(
-        admin_id = admin_id_pk
+    feedback = list(
+        task_update.objects.filter(
+            admin_id=admin_id_pk
+        )
     )
+
+    feedback.reverse()
     
     return render(request, "feedback_history.html", {"feedback":feedback})    
     
@@ -1570,7 +1579,7 @@ def notification(request):
     
     return render(request, 'common/header.html', context)
 
-def admin_profie(request):
+def admin_profile(request):
     session_admin_id = request.session.get("admin_id")
     # navigate to login page if not login
     if not session_admin_id:
@@ -1639,7 +1648,7 @@ def tc_dashboard(request):
     user_id_pk = CreateUser.objects.get(pk = session_tc_user_id)
     
     create_user_list = CreateUser.objects.filter(admin_id = admin_id_pk).exclude(role='telecaller')
-    create_task_list = Create_task.objects.filter(admin_id = admin_id_pk, tc_userName = session_tc_username)[:3]
+    create_task_list = Create_task.objects.filter(admin_id = admin_id_pk, tc_userName = session_tc_username).order_by('-submit_time')[:3]
     user_length = len(create_user_list)
     print("Total users:", user_length)
     
@@ -1649,15 +1658,15 @@ def tc_dashboard(request):
     groundstaff_queryset = create_user_list.filter(role='groundstaff')
     
     telecallers = list(telecallers_queryset[:5].values(
-        'id', 'first_name', 'last_name', 'username', 'email', 'phone_number', 'active_session_key'
+        'id', 'first_name', 'last_name', 'username', 'email', 'phone_number', 'active_session_key', 'login_status'
     ))
     
     teamleads = list(teamleads_queryset[:5].values(
-        'id', 'first_name', 'last_name', 'username', 'email', 'phone_number', 'active_session_key'
+        'id', 'first_name', 'last_name', 'username', 'email', 'phone_number', 'active_session_key', 'login_status'
     ))
     
     groundstaff = list(groundstaff_queryset[:5].values(
-        'id', 'first_name', 'last_name', 'username', 'email', 'phone_number', 'active_session_key'
+        'id', 'first_name', 'last_name', 'username', 'email', 'phone_number', 'active_session_key', 'login_status'
     ))
     
     # Add online/offline status based on active_session_key
@@ -1768,6 +1777,7 @@ def tc_assign_task(request):
     updated_task_list_json = json.dumps(list(update_task_list.values(
         'task_update_id',
         'updated_by',
+        'updated_by_role',
         'updated_at',
         'agreement_id',
         'code',
@@ -1828,14 +1838,19 @@ def tc_feddback_history(request):
         return render(request, 'index.html')
     admin_id_pk = admin_user_model.objects.get(pk=session_admin_id)
     
-    feedback = task_update.objects.filter(
-        admin_id = admin_id_pk
+    feedback = list(
+        task_update.objects.filter(
+            admin_id=admin_id_pk
+        )
     )
+
+    feedback.reverse()
     
     return render(request, "tc_screens/tc_feedback_history.html", {"feedback":feedback})  
 
 def tc_update_task(request):
     session_admin_id = request.session.get('tc_admin_id')
+    session_user_role = request.session.get('role')
     # navigate to login page if not login
     if not session_admin_id:
         return render(request, 'index.html')
@@ -1888,6 +1903,7 @@ def tc_update_task(request):
         
         task_update.objects.create(
             updated_by = session_admin_username,
+            updated_by_role = session_user_role,
             admin_id = admin_id_pk,
             task_id = model_task_id,
             agreement_id = aggrement_id,
@@ -1973,16 +1989,19 @@ def tc_update_task(request):
 def tc_leave_apply(request):
     session_admin_id = request.session.get("tc_admin_id")
     session_user_id = request.session.get("user_id")
+    session_user_role = request.session.get("role")
     # navigate to login page if not login
     if not session_admin_id:
         return render(request, 'index.html')
+    
+    telecaller_id_pk = CreateUser.objects.get(pk = session_user_id)
     if request.method == "POST":
         admin_id_pk = admin_user_model.objects.get(pk = session_admin_id)
         user_id = CreateUser.objects.get(pk = session_user_id)
         user_name = request.POST.get("user_name")
         user_email = request.POST.get("user_email")
         user_mobile = request.POST.get("user_mobile")
-        role = request.POST.get("role")
+        # role = request.POST.get("role")
         leave_type = request.POST.get("leave_type")
         from_date = request.POST.get("from_date")
         to_date = request.POST.get("to_date")
@@ -1996,7 +2015,7 @@ def tc_leave_apply(request):
             user_name = user_name,
             user_email = user_email,
             user_mobile = user_mobile,
-            role = role,
+            role = session_user_role,
             leave_type = leave_type,
             from_date = from_date if from_date else None,
             to_date = to_date if to_date else None,
@@ -2007,7 +2026,7 @@ def tc_leave_apply(request):
         
         messages.success(request, 'Leave applied successfully')
         return redirect("kg_app:tc_leave_apply")
-    return render(request, "tc_screens/tc_leave_apply.html")
+    return render(request, "tc_screens/tc_leave_apply.html", {"telecaller":telecaller_id_pk})
 
 def tc_leave_list(request):
     session_admin_id = request.session.get("tc_admin_id")
@@ -2040,6 +2059,147 @@ def tc_leave_list(request):
         "pending_request_list":pending_request_list,
         "rejected_request_list":rejected_request_list
         })
+
+def tc_profile(request):
+    session_admin_id = request.session.get("tc_admin_id")
+    session_tc_id = request.session.get("user_id")
+    # navigate to login page if not login
+    if not session_tc_id:
+        return render(request, 'index.html')
+    admin_id_pk = admin_user_model.objects.get(pk=session_admin_id)
+    tc_id_pk = CreateUser.objects.get(pk=session_tc_id)
+    user_list = CreateUser.objects.filter(
+        admin_id = admin_id_pk
+    ).exclude(role='telecaller')
+    telecaller_list = user_list.filter(role='telecaller')
+    teamlead_list = user_list.filter(role='teamlead')
+    groundstaff_list = user_list.filter(role='groundstaff')
+    
+    remaining_users = admin_id_pk.user_count - user_list.count()
+    
+    remaining_percentage = round((user_list.count() / admin_id_pk.user_count) * 100, 2)
+    telecaller_percentage = round((telecaller_list.count() / admin_id_pk.user_count) * 100, 2)
+    teamlead_percentage = round((teamlead_list.count() / admin_id_pk.user_count) * 100, 2)
+    groundstaff_percentage = round((groundstaff_list.count() / admin_id_pk.user_count) * 100, 2)
+    
+    print("remaining users - ", remaining_users)
+    print("admin user count - ", admin_id_pk.user_count)
+    print("user lict - ", user_list.count())
+    
+    print("remaining percentage - ", remaining_percentage)
+    
+    return render(request, "tc_screens/tc_profile.html", {
+        "admin": tc_id_pk,
+        "user_list_length": user_list.count(),
+        "telecaller_list_length": telecaller_list.count(),
+        "teamlead_list_length": teamlead_list.count(),
+        "groundstaff_list_length": groundstaff_list.count(),
+        "remaining_users": remaining_users,
+        "remaining_percentage": remaining_percentage,
+        "telecaller_percentage": telecaller_percentage,
+        "teamlead_percentage": teamlead_percentage,
+        "groundstaff_percentage": groundstaff_percentage,
+        })
+    
+def tc_leave_requests(request):
+    session_admin_id = request.session.get("tc_admin_id")
+    # navigate to login page if not login
+    if not session_admin_id:
+        return render(request, 'index.html')
+    
+    leave_request_list = leave_request.objects.filter(
+        admin_id=session_admin_id
+    ).exclude(
+        role='telecaller'
+    ).order_by('-submit_time')
+    return render(request, "tc_screens/tc_leave_request.html", {"leave_request_list":leave_request_list})
+
+def tc_approve_leave(request):
+    if request.method == 'POST':
+        # Get the session admin_id
+        session_admin_id = request.session.get("tc_admin_id")
+        
+        # Check if admin is logged in
+        if not session_admin_id:
+            return render(request, 'index.html')
+        
+        leave_id = request.POST.get('leave_id')
+        
+        print(f"Approving leave ID: {leave_id} by admin ID: {session_admin_id}")
+        
+        try:
+            # Filter by leave_id, admin_id, and ensure status is Pending
+            leave = leave_request.objects.get(
+                leave_id=leave_id,
+                leave_status='Pending'
+            )
+            
+            # Update status to Approved
+            leave.leave_status = 'Approved'
+            leave.save()
+            
+            return redirect("kg_app:tc_leave_requests")
+
+            
+        except leave_request.DoesNotExist:
+            return JsonResponse({
+                'success': False, 
+                'message': 'Leave request not found or already processed'
+            })
+        except Exception as e:
+            return JsonResponse({
+                'success': False, 
+                'message': f'Error: {str(e)}'
+            })
+    
+    return render(request, "tc_screens/tc_leave_request.html")
+
+def tc_reject_leave(request):
+    if request.method == 'POST':
+        # Get the session admin_id
+        session_admin_id = request.session.get("admin_id")
+        
+        # Check if admin is logged in
+        if not session_admin_id:
+            return render(request, 'index.html')
+        
+        # leave_id = request.POST.get('leave_id')
+        reject_reason = request.POST.get('reject_reason')
+        
+        leave_id = request.POST.get('rej_leave_id')
+        
+        print(f"Approving leave ID: {leave_id} by admin ID: {session_admin_id}")
+        
+        # Validate reject reason
+        if not reject_reason or not reject_reason.strip():
+            return JsonResponse({'success': False, 'message': 'Rejection reason is mandatory'})
+        
+        try:
+            # Filter by leave_id, admin_id, and ensure status is Pending
+            leave = leave_request.objects.get(
+                leave_id=leave_id,
+                leave_status='Pending'
+            )
+            
+            # Update status to Rejected and save reason
+            leave.leave_status = 'Rejected'
+            leave.reject_reason = reject_reason
+            leave.save()
+            
+            return redirect("kg_app:tc_leave_requests")
+            
+        except leave_request.DoesNotExist:
+            return JsonResponse({
+                'success': False, 
+                'message': 'Leave request not found or already processed'
+            })
+        except Exception as e:
+            return JsonResponse({
+                'success': False, 
+                'message': f'Error: {str(e)}'
+            })
+    
+    return JsonResponse({'success': False, 'message': 'Invalid request method'})
 
 
 
@@ -2131,12 +2291,13 @@ def create_gs_login(request):
         latitude = request.data.get('latitude')
         login_time = request.data.get('login_time', None)
         logout_time = request.data.get('logout_time', None)
+        login_status = request.data.get('login_status')
 
         # Validate required fields
-        if not all([user_id, admin_id, name, email, mobile_no, status_value, image, longitude, latitude, login_time]):
+        if not all([user_id, admin_id, name, email, mobile_no, status_value, image, longitude, latitude, login_time, login_status]):
             return Response({
                 'success': False,
-                'message': 'All fields are required: user_id, admin_id, name, email, mobile_no, status, image, longitude, latitude, login_time'
+                'message': 'All fields are required: user_id, admin_id, name, email, mobile_no, status, image, longitude, latitude, login_time, login_status'
             }, status=status.HTTP_400_BAD_REQUEST)
 
         # Check if email already exists
@@ -2175,6 +2336,9 @@ def create_gs_login(request):
             login_time=login_time if login_time else None,
             logout_time=logout_time if logout_time else None
         )
+        
+        user.login_status = login_status
+        user.save()
 
         # Serialize and return the created object
         serializer = GsLoginSerializer(gs_login)
@@ -2217,12 +2381,13 @@ def create_tl_login(request):
         latitude = request.data.get('latitude')
         login_time = request.data.get('login_time', None)
         logout_time = request.data.get('logout_time', None)
+        login_status = request.data.get('login_status')
 
         # Validate required fields
-        if not all([user_id, admin_id, name, email, mobile_no, status_value, image, longitude, latitude, login_time]):
+        if not all([user_id, admin_id, name, email, mobile_no, status_value, image, longitude, latitude, login_time, login_status]):
             return Response({
                 'success': False,
-                'message': 'All fields are required: user_id, admin_id, name, email, mobile_no, status, image, longitude, latitude, login_time'
+                'message': 'All fields are required: user_id, admin_id, name, email, mobile_no, status, image, longitude, latitude, login_time, login_status'
             }, status=status.HTTP_400_BAD_REQUEST)
 
         # Check if email already exists
@@ -2261,6 +2426,9 @@ def create_tl_login(request):
             login_time=login_time if login_time else None,
             logout_time=logout_time if logout_time else None
         )
+        
+        user.login_status = login_status
+        user.save()
 
         # Serialize and return the created object
         serializer = TlLoginSerializer(tl_login)
@@ -2695,6 +2863,17 @@ def update_gs_login(request, gs_login_id):
 
     if serializer.is_valid():
         serializer.save()
+
+        # ✅ Update login_status in CreateUser if status is being updated
+        new_status = request.data.get('status')
+        if new_status and gs_login.user_id:
+            try:
+                create_user = CreateUser.objects.get(id=gs_login.user_id.id)
+                create_user.login_status = new_status  # maps GsLogin.status → CreateUser.login_status
+                create_user.save(update_fields=['login_status'])
+            except CreateUser.DoesNotExist:
+                pass  # user_id reference broken, skip silently
+
         return Response(
             {
                 "message": "GS Login updated successfully",
@@ -2713,7 +2892,7 @@ def update_tl_login(request, tl_login_id):
         tl_login = TlLogin.objects.get(tl_login_id=tl_login_id)
     except TlLogin.DoesNotExist:
         return Response(
-            {"error": "GS Login not found"},
+            {"error": "TL Login not found"},
             status=status.HTTP_404_NOT_FOUND
         )
 
@@ -2725,9 +2904,20 @@ def update_tl_login(request, tl_login_id):
 
     if serializer.is_valid():
         serializer.save()
+
+        # ✅ Update login_status in CreateUser if status is being updated
+        new_status = request.data.get('status')
+        if new_status and tl_login.user_id:
+            try:
+                create_user = CreateUser.objects.get(id=tl_login.user_id.id)
+                create_user.login_status = new_status  # maps TlLogin.status → CreateUser.login_status
+                create_user.save(update_fields=['login_status'])
+            except CreateUser.DoesNotExist:
+                pass  # user_id reference broken, skip silently
+
         return Response(
             {
-                "message": "GS Login updated successfully",
+                "message": "TL Login updated successfully",
                 "data": serializer.data
             },
             status=status.HTTP_200_OK

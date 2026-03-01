@@ -37,7 +37,7 @@ urlpatterns = [
     path('telecaller/', views.telecaller, name='telecaller'),
     path('tl_login/', views.tl_login, name='tl_login'),
     path('feddback_history/', views.feddback_history, name='feddback_history'),
-    path('admin_profie/', views.admin_profie, name='admin_profie'),
+    path('admin_profile/', views.admin_profile, name='admin_profile'),
     
     path('download-sample/', views.download_sample_excel_user_create, name='download_sample_excel'),
     path('import_users_from_excel/', views.import_users_from_excel, name='import_users_from_excel'),
@@ -66,6 +66,10 @@ urlpatterns = [
     path('tc_feddback_history/', views.tc_feddback_history, name='tc_feddback_history'),
     path('tc_leave_apply/', views.tc_leave_apply, name='tc_leave_apply'),
     path('tc_leave_list/', views.tc_leave_list, name='tc_leave_list'),
+    path('tc_profile/', views.tc_profile, name='tc_profile'),
+    path('tc_leave_requests/', views.tc_leave_requests, name='tc_leave_requests'),
+    path('tc_approve_leave/', views.tc_approve_leave, name='tc_approve_leave'),
+    path('tc_reject_leave/', views.tc_reject_leave, name='tc_reject_leave'),
     
     
     # api urls

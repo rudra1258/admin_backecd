@@ -507,7 +507,7 @@
             <div class="page-body">
                 <div class="dashboard-container">
                     <div class="header">
-                        <h1>🎯 Telecaller Dashboard</h1>
+                        <h1>Telecaller Dashboard</h1>
                     </div>
 
                     <div class="stats-grid">
@@ -750,8 +750,7 @@
                             <p>${roleNames[type]} • ID: ${user.username}</p>
                         </div>
                     </div>
-                    <span class="status-badge status-${user.status}">${user.status === "online" ? "Online" : "Offline"
-                        }</span>
+                    <span class="status-badge status-${user.login_status === 'Active' ? 'online' : 'offline'}">${user.login_status === "Active" ? user.login_status : user.login_status}</span>
                 </div>
             `
                 )
@@ -792,8 +791,7 @@
                                 <p>${roleNames[type]} • ID: ${user.username}</p>
                             </div>
                         </div>
-                        <span class="status-badge status-${user.status}">${user.status === "online" ? "Online" : "Offline"
-                                }</span>
+                        <span class="status-badge status-${user.login_status === 'Active' ? 'online' : 'offline'}">${user.login_status === "Active" ? user.login_status : user.login_status}</span>
                     </div>
                 `
                         )

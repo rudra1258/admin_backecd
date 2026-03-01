@@ -1310,6 +1310,7 @@
                                                             <tr>
                                                                 <th>Sl</th>
                                                                 <th>Updated By</th>
+                                                                <th>Role</th>
                                                                 <th>Updated At</th>
                                                                 <th>Agreement Id</th>
                                                                 <th>Code</th>
@@ -2439,6 +2440,7 @@
   <script>
     
     const updatedTaskList = {{ updated_task_list_json|safe }};
+    const reversedTaskList = [...updatedTaskList].reverse();
 
     function openHistoryPopup(button) {
         console.log("*********************************************************** global_aggrement_id ",global_aggrement_id);
@@ -2464,7 +2466,7 @@
             
             
             // Filter data by agreement_id
-            const filteredData = updatedTaskList.filter(task => 
+            const filteredData = reversedTaskList.filter(task => 
                 task.agreement_id === agreementId || 
                 task.agreement_id === String(agreementId)
             );
@@ -2554,7 +2556,14 @@
 
                 row.innerHTML = `
                     <td>${index + 1}</td>
-                    <td>${data.updated_by || '-'}</td>
+                    <td>${data.updated_by 
+                        ? data.updated_by.charAt(0).toUpperCase() + data.updated_by.slice(1) 
+                        : '-'}
+                    </td>
+                    <td>${data.updated_by_role 
+                        ? data.updated_by_role.charAt(0).toUpperCase() + data.updated_by_role.slice(1) 
+                        : '-'}
+                    </td>
                      <td>${formatDateTime(data.updated_at)}</td>
                     <td>${data.agreement_id || '-'}</td>
                     <td>${data.code || '-'}</td>

@@ -47,13 +47,50 @@ class SingleDeviceMiddleware:
     
     
     
-class AutoLogoutMiddleware:
-    """
-    Automatically set GS users to Inactive
-    if login_time is older than 10 hours.
-    Runs on every request.
-    """
+# class AutoLogoutMiddleware:
+#     """
+#     Automatically set GS users to Inactive
+#     if login_time is older than 10 hours.
+#     Runs on every request.
+#     """
 
+#     def __init__(self, get_response):
+#         self.get_response = get_response
+
+#     def __call__(self, request):
+
+#         expiry_time = timezone.now() - timedelta(hours=10)
+
+#         # 🔥 One SQL query updates all expired users
+#         GsLogin.objects.filter(
+#             status="Active",
+#             login_time__lte=expiry_time
+#         ).update(
+#             status="Inactive",
+#             logout_time=timezone.now()
+#         )
+        
+#         TlLogin.objects.filter(
+#             status="Active",
+#             login_time__lte=expiry_time
+#         ).update(
+#             status="Inactive",
+#             logout_time=timezone.now()
+#         )
+        
+#         TcLogin.objects.filter(
+#             status="Active",
+#             login_time__lte=expiry_time
+#         ).update(
+#             status="Inactive",
+#             logout_time=timezone.now()
+#         )
+
+#         response = self.get_response(request)
+#         return response
+
+class AutoLogoutMiddleware:
+    
     def __init__(self, get_response):
         self.get_response = get_response
 
@@ -61,30 +98,31 @@ class AutoLogoutMiddleware:
 
         expiry_time = timezone.now() - timedelta(hours=10)
 
-        # 🔥 One SQL query updates all expired users
-        GsLogin.objects.filter(
-            status="Active",
-            login_time__lte=expiry_time
-        ).update(
-            status="Inactive",
-            logout_time=timezone.now()
-        )
-        
-        TlLogin.objects.filter(
-            status="Active",
-            login_time__lte=expiry_time
-        ).update(
-            status="Inactive",
-            logout_time=timezone.now()
-        )
-        
-        TcLogin.objects.filter(
-            status="Active",
-            login_time__lte=expiry_time
-        ).update(
-            status="Inactive",
-            logout_time=timezone.now()
-        )
+        self._auto_logout(GsLogin, expiry_time)
+        self._auto_logout(TlLogin, expiry_time)
+        self._auto_logout(TcLogin, expiry_time)
 
         response = self.get_response(request)
         return response
+
+    def _auto_logout(self, Model, expiry_time):
+        # ✅ Evaluate to a real list immediately — no lazy queryset race condition
+        expired_user_ids = list(
+            Model.objects.filter(
+                status="Active",
+                login_time__lte=expiry_time,
+                user_id__isnull=False   # ✅ skip null user_id foreign keys
+            ).values_list('user_id', flat=True)
+        )
+
+        if not expired_user_ids:
+            return  # nothing to do, skip all queries
+
+        # ✅ Now safely update the login model
+        Model.objects.filter(
+            status="Active",
+            login_time__lte=expiry_time
+        ).update(status="Inactive", logout_time=timezone.now())
+
+        # ✅ Mirror the status to CreateUser
+        CreateUser.objects.filter(id__in=expired_user_ids).update(login_status="Inactive")
