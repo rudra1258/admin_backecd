@@ -730,6 +730,105 @@
             margin-bottom: 8px;
         }
 
+        .failed-rows-banner {
+            margin: 16px 0;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #fff5f5 0%, #fff0f0 100%);
+            border: 1.5px solid #fecaca;
+            box-shadow: 0 2px 12px rgba(239, 68, 68, 0.08), 0 1px 3px rgba(0,0,0,0.04);
+            overflow: hidden;
+            animation: slideDown 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .failed-rows-inner {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 18px;
+        }
+
+        .failed-rows-icon {
+            flex-shrink: 0;
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            border: 1px solid #fca5a5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #dc2626;
+        }
+
+        .failed-rows-text {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .failed-rows-title {
+            font-size: 13.5px;
+            font-weight: 700;
+            color: #b91c1c;
+            letter-spacing: 0.01em;
+        }
+
+        .failed-rows-sub {
+            font-size: 12.5px;
+            color: #ef4444;
+            opacity: 0.85;
+        }
+
+        .failed-rows-btn {
+            flex-shrink: 0;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 9px 18px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+            color: #fff !important;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            text-decoration: none !important;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(220, 38, 38, 0.35), 0 1px 2px rgba(0,0,0,0.1);
+            transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+            white-space: nowrap;
+        }
+
+        .failed-rows-btn:hover {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            box-shadow: 0 4px 16px rgba(220, 38, 38, 0.45), 0 2px 4px rgba(0,0,0,0.12);
+            transform: translateY(-1px);
+        }
+
+        .failed-rows-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 1px 4px rgba(220, 38, 38, 0.3);
+        }
+
+        .failed-rows-btn svg {
+            transition: transform 0.2s ease;
+        }
+
+        .failed-rows-btn:hover svg {
+            transform: translateY(2px);
+        }
+
+        @media (max-width: 520px) {
+            .failed-rows-inner { flex-wrap: wrap; }
+            .failed-rows-btn   { width: 100%; justify-content: center; }
+        }
+
     </style>
 
 
@@ -790,8 +889,36 @@
                                     {{ message|safe }}
                                 </div>
                                 {% endfor %}
+                                {% if request.session.failed_import_rows %}
+                                <div class="failed-rows-banner">
+                                    <div class="failed-rows-inner">
+                                        <div class="failed-rows-icon">
+                                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                                                <line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+                                            </svg>
+                                        </div>
+                                        <div class="failed-rows-text">
+                                            <span class="failed-rows-title">Import incomplete</span>
+                                            <span class="failed-rows-sub">
+                                                {{ request.session.failed_import_rows|length }} row{{ request.session.failed_import_rows|length|pluralize }} failed to import
+                                            </span>
+                                        </div>
+                                        <a href="{% url 'kg_app:download_failed_rows' %}" class="failed-rows-btn">
+                                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                                <polyline points="7 10 12 15 17 10"/>
+                                                <line x1="12" y1="15" x2="12" y2="3"/>
+                                            </svg>
+                                            Download Failed Rows
+                                        </a>
+                                    </div>
+                                </div>
+                                {% endif %}
                             </div>
                             {% endif %}
+
+                            
 
                             <div class="validation-note">
                                 <strong>⚠️ Important Validation Rules:</strong>

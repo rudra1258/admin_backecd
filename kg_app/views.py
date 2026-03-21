@@ -15,6 +15,12 @@ from django.http import HttpResponse
 from django.contrib.sessions.models import Session
 from rest_framework.views import APIView
 from django.db.models import Q
+from django.db import transaction
+from django.core.paginator import Paginator
+
+from django.shortcuts import render
+from django.db.models import Count, Q
+import json
 
 
 # Create your views here.
@@ -605,19 +611,62 @@ def download_sample_excel_user_create(request):
     
     return response
 
+# def assign_task(request):
+#     session_admin_id = request.session.get('admin_id')
+#     # navigate to login page if not login
+#     if not session_admin_id:
+#         return render(request, 'index.html')
+#     admin_id_pk = admin_user_model.objects.get(pk = session_admin_id)
+#     create_task_list = Create_task.objects.filter(
+#         admin_id = admin_id_pk
+#     )
+#     update_task_list = task_update.objects.all()
+#     print(f"Task count: {create_task_list.count()}") 
+
+#      # Convert queryset to JSON with all fields from your model
+#     updated_task_list_json = json.dumps(list(update_task_list.values(
+#         'task_update_id',
+#         'updated_by',
+#         'updated_by_role',
+#         'updated_at',
+#         'agreement_id',
+#         'code',
+#         'new_mobile_number',
+#         'projection',
+#         'promise_date',
+#         'promise_amount',
+#         'customer_remark',
+#         'reference_remark',
+#         'need_group_visit',
+#         'visit_projection',
+#         'visit_status',
+#         'customer_available',
+#         'vehicle_available',
+#         'third_party_status',
+#         'third_party_details',
+#         'new_update_address',
+#         'location_image',
+#         'document_image',
+#         'location_status',
+#         'recipt_no',
+#         'payment_mode',
+#         'payment_amount',
+#         'payment_date',
+#         'updated_at',
+#     )), default=str)
+    
+#     return render(request, "assign_task.html", {
+#         "task_list":create_task_list, 
+#         "updated_task_list":update_task_list,
+#         "updated_task_list_json": updated_task_list_json
+#         })
+
 def assign_task(request):
     session_admin_id = request.session.get('admin_id')
-    # navigate to login page if not login
     if not session_admin_id:
         return render(request, 'index.html')
-    admin_id_pk = admin_user_model.objects.get(pk = session_admin_id)
-    create_task_list = Create_task.objects.filter(
-        admin_id = admin_id_pk
-    )
+    
     update_task_list = task_update.objects.all()
-    print(f"Task count: {create_task_list.count()}") 
-
-     # Convert queryset to JSON with all fields from your model
     updated_task_list_json = json.dumps(list(update_task_list.values(
         'task_update_id',
         'updated_by',
@@ -646,29 +695,166 @@ def assign_task(request):
         'payment_mode',
         'payment_amount',
         'payment_date',
-        'updated_at',
     )), default=str)
     
     return render(request, "assign_task.html", {
-        "task_list":create_task_list, 
-        "updated_task_list":update_task_list,
         "updated_task_list_json": updated_task_list_json
-        })
+    })
 
-def complete_task(request):
-    session_admin_id = request.session.get("admin_id")
-    # navigate to login page if not login
+
+
+
+# def assign_task_api(request):
+#     import json
+#     from django.http import HttpResponse
+#     from django.core.paginator import Paginator
+
+#     # Same session check as your main view
+#     session_admin_id = request.session.get('admin_id')
+#     if not session_admin_id:
+#         return HttpResponse(
+#             json.dumps({'error': 'unauthorized'}),
+#             content_type='application/json',
+#             status=401
+#         )
+
+#     try:
+#         admin_id_pk = admin_user_model.objects.get(pk=session_admin_id)
+#         tasks = Create_task.objects.filter(admin_id=admin_id_pk)
+
+#         category = request.GET.get('category', '')
+#         if category and category != 'ALL':
+#             tasks = tasks.filter(category=category)
+
+#         filter_column = request.GET.get('filter_column', '')
+#         filter_value  = request.GET.get('filter_value', '')
+#         if filter_column and filter_value:
+#             tasks = tasks.filter(**{filter_column: filter_value})
+
+#         page_number = int(request.GET.get('page', 1))
+#         page_size   = int(request.GET.get('page_size', 50))
+
+#         paginator = Paginator(tasks.values(), page_size)
+#         page_obj  = paginator.get_page(page_number)
+
+#         response_data = {
+#             'data': list(page_obj.object_list),
+#             'total': paginator.count,
+#             'page': page_number,
+#             'num_pages': paginator.num_pages,
+#             'has_next': page_obj.has_next(),
+#             'has_previous': page_obj.has_previous(),
+#         }
+#         return HttpResponse(
+#             json.dumps(response_data, default=str),
+#             content_type='application/json'
+#         )
+
+#     except Exception as e:
+#         import traceback
+#         print(traceback.format_exc())
+#         return HttpResponse(
+#             json.dumps({'error': str(e)}),
+#             content_type='application/json',
+#             status=500
+#         )
+
+
+def assign_task_api(request):
+    import json
+    from django.http import HttpResponse
+    from django.core.paginator import Paginator
+
+    session_admin_id = request.session.get('admin_id')
+    print(f"SESSION admin_id = {session_admin_id}, type = {type(session_admin_id)}")
+    
     if not session_admin_id:
-        return render(request, 'index.html')
-    
-    admin_id_pk = admin_user_model.objects.get(pk = session_admin_id)
-    create_task_list = Create_task.objects.filter(
-        admin_id=admin_id_pk
-    ).exclude(
-        Q(update_location_status="RF") | Q(update_location_status__isnull=True)
+        return HttpResponse(
+            json.dumps({'error': 'unauthorized'}),
+            content_type='application/json',
+            status=401
+        )
+
+    try:
+        admin_id_pk = admin_user_model.objects.get(pk=session_admin_id)
+        tasks = Create_task.objects.filter(admin_id=admin_id_pk)
+        print(f"Tasks found = {tasks.count()}")
+
+        category = request.GET.get('category', '')
+        if category and category != 'ALL':
+            tasks = tasks.filter(category=category)
+
+        filter_column = request.GET.get('filter_column', '')
+        filter_value  = request.GET.get('filter_value', '')
+        if filter_column and filter_value:
+            tasks = tasks.filter(**{filter_column: filter_value})
+
+        page_number = int(request.GET.get('page', 1))
+        page_size   = int(request.GET.get('page_size', 50))
+
+        paginator = Paginator(tasks.values(), page_size)
+        page_obj  = paginator.get_page(page_number)
+
+        response_data = {
+            'data': list(page_obj.object_list),
+            'total': paginator.count,
+            'page': page_number,
+            'num_pages': paginator.num_pages,
+            'has_next': page_obj.has_next(),
+            'has_previous': page_obj.has_previous(),
+        }
+        return HttpResponse(
+            json.dumps(response_data, default=str),
+            content_type='application/json'
+        )
+
+    except Exception as e:
+        import traceback
+        print(traceback.format_exc())
+        return HttpResponse(
+            json.dumps({'error': str(e)}),
+            content_type='application/json',
+            status=500
+        )
+
+def assign_task_filter_values(request):
+    session_admin_id = request.session.get('admin_id')
+    if not session_admin_id:
+        return JsonResponse({'values': []})
+    admin_id_pk = admin_user_model.objects.get(pk=session_admin_id)
+    column = request.GET.get('column', '')
+    if not column:
+        return JsonResponse({'values': []})
+    values = (
+        Create_task.objects.filter(admin_id=admin_id_pk)
+        .values_list(column, flat=True).distinct()
+        .exclude(**{f'{column}__isnull': True})
+        .exclude(**{f'{column}__exact': ''})
+        .order_by(column)[:500]
     )
-    
-    return render(request, "complete_task.html", {"task_list": create_task_list})
+    return JsonResponse({'values': list(values)})
+
+def assign_task_category_counts(request):
+    session_admin_id = request.session.get('admin_id')
+    if not session_admin_id:
+        return JsonResponse({})
+    admin_id_pk = admin_user_model.objects.get(pk=session_admin_id)
+    from django.db.models import Count
+    qs = (
+        Create_task.objects.filter(admin_id=admin_id_pk)
+        .values('category').annotate(count=Count('category'))
+    )
+    all_categories = [
+        'ALL','CB','DISP','EXP','NC','NITP','OS','PAID','PTP','REPO',
+        'RNR','RTP','SHIFT','SKIP','VISIT','RE-VISIT','WIP','N-OFF',
+        'ANF','FRAUD','PS','CF','FP','WS','NO JOB','MP','MD','IC','3P'
+    ]
+    counts = {cat: 0 for cat in all_categories}
+    for row in qs:
+        if row['category']:
+            counts[row['category']] = row['count']
+    counts['ALL'] = Create_task.objects.filter(admin_id=admin_id_pk).count()
+    return JsonResponse(counts)
 
 def task_delete_complete(request, id):
     session_admin_id = request.session.get("admin_id")
@@ -677,6 +863,20 @@ def task_delete_complete(request, id):
         return render(request, 'index.html')
     emp = get_object_or_404(Create_task, task_id=id)
     emp.delete()
+    return redirect('kg_app:complete_task')
+
+def bulk_delete_tasks(request):
+    session_admin_id = request.session.get("admin_id")
+
+    if not session_admin_id:
+        return render(request, 'index.html')
+
+    if request.method == "POST":
+        task_ids = request.POST.getlist("task_ids")
+
+        if task_ids:
+            Create_task.objects.filter(task_id__in=task_ids).delete()
+
     return redirect('kg_app:complete_task')
 
 def create_task(request):
@@ -829,12 +1029,11 @@ def create_task(request):
 
 #create task list api function
 class Create_task_Viewset(viewsets.ModelViewSet):
-    queryset = Create_task.objects.all()
+    queryset = Create_task.objects.all().order_by('-submit_time')
     serializer_class = CreateTaskSerializer
 
 def import_tasks_from_excel(request):
     session_admin_id = request.session.get("admin_id")
-    # navigate to login page if not login
     if not session_admin_id:
         return render(request, 'index.html')
     admin_id_pk = admin_user_model.objects.get(pk=session_admin_id)
@@ -842,19 +1041,14 @@ def import_tasks_from_excel(request):
     if request.method == 'POST' and request.FILES.get('excel_file'):
         excel_file = request.FILES['excel_file']
         
-        # Validate file extension
         if not excel_file.name.endswith(('.xlsx', '.xls')):
             messages.error(request, 'Please upload a valid Excel file (.xlsx or .xls)')
             return redirect('kg_app:import_tasks')
         
         try:
-            # Read Excel file
             df = pd.read_excel(excel_file)
-            
-            # Strip whitespace from column names
             df.columns = df.columns.str.strip()
             
-            # Required columns (only mandatory fields)
             required_columns = [
                 'aggrement_id', 'customer_name', 'product_type', 'tc_name', 
                 'branch', 'count_of_cases', 'old_or_new', 'bucket', 'mode', 
@@ -864,132 +1058,178 @@ def import_tasks_from_excel(request):
                 'emi_start_date', 'emi_end_date', 'emi_cycle_date', 'make', 
                 'father_name', 'fe_name', 'fe_mobile_number', 'customer_mobile_number', 
                 'pin_code', 'customer_address', 'customer_office_address', 
-                'reference_details', 'collection_manager_name', 'finance_company_name','fe_userName',
-                'tc_userName','tl_name', 'tl_userName',
+                'reference_details', 'collection_manager_name', 'finance_company_name',
+                'fe_userName', 'tc_userName', 'tl_name', 'tl_userName',
             ]
             
-            # Check if all required columns exist
             missing_columns = [col for col in required_columns if col not in df.columns]
             if missing_columns:
                 messages.error(request, f'Missing required columns: {", ".join(missing_columns)}')
                 return redirect('kg_app:import_tasks')
             
             success_count = 0
+            created_count = 0
+            updated_count = 0
             error_count = 0
             errors = []
+            failed_rows = []
             
-            # Process each row
             for index, row in df.iterrows():
                 try:
-                    # Skip empty rows
                     if pd.isna(row['aggrement_id']) or pd.isna(row['customer_name']):
                         continue
                     
-                    # Validate mobile numbers (should be 10 digits)
                     fe_mobile = str(row['fe_mobile_number']).strip()
                     customer_mobile = str(row['customer_mobile_number']).strip()
                     
                     if not fe_mobile.isdigit() or len(fe_mobile) != 10:
                         errors.append(f"Row {index + 2}: Invalid FE mobile number")
+                        failed_rows.append({**row.to_dict(), 'error_reason': 'Invalid FE mobile number'})
                         error_count += 1
                         continue
                     
                     if not customer_mobile.isdigit() or len(customer_mobile) != 10:
                         errors.append(f"Row {index + 2}: Invalid customer mobile number")
+                        failed_rows.append({**row.to_dict(), 'error_reason': 'Invalid customer mobile number'})
                         error_count += 1
                         continue
                     
-                    # Validate pin code (should be 6 digits)
                     pin_code = str(row['pin_code']).strip()
                     if not pin_code.isdigit() or len(pin_code) != 6:
                         errors.append(f"Row {index + 2}: Invalid pin code")
+                        failed_rows.append({**row.to_dict(), 'error_reason': 'Invalid pin code'})
                         error_count += 1
                         continue
                     
-                    # Create task
-                    task = Create_task(
-                        admin_id=admin_id_pk,
-                        
-                        # Agreement information
+                    task, created = Create_task.objects.update_or_create(
                         aggrement_id=str(row['aggrement_id']).strip(),
-                        customer_name=str(row['customer_name']).strip(),
-                        product_type=str(row['product_type']).strip(),
-                        tc_name=str(row['tc_name']).strip(),
-                        tc_userName=str(row['tc_userName']).strip(),
-                        branch=str(row['branch']).strip(),
-                        count_of_cases=str(row['count_of_cases']).strip(),
-                        old_or_new=str(row['old_or_new']).strip(),
-                        bucket=str(row['bucket']).strip(),
-                        mode=str(row['mode']).strip(),
-                        npa_status=str(row['npa_status']).strip(),
-                        
-                        # Financial details
-                        pos_amount=str(row['pos_amount']).strip(),
-                        total_charges=str(row['total_charges']).strip(),
-                        bcc_pending=str(row['bcc_pending']).strip(),
-                        penal_pending=str(row['penal_pending']).strip(),
-                        emi_amount=str(row['emi_amount']).strip(),
-                        emi_due_amount=str(row['emi_due_amount']).strip(),
-                        recipt_amount=str(row['recipt_amount']).strip(),
-                        recipt_date=str(row['recipt_date']).strip(),
-                        disbursement_amount=str(row['disbursement_amount']).strip(),
-                        loan_amount=str(row['loan_amount']).strip(),
-                        disbursement_date=str(row['disbursement_date']).strip(),
-                        emi_start_date=str(row['emi_start_date']).strip(),
-                        emi_end_date=str(row['emi_end_date']).strip(),
-                        emi_cycle_date=str(row['emi_cycle_date']).strip(),
-                        
-                        # Vehicle details
-                        make=str(row['make']).strip(),
-                        manufacturer_description=str(row.get('manufacturer_description', '')).strip() if pd.notna(row.get('manufacturer_description')) else '',
-                        registration_number=str(row.get('registration_number', '')).strip() if pd.notna(row.get('registration_number')) else '',
-                        vehicle_age=str(row.get('vehicle_age', '')).strip() if pd.notna(row.get('vehicle_age')) else '',
-                        
-                        # Customer details
-                        employer=str(row.get('employer', '')).strip() if pd.notna(row.get('employer')) else '',
-                        father_name=str(row['father_name']).strip(),
-                        fe_name=str(row['fe_name']).strip(),
-                        fe_userName=str(row['fe_userName']).strip(),
-                        tl_name=str(row['tl_name']).strip(),
-                        tl_userName=str(row['tl_userName']).strip(),
-                        fe_mobile_number=fe_mobile,
-                        customer_mobile_number=customer_mobile,
-                        pin_code=pin_code,
-                        customer_address=str(row['customer_address']).strip(),
-                        customer_office_address=str(row['customer_office_address']).strip(),
-                        reference_details=str(row['reference_details']).strip(),
-                        
-                        # Collection details
-                        collection_manager_name=str(row['collection_manager_name']).strip(),
-                        finance_company_name=str(row['finance_company_name']).strip()
+                        defaults={
+                            'admin_id': admin_id_pk,
+                            'customer_name': str(row['customer_name']).strip(),
+                            'product_type': str(row['product_type']).strip(),
+                            'tc_name': str(row['tc_name']).strip(),
+                            'tc_userName': str(row['tc_userName']).strip(),
+                            'branch': str(row['branch']).strip(),
+                            'count_of_cases': str(row['count_of_cases']).strip(),
+                            'old_or_new': str(row['old_or_new']).strip(),
+                            'bucket': str(row['bucket']).strip(),
+                            'mode': str(row['mode']).strip(),
+                            'npa_status': str(row['npa_status']).strip(),
+                            'pos_amount': str(row['pos_amount']).strip(),
+                            'total_charges': str(row['total_charges']).strip(),
+                            'bcc_pending': str(row['bcc_pending']).strip(),
+                            'penal_pending': str(row['penal_pending']).strip(),
+                            'emi_amount': str(row['emi_amount']).strip(),
+                            'emi_due_amount': str(row['emi_due_amount']).strip(),
+                            'recipt_amount': str(row['recipt_amount']).strip(),
+                            'recipt_date': str(row['recipt_date']).strip(),
+                            'disbursement_amount': str(row['disbursement_amount']).strip(),
+                            'loan_amount': str(row['loan_amount']).strip(),
+                            'disbursement_date': str(row['disbursement_date']).strip(),
+                            'emi_start_date': str(row['emi_start_date']).strip(),
+                            'emi_end_date': str(row['emi_end_date']).strip(),
+                            'emi_cycle_date': str(row['emi_cycle_date']).strip(),
+                            'make': str(row['make']).strip(),
+                            'manufacturer_description': str(row.get('manufacturer_description', '')).strip() if pd.notna(row.get('manufacturer_description')) else '',
+                            'registration_number': str(row.get('registration_number', '')).strip() if pd.notna(row.get('registration_number')) else '',
+                            'vehicle_age': str(row.get('vehicle_age', '')).strip() if pd.notna(row.get('vehicle_age')) else '',
+                            'employer': str(row.get('employer', '')).strip() if pd.notna(row.get('employer')) else '',
+                            'father_name': str(row['father_name']).strip(),
+                            'fe_name': str(row['fe_name']).strip(),
+                            'fe_userName': str(row['fe_userName']).strip(),
+                            'tl_name': str(row['tl_name']).strip(),
+                            'tl_userName': str(row['tl_userName']).strip(),
+                            'fe_mobile_number': fe_mobile,
+                            'customer_mobile_number': customer_mobile,
+                            'pin_code': pin_code,
+                            'customer_address': str(row['customer_address']).strip(),
+                            'customer_office_address': str(row['customer_office_address']).strip(),
+                            'reference_details': str(row['reference_details']).strip(),
+                            'collection_manager_name': str(row['collection_manager_name']).strip(),
+                            'finance_company_name': str(row['finance_company_name']).strip(),
+                        }
                     )
-                    task.save()
+                    
+                    if created:
+                        created_count += 1
+                    else:
+                        updated_count += 1
                     success_count += 1
                     
                 except Exception as e:
                     errors.append(f"Row {index + 2}: {str(e)}")
+                    failed_rows.append({**row.to_dict(), 'error_reason': str(e)})
                     error_count += 1
             
-            # Display results
+            # Store failed rows in session
+            if failed_rows:
+                clean_failed_rows = []
+                for r in failed_rows:
+                    clean_row = {}
+                    for k, v in r.items():
+                        if pd.isna(v) if not isinstance(v, (list, dict)) else False:
+                            clean_row[k] = ''
+                        else:
+                            clean_row[k] = str(v)
+                    clean_failed_rows.append(clean_row)
+                request.session['failed_import_rows'] = clean_failed_rows
+            else:
+                request.session.pop('failed_import_rows', None)
+
+            # Success message
             if success_count > 0:
-                messages.success(request, f'Successfully imported {success_count} tasks!')
-            
+                msg_parts = []
+                if created_count > 0:
+                    msg_parts.append(f'{created_count} new task{"s" if created_count != 1 else ""} created')
+                if updated_count > 0:
+                    msg_parts.append(f'{updated_count} existing task{"s" if updated_count != 1 else ""} updated')
+                messages.success(request, f'Import complete — {", ".join(msg_parts)}.')
+
+            # Error message
             if error_count > 0:
-                error_message = f'{error_count} errors occurred:<br>'
-                error_message += '<br>'.join(errors[:10])  # Show first 10 errors
+                error_message = f'{error_count} error{"s" if error_count != 1 else ""} occurred:<br>'
+                error_message += '<br>'.join(errors[:10])
                 if len(errors) > 10:
                     error_message += f'<br>...and {len(errors) - 10} more errors'
                 messages.warning(request, error_message)
-            
+
+            # Empty file
             if success_count == 0 and error_count == 0:
                 messages.info(request, 'No data found in the Excel file')
-            
+                
         except Exception as e:
             messages.error(request, f'Error processing file: {str(e)}')
         
         return redirect('kg_app:import_tasks')
     
     return render(request, 'create_task.html')
+
+def download_failed_import_rows(request):
+    session_admin_id = request.session.get("admin_id")
+    if not session_admin_id:
+        return render(request, 'index.html')
+
+    failed_rows = request.session.get('failed_import_rows', [])
+    
+    if not failed_rows:
+        messages.info(request, 'No failed rows to download.')
+        return redirect('kg_app:import_tasks')
+
+    df = pd.DataFrame(failed_rows)
+
+    # Put error_reason as the first column for clarity
+    cols = ['error_reason'] + [c for c in df.columns if c != 'error_reason']
+    df = df[cols]
+
+    response = HttpResponse(
+        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    )
+    response['Content-Disposition'] = 'attachment; filename="failed_import_rows.xlsx"'
+    
+    with pd.ExcelWriter(response, engine='openpyxl') as writer:
+        df.to_excel(writer, index=False, sheet_name='Failed Rows')
+
+    return response
 
 def download_task_sample_excel(request):
     """Generate and download a sample Excel template for tasks"""
@@ -1140,6 +1380,7 @@ def update_task(request):
         
         task_update.objects.create(
             updated_by = session_admin_username,
+            updated_by_id = session_admin_id,
             updated_by_role = admin_id_pk.role,
             admin_id = admin_id_pk,
             task_id = model_task_id,
@@ -1471,6 +1712,21 @@ def pending_task(request):
     
     return render(request, "pending_task.html", {"create_task_list" : create_task_list})
 
+def complete_task(request):
+    session_admin_id = request.session.get("admin_id")
+    # navigate to login page if not login
+    if not session_admin_id:
+        return render(request, 'index.html')
+    
+    admin_id_pk = admin_user_model.objects.get(pk = session_admin_id)
+    create_task_list = Create_task.objects.filter(
+        admin_id=admin_id_pk
+    ).exclude(
+        Q(update_location_status="RF") | Q(update_location_status__isnull=True)
+    )
+    
+    return render(request, "complete_task.html", {"task_list": create_task_list})
+
 def task_delete(request, id):
     session_admin_id = request.session.get("admin_id")
     # navigate to login page if not login
@@ -1616,6 +1872,221 @@ def admin_profile(request):
         "groundstaff_percentage": groundstaff_percentage,
         }) 
 
+def team_management(request):
+    session_admin_id = request.session.get("admin_id")
+    # navigate to login page if not login
+    if not session_admin_id:
+        return render(request, 'index.html')
+    admin_id_pk = admin_user_model.objects.get(pk=session_admin_id)
+    # ── handle POST actions ──
+    if request.method == 'POST':
+        action = request.POST.get('action')
+
+        # ── Add Member ──
+        if action == 'add_member':
+            role       = request.POST.get('role')
+            first_name = request.POST.get('first_name')
+            last_name  = request.POST.get('last_name')
+            username   = request.POST.get('username')
+            email      = request.POST.get('email')
+            phone      = request.POST.get('phone_number')
+            password   = request.POST.get('password')
+            address    = request.POST.get('address') or None
+            parent_id  = request.POST.get('assigned_to') or None
+
+            assigned_to = None
+            is_locked   = False
+            if parent_id:
+                assigned_to = get_object_or_404(CreateUser, id=parent_id)
+                is_locked   = True
+
+            CreateUser.objects.create(
+                admin_id_id=request.user.id,
+                first_name=first_name,
+                last_name=last_name,
+                username=username,
+                email=email,
+                phone_number=phone,
+                password=password,   # hash in production
+                role=role,
+                address=address,
+                assigned_to=assigned_to,
+                is_assignment_locked=is_locked,
+            )
+            messages.success(request, f'{first_name} {last_name} added as {role}.')
+            return redirect('kg_app:team_management')
+
+        # ── Assign Team Lead → Telecaller ──
+        elif action == 'assign_teamlead':
+            telecaller_id  = request.POST.get('telecaller_id')
+            teamlead_ids   = request.POST.getlist('teamlead_ids')  # multiple
+
+            telecaller = get_object_or_404(CreateUser, id=telecaller_id, role='telecaller')
+            count = 0
+            skipped = 0
+            for lid in teamlead_ids:
+                lead = get_object_or_404(CreateUser, id=lid, role='teamlead')
+                if lead.is_assignment_locked:
+                    skipped += 1
+                    continue
+                lead.assigned_to          = telecaller
+                lead.is_assignment_locked = True
+                lead.save()
+                count += 1
+
+            if skipped:
+                messages.warning(request, f'{count} assigned. {skipped} skipped (already locked).')
+            else:
+                messages.success(request, f'{count} team lead(s) assigned to {telecaller.first_name}.')
+            return redirect('kg_app:team_management')
+
+        # ── Bulk Assign Ground Staff → Team Lead ──
+        elif action == 'bulk_assign_groundstaff':
+            teamlead_id      = request.POST.get('teamlead_id')
+            groundstaff_ids  = request.POST.getlist('groundstaff_ids')
+
+            teamlead = get_object_or_404(CreateUser, id=teamlead_id, role='teamlead')
+            count = 0
+            skipped = 0
+            with transaction.atomic():
+                for gid in groundstaff_ids:
+                    staff = get_object_or_404(CreateUser, id=gid, role='groundstaff')
+                    if staff.is_assignment_locked:
+                        skipped += 1
+                        continue
+                    staff.assigned_to          = teamlead
+                    staff.is_assignment_locked = True
+                    staff.save()
+                    count += 1
+
+            if skipped:
+                messages.warning(request, f'{count} assigned. {skipped} skipped (already locked).')
+            else:
+                messages.success(request, f'{count} ground staff assigned to {teamlead.first_name}.')
+            return redirect('kg_app:team_management')
+
+        # ── Unassign ──
+        elif action == 'unassign':
+            user_id = request.POST.get('user_id')
+            user = get_object_or_404(CreateUser, id=user_id)
+            user.assigned_to          = None
+            user.is_assignment_locked = False
+            user.save()
+            messages.success(request, f'{user.first_name} {user.last_name} unassigned.')
+            return redirect('kg_app:team_management')
+
+    # ── GET: load all data and render ──
+    telecallers      = CreateUser.objects.filter(role='telecaller', admin_id = admin_id_pk)
+    teamleads        = CreateUser.objects.filter(role='teamlead', admin_id = admin_id_pk).select_related('assigned_to')
+    groundstaff      = CreateUser.objects.filter(role='groundstaff', admin_id = admin_id_pk).select_related('assigned_to__assigned_to')
+    repoboys         = CreateUser.objects.filter(role='repoboy', admin_id = admin_id_pk)
+    unassigned_leads = CreateUser.objects.filter(role='teamlead', assigned_to__isnull=True, is_assignment_locked=False, admin_id = admin_id_pk)
+    unassigned_ground= CreateUser.objects.filter(role='groundstaff', assigned_to__isnull=True, is_assignment_locked=False, admin_id = admin_id_pk)
+    assigned_leads   = CreateUser.objects.filter(role='teamlead', admin_id = admin_id_pk)
+
+    # stats
+    stats = {
+        'tele_total':    telecallers.count(),
+        'tele_active':   telecallers.filter(login_status='Active').count(),
+        'lead_total':    teamleads.count(),
+        'lead_assigned': teamleads.filter(assigned_to__isnull=False).count(),
+        'lead_unassigned': teamleads.filter(assigned_to__isnull=True).count(),
+        'ground_total':    groundstaff.count(),
+        'ground_assigned': groundstaff.filter(assigned_to__isnull=False).count(),
+        'ground_unassigned': groundstaff.filter(assigned_to__isnull=True).count(),
+        'repo_total':    repoboys.count(),
+        'repo_active':   repoboys.filter(login_status='Active').count(),
+    }
+
+    context = {
+        'telecallers':       telecallers,
+        'teamleads':         teamleads,
+        'groundstaff':       groundstaff,
+        'repoboys':          repoboys,
+        'unassigned_leads':  unassigned_leads,
+        'unassigned_ground': unassigned_ground,
+        'assigned_leads':    assigned_leads,
+        'stats':             stats,
+    }
+    return render(request, 'team_management.html', context)
+
+def tlAssignToTc(request):
+    session_admin_id = request.session.get("admin_id")
+    # navigate to login page if not login
+    if not session_admin_id:
+        return render(request, 'index.html')
+    admin_id_pk = admin_user_model.objects.get(pk=session_admin_id)
+    
+    if request.method == 'POST':
+        telecaller_id = request.POST.get('telecaller_id')
+        teamlead_id   = request.POST.get('teamlead_id')  # single value
+
+        telecaller = get_object_or_404(CreateUser, id=telecaller_id, role='telecaller')
+        lead       = get_object_or_404(CreateUser, id=teamlead_id, role='teamlead')
+
+        if lead.is_assignment_locked:
+            messages.warning(request, f'{lead.first_name} {lead.last_name} is already assigned and locked.')
+        else:
+            lead.assigned_to          = telecaller
+            lead.is_assignment_locked = True
+            lead.save()
+            messages.success(request, f'{lead.first_name} assigned to {telecaller.first_name}.')
+
+        return redirect('kg_app:team_management')
+    
+    return render(request, 'team_management.html')
+
+def change_staff_password(request):
+    session_admin_id = request.session.get("admin_id")
+    # navigate to login page if not login
+    if not session_admin_id:
+        return render(request, 'index.html')
+    admin_id_pk = admin_user_model.objects.get(pk=session_admin_id)
+    
+    if request.method == "POST":
+        staff_id = request.POST.get("staff_id")
+        password = request.POST.get("password")
+
+        staff = CreateUser.objects.get(id=staff_id)
+        staff.password = password
+        staff.save()
+
+    return redirect('kg_app:groundstaff')
+
+def change_tc_password(request):
+    session_admin_id = request.session.get("admin_id")
+    # navigate to login page if not login
+    if not session_admin_id:
+        return render(request, 'index.html')
+    admin_id_pk = admin_user_model.objects.get(pk=session_admin_id)
+    
+    if request.method == "POST":
+        staff_id = request.POST.get("staff_id")
+        password = request.POST.get("password")
+
+        staff = CreateUser.objects.get(id=staff_id)
+        staff.password = password
+        staff.save()
+
+    return redirect('kg_app:telecaller')
+
+def change_tl_password(request):
+    session_admin_id = request.session.get("admin_id")
+    # navigate to login page if not login
+    if not session_admin_id:
+        return render(request, 'index.html')
+    admin_id_pk = admin_user_model.objects.get(pk=session_admin_id)
+    
+    if request.method == "POST":
+        staff_id = request.POST.get("staff_id")
+        password = request.POST.get("password")
+
+        staff = CreateUser.objects.get(id=staff_id)
+        staff.password = password
+        staff.save()
+
+    return redirect('kg_app:teamlead')
+
 
 
 
@@ -1636,90 +2107,129 @@ def admin_profile(request):
 
 
 
+
+
 def tc_dashboard(request):
     session_tc_admin_id = request.session.get("tc_admin_id")
     session_tc_username = request.session.get("username")
     session_tc_user_id = request.session.get("user_id")
-    # navigate to login page if not login
+
     if not session_tc_admin_id:
         return render(request, 'index.html')
-    
-    admin_id_pk = admin_user_model.objects.get(pk = session_tc_admin_id)
-    user_id_pk = CreateUser.objects.get(pk = session_tc_user_id)
-    
-    create_user_list = CreateUser.objects.filter(admin_id = admin_id_pk).exclude(role='telecaller')
-    create_task_list = Create_task.objects.filter(admin_id = admin_id_pk, tc_userName = session_tc_username).order_by('-submit_time')[:3]
-    user_length = len(create_user_list)
-    print("Total users:", user_length)
-    
-    # Filter users by role
-    telecallers_queryset = create_user_list.filter(role='telecaller')
-    teamleads_queryset = create_user_list.filter(role='teamlead')
-    groundstaff_queryset = create_user_list.filter(role='groundstaff')
-    
-    telecallers = list(telecallers_queryset[:5].values(
-        'id', 'first_name', 'last_name', 'username', 'email', 'phone_number', 'active_session_key', 'login_status'
+
+    admin_id_pk = admin_user_model.objects.get(pk=session_tc_admin_id)
+    user_id_pk = CreateUser.objects.get(pk=session_tc_user_id)
+
+    # =====================================================
+    # 🔥 HIERARCHY DATA (TC → TL → GS)
+    # =====================================================
+
+    # TeamLeads under this TC
+    teamleads_qs = CreateUser.objects.filter(
+        assigned_to=user_id_pk,
+        role='teamlead'
+    )
+
+    # GroundStaff under those TLs
+    groundstaff_qs = CreateUser.objects.filter(
+        assigned_to__in=teamleads_qs,
+        role='groundstaff'
+    )
+
+    # Counts
+    teamlead_count = teamleads_qs.count()
+    groundstaff_count = groundstaff_qs.count()
+    user_length = teamlead_count + groundstaff_count
+
+    print("Teamleads:", teamlead_count)
+    print("Groundstaff:", groundstaff_count)
+    print("Total:", user_length)
+
+    # =====================================================
+    # 🔥 USE ONLY HIERARCHY USERS (IMPORTANT CHANGE)
+    # =====================================================
+
+    create_user_list = teamleads_qs.union(groundstaff_qs)
+
+    # Tasks (UNCHANGED as per your requirement)
+    create_task_list = Create_task.objects.filter(
+        admin_id=admin_id_pk,
+        tc_userName=session_tc_username
+    ).order_by('-submit_time')[:3]
+
+    # Convert QuerySets to values
+    teamleads = list(teamleads_qs[:5].values(
+        'id', 'first_name', 'last_name', 'username',
+        'email', 'phone_number', 'active_session_key', 'login_status'
     ))
-    
-    teamleads = list(teamleads_queryset[:5].values(
-        'id', 'first_name', 'last_name', 'username', 'email', 'phone_number', 'active_session_key', 'login_status'
+
+    groundstaff = list(groundstaff_qs[:5].values(
+        'id', 'first_name', 'last_name', 'username',
+        'email', 'phone_number', 'active_session_key', 'login_status'
     ))
-    
-    groundstaff = list(groundstaff_queryset[:5].values(
-        'id', 'first_name', 'last_name', 'username', 'email', 'phone_number', 'active_session_key', 'login_status'
-    ))
-    
-    # Add online/offline status based on active_session_key
-    for user in telecallers:
-        user['status'] = 'online' if user['active_session_key'] else 'offline'
-    
+
+    # Online/offline status
     for user in teamleads:
         user['status'] = 'online' if user['active_session_key'] else 'offline'
-    
+
     for user in groundstaff:
         user['status'] = 'online' if user['active_session_key'] else 'offline'
-    
-    tc_login = TcLogin.objects.filter(admin_id = session_tc_admin_id, status = 'Active')
-    tl_login = TlLogin.objects.filter(admin_id = session_tc_admin_id, status = 'Active')
-    gs_login = GsLogin.objects.filter(admin_id = session_tc_admin_id, status = 'Active')
-    login_status_len = len(tl_login) + len(gs_login)
-    # login_status_len = 5
-    print("Total login status entries:", login_status_len)
-    
-    task_list = Create_task.objects.filter(admin_id = session_tc_admin_id)
+
+    # Login status (also restrict to hierarchy if needed)
+    tl_login = TlLogin.objects.filter(
+        admin_id=session_tc_admin_id,
+        status='Active',
+        user_id__in=teamleads_qs.values_list('id', flat=True)
+    )
+
+    gs_login = GsLogin.objects.filter(
+        admin_id=session_tc_admin_id,
+        status='Active',
+        user_id__in=groundstaff_qs.values_list('id', flat=True)
+    )
+
+    login_status_len = tl_login.count() + gs_login.count()
+
+    print("Login count (hierarchy):", login_status_len)
+
+    # Tasks count (UNCHANGED)
+    task_list = Create_task.objects.filter(
+        admin_id = session_tc_admin_id,
+        tc_userName = session_tc_username
+    )
     task_length = len(task_list)
-    
-    # Convert to JSON for JavaScript
-    telecallers_json = json.dumps(telecallers)
+
+    # JSON
     teamleads_json = json.dumps(teamleads)
     groundstaff_json = json.dumps(groundstaff)
-    
+
+    # Leave requests (already user-specific ✅)
     leave_requests = leave_request.objects.filter(
-        admin_id = admin_id_pk,
-        user_id = user_id_pk,
-        leave_status = 'Pending'
+        admin_id=admin_id_pk,
+        user_id=user_id_pk,
+        leave_status='Pending'
     )
-    
+
     leave_request_data = leave_request.objects.filter(
         admin_id=admin_id_pk,
-        user_id = user_id_pk,
+        user_id=user_id_pk
     ).order_by('-submit_time')[:3]
-    print(f"Pending leave requests count: {leave_request_data}")
 
-    leave_requests_length = len(leave_requests)
-    
-    return render(request, "tc_screens/tc_dashboard.html",{
-        "user_length":user_length, 
-        "login_status_len":login_status_len,
-        "leave_requests_length":leave_requests_length,
-        "leave_request_data":leave_request_data,
-        "task_length":task_length,
-        "user_list":create_user_list,
-        "task_list":create_task_list,
-        "telecallers_json": telecallers_json,
+    leave_requests_length = leave_requests.count()
+
+    # =====================================================
+
+    return render(request, "tc_screens/tc_dashboard.html", {
+        "user_length": user_length,
+        "login_status_len": login_status_len,
+        "leave_requests_length": leave_requests_length,
+        "leave_request_data": leave_request_data,
+        "task_length": task_length,  # ✅ kept unchanged
+        "user_list": create_user_list,  # ✅ now hierarchy-based
+        "task_list": create_task_list,
         "teamleads_json": teamleads_json,
         "groundstaff_json": groundstaff_json,
-        })
+    })
 
 def tc_teamlead(request):
     session_admin_id = request.session.get('tc_admin_id')
@@ -1812,17 +2322,39 @@ def tc_assign_task(request):
 
 def tc_pending_task(request):
     session_admin_id = request.session.get("tc_admin_id")
+    session_tc_username = request.session.get("username")
+    session_tc_userid = request.session.get("user_id")
     # navigate to login page if not login
     if not session_admin_id:
         return render(request, 'index.html')
-    return render(request, "tc_screens/tc_pending_task.html")
+    
+    admin_id_pk = admin_user_model.objects.get(pk = session_admin_id)
+    create_task_list = Create_task.objects.filter(
+        admin_id=admin_id_pk,
+        tc_userName = session_tc_username
+    ).filter(
+        Q(update_location_status = "RF") |
+        Q(update_location_status__isnull = True) |
+        Q(update_location_status = "")
+    )
+    return render(request, "tc_screens/tc_pending_task.html", {"create_task_list" : create_task_list})
 
 def tc_complete_task(request):
     session_admin_id = request.session.get("tc_admin_id")
+    session_tc_username = request.session.get("username")
+    session_tc_userid = request.session.get("user_id")
     # navigate to login page if not login
     if not session_admin_id:
         return render(request, 'index.html')
-    return render(request, "tc_screens/tc_complete_task.html")
+    
+    admin_id_pk = admin_user_model.objects.get(pk = session_admin_id)
+    create_task_list = Create_task.objects.filter(
+        admin_id=admin_id_pk,
+        tc_userName = session_tc_username
+    ).exclude(
+        Q(update_location_status="RF") | Q(update_location_status__isnull=True)
+    )
+    return render(request, "tc_screens/tc_complete_task.html", {"create_task_list" : create_task_list})
 
 def tc_leave(request):
     session_admin_id = request.session.get("tc_admin_id")
@@ -1831,26 +2363,56 @@ def tc_leave(request):
         return render(request, 'index.html')
     return render(request, "tc_screens/tc_leave.html")
 
+def get_all_subordinates(user):
+    subordinates = []
+
+    def fetch_children(parent):
+        children = CreateUser.objects.filter(assigned_to=parent)
+        for child in children:
+            subordinates.append(child)
+            fetch_children(child)
+
+    fetch_children(user)
+    return subordinates
+
 def tc_feddback_history(request):
     session_admin_id = request.session.get("tc_admin_id")
-    # navigate to login page if not login
-    if not session_admin_id:
-        return render(request, 'index.html')
-    admin_id_pk = admin_user_model.objects.get(pk=session_admin_id)
-    
-    feedback = list(
-        task_update.objects.filter(
-            admin_id=admin_id_pk
-        )
-    )
+    user_id = request.session.get("user_id")   # ✅ ADD THIS
 
-    feedback.reverse()
-    
-    return render(request, "tc_screens/tc_feedback_history.html", {"feedback":feedback})  
+    # navigate to login page if not login
+    if not session_admin_id or not user_id:
+        return render(request, 'index.html')
+
+    admin_id_pk = admin_user_model.objects.get(pk=session_admin_id)
+
+    # 🔹 Correct user fetch
+    try:
+        current_user = CreateUser.objects.get(id=user_id)
+    except CreateUser.DoesNotExist:
+        return render(request, "tc_screens/tc_feedback_history.html", {"feedback": []})
+
+    # 🔹 Get subordinates
+    subordinates = get_all_subordinates(current_user)
+
+    # 🔹 Allowed IDs
+    allowed_user_ids = [str(current_user.id)] + [str(u.id) for u in subordinates]
+
+    # 🔹 Filter
+    feedback = task_update.objects.filter(
+        admin_id=admin_id_pk,
+        updated_by_id__in=allowed_user_ids
+    ).order_by('-updated_at')
+
+    return render(
+        request,
+        "tc_screens/tc_feedback_history.html",
+        {"feedback": feedback}
+    )
 
 def tc_update_task(request):
     session_admin_id = request.session.get('tc_admin_id')
     session_user_role = request.session.get('role')
+    session_user_id = request.session.get('user_id')
     # navigate to login page if not login
     if not session_admin_id:
         return render(request, 'index.html')
@@ -1903,6 +2465,7 @@ def tc_update_task(request):
         
         task_update.objects.create(
             updated_by = session_admin_username,
+            updated_by_id = session_user_id,
             updated_by_role = session_user_role,
             admin_id = admin_id_pk,
             task_id = model_task_id,
@@ -2063,56 +2626,102 @@ def tc_leave_list(request):
 def tc_profile(request):
     session_admin_id = request.session.get("tc_admin_id")
     session_tc_id = request.session.get("user_id")
-    # navigate to login page if not login
+
     if not session_tc_id:
         return render(request, 'index.html')
+
     admin_id_pk = admin_user_model.objects.get(pk=session_admin_id)
     tc_id_pk = CreateUser.objects.get(pk=session_tc_id)
-    user_list = CreateUser.objects.filter(
-        admin_id = admin_id_pk
-    ).exclude(role='telecaller')
-    telecaller_list = user_list.filter(role='telecaller')
-    teamlead_list = user_list.filter(role='teamlead')
-    groundstaff_list = user_list.filter(role='groundstaff')
-    
-    remaining_users = admin_id_pk.user_count - user_list.count()
-    
-    remaining_percentage = round((user_list.count() / admin_id_pk.user_count) * 100, 2)
-    telecaller_percentage = round((telecaller_list.count() / admin_id_pk.user_count) * 100, 2)
-    teamlead_percentage = round((teamlead_list.count() / admin_id_pk.user_count) * 100, 2)
-    groundstaff_percentage = round((groundstaff_list.count() / admin_id_pk.user_count) * 100, 2)
-    
-    print("remaining users - ", remaining_users)
-    print("admin user count - ", admin_id_pk.user_count)
-    print("user lict - ", user_list.count())
-    
-    print("remaining percentage - ", remaining_percentage)
-    
+
+    # =========================
+    # FORCE SAFE COUNTING
+    # =========================
+
+    all_users = CreateUser.objects.filter(admin_id=admin_id_pk)
+
+    teamlead_count = 0
+    groundstaff_count = 0
+
+    for user in all_users:
+        if user.role == 'teamlead':
+            if user.assigned_to_id == tc_id_pk.id:
+                teamlead_count += 1
+
+        elif user.role == 'groundstaff':
+            # direct under TC
+            if user.assigned_to_id == tc_id_pk.id:
+                groundstaff_count += 1
+            # under TL → TC
+            elif user.assigned_to and user.assigned_to.assigned_to_id == tc_id_pk.id:
+                groundstaff_count += 1
+
+    user_list_length = teamlead_count + groundstaff_count
+
+    # =========================
+    # PERCENTAGE
+    # =========================
+
+    total_allowed = admin_id_pk.user_count or 1
+
+    remaining_users = total_allowed - user_list_length
+
+    remaining_percentage = round((user_list_length / total_allowed) * 100, 2)
+    teamlead_percentage = round((teamlead_count / total_allowed) * 100, 2)
+    groundstaff_percentage = round((groundstaff_count / total_allowed) * 100, 2)
+
     return render(request, "tc_screens/tc_profile.html", {
         "admin": tc_id_pk,
-        "user_list_length": user_list.count(),
-        "telecaller_list_length": telecaller_list.count(),
-        "teamlead_list_length": teamlead_list.count(),
-        "groundstaff_list_length": groundstaff_list.count(),
+        "user_list_length": user_list_length,
+        "teamlead_list_length": teamlead_count,
+        "groundstaff_list_length": groundstaff_count,
         "remaining_users": remaining_users,
         "remaining_percentage": remaining_percentage,
-        "telecaller_percentage": telecaller_percentage,
         "teamlead_percentage": teamlead_percentage,
         "groundstaff_percentage": groundstaff_percentage,
-        })
+    })
     
+def get_all_subordinates_leave(user):
+    subordinates = []
+
+    def fetch_children(parent):
+        children = CreateUser.objects.filter(assigned_to=parent)
+        for child in children:
+            subordinates.append(child)
+            fetch_children(child)
+
+    fetch_children(user)
+    return subordinates
+
 def tc_leave_requests(request):
     session_admin_id = request.session.get("tc_admin_id")
-    # navigate to login page if not login
-    if not session_admin_id:
+    user_id = request.session.get("user_id")   # ✅ REQUIRED
+
+    if not session_admin_id or not user_id:
         return render(request, 'index.html')
-    
+
+    admin_id_pk = admin_user_model.objects.get(pk=session_admin_id)
+
+    try:
+        current_user = CreateUser.objects.get(id=user_id)
+    except CreateUser.DoesNotExist:
+        return render(request, "tc_screens/tc_leave_request.html", {"leave_request_list": []})
+
+    # 🔹 Get subordinates
+    subordinates = get_all_subordinates_leave(current_user)
+
+    print("Allowed Users:", [u.id for u in subordinates])  # DEBUG
+
+    # 🔹 Filter
     leave_request_list = leave_request.objects.filter(
-        admin_id=session_admin_id
-    ).exclude(
-        role='telecaller'
+        admin_id=admin_id_pk,
+        user_id__in=subordinates
     ).order_by('-submit_time')
-    return render(request, "tc_screens/tc_leave_request.html", {"leave_request_list":leave_request_list})
+
+    return render(
+        request,
+        "tc_screens/tc_leave_request.html",
+        {"leave_request_list": leave_request_list}
+    )
 
 def tc_approve_leave(request):
     if request.method == 'POST':

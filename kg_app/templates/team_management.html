@@ -1,0 +1,2528 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Admiro admin is super flexible, powerful, clean &amp; modern responsive bootstrap 5 admin template with unlimited possibilities.">
+    <meta name="keywords"
+        content="admin template, Admiro admin template, best javascript admin, dashboard template, bootstrap admin template, responsive admin template, web app">
+    <meta name="author" content="pixelstrap">
+    <title>Team Flow</title>
+    <!-- Favicon icon-->
+    <link rel="icon" href="{% static 'assets/img/favicon.png' %}" type="image/x-icon">
+    <link rel="shortcut icon" href="{% static 'assets/img/favicon.png' %}" type="image/x-icon">
+    <!-- Google font-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <!-- <link
+        href="../../css2?family=Nunito+Sans:opsz,wght@6..12,200;6..12,300;6..12,400;6..12,500;6..12,600;6..12,700;6..12,800;6..12,900;6..12,1000&amp;display=swap"
+        rel="stylesheet"> -->
+    <!-- Flag icon css -->
+    <link rel="stylesheet" href="{% static 'assets/css/vendors/flag-icon.css' %}">
+    <!-- iconly-icon-->
+    <link rel="stylesheet" href="{% static 'assets/css/iconly-icon.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/bulk-style.css' %}">
+    <!-- iconly-icon-->
+    <link rel="stylesheet" href="{% static 'assets/css/themify.css' %}">
+    <!--fontawesome-->
+    <link rel="stylesheet" href="{% static 'assets/css/fontawesome-min.css' %}">
+    <!-- Whether Icon css-->
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/vendors/weather-icons/weather-icons.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/vendors/scrollbar.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/vendors/slick.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/vendors/slick-theme.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/vendors/datatables.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/vendors/datatable-extension.css' %}">
+    <!-- App css -->
+    <link id="color" rel="stylesheet" href="{% static 'assets/css/color-1.css' %}" media="screen">
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+        integrity="sha512-…(hash)…” crossorigin=" anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="https://cdn.iconly.io/iconly.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/iconly@latest/css/iconly.css" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-KNuNk+LZ8e2j+ozhRtX7sMGu0j1qFeIslMo7k3M5lVZhcN7sVbG7ByAzt+BrgrbM5nxp7/ECYtJ8O5E2+8Y0eA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+
+    <link rel="stylesheet" href="https://cdn.iconly.io/your-generated-hash/iconly.css">
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap"
+        rel="stylesheet" />
+
+    <style>
+        /*
+  ════════════════════════════════════════════════
+  Django endpoints consumed by this page:
+
+  GET  /api/users/telecaller/          → list telecallers
+  GET  /api/users/teamlead/            → list teamleads
+  GET  /api/users/groundstaff/         → list groundstaff
+  GET  /api/users/repoboy/             → list repoboys
+  GET  /api/hierarchy/                 → full nested hierarchy
+  GET  /api/unassigned/teamlead/       → unassigned teamleads
+  GET  /api/unassigned/groundstaff/    → unassigned groundstaff
+
+  POST /api/users/create/              → add any member (all model fields)
+  POST /api/assign/teamlead/           → assign teamlead → telecaller
+  POST /api/assign/groundstaff/bulk/   → bulk assign groundstaff → teamlead
+  POST /api/unassign/                  → unassign any user (new view)
+  ════════════════════════════════════════════════
+*/
+
+        .margin_left_auto {
+            margin-left: auto;
+        }
+
+        .sidebar-pannle-main {
+            display: none;
+        }
+
+        :root {
+            --brand: #5250c3;
+            --brand-light: #7b79d4;
+            --brand-dark: #3a38a0;
+            --brand-soft: rgba(82, 80, 195, 0.08);
+            --brand-border: rgba(82, 80, 195, 0.18);
+            --bg: #f5f5fb;
+            --surface: #fff;
+            --surface2: #fafafa;
+            --border: #e8e8f0;
+            --border2: #d8d8ec;
+            --text: #18183a;
+            --text2: #55558a;
+            --muted: #9898bc;
+            --tele: #6d28d9;
+            --tele-bg: #f5f3ff;
+            --tele-border: #ddd6fe;
+            --lead: #1d4ed8;
+            --lead-bg: #eff6ff;
+            --lead-border: #bfdbfe;
+            --ground: #047857;
+            --ground-bg: #ecfdf5;
+            --ground-border: #a7f3d0;
+            --repo: #b45309;
+            --repo-bg: #fffbeb;
+            --repo-border: #fcd34d;
+            --danger: #dc2626;
+            --danger-bg: #fef2f2;
+            --danger-border: #fecaca;
+            --warn: #b45309;
+            --warn-bg: #fffbeb;
+            --success: #065f46;
+            --shadow-sm: 0 1px 4px rgba(82, 80, 195, 0.07);
+            --shadow-md: 0 4px 20px rgba(82, 80, 195, 0.10);
+            --shadow-lg: 0 12px 40px rgba(82, 80, 195, 0.15);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0
+        }
+
+        body {
+            font-family: 'DM Sans', ;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            font-size: 16px
+        }
+
+        .app {
+            padding: 28px 32px 80px;
+            max-width: 1440px;
+            margin: 0 auto;
+        }
+
+        /* ── HEADER ── */
+        .page-header-2 {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            gap: 16px;
+            flex-wrap: wrap;
+            background-color: var(--surface);
+            border: 1.5px solid var(--border);
+            border-radius: 13px;
+            padding-right: 15px;
+        }
+
+        .page-title {
+            font-family: 'Syne', ;
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: -0.4px
+        }
+
+        .page-title span {
+            color: var(--brand)
+        }
+
+        .page-sub {
+            font-size: 0.99rem;
+            color: var(--muted);
+            margin-top: 3px
+        }
+
+        .header-btns {
+            display: flex;
+            gap: 8px;
+            flex-shrink: 0;
+            flex-wrap: wrap
+        }
+
+        /* ── BUTTONS ── */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 9px 16px;
+            border-radius: 9px;
+            border: none;
+            cursor: pointer;
+            font-family: 'DM Sans', ;
+            font-size: 1.06rem;
+            font-weight: 500;
+            transition: all .18s;
+            white-space: nowrap
+        }
+
+        .btn-primary {
+            background: var(--brand);
+            color: #fff;
+            box-shadow: 0 2px 10px rgba(82, 80, 195, 0.28)
+        }
+
+        .btn-primary:hover {
+            background: var(--brand-dark);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 16px rgba(82, 80, 195, 0.35)
+        }
+
+        .btn-primary:disabled {
+            opacity: .5;
+            cursor: not-allowed;
+            transform: none
+        }
+
+        .btn-ghost {
+            background: #fff;
+            color: var(--brand);
+            border: 1.5px solid var(--brand-border)
+        }
+
+        .btn-ghost:hover {
+            background: var(--brand-soft)
+        }
+
+        .btn-sm {
+            padding: 6px 11px;
+            font-size: 0.97rem;
+            border-radius: 7px
+        }
+
+        .btn-xs {
+            padding: 4px 9px;
+            font-size: 0.91rem;
+            border-radius: 6px
+        }
+
+        /* ── STATS ── */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+            margin-bottom: 22px
+        }
+
+        .stat {
+            background: var(--surface);
+            border: 1.5px solid var(--border);
+            border-radius: 13px;
+            padding: 18px 20px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: transform .18s, box-shadow .18s
+        }
+
+        .stat:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md)
+        }
+
+        .stat::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            border-radius: 13px 13px 0 0
+        }
+
+        .s-tele::before {
+            background: linear-gradient(90deg, var(--tele), #a78bfa)
+        }
+
+        .s-lead::before {
+            background: linear-gradient(90deg, var(--lead), #60a5fa)
+        }
+
+        .s-ground::before {
+            background: linear-gradient(90deg, var(--ground), #34d399)
+        }
+
+        .s-repo::before {
+            background: linear-gradient(90deg, var(--repo), #fbbf24)
+        }
+
+        .stat-ico {
+            position: absolute;
+            right: 14px;
+            top: 14px;
+            width: 38px;
+            height: 38px;
+            border-radius: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem
+        }
+
+        .s-tele .stat-ico {
+            background: var(--tele-bg)
+        }
+
+        .s-lead .stat-ico {
+            background: var(--lead-bg)
+        }
+
+        .s-ground .stat-ico {
+            background: var(--ground-bg)
+        }
+
+        .s-repo .stat-ico {
+            background: var(--repo-bg)
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--muted);
+            margin-bottom: 5px
+        }
+
+        .stat-val {
+            font-family: 'Syne', ;
+            font-size: 1.9rem;
+            font-weight: 800;
+            line-height: 1
+        }
+
+        .s-tele .stat-val {
+            color: var(--tele)
+        }
+
+        .s-lead .stat-val {
+            color: var(--lead)
+        }
+
+        .s-ground .stat-val {
+            color: var(--ground)
+        }
+
+        .s-repo .stat-val {
+            color: var(--repo)
+        }
+
+        .stat-sub {
+            font-size: 0.92rem;
+            color: var(--muted);
+            margin-top: 4px
+        }
+
+        /* ── LAYOUT ── */
+        .layout {
+            display: grid;
+            grid-template-columns: 360px 1fr;
+            gap: 18px;
+            align-items: start
+        }
+
+        /* ── PANEL ── */
+        .panel {
+            background: var(--surface);
+            border: 1.5px solid var(--border);
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm)
+        }
+
+        .panel-head {
+            padding: 14px 18px;
+            border-bottom: 1.5px solid var(--border);
+            background: var(--surface2);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            flex-wrap: wrap
+        }
+
+        .panel-title {
+            font-family: 'Syne', ;
+            font-size: 1.13rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 7px
+        }
+
+        .panel-body {
+            padding: 14px 16px
+        }
+
+        /* ── BADGE ── */
+        .badge {
+            font-size: 0.81rem;
+            font-weight: 600;
+            padding: 2px 7px;
+            border-radius: 20px;
+            border: 1px solid;
+            white-space: nowrap
+        }
+
+        .badge-tele {
+            background: var(--tele-bg);
+            color: var(--tele);
+            border-color: var(--tele-border)
+        }
+
+        .badge-lead {
+            background: var(--lead-bg);
+            color: var(--lead);
+            border-color: var(--lead-border)
+        }
+
+        .badge-ground {
+            background: var(--ground-bg);
+            color: var(--ground);
+            border-color: var(--ground-border)
+        }
+
+        .badge-repo {
+            background: var(--repo-bg);
+            color: var(--repo);
+            border-color: var(--repo-border)
+        }
+
+        .badge-warn {
+            background: var(--warn-bg);
+            color: var(--warn);
+            border-color: #fcd34d
+        }
+
+        .badge-num {
+            background: var(--brand-soft);
+            color: var(--brand);
+            border-color: var(--brand-border)
+        }
+
+        .badge-lock {
+            background: #f1f5f9;
+            color: #64748b;
+            border-color: #cbd5e1;
+            font-size: 0.77rem
+        }
+
+        .badge-active {
+            background: #dcfce7;
+            color: #16a34a;
+            border-color: #bbf7d0
+        }
+
+        .badge-inactive {
+            background: #f1f5f9;
+            color: #64748b;
+            border-color: #e2e8f0
+        }
+
+        /* ── AVATAR ── */
+        .av {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Syne', ;
+            font-weight: 700;
+            border-radius: 8px;
+            flex-shrink: 0
+        }
+
+        .av-tele {
+            background: var(--tele-bg);
+            color: var(--tele)
+        }
+
+        .av-lead {
+            background: var(--lead-bg);
+            color: var(--lead)
+        }
+
+        .av-ground {
+            background: var(--ground-bg);
+            color: var(--ground)
+        }
+
+        .av-repo {
+            background: var(--repo-bg);
+            color: var(--repo)
+        }
+
+        /* ── TABS ── */
+        .tabs {
+            display: flex;
+            gap: 2px;
+            background: var(--bg);
+            padding: 3px;
+            border-radius: 9px;
+            border: 1.5px solid var(--border)
+        }
+
+        .tab {
+            padding: 5px 13px;
+            border-radius: 7px;
+            font-size: 0.97rem;
+            font-weight: 500;
+            cursor: pointer;
+            color: var(--muted);
+            transition: all .15s;
+            white-space: nowrap
+        }
+
+        .tab.active {
+            background: var(--brand);
+            color: #fff;
+            box-shadow: 0 2px 8px rgba(82, 80, 195, 0.22)
+        }
+
+        /* ── TELECALLER CARD ── */
+        .tc-item {
+            padding: 11px 13px;
+            border-radius: 10px;
+            cursor: pointer;
+            border: 1.5px solid transparent;
+            transition: all .15s;
+            margin-bottom: 6px
+        }
+
+        .tc-item:hover {
+            background: var(--brand-soft);
+            border-color: var(--brand-border)
+        }
+
+        .tc-item.active {
+            background: var(--brand-soft);
+            border-color: var(--brand);
+            box-shadow: 0 0 0 3px rgba(82, 80, 195, 0.07)
+        }
+
+        .tc-item:last-child {
+            margin-bottom: 0
+        }
+
+        .tc-row {
+            display: flex;
+            align-items: center;
+            gap: 10px
+        }
+
+        .tc-name {
+            font-weight: 600;
+            font-size: 1.09rem
+        }
+
+        .tc-meta {
+            font-size: 0.9rem;
+            color: var(--muted);
+            margin-top: 1px
+        }
+
+        .bar-track {
+            height: 4px;
+            background: var(--border);
+            border-radius: 20px;
+            overflow: hidden;
+            margin-top: 8px
+        }
+
+        .bar-fill {
+            height: 100%;
+            border-radius: 20px;
+            background: linear-gradient(90deg, var(--brand), var(--brand-light));
+            transition: width .4s
+        }
+
+        .bar-label {
+            font-size: 0.81rem;
+            color: var(--muted);
+            margin-top: 3px;
+            display: flex;
+            justify-content: space-between
+        }
+
+        /* ── LEAD CARD ── */
+        .lead-card {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            padding: 9px 11px;
+            border-radius: 9px;
+            background: var(--surface2);
+            border: 1.5px solid var(--border);
+            margin-bottom: 6px;
+            transition: border-color .15s
+        }
+
+        .lead-card:hover {
+            border-color: var(--lead-border)
+        }
+
+        .lead-card:last-child {
+            margin-bottom: 0
+        }
+
+        .lead-card-info {
+            flex: 1;
+            min-width: 0
+        }
+
+        .lead-card-name {
+            font-size: 1.05rem;
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis
+        }
+
+        .lead-card-sub {
+            font-size: 0.86rem;
+            color: var(--muted);
+            margin-top: 1px
+        }
+
+        /* ── UNASSIGNED ROW ── */
+        .unassigned-row {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            padding: 8px 11px;
+            border-radius: 9px;
+            background: var(--warn-bg);
+            border: 1.5px solid #fcd34d;
+            margin-bottom: 5px;
+            transition: background .15s
+        }
+
+        .unassigned-row:hover {
+            background: #fef3c7
+        }
+
+        .unassigned-row:last-child {
+            margin-bottom: 0
+        }
+
+        /* ── TOOLBAR ── */
+        .toolbar-2 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+            flex-wrap: wrap
+        }
+
+        .search-box-2 {
+            position: relative;
+            flex: 1;
+            min-width: 180px
+        }
+
+        .search-box-2 input {
+            width: 100%;
+            padding: 8px 12px 8px 32px;
+            background: var(--surface2);
+            border: 1.5px solid var(--border);
+            border-radius: 9px;
+            font-family: 'DM Sans', ;
+            font-size: 1.05rem;
+            color: var(--text);
+            outline: none;
+            transition: border-color .15s
+        }
+
+        .search-box-2 input:focus {
+            border-color: var(--brand);
+            background: #fff
+        }
+
+        .search-box-2 input::placeholder {
+            color: var(--muted)
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--muted);
+            pointer-events: none;
+            font-size: 1.15rem
+        }
+
+        .filter-select {
+            padding: 8px 11px;
+            background: var(--surface2);
+            border: 1.5px solid var(--border);
+            border-radius: 9px;
+            font-family: 'DM Sans', ;
+            font-size: 1.01rem;
+            color: var(--text);
+            outline: none;
+            cursor: pointer;
+            transition: border-color .15s
+        }
+
+        .filter-select:focus {
+            border-color: var(--brand)
+        }
+
+        .bulk-form-bar{
+            background:#fff;
+            border:1.5px solid var(--brand-border);
+            border-radius:12px;
+            padding:11px 15px;
+            box-shadow:var(--shadow-lg);
+            display:flex;
+            flex-wrap:wrap;
+            align-items:center;
+            gap:10px;
+            margin-bottom:12px
+        }
+        .bulk-count-label{
+            font-family:'Syne',sans-serif;
+            font-weight:700;
+            font-size:1.05rem;
+            color:var(--brand)
+        }
+        .bulk-assign-wrap{
+            display:flex;
+            align-items:center;
+            gap:8px;
+            flex:1;
+            min-width:260px
+        }
+        .bulk-assign-wrap label{
+            font-size:0.99rem;
+            color:var(--text2);
+            white-space:nowrap;
+            font-weight:500
+        }
+        .bulk-select{
+            flex:1;
+            padding:7px 11px;
+            background:var(--bg);
+            border:1.5px solid var(--border2);
+            border-radius:8px;
+            font-family:'DM Sans',sans-serif;
+            font-size:1.02rem;
+            color:var(--text);
+            outline:none
+        }
+
+
+        /* ── BULK BAR ── */
+        .bulk-bar {
+            display: none;
+            position: sticky;
+            top: 10px;
+            z-index: 50;
+            background: #fff;
+            border: 1.5px solid var(--brand-border);
+            border-radius: 12px;
+            padding: 11px 15px;
+            box-shadow: var(--shadow-lg);
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+            animation: slideDown .2s ease
+        }
+
+        .bulk-bar.visible {
+            display: flex
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-8px)
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0)
+            }
+        }
+
+        .bulk-count {
+            font-family: 'Syne', ;
+            font-weight: 700;
+            font-size: 1.13rem;
+            color: var(--brand);
+            white-space: nowrap
+        }
+
+        .bulk-count small {
+            color: var(--text2);
+            font-weight: 400;
+            font-size: 0.99rem;
+            margin-left: 3px
+        }
+
+        .bulk-assign-wrap {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: 1;
+            min-width: 260px
+        }
+
+        .bulk-assign-wrap label {
+            font-size: 0.99rem;
+            color: var(--text2);
+            white-space: nowrap;
+            font-weight: 500
+        }
+
+        .bulk-select {
+            flex: 1;
+            padding: 7px 11px;
+            background: var(--bg);
+            border: 1.5px solid var(--border2);
+            border-radius: 8px;
+            font-family: 'DM Sans', ;
+            font-size: 1.02rem;
+            color: var(--text);
+            outline: none
+        }
+
+        .deselect-btn {
+            background: transparent;
+            color: var(--muted);
+            border: 1.5px solid var(--border);
+            font-size: 0.97rem;
+            padding: 6px 11px;
+            border-radius: 7px;
+            cursor: pointer;
+            font-family: 'DM Sans', ;
+            transition: all .15s
+        }
+
+        .deselect-btn:hover {
+            background: var(--bg);
+            color: var(--text)
+        }
+
+        /* ── TABLE ── */
+        .table-wrap {
+            border: 1.5px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse
+        }
+
+        .data-table thead th {
+            padding: 9px 13px;
+            text-align: left;
+            font-size: 0.86rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--muted);
+            font-weight: 600;
+            background: var(--surface2);
+            border-bottom: 1.5px solid var(--border);
+            white-space: nowrap
+        }
+
+        .data-table thead th:first-child {
+            width: 38px;
+            text-align: center
+        }
+
+        .data-table tbody tr {
+            border-bottom: 1px solid var(--border);
+            transition: background .1s
+        }
+
+        .data-table tbody tr:last-child {
+            border-bottom: none
+        }
+
+        .data-table tbody tr:hover {
+            background: #f8f8fd
+        }
+
+        .data-table tbody tr.row-selected {
+            background: #f0f0fc
+        }
+
+        .data-table td {
+            padding: 10px 13px;
+            font-size: 1.05rem;
+            vertical-align: middle
+        }
+
+        .data-table td:first-child {
+            text-align: center
+        }
+
+        .cb {
+            width: 15px;
+            height: 15px;
+            accent-color: var(--brand);
+            cursor: pointer
+        }
+
+        .staff-name-cell {
+            display: flex;
+            align-items: center;
+            gap: 8px
+        }
+
+        .staff-name {
+            font-weight: 500
+        }
+
+        .staff-id {
+            font-size: 0.84rem;
+            color: var(--muted)
+        }
+
+        .status-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            border: 1px solid
+        }
+
+        .status-assigned {
+            background: var(--ground-bg);
+            color: var(--ground);
+            border-color: var(--ground-border)
+        }
+
+        .status-unassigned {
+            background: var(--warn-bg);
+            color: var(--warn);
+            border-color: #fcd34d
+        }
+
+        .dot {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            display: inline-block
+        }
+
+        .cell-sub {
+            font-size: 1.0rem;
+            color: var(--text2)
+        }
+
+        .cell-empty {
+            font-size: 1.0rem;
+            color: var(--muted);
+            font-style: italic
+        }
+
+        .table-empty {
+            padding: 44px;
+            text-align: center;
+            color: var(--muted);
+            font-size: 1.08rem
+        }
+
+        /* ── PAGINATION ── */
+        .pagination {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 16px;
+            border-top: 1.5px solid var(--border);
+            background: var(--surface2)
+        }
+
+        .page-info {
+            font-size: 0.95rem;
+            color: var(--muted)
+        }
+
+        .page-btns {
+            display: flex;
+            gap: 3px
+        }
+
+        .page-btn {
+            padding: 5px 10px;
+            border-radius: 7px;
+            border: 1.5px solid var(--border);
+            background: #fff;
+            font-size: 0.93rem;
+            cursor: pointer;
+            color: var(--text2);
+            transition: all .14s;
+            font-family: 'DM Sans',
+        }
+
+        .page-btn:hover:not(:disabled) {
+            background: var(--brand-soft);
+            border-color: var(--brand-border);
+            color: var(--brand)
+        }
+
+        .page-btn.current {
+            background: var(--brand);
+            color: #fff;
+            border-color: var(--brand)
+        }
+
+        .page-btn:disabled {
+            opacity: .35;
+            cursor: default
+        }
+
+        /* ── MODAL ── */
+        
+
+        .overlay {
+            display: none;
+            position: fixed !important;
+            inset: 0 !important;
+            background: rgba(24,24,58,0.32);
+            backdrop-filter: blur(5px);
+            z-index: 999999 !important;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+        .overlay.show {
+            display: flex;
+        }
+
+        .modal {
+            background: #fff;
+            border: 1.5px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            width: 100%;
+            max-width: 480px;
+            box-shadow: var(--shadow-lg);
+            max-height: 92vh;
+            overflow-y: auto
+        }
+
+        .modal-wide {
+            max-width: 560px
+        }
+
+        @keyframes popIn {
+            from {
+                opacity: 0;
+                transform: scale(.92) translateY(8px)
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0)
+            }
+        }
+
+        .modal-title {
+            font-family: 'Syne', ;
+            font-size: 1.05rem;
+            font-weight: 800;
+            margin-bottom: 4px
+        }
+
+        .modal-sub {
+            font-size: 0.99rem;
+            color: var(--muted);
+            margin-bottom: 18px;
+            line-height: 1.55
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px
+        }
+
+        .form-group {
+            margin-bottom: 12px
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.88rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--muted);
+            margin-bottom: 5px;
+            font-weight: 500
+        }
+
+        .form-label .req {
+            color: var(--danger)
+        }
+
+        .form-input,
+        .form-select {
+            width: 100%;
+            padding: 9px 12px;
+            background: var(--bg);
+            border: 1.5px solid var(--border);
+            border-radius: 9px;
+            font-family: 'DM Sans', ;
+            font-size: 1.08rem;
+            color: var(--text);
+            outline: none;
+            appearance: none;
+            transition: border-color .15s
+        }
+
+        .form-input:focus,
+        .form-select:focus {
+            border-color: var(--brand);
+            background: #fff
+        }
+
+        .form-input.error,
+        .form-select.error {
+            border-color: var(--danger)
+        }
+
+        .field-error {
+            font-size: 0.9rem;
+            color: var(--danger);
+            margin-top: 3px
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 18px
+        }
+
+        .modal-actions .btn {
+            flex: 1;
+            justify-content: center
+        }
+
+        .modal-alert {
+            padding: 10px 12px;
+            border-radius: 8px;
+            font-size: 1.0rem;
+            margin-bottom: 11px;
+            display: flex;
+            align-items: flex-start;
+            gap: 7px;
+            border: 1.5px solid;
+            line-height: 1.5
+        }
+
+        .alert-warn {
+            background: var(--warn-bg);
+            border-color: #fcd34d;
+            color: var(--warn)
+        }
+
+        .alert-danger {
+            background: var(--danger-bg);
+            border-color: var(--danger-border);
+            color: var(--danger)
+        }
+
+        .alert-info {
+            background: var(--lead-bg);
+            border-color: var(--lead-border);
+            color: var(--lead)
+        }
+
+        /* ── CHECKLIST ── */
+        .check-list {
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1.5px solid var(--border);
+            border-radius: 9px
+        }
+
+        .check-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 9px 12px;
+            border-bottom: 1px solid var(--border);
+            cursor: pointer;
+            transition: background .1s
+        }
+
+        .check-row:last-child {
+            border-bottom: none
+        }
+
+        .check-row:hover {
+            background: var(--bg)
+        }
+
+        .check-row.row-checked {
+            background: #f0f0fc
+        }
+
+        /* ── LOADING OVERLAY ── */
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(2px);
+            z-index: 9998;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 12px
+        }
+
+        .loading-overlay.show {
+            display: flex
+        }
+
+        .spinner {
+            width: 36px;
+            height: 36px;
+            border: 3px solid var(--border2);
+            border-top-color: var(--brand);
+            border-radius: 50%;
+            animation: spin .7s linear infinite
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg)
+            }
+        }
+
+        .loading-text {
+            font-size: 1.05rem;
+            color: var(--text2);
+            font-weight: 500
+        }
+
+        /* ── TOAST ── */
+        .toast {
+            position: fixed;
+            bottom: 22px;
+            right: 22px;
+            padding: 11px 17px;
+            border-radius: 11px;
+            font-size: 1.04rem;
+            font-weight: 500;
+            box-shadow: var(--shadow-lg);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transform: translateY(70px);
+            opacity: 0;
+            transition: all .28s cubic-bezier(.34, 1.56, .64, 1);
+            color: #fff;
+            max-width: 360px
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1
+        }
+
+        .toast-green {
+            background: #065f46
+        }
+
+        .toast-red {
+            background: #991b1b
+        }
+
+        .toast-blue {
+            background: var(--brand)
+        }
+
+        /* ── API STATUS BANNER ── */
+        .api-banner {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 16px;
+            border-radius: 10px;
+            margin-bottom: 18px;
+            font-size: 1.02rem;
+            border: 1.5px solid;
+            animation: slideDown .3s ease
+        }
+
+        .api-banner.connecting {
+            background: var(--lead-bg);
+            border-color: var(--lead-border);
+            color: var(--lead)
+        }
+
+        .api-banner.error {
+            background: var(--danger-bg);
+            border-color: var(--danger-border);
+            color: var(--danger)
+        }
+
+        .api-banner.ok {
+            background: var(--ground-bg);
+            border-color: var(--ground-border);
+            color: var(--success)
+        }
+
+        ::-webkit-scrollbar {
+            width: 4px;
+            height: 4px
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border2);
+            border-radius: 10px
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent
+        }
+
+        @media(max-width:1000px) {
+            .layout {
+                grid-template-columns: 1fr
+            }
+
+            .stats {
+                grid-template-columns: repeat(2, 1fr)
+            }
+
+            .app {
+                padding: 16px 14px 60px
+            }
+        }
+
+        @media(max-width:560px) {
+            .stats {
+                grid-template-columns: 1fr
+            }
+
+            .form-row {
+                grid-template-columns: 1fr
+            }
+        }
+
+        /*custome css*/
+
+        .lead-assign-btn{
+            background:#5250c3;
+            color:white;
+            border:none;
+            padding:5px 12px;
+            border-radius:6px;
+            font-size:12px;
+            cursor:pointer;
+        }
+
+        .lead-modal-overlay{
+            position:fixed;
+            top:0;
+            left:0;
+            width:100%;
+            height:100%;
+            background:rgba(0,0,0,0.4);
+            display:none;
+            align-items:center;
+            justify-content:center;
+            z-index:9999;
+        }
+
+        .lead-modal-overlay-2{
+            position:fixed;
+            top:0;
+            left:0;
+            width:100%;
+            height:100%;
+            background:rgba(0,0,0,0.4);
+            display:none;
+            align-items:center;
+            justify-content:center;
+            z-index:9999;
+        }
+
+        .lead-modal{
+            background:white;
+            padding:25px;
+            width:350px;
+            border-radius:10px;
+            position:relative;
+            box-shadow:0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .lead-modal-title{
+            margin-bottom:20px;
+            font-size:18px;
+            font-weight:600;
+        }
+
+        .lead-form-group{
+            margin-bottom:15px;
+        }
+
+        .lead-form-group label{
+            font-size:13px;
+            font-weight:500;
+            display:block;
+            margin-bottom:6px;
+        }
+
+        .lead-select-search{
+            width:100%;
+            padding:8px;
+            border:1px solid #ddd;
+            border-radius:6px;
+        }
+
+        .lead-assign-submit{
+            width:100%;
+            background:#5250c3;
+            color:white;
+            border:none;
+            padding:9px;
+            border-radius:6px;
+            font-weight:500;
+            cursor:pointer;
+        }
+
+        .lead-modal-close{
+            position:absolute;
+            top:8px;
+            right:10px;
+            border:none;
+            background:none;
+            font-size:20px;
+            cursor:pointer;
+        }
+
+
+
+        
+        .lead-form-group{
+            margin-bottom:18px;
+        }
+
+        .lead-form-group label{
+            display:block;
+            font-size:13px;
+            font-weight:500;
+            margin-bottom:6px;
+            color:#444;
+        }
+
+        /* FORCE STYLE */
+
+        select.lead-select-search{
+
+            width:100% !important;
+            height:42px !important;
+
+            padding:0 12px !important;
+
+            border-radius:8px !important;
+            border:1px solid #dcdce5 !important;
+
+            font-size:14px !important;
+            color:#333 !important;
+
+            background-color:#fff !important;
+
+            cursor:pointer;
+
+            outline:none;
+
+            appearance:none;
+            -webkit-appearance:none;
+            -moz-appearance:none;
+
+            background-image:url("data:image/svg+xml;utf8,<svg fill='%235250c3' height='20' viewBox='0 0 24 24' width='20' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+
+            background-repeat:no-repeat;
+            background-position:right 12px center;
+            background-size:18px;
+
+            transition:all .2s ease;
+        }
+
+        select.lead-select-search:hover{
+            border-color:#5250c3 !important;
+        }
+
+        select.lead-select-search:focus{
+            border-color:#5250c3 !important;
+            box-shadow:0 0 0 2px rgba(82,80,195,0.2);
+        }
+        .panel{
+            overflow: auto;
+            overflow-y: auto;
+            max-height: 70vh;
+        }
+    </style>
+
+</head>
+
+
+
+
+
+<body>
+
+    
+    <!-- page-wrapper Start-->
+    <!-- tap on top starts-->
+    <div class="tap-top">
+        <i class="fa-solid fa-angle-up"></i>
+    </div>
+    <!-- tap on tap ends-->
+    <!-- loader-->
+    <div class="loader-wrapper">
+        <div class="loader"><span></span><span></span><span></span><span></span><span></span></div>
+    </div>
+
+
+    <div class="page-wrapper compact-wrapper" id="pageWrapper">
+
+        <!-- this is header section -->
+        {% include "common/header.html"%}
+
+        <!--header section end -->
+        <!-- Page Body Start-->
+        <div class="page-body-wrapper">
+            <!-- Toast HTML (put this anywhere in your body, outside other forms) -->
+            <div id="toastMsg" class="position-fixed top-0 end-0 m-3"
+                style="padding:12px 18px; border-radius:6px; color:#fff; display:none; z-index:9999; font-weight:500; min-width:250px;">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div id="toastText">Message goes here</div>
+                    <button type="button" class="btn-close btn-close-white ms-3" onclick="hideToast()"
+                        style="font-size:12px;"></button>
+                </div>
+            </div>
+            <!-- Page sidebar start-->
+            {% include "common/sidebar.html"%}
+            <!-- Page sidebar end-->
+            <div class="page-body">
+
+                <div id="assignLeadModal" class="lead-modal-overlay">
+                    <div class="lead-modal">
+
+                        <button class="lead-modal-close" onclick="closeAssignLeadModal()">×</button>
+
+                        <h3 class="lead-modal-title">Assign Lead</h3>
+
+                        <form method="post" action="{% url 'kg_app:tlAssignToTc' %}" enctype="multipart/form-data">
+
+                            {% csrf_token %}           
+                            <div class="lead-form-group">
+                            <label>Telecaller Name</label>
+                            <select class="lead-select-search" required name="telecaller_id">
+                                <option value="" disabled selected>Select Telecaller</option>
+                                {% for tc in telecallers%}
+                                    <option value="{{ tc.id }}">{{ tc.first_name }} {{ tc.last_name }}</option>
+                                {% endfor %}
+                                <!-- <option>Rahul Sharma</option>
+                                <option>Priya Das</option>
+                                <option>Amit Kumar</option> -->
+                            </select>
+                            </div>
+
+                            <div class="lead-form-group">
+                            <label>Teamlead Name</label>
+                            <select class="lead-select-search" required name="teamlead_id">
+                                <option value="" disabled selected>Select Teamlead</option>
+                                {% for tl in teamleads%}
+                                    <option value="{{ tl.id }}">{{ tl.first_name }} {{ tl.last_name }}</option>
+                                {% endfor %}
+                                <!-- <option>Sandeep</option>
+                                <option>Rakesh</option>
+                                <option>Arjun</option> -->
+                            </select>
+                            </div>
+
+                            <button type="submit" class="lead-assign-submit">Assign</button>
+
+                        </form>
+                    </div>
+                </div>
+
+                <div id="assignLeadModal-2" class="lead-modal-overlay-2">
+                    <div class="lead-modal">
+
+                        <button class="lead-modal-close" onclick="closeAssignLeadModal_2()">×</button>
+
+                        <h3 class="lead-modal-title">Assign Groundstaff</h3>
+
+                        <form method="post" action="{% url 'kg_app:tlAssignToTc' %}" enctype="multipart/form-data">
+
+                            {% csrf_token %}           
+                            <div class="lead-form-group">
+                            <label>Telecaller Name</label>
+                            <select class="lead-select-search" required name="telecaller_id">
+                                <option value="" disabled selected>Select Telecaller</option>
+                                {% for tc in telecallers%}
+                                    <option value="{{ tc.id }}">{{ tc.first_name }} {{ tc.last_name }}</option>
+                                {% endfor %}
+                                <!-- <option>Rahul Sharma</option>
+                                <option>Priya Das</option>
+                                <option>Amit Kumar</option> -->
+                            </select>
+                            </div>
+
+                            <div class="lead-form-group">
+                            <label>Teamlead Name</label>
+                            <select class="lead-select-search" required name="teamlead_id">
+                                <option value="" disabled selected>Select Teamlead</option>
+                                {% for tl in teamleads%}
+                                    <option value="{{ tl.id }}">{{ tl.first_name }} {{ tl.last_name }}</option>
+                                {% endfor %}
+                                <!-- <option>Sandeep</option>
+                                <option>Rakesh</option>
+                                <option>Arjun</option> -->
+                            </select>
+                            </div>
+
+                            <button type="submit" class="lead-assign-submit">Assign</button>
+
+                        </form>
+                    </div>
+                </div>
+
+                <div class="container-fluid">
+                    <div class="page-title">
+                        <div class="tm-wrap">
+
+                            <!-- ── DJANGO MESSAGES ── -->
+                            <!-- {% if messages %}
+                            <div class="msg-list">
+                                {% for message in messages %}
+                                <div
+                                    class="msg {% if message.tags == 'success' %}msg-success{% elif message.tags == 'warning' %}msg-warning{% else %}msg-error{% endif %}">
+                                    {% if message.tags == 'success' %}✓{% elif message.tags == 'warning' %}⚠️{% else %}✕{% endif %}
+                                    {{ message }}
+                                </div>
+                                {% endfor %}
+                            </div>
+                            {% endif %} -->
+
+                            {% if messages %}
+                            {% for message in messages %}
+                            <div class="django-toast-msg"
+                                data-msg="{{ message }}"
+                                data-tag="{{ message.tags }}"
+                                style="display:none">
+                            </div>
+                            {% endfor %}
+                            {% endif %}
+
+                            <!-- ── HEADER ── -->
+                            <div class="page-header-2">
+                                <div>
+                                    <div class="page-title">Team <span>Management</span></div>
+                                    <!-- <div class="page-sub">assigned_to FK · is_assignment_locked enforced</div> -->
+                                </div>
+                                <div class="header-btns">
+                                    <button class="btn btn-ghost" onclick="window.location.href='{% url 'kg_app:create_user' %}'">+ Add Member</button>
+                                </div>
+                            </div>
+
+                            <!-- ── STATS ── -->
+                            <div class="stats">
+                                <div class="stat s-tele">
+                                    <div class="stat-ico">📞</div>
+                                    <div class="stat-label">Telecallers</div>
+                                    <div class="stat-val">{{ stats.tele_total }}</div>
+                                    <div class="stat-sub">{{ stats.tele_active }} active</div>
+                                </div>
+                                <div class="stat s-lead">
+                                    <div class="stat-ico">👔</div>
+                                    <div class="stat-label">Team Leads</div>
+                                    <div class="stat-val">{{ stats.lead_total }}</div>
+                                    <div class="stat-sub">{{ stats.lead_assigned }} assigned · {{ stats.lead_unassigned }} unassigned</div>
+                                </div>
+                                <div class="stat s-ground">
+                                    <div class="stat-ico">🌱</div>
+                                    <div class="stat-label">Ground Staff</div>
+                                    <div class="stat-val">{{ stats.ground_total }}</div>
+                                    <div class="stat-sub">{{ stats.ground_assigned }} assigned · {{ stats.ground_unassigned }} unassigned</div>
+                                </div>
+                                <div class="stat s-repo">
+                                    <div class="stat-ico">🚗</div>
+                                    <div class="stat-label">Repo Boys</div>
+                                    <div class="stat-val">{{ stats.repo_total }}</div>
+                                    <div class="stat-sub">{{ stats.repo_active }} active</div>
+                                </div>
+                            </div>
+
+                            <!-- ── MAIN LAYOUT ── -->
+                            <div class="layout">
+
+                                <!-- ═══ LEFT COLUMN ═══ -->
+                                <div style="display:flex;flex-direction:column;gap:16px">
+
+                                    <!-- Telecallers -->
+                                    <div class="panel">
+                                        <div class="panel-head">
+                                            <div class="panel-title">📞 Telecallers</div>
+                                            <div style="display:flex;gap:6px;align-items:center">
+                                                <span class="badge badge-num">{{ stats.tele_total }}</span>
+                                                <button class="btn btn-ghost btn-xs" onclick="openAssignLeadModal()">+ Assign Lead</button>
+                                            </div>
+                                        </div>
+                                        <div class="panel-body" style="padding:10px 12px;max-height:320px;overflow-y:auto">
+                                            {% if telecallers %}
+                                            {% for tc in telecallers %}
+                                            {% with leads=tc.subordinates.filter %}
+                                            {% with lead_count=tc.subordinates.count %}
+                                            {% with pct=lead_count|floatformat:0 %}
+                                            <div class="tc-item">
+                                                <div class="tc-row">
+                                                    <div class="av av-tele"
+                                                        style="width:32px;height:32px;font-size:0.77rem">
+                                                        {{ tc.first_name|slice:":1" }}{{ tc.last_name|slice:":1" }}
+                                                    </div>
+                                                    <div style="flex:1;min-width:0">
+                                                        <div class="tc-name">{{ tc.first_name }} {{ tc.last_name }}
+                                                        </div>
+                                                        <div class="tc-meta">{{ tc.username }} · {{tc.subordinates.count }} lead{{tc.subordinates.count|pluralize }}</div>
+                                                    </div>
+                                                    <span
+                                                        class="badge {% if tc.login_status == 'Active' %}badge-active{% else %}badge-inactive{% endif %}">
+                                                        {{ tc.login_status|default:"Inactive" }}
+                                                    </span>
+                                                </div>
+                                                {% with lc=tc.subordinates.count %}
+                                                {% widthratio lc 8 100 as bar_pct %}
+                                                <div class="bar-track">
+                                                    <div class="bar-fill"
+                                                        style="width:{% if bar_pct > 100 %}100{% else %}{{ bar_pct }}{% endif %}%">
+                                                    </div>
+                                                </div>
+                                                <div class="bar-label">
+                                                    <span>{{ lc }}/8 leads</span>
+                                                    <span>{% if bar_pct > 100 %}100{% else %}{{ bar_pct }}{% endif %}%</span>
+                                                </div>
+                                                {% endwith %}
+                                            </div>
+                                            {% endwith %}
+                                            {% endwith %}
+                                            {% endwith %}
+                                            {% endfor %}
+                                            {% else %}
+                                            <div
+                                                style="text-align:center;color:var(--muted);font-size:0.99rem;padding:20px 0">
+                                                No telecallers found</div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+
+                                    <!-- Team Leads grouped by Telecaller -->
+                                    <div class="panel">
+                                        <div class="panel-head">
+                                            <div class="panel-title">👔 Team Leads</div>
+                                            <div style="display:flex;gap:6px;align-items:center">
+                                                <span class="badge badge-lead">{{ stats.lead_total }}</span>
+                                                <button class="btn btn-ghost btn-xs" onclick="openAssignLeadModal()">+ Assign</button>
+                                            </div>
+                                        </div>
+                                        <div class="panel-body" style="padding:10px 12px;max-height:320px;overflow-y:auto">
+                                            {% if teamleads %}
+                                            {% for lead in teamleads %}
+                                            {% with cnt=lead.subordinates.count %}
+                                            <div class="lead-card">
+                                                <div class="av av-lead" style="width:30px;height:30px;font-size:0.7rem">
+                                                    {{ lead.first_name|slice:":1" }}{{ lead.last_name|slice:":1" }}
+                                                </div>
+                                                <div class="lead-card-info">
+                                                    <div class="lead-card-name">{{ lead.first_name }} {{ lead.last_name }}</div>
+                                                    <div class="lead-card-sub">
+                                                        {{ lead.username }} · {{ cnt }} staff
+                                                        {% if lead.assigned_to %}· → {{ lead.assigned_to.first_name }}{% endif %}
+                                                    </div>
+                                                </div>
+                                                {% if lead.is_assignment_locked %}
+                                                <span class="badge badge-lock">🔒 locked</span>
+                                                {% endif %}
+                                                <span class="badge badge-ground">{{ cnt }}</span>
+                                            </div>
+                                            {% endwith %}
+                                            {% endfor %}
+                                            {% else %}
+                                            <div
+                                                style="text-align:center;color:var(--muted);font-size:0.99rem;padding:20px 0">No team leads found</div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+
+                                    <!-- Unassigned Team Leads -->
+                                    <div class="panel">
+                                        <div class="panel-head">
+                                            <div class="panel-title">⚠️ Unassigned Team Leads</div>
+                                            <span class="badge badge-warn">{{ unassigned_leads.count }}</span>
+                                        </div>
+                                        <div class="panel-body" style="padding:10px 12px">
+                                            {% if unassigned_leads %}
+                                            <div
+                                                style="display:flex;flex-direction:column;gap:5px;max-height:200px;overflow-y:auto">
+                                                {% for lead in unassigned_leads %}
+                                                <div class="unassigned-row">
+                                                    <div class="av av-lead"
+                                                        style="width:28px;height:28px;font-size:0.68rem">
+                                                        {{ lead.first_name|slice:":1" }}{{ lead.last_name|slice:":1" }}
+                                                    </div>
+                                                    <div style="flex:1;min-width:0">
+                                                        <div
+                                                            style="font-size:0.95rem;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+                                                            {{ lead.first_name }} {{ lead.last_name }}
+                                                        </div>
+                                                        <div style="font-size:0.81rem;color:var(--warn)">@{{ lead.username }} · not assigned</div>
+                                                    </div>
+                                                    <button class="btn btn-ghost btn-xs" onclick="openAssignLeadModal()">Assign →</button>
+                                                </div>
+                                                {% endfor %}
+                                            </div>
+                                            {% else %}
+                                            <div
+                                                style="text-align:center;color:var(--success);font-size:0.99rem;padding:12px">
+                                                ✓ All team leads are assigned</div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <!-- ═══ RIGHT: Ground Staff Table ═══ -->
+                                <div class="panel">
+                                    <div class="panel-head">
+                                        <div class="panel-title">Ground Staff</div>
+                                        <div class="tabs">
+                                            <a href="?tab=all"
+                                                class="tab {% if tab == 'all' or not tab %}active{% endif %}">All</a>
+                                            <a href="?tab=unassigned"
+                                                class="tab {% if tab == 'unassigned' %}active{% endif %}">Unassigned</a>
+                                            <a href="?tab=assigned"
+                                                class="tab {% if tab == 'assigned' %}active{% endif %}">Assigned</a>
+                                        </div>
+                                    </div>
+                                    <div class="panel-body">
+
+                                        <!-- BULK ASSIGN FORM BAR -->
+                                       <form method="POST" action="{% url 'kg_app:team_management' %}" id="bulk-form">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="action" value="bulk_assign_groundstaff" />
+                                            <div class="bulk-form-bar">
+                                                <div class="bulk-count-label"><span id="sel-count">0</span> selected</div>
+                                                <div class="bulk-assign-wrap">
+                                                    <label>→ Team Lead:</label>
+                                                    <select class="bulk-select" name="teamlead_id" required>
+                                                        <option value="">Choose Team Lead…</option>
+                                                        {% for lead in assigned_leads %}
+                                                        <option value="{{ lead.id }}">
+                                                            {{ lead.first_name }} {{ lead.last_name }}
+                                                            {% if lead.assigned_to %} — {{ lead.assigned_to.first_name }}{% endif %}
+                                                        </option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                                <div style="display:flex;gap:6px;margin-left:auto">
+                                                    <button type="button" class="btn btn-ghost btn-sm" onclick="clearCheckboxes()">✕ Clear</button>
+                                                    <button type="submit" class="btn btn-primary btn-sm">✓ Assign Selected</button>
+                                                </div>
+                                            </div>
+
+                                            <!-- TOOLBAR -->
+                                            <div class="toolbar-2">
+                                                <div class="search-box-2">
+                                                    <span class="search-icon">⌕</span>
+                                                    <input type="text" id="staff-search"
+                                                        placeholder="Search by name or username…"
+                                                        oninput="filterTable()" />
+                                                </div>
+                                                <select class="filter-select" id="filter-lead" onchange="filterTable()">
+                                                    <option value="">All Team Leads</option>
+                                                    {% for lead in assigned_leads %}
+                                                    <option value="{{ lead.id }}">{{ lead.first_name }} {{ lead.last_name }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                                <a href="{% url 'kg_app:team_management' %}" class="btn btn-ghost btn-sm">↻ Refresh</a>
+                                            </div>
+
+                                            <!-- TABLE -->
+                                            <div class="table-wrap">
+                                                <table class="data-table" id="staff-table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th><input type="checkbox" class="cb" id="cb-header" onchange="toggleAll(this.checked)" /></th>
+                                                            <th>Name</th>
+                                                            <th>Username</th>
+                                                            <th>Status</th>
+                                                            <th>Team Lead (assigned_to)</th>
+                                                            <th>Telecaller</th>
+                                                            <th style="text-align:right">Action</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {% for g in groundstaff %}
+                                                        <tr data-name="{{ g.first_name|lower }} {{ g.last_name|lower }}"
+                                                            data-username="{{ g.username|lower }}"
+                                                            data-lead="{{ g.assigned_to.id|default:'' }}">
+                                                            <td>
+                                                                {% if not g.is_assignment_locked %}
+                                                                <input type="checkbox" class="cb row-cb"
+                                                                    name="groundstaff_ids" value="{{ g.id }}"
+                                                                    onchange="updateCount()" />
+                                                                {% endif %}
+                                                            </td>
+                                                            <td>
+                                                                <div class="staff-name-cell">
+                                                                    <div class="av av-ground"
+                                                                        style="width:28px;height:28px;font-size:0.68rem">
+                                                                        {{ g.first_name|slice:":1" }}{{ g.last_name|slice:":1" }}
+                                                                    </div>
+                                                                    <div>
+                                                                        <div class="staff-name">{{ g.first_name }} {{ g.last_name }}</div>
+                                                                        <div class="staff-id">#{{ g.id }}</div>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td class="cell-sub">{{ g.username }}</td>
+                                                            <td>
+                                                                {% if g.assigned_to %}
+                                                                <span class="status-tag status-assigned">
+                                                                    <span class="dot" style="background:var(--ground)"></span>Assigned
+                                                                </span>
+                                                                {% else %}
+                                                                <span class="status-tag status-unassigned">
+                                                                    <span class="dot" style="background:var(--warn)"></span>Unassigned
+                                                                </span>
+                                                                {% endif %}
+                                                                {% if g.is_assignment_locked %}
+                                                                <span class="badge badge-lock" style="margin-left:4px">🔒</span>
+                                                                {% endif %}
+                                                            </td>
+                                                            <td class="{% if g.assigned_to %}cell-sub{% else %}cell-empty{% endif %}">
+                                                                {{ g.assigned_to.first_name|default:"—" }}{% if g.assigned_to %} {{ g.assigned_to.last_name }}{% endif %}
+                                                            </td>
+                                                            <td class="{% if g.assigned_to.assigned_to %}cell-sub{% else %}cell-empty{% endif %}">
+                                                                {{ g.assigned_to.assigned_to.first_name|default:"—" }}{% if g.assigned_to.assigned_to %} {{ g.assigned_to.assigned_to.last_name }}{% endif %}
+                                                            </td>
+                                                            <td style="text-align:right">
+                                                                {% if g.assigned_to %}
+                                                                <!-- ✅ NO nested form here anymore — just a button -->
+                                                                <button type="button" class="btn btn-ghost btn-xs"
+                                                                    onclick="if(confirm('Unassign {{ g.first_name }} {{ g.last_name }}?')) document.getElementById('unassign-form-{{ g.id }}').submit()">
+                                                                    Unassign
+                                                                </button>
+                                                                {% else %}
+                                                                <!-- <button class="btn btn-ghost btn-xs" onclick="openAssignLeadModal_2()">Assign</button> -->
+                                                                -
+                                                                {% endif %}
+                                                            </td>
+                                                        </tr>
+                                                        {% empty %}
+                                                        <tr>
+                                                            <td colspan="7">
+                                                                <div class="table-empty">
+                                                                    <div style="font-size:1.8rem;margin-bottom:6px;opacity:.35">🔍</div>
+                                                                    No ground staff found
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        {% endfor %}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
+                                        </form>
+                                        <!-- end bulk-form -->
+
+                                        <!-- ✅ Unassign forms live here — completely OUTSIDE the bulk form -->
+                                        {% for g in groundstaff %}
+                                            {% if g.assigned_to %}
+                                            <form method="POST" action="{% url 'kg_app:team_management' %}"
+                                                id="unassign-form-{{ g.id }}" style="display:none">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="action" value="unassign" />
+                                                <input type="hidden" name="user_id" value="{{ g.id }}" />
+                                            </form>
+                                            {% endif %}
+                                        {% endfor %}
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- ══════════════════════════════════════════
+                                MODAL 1: Assign Team Lead → Telecaller
+                                POST action=assign_teamlead
+                            ══════════════════════════════════════════ -->
+                        <div class="overlay" id="assign-lead-modal">
+                            <div class="modal">
+                                <div class="modal-title">👔 Assign Team Lead to Telecaller</div>
+                                <div class="modal-sub">
+                                    Select a telecaller and one or more unassigned team leads.<br>
+                                    <span style="color:var(--danger);font-size:0.9rem">🔒 Once assigned, is_assignment_locked = True and cannot be moved.</span>
+                                </div>
+                                <form method="POST" action="{% url 'kg_app:team_management' %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="action" value="assign_teamlead" />
+
+                                    <div class="form-group">
+                                        <label class="form-label">Telecaller <span class="req">*</span></label>
+                                        <select class="form-select" name="telecaller_id" required>
+                                            <option value="">Select Telecaller…</option>
+                                            {% for tc in telecallers %}
+                                            <option value="{{ tc.id }}">{{ tc.first_name }} {{ tc.last_name }} (@{{ tc.username }})</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="form-label">Select Unassigned Team Lead(s) <span
+                                                class="req">*</span></label>
+                                        <input type="text" class="form-input" placeholder="Search…"
+                                            oninput="filterCheckList(this,'al-checklist')" style="margin-bottom:8px" />
+                                        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+                                            <input type="checkbox" class="cb"
+                                                onchange="toggleCheckList('al-checklist',this.checked)" />
+                                            <label style="font-size:0.95rem;color:var(--text2);cursor:pointer">Select
+                                                all</label>
+                                        </div>
+                                        <div class="check-list" id="al-checklist">
+                                            {% if unassigned_leads %}
+                                            {% for lead in unassigned_leads %}
+                                            <label class="check-row">
+                                                <input type="checkbox" class="cb" name="teamlead_ids"
+                                                    value="{{ lead.id }}" />
+                                                <div class="av av-lead"
+                                                    style="width:26px;height:26px;font-size:0.66rem">
+                                                    {{ lead.first_name|slice:":1" }}{{ lead.last_name|slice:":1" }}
+                                                </div>
+                                                <div>
+                                                    <div style="font-size:0.95rem;font-weight:500">{{ lead.first_name }}
+                                                        {{ lead.last_name }}</div>
+                                                    <div style="font-size:0.81rem;color:var(--muted)">@{{ lead.username }} · #{{ lead.id }}</div>
+                                                </div>
+                                            </label>
+                                            {% endfor %}
+                                            {% else %}
+                                            <div
+                                                style="padding:16px;text-align:center;color:var(--muted);font-size:0.95rem">
+                                                No unassigned team leads available
+                                            </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+
+                                    <div class="modal-actions">
+                                        <button type="button" class="btn btn-ghost"
+                                            onclick="closeModal('assign-lead-modal')">Cancel</button>
+                                        <button type="submit" class="btn btn-primary">✓ Assign to Telecaller</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        
+
+                        <!-- ══════════════════════════════════════════
+                                MODAL 2: Bulk Assign Ground Staff → Team Lead
+                                POST action=bulk_assign_groundstaff
+                            ══════════════════════════════════════════ -->
+                        <div class="overlay" id="bulk-ground-modal">
+                            <div class="modal modal-wide">
+                                <div class="modal-title">⚡ Bulk Assign Ground Staff</div>
+                                <div class="modal-sub">
+                                    Select a team lead and one or more unassigned ground staff.<br>
+                                    <span style="color:var(--danger);font-size:0.9rem">🔒 Locked staff are skipped. Uses
+                                        transaction.atomic().</span>
+                                </div>
+                                <form method="POST" action="{% url 'kg_app:team_management' %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="action" value="bulk_assign_groundstaff" />
+
+                                    <div class="form-group">
+                                        <label class="form-label">Team Lead (assigned_to) <span
+                                                class="req">*</span></label>
+                                        <select class="form-select" name="teamlead_id" required>
+                                            <option value="">Select Team Lead…</option>
+                                            {% for lead in assigned_leads %}
+                                            <option value="{{ lead.id }}">
+                                                {{ lead.first_name }} {{ lead.last_name }}
+                                                {% if lead.assigned_to %} — {{ lead.assigned_to.first_name }} {{ lead.assigned_to.last_name }}{% endif %}
+                                            </option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="form-label">Select Unassigned Ground Staff <span
+                                                class="req">*</span></label>
+                                        <input type="text" class="form-input" placeholder="Search…"
+                                            oninput="filterCheckList(this,'bg-checklist')" style="margin-bottom:8px" />
+                                        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+                                            <input type="checkbox" class="cb"
+                                                onchange="toggleCheckList('bg-checklist',this.checked)" />
+                                            <label style="font-size:0.95rem;color:var(--text2);cursor:pointer">Select
+                                                all unassigned</label>
+                                        </div>
+                                        <div class="check-list" id="bg-checklist">
+                                            {% if unassigned_ground %}
+                                            {% for g in unassigned_ground %}
+                                            <label class="check-row">
+                                                <input type="checkbox" class="cb" name="groundstaff_ids"
+                                                    value="{{ g.id }}" />
+                                                <div class="av av-ground"
+                                                    style="width:26px;height:26px;font-size:0.66rem">
+                                                    {{ g.first_name|slice:":1" }}{{ g.last_name|slice:":1" }}
+                                                </div>
+                                                <div>
+                                                    <div style="font-size:0.95rem;font-weight:500">{{ g.first_name }} {{
+                                                        g.last_name }}</div>
+                                                    <div style="font-size:0.81rem;color:var(--muted)">@{{ g.username }} · #{{ g.id }}</div>
+                                                </div>
+                                            </label>
+                                            {% endfor %}
+                                            {% else %}
+                                            <div
+                                                style="padding:16px;text-align:center;color:var(--muted);font-size:0.95rem">
+                                                No unassigned ground staff available
+                                            </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+
+                                    <div class="modal-actions">
+                                        <button type="button" class="btn btn-ghost"
+                                            onclick="closeModal('bulk-ground-modal')">Cancel</button>
+                                        <button type="submit" class="btn btn-primary">✓ Assign Selected</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <!-- ══════════════════════════════════════════
+                                MODAL 3: Add Member
+                                POST action=add_member — all CreateUser fields
+                            ══════════════════════════════════════════ -->
+                        <div class="overlay" id="add-modal">
+                            <div class="modal modal-wide">
+                                <div class="modal-title">Add New Member</div>
+                                <div class="modal-sub">All fields match the CreateUser model.</div>
+                                <form method="POST" action="{% url 'kg_app:team_management' %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="action" value="add_member" />
+
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label class="form-label">First Name <span class="req">*</span></label>
+                                            <input type="text" class="form-input" name="first_name"
+                                                placeholder="e.g. Ravi" required />
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label">Last Name <span class="req">*</span></label>
+                                            <input type="text" class="form-input" name="last_name"
+                                                placeholder="e.g. Kumar" required />
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label class="form-label">Username <span class="req">*</span></label>
+                                            <input type="text" class="form-input" name="username"
+                                                placeholder="unique username" required />
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label">Role <span class="req">*</span></label>
+                                            <select class="form-select" name="role" id="add-role"
+                                                onchange="toggleParentField()" required>
+                                                <option value="telecaller">Telecaller</option>
+                                                <option value="teamlead" selected>Team Lead</option>
+                                                <option value="groundstaff">Ground Staff</option>
+                                                <option value="repoboy">Repo Boy</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label class="form-label">Email <span class="req">*</span></label>
+                                            <input type="email" class="form-input" name="email"
+                                                placeholder="email@example.com" required />
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label">Phone Number <span class="req">*</span></label>
+                                            <input type="text" class="form-input" name="phone_number"
+                                                placeholder="+91 99999 99999" required />
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="form-label">Password <span class="req">*</span></label>
+                                        <input type="password" class="form-input" name="password"
+                                            placeholder="Set a password" required />
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="form-label">Address</label>
+                                        <input type="text" class="form-input" name="address"
+                                            placeholder="Optional address" />
+                                    </div>
+
+                                    <!-- assigned_to — shown only for teamlead / groundstaff -->
+                                    <div class="form-group" id="add-parent-group">
+                                        <label class="form-label" id="add-parent-label">assigned_to → Telecaller
+                                            (optional)</label>
+                                        <select class="form-select" name="assigned_to" id="add-parent">
+                                            <option value="">— Leave Unassigned —</option>
+                                            {% for tc in telecallers %}
+                                            <option value="{{ tc.id }}" data-role="teamlead">
+                                                {{ tc.first_name }} {{ tc.last_name }} (@{{ tc.username }})
+                                            </option>
+                                            {% endfor %}
+                                            {% for lead in assigned_leads %}
+                                            <option value="{{ lead.id }}" data-role="groundstaff" style="display:none">
+                                                {{ lead.first_name }} {{ lead.last_name }} (@{{ lead.username }})
+                                            </option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+
+                                    <div class="modal-actions">
+                                        <button type="button" class="btn btn-ghost"
+                                            onclick="closeModal('add-modal')">Cancel</button>
+                                        <button type="submit" class="btn btn-primary">+ Add Member</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    
+                </div>
+                
+            </div>
+
+            
+
+
+
+
+            {% include "common/footer.html"%}
+        </div>
+        <!-- page body end  -->
+         
+
+    </div>
+
+
+    
+
+
+    <!-- jquery-->
+    <script src="{% static 'assets/js/vendors/jquery/jquery.min.js' %}"></script>
+    <!-- bootstrap js-->
+    <script src="{% static 'assets/js/vendors/bootstrap/dist/js/bootstrap.bundle.min.js' %}" defer=""></script>
+    <script src="{% static 'assets/js/vendors/bootstrap/dist/js/popper.min.js' %}" defer=""></script>
+    <!--fontawesome-->
+    <script src="{% static 'assets/js/vendors/font-awesome/fontawesome-min.js' %}"></script>
+    <!-- feather-->
+    <script src="{% static 'assets/js/vendors/feather-icon/feather.min.js' %}"></script>
+    <script src="{% static 'assets/js/vendors/feather-icon/custom-script.js' %}"></script>
+    <!-- sidebar -->
+    <script src="{% static 'assets/js/sidebar.js' %}"></script>
+    <!-- height_equal-->
+    <script src="{% static 'assets/js/height-equal.js' %}"></script>
+    <!-- config-->
+    <script src="{% static 'assets/js/config.js' %}"></script>
+    <!-- apex-->
+    <script src="{% static 'assets/js/chart/apex-chart/apex-chart.js' %}"></script>
+    <script src="{% static 'assets/js/chart/apex-chart/stock-prices.js' %}"></script>
+    <!-- scrollbar-->
+    <script src="{% static 'assets/js/scrollbar/simplebar.js' %}"></script>
+    <script src="{% static 'assets/js/scrollbar/custom.js' %}"></script>
+    <!-- slick-->
+    <script src="{% static 'assets/js/slick/slick.min.js' %}"></script>
+    <script src="{% static 'assets/js/slick/slick.js' %}"></script>
+    <!-- data_table-->
+    <script src="{% static 'assets/js/js-datatables/datatables/jquery.dataTables.min.js' %}"></script>
+    <!-- page_datatable-->
+    <script src="{% static 'assets/js/js-datatables/datatables/datatable.custom.js' %}"></script>
+    <!-- page_datatable1-->
+    <script src="{% static 'assets/js/js-datatables/datatables/datatable.custom1.js' %}"></script>
+    <!-- page_datatable-->
+    <script src="{% static 'assets/js/datatable/datatables/datatable.custom.js' %}"></script>
+    <!-- theme_customizer-->
+    <script src="{% static 'assets/js/theme-customizer/customizer.js' %}"></script>
+    <!-- tilt-->
+    <script src="{% static 'assets/js/animation/tilt/tilt.jquery.js' %}"></script>
+    <!-- page_tilt-->
+    <script src="{% static 'assets/js/animation/tilt/tilt-custom.js' %}"></script>
+    <!-- dashboard_1-->
+    <script src="{% static 'assets/js/dashboard/dashboard_1.js' %}"></script>
+
+
+
+    <!-- email_pagination-->
+    <script src="{% static 'assets/js/letter-box/custom-mail-pagination.js' %}"></script>
+    <script src="{% static 'assets/js/letter-box/custom-usermail.js' %}"></script>
+    <!-- editors-->
+    <script src="{% static 'assets/js/editors/quill.js' %}"></script>
+    <!-- editors1-->
+    <script src="{% static 'assets/js/editors/custom-quill.js' %}"></script>
+    <!-- custom script -->
+    <script src="{% static 'assets/js/script.js' %}"></script>
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+
+    <script>
+        $(document).ready(function() {
+            $('.lead-select-search').select2({
+                width:'100%',
+                dropdownParent: $('#assignLeadModal')
+            });
+        });
+        function openAssignLeadModal(){
+            document.getElementById("assignLeadModal").style.display = "flex";
+        }
+
+        function openAssignLeadModal_2(){
+            document.getElementById("assignLeadModal-2").style.display = "flex";
+        }
+
+        function closeAssignLeadModal(){
+            document.getElementById("assignLeadModal").style.display = "none";
+        }
+
+        function closeAssignLeadModal_2(){
+            document.getElementById("assignLeadModal-2").style.display = "none";
+        }
+    </script>
+
+
+    <script>
+        function showToast(message, tag) {
+            const toast = document.getElementById('toastMsg');
+            const text = document.getElementById('toastText');
+
+            // set message
+            text.innerHTML = (tag === 'success' ? '✓ ' : tag === 'warning' ? '⚠️ ' : '✕ ') + message;
+
+            // set color
+            if (tag === 'success') {
+                toast.style.background = '#2e7d32';
+            } else if (tag === 'warning') {
+                toast.style.background = '#e65100';
+            } else {
+                toast.style.background = '#c62828';
+            }
+
+            // show
+            toast.style.display = 'block';
+
+            // auto hide after 4 seconds
+            clearTimeout(window._toastTimer);
+            window._toastTimer = setTimeout(hideToast, 4000);
+        }
+
+        function hideToast() {
+            document.getElementById('toastMsg').style.display = 'none';
+        }
+
+        // on page load, show any django messages
+        document.addEventListener('DOMContentLoaded', function () {
+            const msgs = document.querySelectorAll('.django-toast-msg');
+            if (msgs.length > 0) {
+                // show the last message (most relevant)
+                const last = msgs[msgs.length - 1];
+                showToast(last.dataset.msg, last.dataset.tag);
+            }
+        });
+    </script>
+
+
+    <script>
+        // ── MODAL OPEN/CLOSE ──
+        //function openModal(id) { document.getElementById(id).classList.add('show'); }
+        //function closeModal(id) { document.getElementById(id).classList.remove('show'); }
+        console.log(document.getElementById('assign-lead-modal'))
+        
+       function openModal(id) {
+            const el = document.getElementById(id);
+            el.style.display = 'flex';
+            el.style.position = 'fixed';
+            el.style.inset = '0';
+            el.style.zIndex = '999999';
+            el.style.alignItems = 'center';
+            el.style.justifyContent = 'center';
+            el.style.background = 'rgba(24,24,58,0.45)';
+            el.style.padding = '16px';
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).style.display = 'none';
+        }
+
+        document.querySelectorAll('.overlay').forEach(el => {
+            el.addEventListener('click', function(e){
+                if(e.target === el){
+                    el.style.display = 'none';
+                }
+            });
+        });
+
+        // close on backdrop click
+        //document.querySelectorAll('.overlay').forEach(el => {
+         //   el.addEventListener('click', e => { if (e.target === el) el.classList.remove('show'); });
+        //});
+        //document.querySelectorAll('.overlay').forEach(el => {
+          //  el.addEventListener('click', e => { if (e.target === el) el.style.display = 'none';
+            //});
+        //});
+
+        // ── TABLE SEARCH + FILTER ──
+        function filterTable() {
+            const q = document.getElementById('staff-search').value.toLowerCase();
+            const leadId = document.getElementById('filter-lead').value;
+            document.querySelectorAll('#staff-table tbody tr').forEach(row => {
+                const name = row.dataset.name || '';
+                const uname = row.dataset.username || '';
+                const rowLead = row.dataset.lead || '';
+                const matchQ = !q || name.includes(q) || uname.includes(q);
+                const matchL = !leadId || rowLead === leadId;
+                row.style.display = (matchQ && matchL) ? '' : 'none';
+            });
+        }
+
+        // ── BULK TABLE CHECKBOXES ──
+        function toggleAll(checked) {
+            document.querySelectorAll('.row-cb').forEach(cb => {
+                const row = cb.closest('tr');
+                if (row.style.display !== 'none') cb.checked = checked;
+            });
+            updateCount();
+        }
+
+        function clearCheckboxes() {
+            document.querySelectorAll('.row-cb').forEach(cb => cb.checked = false);
+            document.getElementById('cb-header').checked = false;
+            updateCount();
+        }
+
+        function updateCount() {
+            const n = document.querySelectorAll('.row-cb:checked').length;
+            document.getElementById('sel-count').textContent = n;
+        }
+
+        // ── MODAL CHECKLIST SEARCH ──
+        function filterCheckList(input, listId) {
+            const q = input.value.toLowerCase();
+            document.querySelectorAll('#' + listId + ' .check-row').forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(q) ? '' : 'none';
+            });
+        }
+
+        function toggleCheckList(listId, checked) {
+            document.querySelectorAll('#' + listId + ' input[type="checkbox"]').forEach(cb => {
+                if (cb.closest('.check-row').style.display !== 'none') cb.checked = checked;
+            });
+        }
+
+        // ── ADD MODAL: role change → update assigned_to options ──
+        function toggleParentField() {
+            const role = document.getElementById('add-role').value;
+            const group = document.getElementById('add-parent-group');
+            const label = document.getElementById('add-parent-label');
+            const select = document.getElementById('add-parent');
+
+            if (role === 'telecaller' || role === 'repoboy') {
+                group.style.display = 'none';
+                return;
+            }
+            group.style.display = 'block';
+
+            if (role === 'teamlead') {
+                label.textContent = 'assigned_to → Telecaller (optional)';
+                select.querySelectorAll('option[data-role]').forEach(opt => {
+                    opt.style.display = opt.dataset.role === 'teamlead' ? '' : 'none';
+                });
+            } else {
+                label.textContent = 'assigned_to → Team Lead (optional)';
+                select.querySelectorAll('option[data-role]').forEach(opt => {
+                    opt.style.display = opt.dataset.role === 'groundstaff' ? '' : 'none';
+                });
+            }
+            select.value = '';
+        }
+
+        // run on load to set correct initial state
+        toggleParentField();
+
+        // ── AUTO-OPEN MODAL if Django redirected with ?modal= ──
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('modal')) openModal(urlParams.get('modal'));
+    </script>
+
+</body>
+
+</html>

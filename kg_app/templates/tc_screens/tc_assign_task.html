@@ -802,6 +802,39 @@
         margin: 0 2px;
     }
 
+    /*individual excel download*/
+    .excel-btn{
+        display: inline-flex;
+        align-items: center;
+        gap:8px;
+        padding:10px 18px;
+        background:#5250c3;
+        color:#fff;
+        border:none;
+        border-radius:6px;
+        font-size:14px;
+        font-weight:500;
+        cursor:pointer;
+        transition: all 0.2s ease;
+    }
+
+    .excel-btn i{
+        font-size:16px;
+    }
+
+    .excel-btn:hover{
+        background:#5250c3;
+        transform: translateY(-1px);
+    }
+
+    .excel-btn:active{
+        transform: translateY(0);
+    }
+
+    .excel-btn{
+        margin-bottom:15px;
+    }
+
 
     </style>
 
@@ -1040,6 +1073,7 @@
                                                         <th>Father Name</th>
                                                         <th>FE Name</th>
                                                         <th>FE Mobile Number</th>
+                                                        <th>TL Name</th>
                                                         <th>Customer Number</th>
                                                         <th>Updated Customer Number</th>
                                                         <th>Customer Address</th>
@@ -1305,6 +1339,10 @@
                                                     <p>No history found for this agreement.</p>
                                                 </div> -->
                                                 <div id="historyTableContainer" >
+                                                    <button onclick="downloadExcel()" class="excel-btn">
+                                                        <i class="fa-solid fa-file-excel"></i>
+                                                        Download Excel
+                                                    </button>
                                                     <table class="history-table">
                                                         <thead>
                                                             <tr>
@@ -1467,6 +1505,45 @@
     <!-- custom script -->
     <script src="{% static 'assets/js/script.js' %}"></script>
 
+
+    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+
+    <!-- individual download excel js -->
+    <script>
+        function downloadExcel(){
+
+            const table = document.querySelector(".history-table");
+            const rows = table.querySelectorAll("tr");
+
+            let data = [];
+
+            rows.forEach(row => {
+
+                const cols = row.querySelectorAll("th, td");
+                let rowData = [];
+
+                cols.forEach((col,index)=>{
+
+                    // remove Location Photo and Document columns
+                    if(index === 19 || index === 20) return;
+
+                    rowData.push(col.innerText.trim());
+
+                });
+
+                data.push(rowData);
+
+            });
+
+            const worksheet = XLSX.utils.aoa_to_sheet(data);
+            const workbook = XLSX.utils.book_new();
+
+            XLSX.utils.book_append_sheet(workbook, worksheet, "History");
+
+            XLSX.writeFile(workbook,"history_table.xlsx");
+
+        }
+    </script>
 
 
     <script>
@@ -1727,6 +1804,7 @@
         "Father Name": "father_name",
         "FE Name": "fe_name",
         "FE Mobile Number": "fe_mobile_number",
+        "TL Name": "tl_name",
         "Customer Number": "customer_mobile_number",
         "Customer Address": "customer_address",
         "Customer Office Address": "customer_office_address",
@@ -1771,6 +1849,7 @@
         'father_name': 'Father Name',
         'fe_name': 'FE Name',
         'fe_mobile_number': 'FE Mobile Number',
+        'tl_name': 'TL Name',
         'customer_mobile_number': 'Customer Mobile Number',
         'customer_address': 'Customer Address',
         'customer_office_address': 'Customer Office Address',
@@ -1811,6 +1890,7 @@
             product_type: "{{ task.product_type|default:'' }}",
             tc_name: "{{ task.tc_name|default:'' }}",
             fe_name: "{{ task.fe_name|default:'' }}",
+            tl_name: "{{ task.tl_name|default:'' }}",
             fe_mobile_number: "{{ task.fe_mobile_number|default:'' }}",
             branch: "{{ task.branch|default:'' }}",
             count_of_cases: "{{ task.count_of_cases|default:'' }}",
@@ -2322,6 +2402,7 @@
                     <td>${task.father_name}</td>
                     <td>${task.fe_name}</td>
                     <td>${task.fe_mobile_number}</td>
+                    <td>${task.tl_name}</td>
                     <td>${task.customer_mobile_number}</td>
                     <td>${task.new_mobile_number}</td>
                     <td>${task.customer_address}</td>

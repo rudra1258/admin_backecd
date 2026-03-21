@@ -802,6 +802,42 @@
         margin: 0 2px;
     }
 
+    /*individual excel download*/
+    .excel-btn{
+        display: inline-flex;
+        align-items: center;
+        gap:8px;
+        padding:10px 18px;
+        background:#5250c3;
+        color:#fff;
+        border:none;
+        border-radius:6px;
+        font-size:14px;
+        font-weight:500;
+        cursor:pointer;
+        transition: all 0.2s ease;
+    }
+
+    .excel-btn i{
+        font-size:16px;
+    }
+
+    .excel-btn:hover{
+        background:#5250c3;
+        transform: translateY(-1px);
+    }
+
+    .excel-btn:active{
+        transform: translateY(0);
+    }
+
+    .excel-btn{
+        margin-bottom:15px;
+    }
+
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
 
     </style>
 
@@ -1003,7 +1039,7 @@
 
                                     <div class="card-body">
                                         <div class="table-responsive">
-                                            <table class="display dataTable" id="basic-9">
+                                            <table class="table table-bordered" id="basic-9">
                                                 <thead style="background:#f8f9fa;">
                                                     <tr>
                                                         <th>Sl</th>
@@ -1042,6 +1078,7 @@
                                                         <th>Father Name</th>
                                                         <th>FE Name</th>
                                                         <th>FE Mobile Number</th>
+                                                        <th>TL Name</th>
                                                         <th>Customer Number</th>
                                                         <th>Updated Customer Number</th>
                                                         <th>Customer Address</th>
@@ -1305,6 +1342,10 @@
                                                     <p>No history found for this agreement.</p>
                                                 </div> -->
                                                 <div id="historyTableContainer" >
+                                                    <button onclick="downloadExcel()" class="excel-btn">
+                                                        <i class="fa-solid fa-file-excel"></i>
+                                                        Download Excel
+                                                    </button>
                                                     <table class="history-table">
                                                         <thead>
                                                             <tr>
@@ -1315,7 +1356,7 @@
                                                                 <th>Agreement Id</th>
                                                                 <th>Code</th>
                                                                 <th>New Mobile Number</th>
-                                                                <th>Projection</th>
+                                                                
                                                                 <th>Promise Date</th>
                                                                 <th>Promise Amount</th>
                                                                 <th>Customer Remark</th>
@@ -1467,7 +1508,83 @@
     <!-- custom script -->
     <script src="{% static 'assets/js/script.js' %}"></script>
 
+    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 
+
+    <!-- individual download excel js -->
+    <script>
+        function downloadExcel(){
+
+            const table = document.querySelector(".history-table");
+            const rows = table.querySelectorAll("tr");
+
+            let data = [];
+
+            rows.forEach(row => {
+
+                const cols = row.querySelectorAll("th, td");
+                let rowData = [];
+
+                cols.forEach((col,index)=>{
+
+                    // remove Location Photo and Document columns
+                    if(index === 19 || index === 20) return;
+
+                    rowData.push(col.innerText.trim());
+
+                });
+
+                data.push(rowData);
+
+            });
+
+            const worksheet = XLSX.utils.aoa_to_sheet(data);
+            const workbook = XLSX.utils.book_new();
+
+            XLSX.utils.book_append_sheet(workbook, worksheet, "History");
+
+            XLSX.writeFile(workbook,"history_table.xlsx");
+
+        }
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const status = document.getElementById("status");
+
+            const receipt = document.getElementById("payment");
+            const paymentMode = document.getElementById("paymentMode");
+            const amount = document.getElementById("paymentAmount");
+            const date = document.getElementById("paymentDate");
+
+            function togglePaymentFields() {
+                if (status.value === "RF") {
+                    receipt.readOnly = true;
+                    paymentMode.disabled = true;
+                    amount.readOnly = true;
+                    date.readOnly = true;
+
+                    receipt.value = "";
+                    paymentMode.value = "";
+                    amount.value = "";
+                    date.value = "";
+                } else {
+                    receipt.readOnly = false;
+                    paymentMode.disabled = false;
+                    amount.readOnly = false;
+                    date.readOnly = false;
+                }
+            }
+
+            // Run on page load
+            togglePaymentFields();
+
+            // Run when status changes
+            status.addEventListener("change", togglePaymentFields);
+
+        });
+    </script>
 
     <script>
 
@@ -1559,139 +1676,20 @@
 
 
 <script>
+    // ── Django URLs (resolved by template tag) ────────────────────────
+    const API_URL            = '/assign_task/api/';
+    const FILTER_VALUES_URL  = '/assign_task/filter-values/';
+    const CATEGORY_COUNT_URL = '/assign_task/category-counts/';
 
-    //updateCategoryCounts(); // Initial call to set counts on page load
-
-     
-   
-   // Function to count tasks by category
-    function getCategoryCounts() {
-        const counts = {};
-        allTasks.forEach(task => {
-            const category = task.category || 'UNKNOWN';
-            counts[category] = (counts[category] || 0) + 1;
-        });
-        // Add total count for ALL
-        counts['ALL'] = allTasks.length;
-        return counts;
-    }
-
-    // Function to update category counts in the UI
-    function updateCategoryCounts() {
-        const counts = getCategoryCounts();
-        const categoryCards = document.querySelectorAll('.category-card');
-        
-        categoryCards.forEach(card => {
-            const categoryCode = card.getAttribute('data-category');
-            const count = counts[categoryCode] || 0;
-            
-            // Check if count badge already exists in the card
-            let countBadge = card.querySelector('.category-count');
-            if (!countBadge) {
-                countBadge = document.createElement('span');
-                countBadge.className = 'category-count';
-                card.querySelector('.category-code').appendChild(countBadge);
-            }
-            countBadge.innerHTML = '<span class="count-separator"></span>' + count;
-        });
-    }
-
-    // Function to show/hide no data message
-    function toggleNoDataMessage(show) {
-        let noDataMessage = document.getElementById('no-data-message');
-        
-        if (show) {
-            if (!noDataMessage) {
-                // Create the no data message element
-                noDataMessage = document.createElement('div');
-                noDataMessage.id = 'no-data-message';
-                noDataMessage.className = 'no-data-message';
-                noDataMessage.innerHTML = `
-                    <div class="no-data-content">
-                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="12" cy="12" r="10"></circle>
-                            <line x1="12" y1="8" x2="12" y2="12"></line>
-                            <line x1="12" y1="16" x2="12.01" y2="16"></line>
-                        </svg>
-                        <h3>No Data Found</h3>
-                        <p>No records found for the selected category.</p>
-                    </div>
-                `;
-                
-                // Insert after the category scroll section or before your table
-                const categoryScroll = document.querySelector('.category-scroll');
-                if (categoryScroll && categoryScroll.parentNode) {
-                    categoryScroll.parentNode.insertBefore(noDataMessage, categoryScroll.nextSibling);
-                }
-            }
-            noDataMessage.style.display = 'flex';
-        } else {
-            if (noDataMessage) {
-                noDataMessage.style.display = 'none';
-            }
-        }
-    }
-
-    // Function to filter tasks by category
-    function filterByCategory(categoryCode) {
-        if (categoryCode === 'ALL') {
-            filteredTasks = [...allTasks];
-        } else {
-            filteredTasks = allTasks.filter(task => task.category === categoryCode);
-        }
-        
-        console.log('Filtered tasks for category ' + categoryCode + ':', filteredTasks.length);
-        
-        // Show/hide no data message
-        if (filteredTasks.length === 0) {
-            toggleNoDataMessage(true);
-            // Hide your table/data display
-            const tableContainer = document.getElementById('task-table-container'); // Replace with your actual table container ID
-            if (tableContainer) {
-                tableContainer.style.display = 'none';
-            }
-        } else {
-            toggleNoDataMessage(false);
-            // Show your table/data display
-            const tableContainer = document.getElementById('task-table-container'); // Replace with your actual table container ID
-            if (tableContainer) {
-                tableContainer.style.display = 'block';
-            }
-            // Call your function to update the display/table
-            renderTable(); // Replace with your actual function name
-        }
-    }
-
-    // Initialize on page load
-    document.addEventListener('DOMContentLoaded', function() {
-        // Update counts on page load
-        updateCategoryCounts();
-        
-        const categoryCards = document.querySelectorAll('.category-card');
-        
-        // Set ALL as active by default
-        if (categoryCards.length > 0) {
-            categoryCards[0].classList.add('active');
-        }
-        
-        categoryCards.forEach(card => {
-            card.addEventListener('click', function() {
-                // Remove active class from all cards
-                categoryCards.forEach(c => c.classList.remove('active'));
-                
-                // Add active class to clicked card
-                this.classList.add('active');
-                
-                // Get the category code from data attribute
-                const categoryCode = this.getAttribute('data-category');
-                
-                console.log('Clicked category:', categoryCode);
-                
-                // Filter tasks
-                filterByCategory(categoryCode);
-            });
-        });
-    });
+    // ── State ─────────────────────────────────────────────────────────
+    let currentTask = null;
+    let currentPage = 1;
+    const PAGE_SIZE = 50;
+    let totalRows = 0;
+    let totalPages = 1;
+    let activeFilterColumn = '';
+    let activeFilterValue = '';
+    let activeCategoryFilter = 'ALL';
 
     const columnMapping = {
         "Sl": "sl",
@@ -1727,6 +1725,7 @@
         "Father Name": "father_name",
         "FE Name": "fe_name",
         "FE Mobile Number": "fe_mobile_number",
+        "TL Name": "tl_name",
         "Customer Number": "customer_mobile_number",
         "Customer Address": "customer_address",
         "Customer Office Address": "customer_office_address",
@@ -1734,7 +1733,7 @@
         "Reference Details": "reference_details",
         "Collection Manager Name": "collection_manager_name",
         "Finance Company Name": "finance_company_name"
-    };
+    }
 
     const fieldLabels = {
         'sl': 'Sl',
@@ -1770,6 +1769,7 @@
         'employer': 'Employer',
         'father_name': 'Father Name',
         'fe_name': 'FE Name',
+        'tl_name': 'TL Name',
         'fe_mobile_number': 'FE Mobile Number',
         'customer_mobile_number': 'Customer Mobile Number',
         'customer_address': 'Customer Address',
@@ -1799,173 +1799,191 @@
         'update_payment_date': 'Payment Date',
         'latitude': 'Latitude',
         'longitude': 'Longitude'
-    };
+    }
 
-    // Convert Django task_list to JavaScript array
-    const allTasks = [
-        {% for task in task_list %}
-        {
-            sl: {{ forloop.counter }},
-            aggrement_id: "{{ task.aggrement_id|default:'' }}",
-            task_id: "{{ task.task_id|default:'' }}",
-            customer_name: "{{ task.customer_name|default:'' }}",
-            category: "{{ task.category|default:'' }}",
-            product_type: "{{ task.product_type|default:'' }}",
-            tc_name: "{{ task.tc_name|default:'' }}",
-            fe_name: "{{ task.fe_name|default:'' }}",
-            fe_mobile_number: "{{ task.fe_mobile_number|default:'' }}",
-            branch: "{{ task.branch|default:'' }}",
-            count_of_cases: "{{ task.count_of_cases|default:'' }}",
-            old_or_new: "{{ task.old_or_new|default:'' }}",
-            bucket: "{{ task.bucket|default:'' }}",
-            mode: "{{ task.mode|default:'' }}",
-            update_location_status:"{{task.update_location_status|default:'-' }}",
-            npa_status: "{{ task.npa_status|default:'' }}",
-            pos_amount: "{{ task.pos_amount|default:'' }}",
-            emi_amount: "{{ task.emi_amount|default:'' }}",
-            emi_due_amount: "{{ task.emi_due_amount|default:'' }}",
-            total_charges: "{{ task.total_charges|default:'' }}",
-            
-            bcc_pending: "{{ task.bcc_pending|default:'' }}",
-            penal_pending: "{{ task.penal_pending|default:'' }}",
-            disbursement_amount: "{{ task.disbursement_amount|default:'' }}",
-            loan_amount: "{{ task.loan_amount|default:'' }}",
-            disbursement_date: "{{ task.disbursement_date|default:'' }}",
-            emi_start_date: "{{ task.emi_start_date|default:'' }}",
-            emi_end_date: "{{ task.emi_end_date|default:'' }}",
-            emi_cycle_date: "{{ task.emi_cycle_date|default:'' }}",
-            make: "{{ task.make|default:'' }}",
-            manufacturer_description: "{{ task.manufacturer_description|default:'' }}",
-            registration_number: "{{ task.registration_number|default:'' }}",
-            vehicle_age: "{{ task.vehicle_age|default:'' }}",
-            employer: "{{ task.employer|default:'' }}",
-            father_name: "{{ task.father_name|default:'' }}",
-            
-            customer_mobile_number: "{{ task.customer_mobile_number|default:'' }}",
-            new_mobile_number:"{{task.new_mobile_number|default:'-' }}",
-            customer_address: "{{ task.customer_address|default:'' }}",
-            update_new_address:"{{task.update_new_address|default:'-' }}",
-            customer_office_address: "{{ task.customer_office_address|default:'' }}",
-            pin_code: "{{ task.pin_code|default:'' }}",
-            reference_details: "{{ task.reference_details|default:'' }}",
-            collection_manager_name: "{{ task.collection_manager_name|default:'' }}",
-            finance_company_name: "{{ task.finance_company_name|default:'' }}",
-            update_recipt_no:"{{task.update_recipt_no|default:'-' }}",
-            recipt_amount: "{{ task.recipt_amount|default:'' }}",
-            recipt_date: "{{ task.recipt_date|default:'' }}",
-            update_payment_amount:"{{task.update_payment_amount|default:'-' }}",
-            update_payment_date:"{{task.update_payment_date|date:'d-m-Y h:i A'|default:'-' }}",
+    // ── Category counts ───────────────────────────────────────────────
+    async function updateCategoryCountsFromServer() {
+        try {
+            const res = await fetch(CATEGORY_COUNT_URL);
+            if (!res.ok) return;
+            const counts = await res.json();
+            document.querySelectorAll('.category-card').forEach(card => {
+                const code = card.getAttribute('data-category');
+                const count = counts[code] || 0;
+                let badge = card.querySelector('.category-count');
+                if (!badge) {
+                    badge = document.createElement('span');
+                    badge.className = 'category-count';
+                    card.querySelector('.category-code').appendChild(badge);
+                }
+                badge.innerHTML = '<span class="count-separator"></span>' + count;
+            });
+        } catch (err) { console.error('Category counts error:', err); }
+    }
 
-            api_image_status:"{{task.api_image_status|default:'-' }}",
+    function updateCategoryCounts() { updateCategoryCountsFromServer(); }
 
-
-            
-
-            update_promise_date:"{{task.update_promise_date|date:'Y-m-d\TH:i'|default:'-' }}",
-            update_promise_amount:"{{task.update_promise_amount|default:'-' }}",
-
-            update_customer_remark:"{{task.update_customer_remark|default:'-' }}",
-            update_reference_remark:"{{task.update_reference_remark|default:'-' }}",
-
-            update_need_group_visit:"{{task.update_need_group_visit|default:'-' }}",
-            update_visit_projection:"{{task.update_visit_projection|default:'-' }}",
-
-            update_customer_available:"{{task.update_customer_available|default:'-' }}",
-            update_vehicle_available:"{{task.update_vehicle_available|default:'-' }}",
-            update_third_party_status:"{{task.update_third_party_status|default:'-' }}",
-            update_third_party_details:"{{task.update_third_party_details|default:'-' }}",
-
-            
-            
-
-            
-            update_payment_mode:"{{task.update_payment_mode|default:'-' }}",
-            update_payment_amount:"{{task.update_payment_amount|default:'-' }}",
-            update_payment_date:"{{task.update_payment_date|date:'Y-m-d\TH:i'|default:'-' }}",
-
-
-            latitude:"{{task.latitude|default:''}}",
-            longitude:"{{task.longitude|default:''}}",
-
-            
-
-
-
-        }{% if not forloop.last %},{% endif %}
-        {% endfor %}
-    ];
-
-    let filteredTasks = [...allTasks];
-    let currentTask = null;
-
-    function initializeFilters() {
-        const columnSelect = document.getElementById('columnSelect');
-        
-        if (!columnSelect) return;
-
-        Object.keys(columnMapping).forEach(displayName => {
-            const option = document.createElement('option');
-            option.value = displayName;
-            option.textContent = displayName;
-            columnSelect.appendChild(option);
-        });
-
-        columnSelect.addEventListener('change', onColumnChange);
-        const valueSelect = document.getElementById('valueSelect');
-        if (valueSelect) {
-            valueSelect.addEventListener('change', onValueChange);
+    // ── toggleNoDataMessage ───────────────────────────────────────────
+    function toggleNoDataMessage(show) {
+        let el = document.getElementById('no-data-message');
+        if (show) {
+            if (!el) {
+                el = document.createElement('div');
+                el.id = 'no-data-message';
+                el.className = 'no-data-message';
+                el.innerHTML = '<div class="no-data-content"><h3>No Data Found</h3><p>No records found for the selected category.</p></div>';
+                const cardBody = document.querySelector('.card-body');
+                if (cardBody) cardBody.appendChild(el);
+            }
+            el.style.display = 'flex';
+        } else {
+            if (el) el.style.display = 'none';
         }
     }
 
-    function onColumnChange(e) {
+    // ── filterByCategory ─────────────────────────────────────────────
+    function filterByCategory(categoryCode) {
+        activeCategoryFilter = categoryCode;
+        activeFilterColumn = '';
+        activeFilterValue  = '';
+        document.getElementById('columnSelect').value = '';
+        const vs = document.getElementById('valueSelect');
+        if (vs) { vs.innerHTML = '<option value="">-- Select Value --</option>'; vs.disabled = true; }
+        toggleNoDataMessage(false);
+        fetchTasks(1);
+    }
+
+    // ── Fetch tasks from server ───────────────────────────────────────
+    async function fetchTasks(page = 1) {
+        showTableLoading(true);
+        const params = new URLSearchParams({ page, page_size: PAGE_SIZE });
+        if (activeFilterColumn && activeFilterValue) {
+            params.append('filter_column', activeFilterColumn);
+            params.append('filter_value', activeFilterValue);
+        }
+        if (activeCategoryFilter && activeCategoryFilter !== 'ALL') {
+            params.append('category', activeCategoryFilter);
+        }
+        try {
+            const res = await fetch(`${API_URL}?${params.toString()}`);
+            if (!res.ok) throw new Error('Server error ' + res.status);
+            const json = await res.json();
+            currentPage = json.page;
+            totalRows   = json.total;
+            totalPages  = json.num_pages;
+            renderTable(json.data);
+            renderPagination();
+            updateCategoryCountsFromServer();
+        } catch (err) {
+            console.error('fetchTasks error:', err);
+            const tbody = document.getElementById('table-body');
+            if (tbody) tbody.innerHTML = `<tr><td colspan="44" style="text-align:center;color:red;padding:30px;">Failed to load data: ${err.message}</td></tr>`;
+        } finally {
+            showTableLoading(false);
+        }
+    }
+
+    function showTableLoading(loading) {
+        const tbody = document.getElementById('table-body');
+        if (loading && tbody) {
+            tbody.innerHTML = `<tr><td colspan="44" style="text-align:center;padding:40px;color:#667eea;">
+                <div style="display:inline-block;width:24px;height:24px;border:3px solid #667eea;border-top-color:transparent;border-radius:50%;animation:spin 0.8s linear infinite;margin-right:10px;vertical-align:middle;"></div>
+                Loading records...
+            </td></tr>`;
+        }
+    }
+
+    // ── Pagination ────────────────────────────────────────────────────
+    function renderPagination() {
+        let container = document.getElementById('pagination-container');
+        if (!container) {
+            container = document.createElement('div');
+            container.id = 'pagination-container';
+            container.style.cssText = 'display:flex;align-items:center;gap:8px;padding:12px 16px;flex-wrap:wrap;background:#f8f9fa;border-top:1px solid #dee2e6;';
+            const cardBody = document.querySelector('.card-body');
+                if (cardBody) cardBody.appendChild(container);
+        }
+        const start = totalRows === 0 ? 0 : (currentPage - 1) * PAGE_SIZE + 1;
+        const end   = Math.min(currentPage * PAGE_SIZE, totalRows);
+        const btn = (label, page, disabled) =>
+            `<button onclick="goToPage(${page})" ${disabled?'disabled':''} style="padding:5px 12px;border:1px solid #dee2e6;background:${disabled?'#f0f0f0':'white'};border-radius:4px;cursor:${disabled?'not-allowed':'pointer'};font-size:13px;color:${disabled?'#aaa':'#333'};">${label}</button>`;
+        container.innerHTML = `
+            <span style="margin-right:auto;font-size:13px;color:#555;">
+                Showing <strong>${start}–${end}</strong> of <strong>${totalRows}</strong> records
+            </span>
+            ${btn('«', 1, currentPage===1)}
+            ${btn('‹ Prev', currentPage-1, currentPage===1)}
+            <span style="font-size:13px;padding:0 8px;">Page <strong>${currentPage}</strong> of <strong>${totalPages}</strong></span>
+            ${btn('Next ›', currentPage+1, currentPage===totalPages)}
+            ${btn('»', totalPages, currentPage===totalPages)}
+        `;
+    }
+
+    function goToPage(page) {
+        if (page < 1 || page > totalPages) return;
+        fetchTasks(page);
+        const t = document.getElementById('basic-9');
+        if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // ── Filters ───────────────────────────────────────────────────────
+    function initializeFilters() {
+        const columnSelect = document.getElementById('columnSelect');
+        if (!columnSelect) return;
+        Object.keys(columnMapping).forEach(displayName => {
+            const opt = document.createElement('option');
+            opt.value = displayName; opt.textContent = displayName;
+            columnSelect.appendChild(opt);
+        });
+        columnSelect.addEventListener('change', onColumnChange);
+        const vs = document.getElementById('valueSelect');
+        if (vs) vs.addEventListener('change', onValueChange);
+    }
+
+    async function onColumnChange(e) {
         const selectedColumn = e.target.value;
-        const valueSelect = document.getElementById('valueSelect');
-
-        if (!valueSelect) return;
-
-        valueSelect.innerHTML = '<option value="">-- Select Value --</option>';
-
+        const vs = document.getElementById('valueSelect');
+        if (!vs) return;
+        activeFilterColumn = '';
+        activeFilterValue  = '';
+        vs.innerHTML = '<option value="">Loading…</option>';
+        vs.disabled = true;
         if (!selectedColumn) {
-            valueSelect.disabled = true;
+            vs.innerHTML = '<option value="">-- Select Value --</option>';
+            fetchTasks(1);
             return;
         }
-
-        valueSelect.disabled = false;
-
         const fieldKey = columnMapping[selectedColumn];
-        const uniqueValues = [...new Set(allTasks.map(task => task[fieldKey]))].filter(v => v).sort();
-
-        uniqueValues.forEach(value => {
-            const option = document.createElement('option');
-            option.value = value;
-            option.textContent = value;
-            valueSelect.appendChild(option);
-        });
+        activeFilterColumn = fieldKey;
+        try {
+            const res = await fetch(`${FILTER_VALUES_URL}?column=${fieldKey}`);
+            const json = await res.json();
+            vs.innerHTML = '<option value="">-- Select Value --</option>';
+            json.values.forEach(v => {
+                const opt = document.createElement('option');
+                opt.value = v; opt.textContent = v;
+                vs.appendChild(opt);
+            });
+            vs.disabled = false;
+        } catch { vs.innerHTML = '<option value="">Error loading</option>'; }
     }
 
     function onValueChange(e) {
-        const selectedColumn = document.getElementById('columnSelect').value;
-        const selectedValue = e.target.value;
-
-        if (!selectedColumn || !selectedValue) {
-            filteredTasks = [...allTasks];
-        } else {
-            const fieldKey = columnMapping[selectedColumn];
-            filteredTasks = allTasks.filter(task => task[fieldKey] == selectedValue);
-        }
-
-        renderTable();
+        activeFilterValue = e.target.value;
+        fetchTasks(1);
     }
 
     function resetFilters() {
         document.getElementById('columnSelect').value = '';
-        const valueSelect = document.getElementById('valueSelect');
-        if (valueSelect) {
-            valueSelect.innerHTML = '<option value="">-- Select Value --</option>';
-            valueSelect.disabled = true;
-        }
-        filteredTasks = [...allTasks];
-        renderTable();
+        const vs = document.getElementById('valueSelect');
+        if (vs) { vs.innerHTML = '<option value="">-- Select Value --</option>'; vs.disabled = true; }
+        activeFilterColumn   = '';
+        activeFilterValue    = '';
+        activeCategoryFilter = 'ALL';
+        document.querySelectorAll('.category-card').forEach(c => c.classList.remove('active'));
+        const allCard = document.querySelector('.category-card[data-category="ALL"]');
+        if (allCard) allCard.classList.add('active');
+        fetchTasks(1);
     }
 
     var global_aggrement_id = '';
@@ -2136,11 +2154,27 @@
 
         detailsGrid.innerHTML = '';
         console.log('Populating details for task:', task.aggrement_id);
+        const displayKeys = [
+            'aggrement_id', 'category', 'customer_name', 'product_type',
+            'tc_name', 'branch', 'count_of_cases', 'old_or_new',
+            'bucket', 'npa_status', 'pos_amount', 'emi_amount',
+            'emi_due_amount', 'total_charges', 'bcc_pending', 'penal_pending',
+            'disbursement_amount', 'loan_amount', 'disbursement_date',
+            'emi_start_date', 'emi_end_date', 'emi_cycle_date',
+            'make', 'manufacturer_description', 'registration_number', 'vehicle_age',
+            'employer', 'father_name', 'fe_name', 'fe_mobile_number',
+            'tl_name', 'customer_mobile_number', 'new_mobile_number',
+            'customer_address', 'update_new_address', 'customer_office_address',
+            'pin_code', 'reference_details', 'collection_manager_name',
+            'finance_company_name', 'update_recipt_no', 'update_payment_amount',
+            'update_payment_date', 'update_location_status'
+        ];
 
-        Object.keys(task).forEach(key => {
+        di.forEach(key => {
 
             if (
                 key === 'sl' || 
+                key === 'admin_id_id' || 
                 key === 'task_id' || 
                 key ==='api_image_status' ||
                 key ==='update_promise_date' ||
@@ -2293,108 +2327,94 @@
         }
     }
 
-    function renderTable() {
+
+    function renderTable(tasks) {
         const tbody = document.getElementById('table-body');
         if (!tbody) return;
-        
-        // Store the table reference
-        const table = document.getElementById('basic-9');
-        const isDataTable = $.fn.DataTable.isDataTable(table);
-        
-        // If DataTable is initialized, destroy it temporarily
-        let dtInstance;
-        if (isDataTable) {
-            dtInstance = $(table).DataTable();
-            dtInstance.destroy();
-        }
-        
-        // Clear tbody
         tbody.innerHTML = '';
-        
-        if (filteredTasks.length === 0) {
-            tbody.innerHTML = '<tr class="no-results-row"><td colspan="40" style="text-align: center; padding: 40px; color: #999;">No results found</td></tr>';
-        } else {
-            // Render filtered tasks
-            filteredTasks.forEach((task) => {
-                const row = document.createElement('tr');
-                row.onclick = function() { openModal(task); };
-                row.style.cursor = 'pointer';
-
-                row.innerHTML = `
-                    <td>${task.sl}</td>
-                    <td>${task.aggrement_id}</td>
-                    <td>${task.customer_name}</td>
-                    <td>${task.category || 'NA'}</td>
-                    <td>${task.product_type}</td>
-                    <td>${task.tc_name}</td>
-                    <td style="text-align: center;">
-                        ${task.latitude && task.longitude ? `
-                            <a href="https://www.google.com/maps?q=${task.latitude},${task.longitude}" 
-                            target="_blank" 
-                            rel="noopener noreferrer"
-                            title="View location: ${task.latitude}, ${task.longitude}"
-                            style="color: #1a73e8; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; padding: 6px 12px; border-radius: 4px; background: #e8f0fe; transition: all 0.2s;">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 4px;">
-                                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-                                </svg>
-                                Map
-                            </a>
-                        ` : '<span>N/A</span>'}
-                    </td>
-                    <td>${task.branch}</td>
-                    <td>${task.count_of_cases}</td>
-                    <td>${task.old_or_new}</td>
-                    <td>${task.bucket}</td>
-                    <td>${task.mode}</td>
-                    <td>${task.npa_status}</td>
-                    <td>${task.pos_amount}</td>
-                    <td>${task.emi_amount}</td>
-                    <td>${task.emi_due_amount}</td>
-                    <td>${task.total_charges}</td>
-                    <td>${task.recipt_amount}</td>
-                    <td>${task.recipt_date}</td>
-                    <td>${task.bcc_pending}</td>
-                    <td>${task.penal_pending}</td>
-                    <td>${task.disbursement_amount}</td>
-                    <td>${task.loan_amount}</td>
-                    <td>${task.disbursement_date}</td>
-                    <td>${task.emi_start_date}</td>
-                    <td>${task.emi_end_date}</td>
-                    <td>${task.emi_cycle_date}</td>
-                    <td>${task.make}</td>
-                    <td>${task.manufacturer_description}</td>
-                    <td>${task.registration_number}</td>
-                    <td>${task.vehicle_age}</td>
-                    <td>${task.employer}</td>
-                    <td>${task.father_name}</td>
-                    <td>${task.fe_name}</td>
-                    <td>${task.fe_mobile_number}</td>
-                    <td>${task.customer_mobile_number}</td>
-                    <td>${task.new_mobile_number}</td>
-                    <td>${task.customer_address}</td>
-                    <td>${task.customer_office_address}</td>
-                    <td>${task.pin_code}</td>
-                    <td>${task.reference_details}</td>
-                    <td>${task.collection_manager_name}</td>
-                    <td>${task.finance_company_name}</td>
-                `;
-                tbody.appendChild(row);
-            });
+        if (!tasks || tasks.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="44" style="text-align:center;padding:40px;color:#999;">No results found</td></tr>';
+            return;
         }
-        
-        // Re-initialize DataTable if it was initialized before
-        if (isDataTable) {
-            $(table).DataTable({
-                // Add your DataTable options here if you have any custom settings
-                // For example: pageLength: 10, searching: true, etc.
-            });
-        }
+        const offset = (currentPage - 1) * PAGE_SIZE;
+        tasks.forEach((task, i) => {
+            const row = document.createElement('tr');
+            row.onclick = function() { openModal(task); };
+            row.style.cursor = 'pointer';
+            row.innerHTML = `
+                <td>${offset + i + 1}</td>
+                <td>${task.aggrement_id || ''}</td>
+                <td>${task.customer_name || ''}</td>
+                <td>${task.category || 'NA'}</td>
+                <td>${task.product_type || ''}</td>
+                <td>${task.tc_name || ''}</td>
+                <td style="text-align:center;">
+                    ${task.latitude && task.longitude ? `
+                        <a href="https://www.google.com/maps?q=${task.latitude},${task.longitude}"
+                            target="_blank" rel="noopener noreferrer"
+                            style="color:#1a73e8;text-decoration:none;display:inline-flex;align-items:center;padding:6px 12px;border-radius:4px;background:#e8f0fe;"
+                            onclick="event.stopPropagation()">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="margin-right:4px;">
+                                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                            </svg>Map
+                        </a>` : '<span>N/A</span>'}
+                </td>
+                <td>${task.branch || ''}</td>
+                <td>${task.count_of_cases || ''}</td>
+                <td>${task.old_or_new || ''}</td>
+                <td>${task.bucket || ''}</td>
+                <td>${task.mode || ''}</td>
+                <td>${task.npa_status || ''}</td>
+                <td>${task.pos_amount || ''}</td>
+                <td>${task.emi_amount || ''}</td>
+                <td>${task.emi_due_amount || ''}</td>
+                <td>${task.total_charges || ''}</td>
+                <td>${task.recipt_amount || ''}</td>
+                <td>${task.recipt_date || ''}</td>
+                <td>${task.bcc_pending || ''}</td>
+                <td>${task.penal_pending || ''}</td>
+                <td>${task.disbursement_amount || ''}</td>
+                <td>${task.loan_amount || ''}</td>
+                <td>${task.disbursement_date || ''}</td>
+                <td>${task.emi_start_date || ''}</td>
+                <td>${task.emi_end_date || ''}</td>
+                <td>${task.emi_cycle_date || ''}</td>
+                <td>${task.make || ''}</td>
+                <td>${task.manufacturer_description || ''}</td>
+                <td>${task.registration_number || ''}</td>
+                <td>${task.vehicle_age || ''}</td>
+                <td>${task.employer || ''}</td>
+                <td>${task.father_name || ''}</td>
+                <td>${task.fe_name || ''}</td>
+                <td>${task.fe_mobile_number || ''}</td>
+                <td>${task.tl_name || ''}</td>
+                <td>${task.customer_mobile_number || ''}</td>
+                <td>${task.new_mobile_number || ''}</td>
+                <td>${task.customer_address || ''}</td>
+                <td>${task.customer_office_address || ''}</td>
+                <td>${task.pin_code || ''}</td>
+                <td>${task.reference_details || ''}</td>
+                <td>${task.collection_manager_name || ''}</td>
+                <td>${task.finance_company_name || ''}</td>
+            `;
+            tbody.appendChild(row);
+        });
     }
 
-    // Initialize when DOM is ready
+    // ── Single DOMContentLoaded ───────────────────────────────────────
     document.addEventListener('DOMContentLoaded', function() {
         initializeFilters();
-        renderTable(); // Initial render of all tasks
+        fetchTasks(1);
+
+        const categoryCards = document.querySelectorAll('.category-card');
+        if (categoryCards.length > 0) categoryCards[0].classList.add('active');
+        categoryCards.forEach(card => {
+            card.addEventListener('click', function() {
+                categoryCards.forEach(c => c.classList.remove('active'));
+                this.classList.add('active');
+                filterByCategory(this.getAttribute('data-category'));
+            });
+        });
     });
 </script>
 
@@ -2439,7 +2459,7 @@
 
   <script>
     
-    const updatedTaskList = {{ updated_task_list_json|safe }};
+    const updatedTaskList = JSON.parse('{{ updated_task_list_json|escapejs }}');
     const reversedTaskList = [...updatedTaskList].reverse();
 
     function openHistoryPopup(button) {
@@ -2568,7 +2588,7 @@
                     <td>${data.agreement_id || '-'}</td>
                     <td>${data.code || '-'}</td>
                     <td>${data.new_mobile_number || '-'}</td>
-                    <td>${data.projection || '-'}</td>
+                    
                     <td>${formatDateTime(data.promise_date)}</td>
                     <td>${data.promise_amount || '-'}</td>
                     <td>${data.customer_remark || '-'}</td>

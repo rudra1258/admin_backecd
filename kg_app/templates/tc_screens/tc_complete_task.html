@@ -121,27 +121,78 @@
               <div class="col-sm-12">
                 <div class="card">
                   <div class="card-header pb-0 card-no-border">
-                    <h3>Team Lead</h3>
+                    <h3>Completed Tassk</h3>
                   </div>
                   <div class="card-body">
                     <div class="table-responsive">
-                      <table class="display dataTable" id="basic-9">
-                        <thead style="background:#f8f9fa;">
-                          <tr>
-                            <th>Sl</th>
-                            <th>Agreement Id</th>
-                            <th>Customer Name</th>
-                            <th>Mobile Number</th>
-                            <th>Email id</th>
-                            <th>Address</th>
-                            <th>Telecaller Name</th>
-                            <th>Teamlead Name </th>
-                            <th>Ground staff name</th>
-                            <th>Status</th>
-                          </tr>
-                        </thead>
-                        <tbody id="table-body"></tbody>
-                      </table>
+                      <form id="bulkDeleteForm" method="post" action="{% url 'kg_app:bulk_delete_tasks' %}">
+                        {% csrf_token %}
+
+                        <!-- Top Action Bar -->
+                        <!-- <div class="action-bar">
+                          <button type="submit" class="delete-btn" id="deleteBtn">
+                            <i class="fa-solid fa-trash"></i>
+                            Delete Selected (<span id="selectedCount">0</span>)
+                          </button>
+                        </div> -->
+
+                        <table class="display dataTable custom-table" id="basic-9">
+                          <thead>
+                            <tr>
+                            <!-- <th>
+                              <label class="custom-checkbox">
+                                <input type="checkbox" id="select_all">
+                                <span class="checkmark"></span>
+                              </label>
+                            </th> -->
+                              <th>Sl</th>
+                              <th>Agreement Id</th>
+                              <th>Category</th>
+                              <th>Customer Name</th>
+                              <th>Mobile Number</th>
+                              <th>TC Name</th>
+                              <th>FE Name</th>
+                              <th>Status</th>
+                            </tr>
+                          </thead>
+
+                          <tbody>
+                            {% for task in create_task_list %}
+                            <tr>
+                              <!-- <td>
+                                <label class="custom-checkbox">
+                                  <input type="checkbox" name="task_ids" value="{{task.task_id}}" class="row-checkbox">
+                                  <span class="checkmark"></span>
+                                </label>
+                              </td> -->
+
+                              <td>{{forloop.counter}}</td>
+                              <td>{{task.aggrement_id}}</td>
+                              <td>{{task.category}}</td>
+                              <td>{{task.customer_name}}</td>
+                              <td>{{task.customer_mobile_number}}</td>
+                              <td>{{task.tc_name}}</td>
+                              <td>{{task.fe_name}}</td>
+                              <td>
+                                <span class="status-badge">{{task.update_location_status}}</span>
+                              </td>
+
+                              <!-- <td>
+                                <form method="post"
+                                      action="{% url 'kg_app:task_delete_complete' task.task_id %}"
+                                      onsubmit="return confirm('Delete this record?');"
+                                      style="display:inline;">
+                                  {% csrf_token %}
+                                  <button type="submit" class="icon-btn">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                  </button>
+                                </form>
+                              </td> -->
+                            </tr>
+                            {% endfor %}
+                          </tbody>
+                        </table>
+                      </form>
                     </div>
                   </div>
                 </div>

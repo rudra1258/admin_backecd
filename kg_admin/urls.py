@@ -21,8 +21,8 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('kg_app.urls')),  # include your app urls
-    path("api/v1/", include('kg_app.urls')),
+    path('', include(('kg_app.urls', 'kg_app'), namespace='kg_app')),
+    path('api/v1/', include(('kg_app.urls', 'kg_app'), namespace='kg_app_v1')),
 ]
 
 # For static and media files during development

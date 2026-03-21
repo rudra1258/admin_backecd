@@ -18,7 +18,12 @@ urlpatterns = [
     # path('', views.index, name='index'),
     path('', views.admin_login, name='admin_login'),
     path('admin_logout/', views.admin_logout, name='admin_logout'),
+    
+    path('assign_task/api/', views.assign_task_api, name='assign_task_api'),
+    path('assign_task/filter-values/', views.assign_task_filter_values, name='assign_task_filter_values'),
+    path('assign_task/category-counts/', views.assign_task_category_counts, name='assign_task_category_counts'),
     path('assign_task/', views.assign_task, name='assign_task'),
+    
     path('update_task/', views.update_task, name='update_task'),
     # path('view_history/', views.view_history, name='view_history'),
     path('complete_task/', views.complete_task, name='complete_task'),
@@ -38,9 +43,16 @@ urlpatterns = [
     path('tl_login/', views.tl_login, name='tl_login'),
     path('feddback_history/', views.feddback_history, name='feddback_history'),
     path('admin_profile/', views.admin_profile, name='admin_profile'),
-    
+    path('team_management/', views.team_management, name='team_management'),
+    path('tlAssignToTc/', views.tlAssignToTc, name='tlAssignToTc'),
+    path("change-staff-password/", views.change_staff_password, name="change_staff_password"),
+    path("change_tc_password/", views.change_tc_password, name="change_tc_password"),
+    path("change_tl_password/", views.change_tl_password, name="change_tl_password"),
+    path('bulk-delete-tasks/', views.bulk_delete_tasks, name='bulk_delete_tasks'),
+
     path('download-sample/', views.download_sample_excel_user_create, name='download_sample_excel'),
     path('import_users_from_excel/', views.import_users_from_excel, name='import_users_from_excel'),
+    path('download-failed-rows/', views.download_failed_import_rows, name='download_failed_rows'),
     
     # Task Import URLs
     path('import-tasks/', views.import_tasks_from_excel, name='import_tasks'),
@@ -100,8 +112,10 @@ urlpatterns = [
     
     # POST endpoint for creating task update
     # NOT WORKING DON'T USE THIS url
+    # this url is not using in api testing also because of some issue in serializer validation for task_id and admin_id
     path('task-updates/create/', views.create_task_update, name='create_task_update'),#https://admin-backecd-2.onrender.com/api/v1/task-updates/create/
 
+    # this url is working fine and using in api testing for creating task update
     path('task-update/create/', TaskUpdateCreateAPI.as_view(), name='task-update-create'),
     
     #TODO: api testing -> done

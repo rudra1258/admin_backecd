@@ -1386,7 +1386,7 @@ table.dataTable.cell-border tbody tr:first-child td {
   border-top: none;
 }
 table.dataTable.stripe tbody tr.odd, table.dataTable.display tbody tr.odd {
-  background-color: #9594f1;
+  background-color: #b3b2f1;
 }
 table.dataTable.stripe tbody tr.odd.selected, table.dataTable.display tbody tr.odd.selected {
   background-color: #acbad4;

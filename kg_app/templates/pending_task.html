@@ -122,7 +122,7 @@
               <div class="col-sm-12">
                 <div class="card">
                   <div class="card-header pb-0 card-no-border">
-                    <h3>Team Lead</h3>
+                    <h3>Pending Tasks</h3>
                   </div>
                   <div class="card-body">
                     <div class="table-responsive">
@@ -137,7 +137,7 @@
                             <th>TC Name</th>
                             <th>GS Name </th>
                             <th>Status</th>
-                            <th>Action</th>
+                            <!-- <th>Action</th> -->
                           </tr>
                         </thead>
                         <tbody>
@@ -151,7 +151,7 @@
                             <td>{{task.tc_name}}</td>
                             <td>{{task.fe_name}}</td>
                             <td>{{task.update_location_status}}</td>
-                            <td>
+                            <!-- <td>
                               <ul class="action" style="display:flex;gap:10px;list-style:none;padding:0;margin:0;">
                                 <li class="delete">
                                   <form method="post" action="{% url 'kg_app:task_delete' task.task_id %}"
@@ -163,7 +163,7 @@
                                   </form>
                                 </li>
                               </ul>
-                            </td>
+                            </td> -->
                           </tr>
                           {% endfor %}
                         </tbody>

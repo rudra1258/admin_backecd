@@ -20,14 +20,12 @@ class admin_user_model(models.Model):
     def __str__(self):
         return f"{self.username}"
     
-
-
-
 class CreateUser(models.Model):
     ROLE_CHOICES = [
         ('telecaller', 'Telecaller'),
         ('teamlead', 'Team Lead'),
         ('groundstaff', 'Ground Staff'),
+        ('repoboy', 'Repro Boy'),
     ]
     admin_id = models.ForeignKey(admin_user_model, on_delete=models.CASCADE,default=1)
     id = models.AutoField(primary_key=True)
@@ -45,9 +43,18 @@ class CreateUser(models.Model):
     isMobile_login = models.CharField(max_length=10, null=True, blank=True, default='No')
     login_status = models.CharField(max_length=10, null=True, blank=True, default='Inactive')
 
+    # ── NEW: hierarchy fields ──
+    assigned_to = models.ForeignKey(
+        'self',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='subordinates'
+    )
+    is_assignment_locked = models.BooleanField(default=False)
+
     def __str__(self):
         return f"{self.first_name} {self.last_name} - {self.role}"
-
 
 class Create_task(models.Model):
     # task id 
@@ -59,7 +66,7 @@ class Create_task(models.Model):
     
     
     # aggrement information
-    aggrement_id = models.CharField(max_length = 50)
+    aggrement_id = models.CharField(max_length = 50, unique=True)
     customer_name = models.CharField(max_length = 100)
     product_type = models.CharField(max_length = 50)
     tc_name = models.CharField(max_length = 100)
@@ -101,7 +108,7 @@ class Create_task(models.Model):
     tl_name = models.CharField(max_length = 50, null = True, blank = True, default = "-")
     tl_userName = models.CharField(max_length = 100, null = True, blank = True, default = "-")
     fe_mobile_number = models.CharField(max_length = 10)
-    customer_mobile_number = models.CharField(max_length = 10)
+    customer_mobile_number = models.CharField(max_length = 100)
     pin_code = models.CharField(max_length = 6)
     customer_address = models.CharField(max_length = 500)
     customer_office_address = models.CharField(max_length = 500)
@@ -156,18 +163,18 @@ class Create_task(models.Model):
     submit_time = models.DateTimeField(auto_now_add=True)
     updated_time = models.DateTimeField(auto_now=True)
     
-
 class task_update(models.Model):
     task_update_id = models.AutoField(primary_key = True)
     
     updated_by = models.CharField(max_length = 100, null = True, blank = True)
+    updated_by_id = models.CharField(max_length = 100, null = True, blank = True)
     updated_by_role = models.CharField(max_length = 50, null=True, blank=True, default = '-')
     
     #data form admin table
     admin_id = models.ForeignKey(admin_user_model, on_delete = models.CASCADE)
     
     #data from create task table
-    task_id = models.ForeignKey(Create_task, on_delete = models.CASCADE)
+    task_id = models.ForeignKey(Create_task, on_delete=models.SET_NULL, null=True, blank=True)
     agreement_id = models.CharField(max_length = 50)
     
     # contact information
@@ -212,13 +219,6 @@ class task_update(models.Model):
     # location update from mobile 
     latitude = models.CharField(max_length = 50, null=True, blank=True)
     longitude = models.CharField(max_length = 50, null=True, blank=True)
-    
-    
-    
-    
-    
-    
-
 
 class TcLogin(models.Model):
     tc_login_id = models.AutoField(primary_key=True)
@@ -235,10 +235,6 @@ class TcLogin(models.Model):
 
     def __str__(self):
         return f"{self.name} ({self.email})"
-
-
-
-
 
 class TlLogin(models.Model):
     tl_login_id = models.AutoField(primary_key=True)   # Primary Key
@@ -261,9 +257,6 @@ class TlLogin(models.Model):
     def __str__(self):
         return f"{self.name} ({self.email})"
     
-    
-
-
 class GsLogin(models.Model):
     gs_login_id = models.AutoField(primary_key=True)
     user_id = models.ForeignKey(CreateUser, on_delete = models.CASCADE, null=True, blank=True)
@@ -283,8 +276,6 @@ class GsLogin(models.Model):
 
     def __str__(self):
         return f"{self.name} ({self.email})"
-
-
 
 class leave_request(models.Model):
     leave_id = models.AutoField(primary_key=True)
