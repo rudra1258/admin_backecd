@@ -169,6 +169,7 @@ class task_update(models.Model):
     updated_by = models.CharField(max_length = 100, null = True, blank = True)
     updated_by_id = models.CharField(max_length = 100, null = True, blank = True)
     updated_by_role = models.CharField(max_length = 50, null=True, blank=True, default = '-')
+    # tc_user_name = models.CharField(max_length = 50, null=True, blank=True, default = '-')
     
     #data form admin table
     admin_id = models.ForeignKey(admin_user_model, on_delete = models.CASCADE)

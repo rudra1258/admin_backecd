@@ -17,6 +17,7 @@ from rest_framework.views import APIView
 from django.db.models import Q
 from django.db import transaction
 from django.core.paginator import Paginator
+from django.core.serializers.json import DjangoJSONEncoder
 
 from django.shortcuts import render
 from django.db.models import Count, Q
@@ -665,41 +666,85 @@ def assign_task(request):
     session_admin_id = request.session.get('admin_id')
     if not session_admin_id:
         return render(request, 'index.html')
-    
-    update_task_list = task_update.objects.all()
-    updated_task_list_json = json.dumps(list(update_task_list.values(
-        'task_update_id',
-        'updated_by',
-        'updated_by_role',
-        'updated_at',
-        'agreement_id',
-        'code',
-        'new_mobile_number',
-        'projection',
-        'promise_date',
-        'promise_amount',
-        'customer_remark',
-        'reference_remark',
-        'need_group_visit',
-        'visit_projection',
-        'visit_status',
-        'customer_available',
-        'vehicle_available',
-        'third_party_status',
-        'third_party_details',
-        'new_update_address',
-        'location_image',
-        'document_image',
-        'location_status',
-        'recipt_no',
-        'payment_mode',
-        'payment_amount',
-        'payment_date',
-    )), default=str)
-    
-    return render(request, "assign_task.html", {
-        "updated_task_list_json": updated_task_list_json
-    })
+
+    # Handle AJAX search requests
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        search = request.GET.get('search', '').strip()
+        col    = request.GET.get('col', '').strip()
+        page   = int(request.GET.get('page', 1))
+        per_page = 50
+
+        queryset = task_update.objects.all()
+
+        if search:
+            if col == 'agreement_id':
+                queryset = queryset.filter(agreement_id__icontains=search)
+            elif col == 'code':
+                queryset = queryset.filter(code__icontains=search)
+            elif col == 'updated_by':
+                queryset = queryset.filter(updated_by__icontains=search)
+            elif col == 'payment_mode':
+                queryset = queryset.filter(payment_mode__icontains=search)
+            else:
+                # All columns search
+                queryset = queryset.filter(
+                    Q(agreement_id__icontains=search)       |
+                    Q(updated_by__icontains=search)         |
+                    Q(code__icontains=search)               |
+                    Q(new_mobile_number__icontains=search)  |
+                    Q(customer_remark__icontains=search)    |
+                    Q(reference_remark__icontains=search)   |
+                    Q(payment_mode__icontains=search)       |
+                    Q(payment_amount__icontains=search)     |
+                    Q(visit_status__icontains=search)       |
+                    Q(location_status__icontains=search)    |
+                    Q(recipt_no__icontains=search)
+                )
+
+        total_count = queryset.count()
+        start = (page - 1) * per_page
+        end   = start + per_page
+
+        records = list(queryset.values(
+            'task_update_id',
+            'updated_by',
+            'updated_by_role',
+            'updated_at',
+            'agreement_id',
+            'code',
+            'new_mobile_number',
+            'projection',
+            'promise_date',
+            'promise_amount',
+            'customer_remark',
+            'reference_remark',
+            'need_group_visit',
+            'visit_projection',
+            'visit_status',
+            'customer_available',
+            'vehicle_available',
+            'third_party_status',
+            'third_party_details',
+            'new_update_address',
+            'location_image',
+            'document_image',
+            'location_status',
+            'recipt_no',
+            'payment_mode',
+            'payment_amount',
+            'payment_date',
+        )[start:end])
+
+        return JsonResponse({
+            'records':     records,
+            'total_count': total_count,
+            'page':        page,
+            'per_page':    per_page,
+            'total_pages': (total_count + per_page - 1) // per_page,
+        }, safe=False, encoder=DjangoJSONEncoder)
+
+    # Normal page load — no data, template fetches via AJAX
+    return render(request, "assign_task.html")
 
 
 
@@ -764,6 +809,7 @@ def assign_task_api(request):
     import json
     from django.http import HttpResponse
     from django.core.paginator import Paginator
+    from django.db.models import Q
 
     session_admin_id = request.session.get('admin_id')
     print(f"SESSION admin_id = {session_admin_id}, type = {type(session_admin_id)}")
@@ -788,6 +834,22 @@ def assign_task_api(request):
         filter_value  = request.GET.get('filter_value', '')
         if filter_column and filter_value:
             tasks = tasks.filter(**{filter_column: filter_value})
+
+        search = request.GET.get('search', '').strip()
+        if search:
+            tasks = tasks.filter(
+                Q(customer_name__icontains=search)       |
+                Q(aggrement_id__icontains=search)        |
+                Q(branch__icontains=search)              |
+                Q(fe_name__icontains=search)             |
+                Q(tc_name__icontains=search)             |
+                Q(registration_number__icontains=search) |
+                Q(npa_status__icontains=search)          |
+                Q(bucket__icontains=search)              |
+                Q(product_type__icontains=search)        |
+                Q(tl_name__icontains=search)             |
+                Q(collection_manager_name__icontains=search)
+            )
 
         page_number = int(request.GET.get('page', 1))
         page_size   = int(request.GET.get('page_size', 50))
@@ -1088,11 +1150,11 @@ def import_tasks_from_excel(request):
                         error_count += 1
                         continue
                     
-                    if not customer_mobile.isdigit() or len(customer_mobile) != 10:
-                        errors.append(f"Row {index + 2}: Invalid customer mobile number")
-                        failed_rows.append({**row.to_dict(), 'error_reason': 'Invalid customer mobile number'})
-                        error_count += 1
-                        continue
+                    # if not customer_mobile.isdigit() or len(customer_mobile) != 100:
+                    #     errors.append(f"Row {index + 2}: Invalid customer mobile number")
+                    #     failed_rows.append({**row.to_dict(), 'error_reason': 'Invalid customer mobile number'})
+                    #     error_count += 1
+                    #     continue
                     
                     pin_code = str(row['pin_code']).strip()
                     if not pin_code.isdigit() or len(pin_code) != 6:
@@ -2378,6 +2440,7 @@ def get_all_subordinates(user):
 def tc_feddback_history(request):
     session_admin_id = request.session.get("tc_admin_id")
     user_id = request.session.get("user_id")   # ✅ ADD THIS
+    session_userName = request.session.get("username")
 
     # navigate to login page if not login
     if not session_admin_id or not user_id:
@@ -2386,21 +2449,26 @@ def tc_feddback_history(request):
     admin_id_pk = admin_user_model.objects.get(pk=session_admin_id)
 
     # 🔹 Correct user fetch
-    try:
-        current_user = CreateUser.objects.get(id=user_id)
-    except CreateUser.DoesNotExist:
-        return render(request, "tc_screens/tc_feedback_history.html", {"feedback": []})
+    # try:
+    #     current_user = CreateUser.objects.get(id=user_id)
+    # except CreateUser.DoesNotExist:
+    #     return render(request, "tc_screens/tc_feedback_history.html", {"feedback": []})
 
-    # 🔹 Get subordinates
-    subordinates = get_all_subordinates(current_user)
+    # # 🔹 Get subordinates
+    # subordinates = get_all_subordinates(current_user)
 
-    # 🔹 Allowed IDs
-    allowed_user_ids = [str(current_user.id)] + [str(u.id) for u in subordinates]
+    # # 🔹 Allowed IDs
+    # allowed_user_ids = [str(current_user.id)] + [str(u.id) for u in subordinates]
 
-    # 🔹 Filter
+    # # 🔹 Filter
+    # feedback = task_update.objects.filter(
+    #     admin_id=admin_id_pk,
+    #     updated_by_id__in=allowed_user_ids
+    # ).order_by('-updated_at')
+    
     feedback = task_update.objects.filter(
-        admin_id=admin_id_pk,
-        updated_by_id__in=allowed_user_ids
+        admin_id = admin_id_pk,
+        task_id__tc_userName = session_userName
     ).order_by('-updated_at')
 
     return render(
@@ -2413,6 +2481,7 @@ def tc_update_task(request):
     session_admin_id = request.session.get('tc_admin_id')
     session_user_role = request.session.get('role')
     session_user_id = request.session.get('user_id')
+    session_userName = request.session.get("username")
     # navigate to login page if not login
     if not session_admin_id:
         return render(request, 'index.html')

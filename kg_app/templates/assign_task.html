@@ -347,7 +347,7 @@
         .modal {
             display: none;
             position: fixed;
-            z-index: 1000;
+            z-index: 999999;
             left: 0;
             top: 0;
             width: 100%;
@@ -616,7 +616,7 @@
         width: 100%;
         height: 100%;
         background-color: rgba(0, 0, 0, 0.5);
-        z-index: 1000;
+        z-index: 10005465456;
         justify-content: center;
         align-items: center;
     }
@@ -839,6 +839,16 @@
         to { transform: rotate(360deg); }
     }
 
+    /*search bar*/
+    #tableSearch {
+        width: 100%;
+        padding: 8px 12px;
+        font-size: 14px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        margin-bottom: 12px;
+    }
+
     </style>
 
 </head>
@@ -857,6 +867,235 @@
     <!-- loader-->
     <div class="loader-wrapper">
         <div class="loader"><span></span><span></span><span></span><span></span><span></span></div>
+    </div>
+    <!-- Modal -->
+    <div id="detailModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Case Details & Update</h2>
+                <span class="close" onclick="closeModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <!-- Row Details Section -->
+                <div class="row-details" id="rowDetailsSection">
+                    <h3>Current Case Information</h3>
+                    <div class="details-grid" id="rowDetailsGrid">
+                        <!-- Details will be populated here -->
+                    </div>
+                </div>
+
+                <!-- Form Section -->
+                <form id="detailForm" method="post" action="{% url 'kg_app:update_task' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-section">
+                        <h3>Contact Information</h3>
+                        <div class="form-grid">
+                            <input type="text" id="agreementIdInput" name="agreement_id" value="" readonly hidden>
+                            <input type="text" id="task_id" name="task_id" value="" readonly hidden>
+                            <div class="form-group">
+                                <label>Code</label>
+                                <select id="code" name="code" required >
+                                    <option value="" selected disabled>Select Code</option>
+                                    <option value="CB">CB - THE CUSTOMER ASKED US TO CALL BACK</option>
+                                    <option value="DISP">DISP - DISPUTED CASES</option>
+                                    <option value="EXP">EXP - DEATH</option>
+                                    <option value="NC">NC - NOT CONTACT/INVALID/INCOMING CALL OFF</option>
+                                    <option value="NITP">NITP - CUSTOMER HAVING NO INTENSION TO REPAY LOANS / INTENTIONAL ISSUES</option>
+                                    <option value="OS">OS - OUT OF STATION</option>
+                                    <option value="PAID">PAID - PAID</option>
+                                    <option value="PTP">PTP - PROMISED TO PAY</option>
+                                    <option value="REPO">REPO - VEHICLE REPOSSESSION</option>
+                                    <option value="RNR">RNR - CUSTOMER NOT RESPONDING THE CALL</option>
+                                    <option value="RTP">RTP - REFUSED TO PAY</option>
+                                    <option value="SHIFT">SHIFT - SHIFTED THE ADDRESS</option>
+                                    <option value="SKIP">SKIP - SKIP THE ADDRESS</option>
+                                    <option value="VISIT">VISIT - NOT VISIT</option>
+                                    <option value="RE-VISIT">RE-VISIT - NEED TO GROUP VISIT</option>
+                                    <option value="WIP">WIP - WORKING PROGRESS</option>
+                                    <option value="N-OFF">N-OFF - NUMBER OFF</option>
+                                    <option value="ANF">ANF - ADDRESS NOT FOUND</option>
+                                    <option value="FRAUD">FRAUD - POTENTIAL FRAUD</option>
+                                    <option value="PS">PS - PRODUCT SOLD</option>
+                                    <option value="CF">CF - CASH FUNDING</option>
+                                    <option value="FP">FP - FINANCIAL PROBLEM</option>
+                                    <option value="WS">WS - WANTS SETTLEMENT</option>
+                                    <option value="NO JOB">NO JOB - JOBLESS</option>
+                                    <option value="MP">MP - MEDICAL PROBLEMS</option>
+                                    <option value="MD">MD - MULTIPLE LOAN AVAILED & MARKET DEFAULTER</option>
+                                    <option value="IC">IC - INSURANCE CLAIM</option>
+                                    <option value="3P">3P - 3RD PARTY CASE</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>New Mobile Number</label>
+                                <input type="tel" id="newMobileNumber" name="newMobileNumber" placeholder="Enter mobile number" required value="">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Projection Details</h3>
+                        <div class="form-grid">
+                            <!-- <div class="form-group">
+                                <label>Projection (Y/D/N)</label>
+                                <select id="projection" name="projection" required >
+                                    <option value="" selected disabled>Select</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="Doubt">Doubt</option>
+                                    <option value="No">No</option>
+                                </select>
+                            </div> -->
+                            <div class="form-group">
+                                <label>Promise Date</label>
+                                <input type="datetime-local" id="promise_date" name="promise_date" value="">
+                            </div>
+                            <div class="form-group">
+                                <label>Promise Amount</label>
+                                <input type="number" id="promiseAmount" name="promise_amt" placeholder="00000/-" value="">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Remarks</h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Customer Remarks</label>
+                                <textarea id="customerRemarks" placeholder="Enter customer remarks" name="customer_remark" required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Reference Remarks</label>
+                                <textarea id="referenceRemarks" placeholder="Enter reference remarks" name="referencr_remark" required></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Visit Details</h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Need Group Visit (Y/N)</label>
+                                <select id="needGroupVisit" name="need_group_visit">
+                                    <option value="" selected disabled>--Select--</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Projection (Y/Y2/Y3/D/N)</label>
+                                <select id="projectionExtended" name="visit_projection" required>
+                                    <option value="">Select</option>
+                                    <option value="Yes (1 EMI)">Yes (1 EMI)</option>
+                                    <option value="Yes (2 EMI)">Yes (2 EMI)</option>
+                                    <option value="Yes (more than 2 emi / Normalization)">Yes (more than 2 emi / Normalization)</option>
+                                    <option value="Doubt">Doubt</option>
+                                    <option value="No">No</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Visit Status (Y/N)</label>
+                                <input id="visitStatus" name="visit_status" readonly value="">
+                                <!-- <select id="visitStatus2" name="visit_status" required >
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                </select> -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Customer & Vehicle Status</h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Customer Available (Y/N)</label>
+                                <select id="customerAvailable" name="customer_available" required>
+                                    <option value="" selected disabled>Select</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Vehicle Available (Y/N)</label>
+                                <select id="vehicleAvailable" name="vehicle_available" required>
+                                    <option value="" selected disabled>Select</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>3rd Party Status (Y/N)</label>
+                                <select id="thirdPartyStatus" name="third_party_status" required>
+                                    <option value="" selected disabled>Select</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>3rd Party Details</label>
+                                <input type="text" id="thirdPartyDetails" name="third_party_details" placeholder="Enter details">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Location & Status</h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>New Update Address</label>
+                                <textarea id="newUpdateAddress" name="new_update_address" placeholder="Enter new address" ></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Document</label>
+                                <input type="file" id="locationPhoto" accept=".pdf,.jpg,.jpeg" name="document_image" >
+                            </div>
+                            
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Payment Details</h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Status (ST/RB/NR/RF)</label>
+                                <select id="status" required name="location_status">
+                                    <option value="RF" selected>RF - Roll Forward</option>
+                                    <option value="ST">ST - Stabilization</option>
+                                    <option value="RB">RB - Roll Back</option>
+                                    <option value="NR">NR - Normalization</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Recipt No.</label>
+                                <input type="text" id="payment" name="recipt_no"  placeholder="Enter recipt number">
+                            </div>
+                            <div class="form-group">
+                                <label>Payment Mode</label>
+                                <select id="paymentMode" name="payment_mode" >
+                                    <option value="" selected>Select</option>
+                                    <option value="Cash">Cash</option>
+                                    <option value="Online">Online</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Payment Amount</label>
+                                <input type="number" id="paymentAmount" name="payment_amount"  placeholder="00000/-">
+                            </div>
+                            <div class="form-group">
+                                <label>Payment Date</label>
+                                <input type="datetime-local" id="paymentDate" name="payment_date" value="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+                        <button class="btn-save" type="submit">Save Changes</button>
+                    </div>
+                </form>
+                    <input type="text" id="agreementIdInputs" name="agreement_id" value="" readonly hidden> 
+                    <button class="btn-cancel" onclick="openHistoryPopup(this)" >History</button>
+            </div>
+            
+        </div>
     </div>
 
 
@@ -1038,6 +1277,8 @@
                                     </div>
 
                                     <div class="card-body">
+                                        <!-- Search Bar -->
+                                        <input type="text" id="tableSearch" placeholder="Search...">
                                         <div class="table-responsive">
                                             <table class="table table-bordered" id="basic-9">
                                                 <thead style="background:#f8f9fa;">
@@ -1097,235 +1338,7 @@
                                         </div>
                                     </div>
 
-                                    <!-- Modal -->
-                                    <div id="detailModal" class="modal">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h2>Case Details & Update</h2>
-                                                <span class="close" onclick="closeModal()">&times;</span>
-                                            </div>
-                                            <div class="modal-body">
-                                                <!-- Row Details Section -->
-                                                <div class="row-details" id="rowDetailsSection">
-                                                    <h3>Current Case Information</h3>
-                                                    <div class="details-grid" id="rowDetailsGrid">
-                                                        <!-- Details will be populated here -->
-                                                    </div>
-                                                </div>
-
-                                                <!-- Form Section -->
-                                                <form id="detailForm" method="post" action="{% url 'kg_app:update_task' %}" enctype="multipart/form-data">
-                                                    {% csrf_token %}
-                                                    <div class="form-section">
-                                                        <h3>Contact Information</h3>
-                                                        <div class="form-grid">
-                                                            <input type="text" id="agreementIdInput" name="agreement_id" value="" readonly hidden>
-                                                            <input type="text" id="task_id" name="task_id" value="" readonly hidden>
-                                                            <div class="form-group">
-                                                                <label>Code</label>
-                                                                <select id="code" name="code" required >
-                                                                    <option value="" selected disabled>Select Code</option>
-                                                                    <option value="CB">CB - THE CUSTOMER ASKED US TO CALL BACK</option>
-                                                                    <option value="DISP">DISP - DISPUTED CASES</option>
-                                                                    <option value="EXP">EXP - DEATH</option>
-                                                                    <option value="NC">NC - NOT CONTACT/INVALID/INCOMING CALL OFF</option>
-                                                                    <option value="NITP">NITP - CUSTOMER HAVING NO INTENSION TO REPAY LOANS / INTENTIONAL ISSUES</option>
-                                                                    <option value="OS">OS - OUT OF STATION</option>
-                                                                    <option value="PAID">PAID - PAID</option>
-                                                                    <option value="PTP">PTP - PROMISED TO PAY</option>
-                                                                    <option value="REPO">REPO - VEHICLE REPOSSESSION</option>
-                                                                    <option value="RNR">RNR - CUSTOMER NOT RESPONDING THE CALL</option>
-                                                                    <option value="RTP">RTP - REFUSED TO PAY</option>
-                                                                    <option value="SHIFT">SHIFT - SHIFTED THE ADDRESS</option>
-                                                                    <option value="SKIP">SKIP - SKIP THE ADDRESS</option>
-                                                                    <option value="VISIT">VISIT - NOT VISIT</option>
-                                                                    <option value="RE-VISIT">RE-VISIT - NEED TO GROUP VISIT</option>
-                                                                    <option value="WIP">WIP - WORKING PROGRESS</option>
-                                                                    <option value="N-OFF">N-OFF - NUMBER OFF</option>
-                                                                    <option value="ANF">ANF - ADDRESS NOT FOUND</option>
-                                                                    <option value="FRAUD">FRAUD - POTENTIAL FRAUD</option>
-                                                                    <option value="PS">PS - PRODUCT SOLD</option>
-                                                                    <option value="CF">CF - CASH FUNDING</option>
-                                                                    <option value="FP">FP - FINANCIAL PROBLEM</option>
-                                                                    <option value="WS">WS - WANTS SETTLEMENT</option>
-                                                                    <option value="NO JOB">NO JOB - JOBLESS</option>
-                                                                    <option value="MP">MP - MEDICAL PROBLEMS</option>
-                                                                    <option value="MD">MD - MULTIPLE LOAN AVAILED & MARKET DEFAULTER</option>
-                                                                    <option value="IC">IC - INSURANCE CLAIM</option>
-                                                                    <option value="3P">3P - 3RD PARTY CASE</option>
-                                                                </select>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label>New Mobile Number</label>
-                                                                <input type="tel" id="newMobileNumber" name="newMobileNumber" placeholder="Enter mobile number" required value="">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="form-section">
-                                                        <h3>Projection Details</h3>
-                                                        <div class="form-grid">
-                                                            <!-- <div class="form-group">
-                                                                <label>Projection (Y/D/N)</label>
-                                                                <select id="projection" name="projection" required >
-                                                                    <option value="" selected disabled>Select</option>
-                                                                    <option value="Yes">Yes</option>
-                                                                    <option value="Doubt">Doubt</option>
-                                                                    <option value="No">No</option>
-                                                                </select>
-                                                            </div> -->
-                                                            <div class="form-group">
-                                                                <label>Promise Date</label>
-                                                                <input type="datetime-local" id="promise_date" name="promise_date" value="">
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label>Promise Amount</label>
-                                                                <input type="number" id="promiseAmount" name="promise_amt" placeholder="00000/-" value="">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="form-section">
-                                                        <h3>Remarks</h3>
-                                                        <div class="form-grid">
-                                                            <div class="form-group">
-                                                                <label>Customer Remarks</label>
-                                                                <textarea id="customerRemarks" placeholder="Enter customer remarks" name="customer_remark" required></textarea>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label>Reference Remarks</label>
-                                                                <textarea id="referenceRemarks" placeholder="Enter reference remarks" name="referencr_remark" required></textarea>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="form-section">
-                                                        <h3>Visit Details</h3>
-                                                        <div class="form-grid">
-                                                            <div class="form-group">
-                                                                <label>Need Group Visit (Y/N)</label>
-                                                                <select id="needGroupVisit" name="need_group_visit">
-                                                                    <option value="" selected disabled>--Select--</option>
-                                                                    <option value="Yes">Yes</option>
-                                                                    <option value="No">No</option>
-                                                                </select>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label>Projection (Y/Y2/Y3/D/N)</label>
-                                                                <select id="projectionExtended" name="visit_projection" required>
-                                                                    <option value="">Select</option>
-                                                                    <option value="Yes (1 EMI)">Yes (1 EMI)</option>
-                                                                    <option value="Yes (2 EMI)">Yes (2 EMI)</option>
-                                                                    <option value="Yes (more than 2 emi / Normalization)">Yes (more than 2 emi / Normalization)</option>
-                                                                    <option value="Doubt">Doubt</option>
-                                                                    <option value="No">No</option>
-                                                                </select>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label>Visit Status (Y/N)</label>
-                                                                <input id="visitStatus" name="visit_status" readonly value="">
-                                                                <!-- <select id="visitStatus2" name="visit_status" required >
-                                                                    <option value="Yes">Yes</option>
-                                                                    <option value="No">No</option>
-                                                                </select> -->
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="form-section">
-                                                        <h3>Customer & Vehicle Status</h3>
-                                                        <div class="form-grid">
-                                                            <div class="form-group">
-                                                                <label>Customer Available (Y/N)</label>
-                                                                <select id="customerAvailable" name="customer_available" required>
-                                                                    <option value="" selected disabled>Select</option>
-                                                                    <option value="Yes">Yes</option>
-                                                                    <option value="No">No</option>
-                                                                </select>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label>Vehicle Available (Y/N)</label>
-                                                                <select id="vehicleAvailable" name="vehicle_available" required>
-                                                                    <option value="" selected disabled>Select</option>
-                                                                    <option value="Yes">Yes</option>
-                                                                    <option value="No">No</option>
-                                                                </select>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label>3rd Party Status (Y/N)</label>
-                                                                <select id="thirdPartyStatus" name="third_party_status" required>
-                                                                    <option value="" selected disabled>Select</option>
-                                                                    <option value="Yes">Yes</option>
-                                                                    <option value="No">No</option>
-                                                                </select>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label>3rd Party Details</label>
-                                                                <input type="text" id="thirdPartyDetails" name="third_party_details" placeholder="Enter details">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="form-section">
-                                                        <h3>Location & Status</h3>
-                                                        <div class="form-grid">
-                                                            <div class="form-group">
-                                                                <label>New Update Address</label>
-                                                                <textarea id="newUpdateAddress" name="new_update_address" placeholder="Enter new address" ></textarea>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label>Document</label>
-                                                                <input type="file" id="locationPhoto" accept=".pdf,.jpg,.jpeg" name="document_image" >
-                                                            </div>
-                                                            
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="form-section">
-                                                        <h3>Payment Details</h3>
-                                                        <div class="form-grid">
-                                                            <div class="form-group">
-                                                                <label>Status (ST/RB/NR/RF)</label>
-                                                                <select id="status" required name="location_status">
-                                                                    <option value="RF" selected>RF - Roll Forward</option>
-                                                                    <option value="ST">ST - Stabilization</option>
-                                                                    <option value="RB">RB - Roll Back</option>
-                                                                    <option value="NR">NR - Normalization</option>
-                                                                </select>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label>Recipt No.</label>
-                                                                <input type="text" id="payment" name="recipt_no"  placeholder="Enter recipt number">
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label>Payment Mode</label>
-                                                                <select id="paymentMode" name="payment_mode" >
-                                                                    <option value="" selected>Select</option>
-                                                                    <option value="Cash">Cash</option>
-                                                                    <option value="Online">Online</option>
-                                                                </select>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label>Payment Amount</label>
-                                                                <input type="number" id="paymentAmount" name="payment_amount"  placeholder="00000/-">
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label>Payment Date</label>
-                                                                <input type="datetime-local" id="paymentDate" name="payment_date" value="">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button class="btn-cancel" onclick="closeModal()">Cancel</button>
-                                                        <button class="btn-save" type="submit">Save Changes</button>
-                                                    </div>
-                                                </form>
-                                                    <input type="text" id="agreementIdInputs" name="agreement_id" value="" readonly hidden> 
-                                                    <button class="btn-cancel" onclick="openHistoryPopup(this)" >History</button>
-                                            </div>
-                                            
-                                        </div>
-                                    </div>
+                                    
 
                                     <!-- Popup Modal -->
                                     <div id="historyPopup" class="popup-overlay">
@@ -1511,6 +1524,17 @@
     <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 
 
+    <script>
+        document.getElementById('tableSearch').addEventListener('input', function() {
+            const term = this.value.trim().toLowerCase();
+            const filtered = term 
+                ? ALL_RECORDS.filter(r => Object.values(r).some(v => String(v ?? '').toLowerCase().includes(term)))
+                : [...ALL_RECORDS];
+            currentPage = 1;
+            renderTable(filtered.slice(0, PAGE_SIZE));
+        });
+    </script>
+
     <!-- individual download excel js -->
     <script>
         function downloadExcel(){
@@ -1675,748 +1699,710 @@
 
 
 
-<script>
-    // ── Django URLs (resolved by template tag) ────────────────────────
-    const API_URL            = '/assign_task/api/';
-    const FILTER_VALUES_URL  = '/assign_task/filter-values/';
-    const CATEGORY_COUNT_URL = '/assign_task/category-counts/';
+    <script>
+        // ── Django URLs (resolved by template tag) ────────────────────────
+        const API_URL            = '/assign_task/api/';
+        const FILTER_VALUES_URL  = '/assign_task/filter-values/';
+        const CATEGORY_COUNT_URL = '/assign_task/category-counts/';
 
-    // ── State ─────────────────────────────────────────────────────────
-    let currentTask = null;
-    let currentPage = 1;
-    const PAGE_SIZE = 50;
-    let totalRows = 0;
-    let totalPages = 1;
-    let activeFilterColumn = '';
-    let activeFilterValue = '';
-    let activeCategoryFilter = 'ALL';
+        // ── State ─────────────────────────────────────────────────────────
+        let currentTask = null;
+        let currentPage = 1;
+        const PAGE_SIZE = 50;
+        let totalRows = 0;
+        let totalPages = 1;
+        let activeFilterColumn = '';
+        let activeFilterValue = '';
+        let activeCategoryFilter = 'ALL';
 
-    const columnMapping = {
-        "Sl": "sl",
-        "Agreement ID": "aggrement_id",
-        "Customer Name": "customer_name",
-        "Product": "product_type",
-        "TC Name": "tc_name",
-        "Branch": "branch",
-        "Count of Cases": "count_of_cases",
-        "Old/New": "old_or_new",
-        "Bucket": "bucket",
-        "Mode": "mode",
-        "NPA Status": "npa_status",
-        "POS": "pos_amount",
-        "EMI Amount": "emi_amount",
-        "EMI Due Amount": "emi_due_amount",
-        "Total Charges": "total_charges",
-        "Receipt Amount": "recipt_amount",
-        "Receipt Date": "recipt_date",
-        "BCC Pending": "bcc_pending",
-        "Penal Pending": "penal_pending",
-        "Disbursement Amount": "disbursement_amount",
-        "Loan Amount": "loan_amount",
-        "Disbursement Date": "disbursement_date",
-        "EMI Start Date": "emi_start_date",
-        "EMI End Date": "emi_end_date",
-        "EMI Cycle Date": "emi_cycle_date",
-        "Make": "make",
-        "Manufacturer Description": "manufacturer_description",
-        "Registration Number": "registration_number",
-        "Age": "vehicle_age",
-        "Employer": "employer",
-        "Father Name": "father_name",
-        "FE Name": "fe_name",
-        "FE Mobile Number": "fe_mobile_number",
-        "TL Name": "tl_name",
-        "Customer Number": "customer_mobile_number",
-        "Customer Address": "customer_address",
-        "Customer Office Address": "customer_office_address",
-        "PIN Code": "pin_code",
-        "Reference Details": "reference_details",
-        "Collection Manager Name": "collection_manager_name",
-        "Finance Company Name": "finance_company_name"
-    }
+        const columnMapping = {
+            "Sl": "sl",
+            "Agreement ID": "aggrement_id",
+            "Customer Name": "customer_name",
+            "Product": "product_type",
+            "TC Name": "tc_name",
+            "Branch": "branch",
+            "Count of Cases": "count_of_cases",
+            "Old/New": "old_or_new",
+            "Bucket": "bucket",
+            "Mode": "mode",
+            "NPA Status": "npa_status",
+            "POS": "pos_amount",
+            "EMI Amount": "emi_amount",
+            "EMI Due Amount": "emi_due_amount",
+            "Total Charges": "total_charges",
+            "Receipt Amount": "recipt_amount",
+            "Receipt Date": "recipt_date",
+            "BCC Pending": "bcc_pending",
+            "Penal Pending": "penal_pending",
+            "Disbursement Amount": "disbursement_amount",
+            "Loan Amount": "loan_amount",
+            "Disbursement Date": "disbursement_date",
+            "EMI Start Date": "emi_start_date",
+            "EMI End Date": "emi_end_date",
+            "EMI Cycle Date": "emi_cycle_date",
+            "Make": "make",
+            "Manufacturer Description": "manufacturer_description",
+            "Registration Number": "registration_number",
+            "Age": "vehicle_age",
+            "Employer": "employer",
+            "Father Name": "father_name",
+            "FE Name": "fe_name",
+            "FE Mobile Number": "fe_mobile_number",
+            "TL Name": "tl_name",
+            "Customer Number": "customer_mobile_number",
+            "Customer Address": "customer_address",
+            "Customer Office Address": "customer_office_address",
+            "PIN Code": "pin_code",
+            "Reference Details": "reference_details",
+            "Collection Manager Name": "collection_manager_name",
+            "Finance Company Name": "finance_company_name"
+        }
 
-    const fieldLabels = {
-        'sl': 'Sl',
-        'aggrement_id': 'Agreement ID',
-        'task_id': 'Task ID',
-        'customer_name': 'Customer Name',
-        'product_type': 'Product Type',
-        'tc_name': 'TC Name',
-        'branch': 'Branch',
-        'count_of_cases': 'Count of Cases',
-        'old_or_new': 'Old/New',
-        'bucket': 'Bucket',
-        'mode': 'Mode',
-        'npa_status': 'NPA Status',
-        'pos_amount': 'POS Amount',
-        'emi_amount': 'EMI Amount',
-        'emi_due_amount': 'EMI Due Amount',
-        'total_charges': 'Total Charges',
-        'recipt_amount': 'Receipt Amount',
-        'recipt_date': 'Receipt Date',
-        'bcc_pending': 'BCC Pending',
-        'penal_pending': 'Penal Pending',
-        'disbursement_amount': 'Disbursement Amount',
-        'loan_amount': 'Loan Amount',
-        'disbursement_date': 'Disbursement Date',
-        'emi_start_date': 'EMI Start Date',
-        'emi_end_date': 'EMI End Date',
-        'emi_cycle_date': 'EMI Cycle Date',
-        'make': 'Make',
-        'manufacturer_description': 'Manufacturer Description',
-        'registration_number': 'Registration Number',
-        'vehicle_age': 'Vehicle Age',
-        'employer': 'Employer',
-        'father_name': 'Father Name',
-        'fe_name': 'FE Name',
-        'tl_name': 'TL Name',
-        'fe_mobile_number': 'FE Mobile Number',
-        'customer_mobile_number': 'Customer Mobile Number',
-        'customer_address': 'Customer Address',
-        'customer_office_address': 'Customer Office Address',
-        'pin_code': 'Pin Code',
-        'reference_details': 'Reference Details',
-        'collection_manager_name': 'Collection Manager Name',
-        'finance_company_name': 'Finance Company Name',
-        
-        'api_image_status': 'Visit Status',
-        'new_mobile_number': 'New Updated Mobile Number',
-        'update_promise_date': 'Promise Date',
-        'update_promise_amount': 'Promise Amount',
-        'update_customer_remark': 'Customer Remark',
-        'update_reference_remark': 'Reference Remark',
-        'update_need_group_visit': 'Need Group Visit',
-        'update_visit_projection': 'Visit Projection',
-        'update_customer_available': 'Customer Available',
-        'update_vehicle_available': 'Vehicle Available',
-        'update_third_party_status': '3rd Party Status',
-        'update_third_party_details': '3rd Party Details',
-        'update_new_address': 'New Updated Address',
-        'update_location_status': 'Mode',
-        'update_recipt_no': 'Receipt No',
-        'update_payment_mode': 'Payment Mode',
-        'update_payment_amount': 'Payment Amount',
-        'update_payment_date': 'Payment Date',
-        'latitude': 'Latitude',
-        'longitude': 'Longitude'
-    }
+        const fieldLabels = {
+            'sl': 'Sl',
+            'aggrement_id': 'Agreement ID',
+            'task_id': 'Task ID',
+            'customer_name': 'Customer Name',
+            'product_type': 'Product Type',
+            'tc_name': 'TC Name',
+            'branch': 'Branch',
+            'count_of_cases': 'Count of Cases',
+            'old_or_new': 'Old/New',
+            'bucket': 'Bucket',
+            'mode': 'Mode',
+            'npa_status': 'NPA Status',
+            'pos_amount': 'POS Amount',
+            'emi_amount': 'EMI Amount',
+            'emi_due_amount': 'EMI Due Amount',
+            'total_charges': 'Total Charges',
+            'recipt_amount': 'Receipt Amount',
+            'recipt_date': 'Receipt Date',
+            'bcc_pending': 'BCC Pending',
+            'penal_pending': 'Penal Pending',
+            'disbursement_amount': 'Disbursement Amount',
+            'loan_amount': 'Loan Amount',
+            'disbursement_date': 'Disbursement Date',
+            'emi_start_date': 'EMI Start Date',
+            'emi_end_date': 'EMI End Date',
+            'emi_cycle_date': 'EMI Cycle Date',
+            'make': 'Make',
+            'manufacturer_description': 'Manufacturer Description',
+            'registration_number': 'Registration Number',
+            'vehicle_age': 'Vehicle Age',
+            'employer': 'Employer',
+            'father_name': 'Father Name',
+            'fe_name': 'FE Name',
+            'tl_name': 'TL Name',
+            'fe_mobile_number': 'FE Mobile Number',
+            'customer_mobile_number': 'Customer Mobile Number',
+            'customer_address': 'Customer Address',
+            'customer_office_address': 'Customer Office Address',
+            'pin_code': 'Pin Code',
+            'reference_details': 'Reference Details',
+            'collection_manager_name': 'Collection Manager Name',
+            'finance_company_name': 'Finance Company Name',
+            
+            'api_image_status': 'Visit Status',
+            'new_mobile_number': 'New Updated Mobile Number',
+            'update_promise_date': 'Promise Date',
+            'update_promise_amount': 'Promise Amount',
+            'update_customer_remark': 'Customer Remark',
+            'update_reference_remark': 'Reference Remark',
+            'update_need_group_visit': 'Need Group Visit',
+            'update_visit_projection': 'Visit Projection',
+            'update_customer_available': 'Customer Available',
+            'update_vehicle_available': 'Vehicle Available',
+            'update_third_party_status': '3rd Party Status',
+            'update_third_party_details': '3rd Party Details',
+            'update_new_address': 'New Updated Address',
+            'update_location_status': 'Mode',
+            'update_recipt_no': 'Receipt No',
+            'update_payment_mode': 'Payment Mode',
+            'update_payment_amount': 'Payment Amount',
+            'update_payment_date': 'Payment Date',
+            'latitude': 'Latitude',
+            'longitude': 'Longitude'
+        }
 
-    // ── Category counts ───────────────────────────────────────────────
-    async function updateCategoryCountsFromServer() {
-        try {
-            const res = await fetch(CATEGORY_COUNT_URL);
-            if (!res.ok) return;
-            const counts = await res.json();
-            document.querySelectorAll('.category-card').forEach(card => {
-                const code = card.getAttribute('data-category');
-                const count = counts[code] || 0;
-                let badge = card.querySelector('.category-count');
-                if (!badge) {
-                    badge = document.createElement('span');
-                    badge.className = 'category-count';
-                    card.querySelector('.category-code').appendChild(badge);
+        // ── Category counts ───────────────────────────────────────────────
+        async function updateCategoryCountsFromServer() {
+            try {
+                const res = await fetch(CATEGORY_COUNT_URL);
+                if (!res.ok) return;
+                const counts = await res.json();
+                document.querySelectorAll('.category-card').forEach(card => {
+                    const code = card.getAttribute('data-category');
+                    const count = counts[code] || 0;
+                    let badge = card.querySelector('.category-count');
+                    if (!badge) {
+                        badge = document.createElement('span');
+                        badge.className = 'category-count';
+                        card.querySelector('.category-code').appendChild(badge);
+                    }
+                    badge.innerHTML = '<span class="count-separator"></span>' + count;
+                });
+            } catch (err) { console.error('Category counts error:', err); }
+        }
+
+        function updateCategoryCounts() { updateCategoryCountsFromServer(); }
+
+        // ── toggleNoDataMessage ───────────────────────────────────────────
+        function toggleNoDataMessage(show) {
+            let el = document.getElementById('no-data-message');
+            if (show) {
+                if (!el) {
+                    el = document.createElement('div');
+                    el.id = 'no-data-message';
+                    el.className = 'no-data-message';
+                    el.innerHTML = '<div class="no-data-content"><h3>No Data Found</h3><p>No records found for the selected category.</p></div>';
+                    const cardBody = document.querySelector('.card-body');
+                    if (cardBody) cardBody.appendChild(el);
                 }
-                badge.innerHTML = '<span class="count-separator"></span>' + count;
-            });
-        } catch (err) { console.error('Category counts error:', err); }
-    }
-
-    function updateCategoryCounts() { updateCategoryCountsFromServer(); }
-
-    // ── toggleNoDataMessage ───────────────────────────────────────────
-    function toggleNoDataMessage(show) {
-        let el = document.getElementById('no-data-message');
-        if (show) {
-            if (!el) {
-                el = document.createElement('div');
-                el.id = 'no-data-message';
-                el.className = 'no-data-message';
-                el.innerHTML = '<div class="no-data-content"><h3>No Data Found</h3><p>No records found for the selected category.</p></div>';
-                const cardBody = document.querySelector('.card-body');
-                if (cardBody) cardBody.appendChild(el);
+                el.style.display = 'flex';
+            } else {
+                if (el) el.style.display = 'none';
             }
-            el.style.display = 'flex';
-        } else {
-            if (el) el.style.display = 'none';
         }
-    }
 
-    // ── filterByCategory ─────────────────────────────────────────────
-    function filterByCategory(categoryCode) {
-        activeCategoryFilter = categoryCode;
-        activeFilterColumn = '';
-        activeFilterValue  = '';
-        document.getElementById('columnSelect').value = '';
-        const vs = document.getElementById('valueSelect');
-        if (vs) { vs.innerHTML = '<option value="">-- Select Value --</option>'; vs.disabled = true; }
-        toggleNoDataMessage(false);
-        fetchTasks(1);
-    }
-
-    // ── Fetch tasks from server ───────────────────────────────────────
-    async function fetchTasks(page = 1) {
-        showTableLoading(true);
-        const params = new URLSearchParams({ page, page_size: PAGE_SIZE });
-        if (activeFilterColumn && activeFilterValue) {
-            params.append('filter_column', activeFilterColumn);
-            params.append('filter_value', activeFilterValue);
-        }
-        if (activeCategoryFilter && activeCategoryFilter !== 'ALL') {
-            params.append('category', activeCategoryFilter);
-        }
-        try {
-            const res = await fetch(`${API_URL}?${params.toString()}`);
-            if (!res.ok) throw new Error('Server error ' + res.status);
-            const json = await res.json();
-            currentPage = json.page;
-            totalRows   = json.total;
-            totalPages  = json.num_pages;
-            renderTable(json.data);
-            renderPagination();
-            updateCategoryCountsFromServer();
-        } catch (err) {
-            console.error('fetchTasks error:', err);
-            const tbody = document.getElementById('table-body');
-            if (tbody) tbody.innerHTML = `<tr><td colspan="44" style="text-align:center;color:red;padding:30px;">Failed to load data: ${err.message}</td></tr>`;
-        } finally {
-            showTableLoading(false);
-        }
-    }
-
-    function showTableLoading(loading) {
-        const tbody = document.getElementById('table-body');
-        if (loading && tbody) {
-            tbody.innerHTML = `<tr><td colspan="44" style="text-align:center;padding:40px;color:#667eea;">
-                <div style="display:inline-block;width:24px;height:24px;border:3px solid #667eea;border-top-color:transparent;border-radius:50%;animation:spin 0.8s linear infinite;margin-right:10px;vertical-align:middle;"></div>
-                Loading records...
-            </td></tr>`;
-        }
-    }
-
-    // ── Pagination ────────────────────────────────────────────────────
-    function renderPagination() {
-        let container = document.getElementById('pagination-container');
-        if (!container) {
-            container = document.createElement('div');
-            container.id = 'pagination-container';
-            container.style.cssText = 'display:flex;align-items:center;gap:8px;padding:12px 16px;flex-wrap:wrap;background:#f8f9fa;border-top:1px solid #dee2e6;';
-            const cardBody = document.querySelector('.card-body');
-                if (cardBody) cardBody.appendChild(container);
-        }
-        const start = totalRows === 0 ? 0 : (currentPage - 1) * PAGE_SIZE + 1;
-        const end   = Math.min(currentPage * PAGE_SIZE, totalRows);
-        const btn = (label, page, disabled) =>
-            `<button onclick="goToPage(${page})" ${disabled?'disabled':''} style="padding:5px 12px;border:1px solid #dee2e6;background:${disabled?'#f0f0f0':'white'};border-radius:4px;cursor:${disabled?'not-allowed':'pointer'};font-size:13px;color:${disabled?'#aaa':'#333'};">${label}</button>`;
-        container.innerHTML = `
-            <span style="margin-right:auto;font-size:13px;color:#555;">
-                Showing <strong>${start}–${end}</strong> of <strong>${totalRows}</strong> records
-            </span>
-            ${btn('«', 1, currentPage===1)}
-            ${btn('‹ Prev', currentPage-1, currentPage===1)}
-            <span style="font-size:13px;padding:0 8px;">Page <strong>${currentPage}</strong> of <strong>${totalPages}</strong></span>
-            ${btn('Next ›', currentPage+1, currentPage===totalPages)}
-            ${btn('»', totalPages, currentPage===totalPages)}
-        `;
-    }
-
-    function goToPage(page) {
-        if (page < 1 || page > totalPages) return;
-        fetchTasks(page);
-        const t = document.getElementById('basic-9');
-        if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-
-    // ── Filters ───────────────────────────────────────────────────────
-    function initializeFilters() {
-        const columnSelect = document.getElementById('columnSelect');
-        if (!columnSelect) return;
-        Object.keys(columnMapping).forEach(displayName => {
-            const opt = document.createElement('option');
-            opt.value = displayName; opt.textContent = displayName;
-            columnSelect.appendChild(opt);
-        });
-        columnSelect.addEventListener('change', onColumnChange);
-        const vs = document.getElementById('valueSelect');
-        if (vs) vs.addEventListener('change', onValueChange);
-    }
-
-    async function onColumnChange(e) {
-        const selectedColumn = e.target.value;
-        const vs = document.getElementById('valueSelect');
-        if (!vs) return;
-        activeFilterColumn = '';
-        activeFilterValue  = '';
-        vs.innerHTML = '<option value="">Loading…</option>';
-        vs.disabled = true;
-        if (!selectedColumn) {
-            vs.innerHTML = '<option value="">-- Select Value --</option>';
+        // ── filterByCategory ─────────────────────────────────────────────
+        function filterByCategory(categoryCode) {
+            activeCategoryFilter = categoryCode;
+            activeFilterColumn = '';
+            activeFilterValue  = '';
+            document.getElementById('columnSelect').value = '';
+            const vs = document.getElementById('valueSelect');
+            if (vs) { vs.innerHTML = '<option value="">-- Select Value --</option>'; vs.disabled = true; }
+            toggleNoDataMessage(false);
             fetchTasks(1);
-            return;
         }
-        const fieldKey = columnMapping[selectedColumn];
-        activeFilterColumn = fieldKey;
-        try {
-            const res = await fetch(`${FILTER_VALUES_URL}?column=${fieldKey}`);
-            const json = await res.json();
-            vs.innerHTML = '<option value="">-- Select Value --</option>';
-            json.values.forEach(v => {
+
+        // ── Fetch tasks from server ───────────────────────────────────────
+        let searchTerm = '';
+        let searchTimer = null;
+
+        async function fetchTasks(page = 1) {
+            showTableLoading(true);
+            const params = new URLSearchParams({ page, page_size: PAGE_SIZE });
+            if (activeFilterColumn && activeFilterValue) {
+                params.append('filter_column', activeFilterColumn);
+                params.append('filter_value', activeFilterValue);
+            }
+            if (activeCategoryFilter && activeCategoryFilter !== 'ALL') {
+                params.append('category', activeCategoryFilter);
+            }
+            if (searchTerm) {
+                params.append('search', searchTerm);
+            }
+            try {
+                const res = await fetch(`${API_URL}?${params.toString()}`);
+                if (!res.ok) throw new Error('Server error ' + res.status);
+                const json = await res.json();
+                currentPage = json.page;
+                totalRows   = json.total;
+                totalPages  = json.num_pages;
+                renderTable(json.data);
+                renderPagination();
+                updateCategoryCountsFromServer();
+            } catch (err) {
+                console.error('fetchTasks error:', err);
+                const tbody = document.getElementById('table-body');
+                if (tbody) tbody.innerHTML = `<tr><td colspan="44">Failed to load data: ${err.message}</td></tr>`;
+            } finally {
+                showTableLoading(false);
+            }
+        }
+
+        document.getElementById('tableSearch').addEventListener('input', function() {
+            clearTimeout(searchTimer);
+            searchTerm = this.value.trim();
+            searchTimer = setTimeout(() => fetchTasks(1), 350);
+        });
+
+        function showTableLoading(loading) {
+            const tbody = document.getElementById('table-body');
+            if (loading && tbody) {
+                tbody.innerHTML = `<tr><td colspan="44" style="text-align:center;padding:40px;color:#667eea;">
+                    <div style="display:inline-block;width:24px;height:24px;border:3px solid #667eea;border-top-color:transparent;border-radius:50%;animation:spin 0.8s linear infinite;margin-right:10px;vertical-align:middle;"></div>
+                    Loading records...
+                </td></tr>`;
+            }
+        }
+
+        // ── Pagination ────────────────────────────────────────────────────
+        function renderPagination() {
+            let container = document.getElementById('pagination-container');
+            if (!container) {
+                container = document.createElement('div');
+                container.id = 'pagination-container';
+                container.style.cssText = 'display:flex;align-items:center;gap:8px;padding:12px 16px;flex-wrap:wrap;background:#f8f9fa;border-top:1px solid #dee2e6;';
+                const cardBody = document.querySelector('.card-body');
+                    if (cardBody) cardBody.appendChild(container);
+            }
+            const start = totalRows === 0 ? 0 : (currentPage - 1) * PAGE_SIZE + 1;
+            const end   = Math.min(currentPage * PAGE_SIZE, totalRows);
+            const btn = (label, page, disabled) =>
+                `<button onclick="goToPage(${page})" ${disabled?'disabled':''} style="padding:5px 12px;border:1px solid #dee2e6;background:${disabled?'#f0f0f0':'white'};border-radius:4px;cursor:${disabled?'not-allowed':'pointer'};font-size:13px;color:${disabled?'#aaa':'#333'};">${label}</button>`;
+            container.innerHTML = `
+                <span style="margin-right:auto;font-size:13px;color:#555;">
+                    Showing <strong>${start}–${end}</strong> of <strong>${totalRows}</strong> records
+                </span>
+                ${btn('«', 1, currentPage===1)}
+                ${btn('‹ Prev', currentPage-1, currentPage===1)}
+                <span style="font-size:13px;padding:0 8px;">Page <strong>${currentPage}</strong> of <strong>${totalPages}</strong></span>
+                ${btn('Next ›', currentPage+1, currentPage===totalPages)}
+                ${btn('»', totalPages, currentPage===totalPages)}
+            `;
+        }
+
+        function goToPage(page) {
+            if (page < 1 || page > totalPages) return;
+            fetchTasks(page);
+            const t = document.getElementById('basic-9');
+            if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        // ── Filters ───────────────────────────────────────────────────────
+        function initializeFilters() {
+            const columnSelect = document.getElementById('columnSelect');
+            if (!columnSelect) return;
+            Object.keys(columnMapping).forEach(displayName => {
                 const opt = document.createElement('option');
-                opt.value = v; opt.textContent = v;
-                vs.appendChild(opt);
+                opt.value = displayName; opt.textContent = displayName;
+                columnSelect.appendChild(opt);
             });
-            vs.disabled = false;
-        } catch { vs.innerHTML = '<option value="">Error loading</option>'; }
-    }
-
-    function onValueChange(e) {
-        activeFilterValue = e.target.value;
-        fetchTasks(1);
-    }
-
-    function resetFilters() {
-        document.getElementById('columnSelect').value = '';
-        const vs = document.getElementById('valueSelect');
-        if (vs) { vs.innerHTML = '<option value="">-- Select Value --</option>'; vs.disabled = true; }
-        activeFilterColumn   = '';
-        activeFilterValue    = '';
-        activeCategoryFilter = 'ALL';
-        document.querySelectorAll('.category-card').forEach(c => c.classList.remove('active'));
-        const allCard = document.querySelector('.category-card[data-category="ALL"]');
-        if (allCard) allCard.classList.add('active');
-        fetchTasks(1);
-    }
-
-    var global_aggrement_id = '';
-    function populateRowDetails(task) {
-        const detailsGrid = document.getElementById('rowDetailsGrid');
-        const agreementIdInput = document.getElementById('agreementIdInput');
-        const agreementIdInputs = document.getElementById('agreementIdInputs');
-        const visitStatusInput = document.getElementById('visitStatus');
-        const taskIdInput = document.getElementById('task_id');
-
-        const codeSelect = document.getElementById('code');
-        const newMobileNumber = document.getElementById('newMobileNumber');
-        const promise_date = document.getElementById('promise_date');
-        const paymentDate = document.getElementById('paymentDate');
-        const promiseAmount = document.getElementById('promiseAmount');
-        const customerRemarks = document.getElementById('customerRemarks');
-        const referenceRemarks = document.getElementById('referenceRemarks');
-        const needGroupVisit = document.getElementById('needGroupVisit');
-        const projectionExtended = document.getElementById('projectionExtended');
-
-        const customerAvailable = document.getElementById('customerAvailable');
-        const vehicleAvailable = document.getElementById('vehicleAvailable');
-        const thirdPartyStatus = document.getElementById('thirdPartyStatus');
-        const thirdPartyDetails = document.getElementById('thirdPartyDetails');
-
-        const newUpdateAddress = document.getElementById('newUpdateAddress');
-
-        const locationStatus = document.getElementById('status');
-        const reciptNo = document.getElementById('payment');
-        const paymentMode = document.getElementById('paymentMode');
-        const paymentAmount = document.getElementById('paymentAmount');
-
-
-        if (!detailsGrid) return;
-
-        if(visitStatusInput){
-            visitStatusInput.value = task.api_image_status || '';
+            columnSelect.addEventListener('change', onColumnChange);
+            const vs = document.getElementById('valueSelect');
+            if (vs) vs.addEventListener('change', onValueChange);
         }
 
-        if (agreementIdInput) {
-            agreementIdInput.value = task.aggrement_id || '';
-            global_aggrement_id = task.aggrement_id || '';
-        }
-
-        if (agreementIdInputs){
-            agreementIdInputs.value = task.aggrement_id || '';
-        }
-
-        if(taskIdInput){
-            taskIdInput.value = task.task_id || '';
-        }
-
-        if(promiseAmount){
-            promiseAmount.value = task.update_promise_amount || '';
-        }
-        
-
-        if(promise_date && task.update_promise_date){
-            promise_date.value = task.update_promise_date;
-            console.log('Setting promise date to:-------------------------------------------------------------------', task.update_promise_date);
-        }
-
-        if(paymentDate && task.update_payment_date){
-            paymentDate.value = task.update_payment_date;
-            console.log('Setting payment date to:-------------------------------------------------------------------', task.update_payment_date);
-        }
-
-        // Set the code dropdown value from task.category
-        if(codeSelect && task.category){
-            codeSelect.value = task.category;
-            
-            // If the value doesn't match any option, you might want to handle it
-            if(codeSelect.value !== task.category) {
-                console.warn(`Category value "${task.category}" not found in dropdown options`);
-                // Optionally, you can add the value dynamically or set to default
-                codeSelect.value = ''; // Reset to default if not found
+        async function onColumnChange(e) {
+            const selectedColumn = e.target.value;
+            const vs = document.getElementById('valueSelect');
+            if (!vs) return;
+            activeFilterColumn = '';
+            activeFilterValue  = '';
+            vs.innerHTML = '<option value="">Loading…</option>';
+            vs.disabled = true;
+            if (!selectedColumn) {
+                vs.innerHTML = '<option value="">-- Select Value --</option>';
+                fetchTasks(1);
+                return;
             }
+            const fieldKey = columnMapping[selectedColumn];
+            activeFilterColumn = fieldKey;
+            try {
+                const res = await fetch(`${FILTER_VALUES_URL}?column=${fieldKey}`);
+                const json = await res.json();
+                vs.innerHTML = '<option value="">-- Select Value --</option>';
+                json.values.forEach(v => {
+                    const opt = document.createElement('option');
+                    opt.value = v; opt.textContent = v;
+                    vs.appendChild(opt);
+                });
+                vs.disabled = false;
+            } catch { vs.innerHTML = '<option value="">Error loading</option>'; }
         }
 
-        if(newMobileNumber){
-            newMobileNumber.value = task.new_mobile_number || '';
+        function onValueChange(e) {
+            activeFilterValue = e.target.value;
+            fetchTasks(1);
         }
 
-        if(customerRemarks){
-            customerRemarks.value = task.update_customer_remark && task.update_customer_remark !== '-' 
-                ? task.update_customer_remark 
-                : '';
+        function resetFilters() {
+            document.getElementById('columnSelect').value = '';
+            const vs = document.getElementById('valueSelect');
+            if (vs) { vs.innerHTML = '<option value="">-- Select Value --</option>'; vs.disabled = true; }
+            activeFilterColumn   = '';
+            activeFilterValue    = '';
+            activeCategoryFilter = 'ALL';
+            document.querySelectorAll('.category-card').forEach(c => c.classList.remove('active'));
+            const allCard = document.querySelector('.category-card[data-category="ALL"]');
+            if (allCard) allCard.classList.add('active');
+            fetchTasks(1);
         }
 
-        if(referenceRemarks){
-            referenceRemarks.value = task.update_reference_remark && task.update_reference_remark !== '-' 
-                ? task.update_reference_remark 
-                : '';
-        }
+        var global_aggrement_id = '';
+        function populateRowDetails(task) {
+            const detailsGrid = document.getElementById('rowDetailsGrid');
+            const agreementIdInput = document.getElementById('agreementIdInput');
+            const agreementIdInputs = document.getElementById('agreementIdInputs');
+            const visitStatusInput = document.getElementById('visitStatus');
+            const taskIdInput = document.getElementById('task_id');
 
-        // Set need group visit
-        if(needGroupVisit){
-            if(task.update_need_group_visit && task.update_need_group_visit !== '-'){
-                needGroupVisit.value = task.update_need_group_visit;
-            } else {
-                needGroupVisit.value = '';
+            const codeSelect = document.getElementById('code');
+            const newMobileNumber = document.getElementById('newMobileNumber');
+            const promise_date = document.getElementById('promise_date');
+            const paymentDate = document.getElementById('paymentDate');
+            const promiseAmount = document.getElementById('promiseAmount');
+            const customerRemarks = document.getElementById('customerRemarks');
+            const referenceRemarks = document.getElementById('referenceRemarks');
+            const needGroupVisit = document.getElementById('needGroupVisit');
+            const projectionExtended = document.getElementById('projectionExtended');
+            const customerAvailable = document.getElementById('customerAvailable');
+            const vehicleAvailable = document.getElementById('vehicleAvailable');
+            const thirdPartyStatus = document.getElementById('thirdPartyStatus');
+            const thirdPartyDetails = document.getElementById('thirdPartyDetails');
+            const newUpdateAddress = document.getElementById('newUpdateAddress');
+            const locationStatus = document.getElementById('status');
+            const reciptNo = document.getElementById('payment');
+            const paymentMode = document.getElementById('paymentMode');
+            const paymentAmount = document.getElementById('paymentAmount');
+
+            if (!detailsGrid) return;
+
+            if (visitStatusInput) visitStatusInput.value = task.api_image_status || '';
+            if (agreementIdInput) {
+                agreementIdInput.value = task.aggrement_id || '';
+                global_aggrement_id = task.aggrement_id || '';
             }
-        }
+            if (agreementIdInputs) agreementIdInputs.value = task.aggrement_id || '';
+            if (taskIdInput) taskIdInput.value = task.task_id || '';
+            if (promiseAmount) promiseAmount.value = task.update_promise_amount || '';
 
-        if(projectionExtended){
-            projectionExtended.value = task.update_visit_projection && task.update_visit_projection !== '-' 
-                ? task.update_visit_projection 
-                : '';
-        }
-        // Set customer available
-        if(customerAvailable){
-            customerAvailable.value = task.update_customer_available && task.update_customer_available !== '-' 
-                ? task.update_customer_available 
-                : '';
-        }
-
-        // Set vehicle available
-        if(vehicleAvailable){
-            vehicleAvailable.value = task.update_vehicle_available && task.update_vehicle_available !== '-' 
-                ? task.update_vehicle_available 
-                : '';
-        }
-
-        // Set third party status
-        if(thirdPartyStatus){
-            thirdPartyStatus.value = task.update_third_party_status && task.update_third_party_status !== '-' 
-                ? task.update_third_party_status 
-                : '';
-        }
-
-        // Set third party details
-        if(thirdPartyDetails){
-            thirdPartyDetails.value = task.update_third_party_details && task.update_third_party_details !== '-' 
-                ? task.update_third_party_details 
-                : '';
-        }
-
-        if(newUpdateAddress){
-            newUpdateAddress.value = task.update_new_address && task.update_new_address !== '-' 
-                ? task.update_new_address 
-                : '';
-        }
-
-        if(locationStatus){
-            locationStatus.value = task.update_location_status && task.update_location_status !== '-' 
-                ? task.update_location_status 
-                : 'RF'; // Default to RF as it's selected in HTML
-        }
-
-        if(reciptNo){
-            reciptNo.value = task.update_recipt_no && task.update_recipt_no !== '-' 
-                ? task.update_recipt_no 
-                : '';
-        }
-
-        if(paymentMode){
-            paymentMode.value = task.update_payment_mode && task.update_payment_mode !== '-' 
-                ? task.update_payment_mode 
-                : '';
-        }
-
-        if(paymentAmount){
-            paymentAmount.value = task.update_payment_amount && task.update_payment_amount !== '-' 
-                ? task.update_payment_amount 
-                : '';
-        }
-
-
-        detailsGrid.innerHTML = '';
-        console.log('Populating details for task:', task.aggrement_id);
-        const displayKeys = [
-            'aggrement_id', 'category', 'customer_name', 'product_type',
-            'tc_name', 'branch', 'count_of_cases', 'old_or_new',
-            'bucket', 'npa_status', 'pos_amount', 'emi_amount',
-            'emi_due_amount', 'total_charges', 'bcc_pending', 'penal_pending',
-            'disbursement_amount', 'loan_amount', 'disbursement_date',
-            'emi_start_date', 'emi_end_date', 'emi_cycle_date',
-            'make', 'manufacturer_description', 'registration_number', 'vehicle_age',
-            'employer', 'father_name', 'fe_name', 'fe_mobile_number',
-            'tl_name', 'customer_mobile_number', 'new_mobile_number',
-            'customer_address', 'update_new_address', 'customer_office_address',
-            'pin_code', 'reference_details', 'collection_manager_name',
-            'finance_company_name', 'update_recipt_no', 'update_payment_amount',
-            'update_payment_date', 'update_location_status'
-        ];
-
-        di.forEach(key => {
-
-            if (
-                key === 'sl' || 
-                key === 'admin_id_id' || 
-                key === 'task_id' || 
-                key ==='api_image_status' ||
-                key ==='update_promise_date' ||
-                key ==='update_promise_amount' ||
-                key ==='update_customer_remark' ||
-                key ==='update_reference_remark' ||
-                key ==='update_need_group_visit' ||
-                key ==='update_visit_projection' ||
-                key ==='update_customer_available' ||
-                key ==='update_vehicle_available' ||
-                key ==='update_third_party_status' ||
-                key ==='update_third_party_details' ||
-                key ==='update_payment_mode' ||
-                key ==='recipt_amount' ||
-                key ==='recipt_date' ||
-                key ==='mode' ||
-                key ==='latitude' ||
-                key ==='longitude' 
-                ) return;
-
-            
-
-            const detailItem = document.createElement('div');
-            detailItem.className = 'detail-item';
-
-            const label = document.createElement('div');
-            label.className = 'detail-label';
-            label.textContent = fieldLabels[key] || key;
-
-            const value = document.createElement('div');
-            value.className = 'detail-value';
-            // 🔥 Format payment_date
-            if (key === 'update_payment_date') {
-                value.textContent = formatDateTime(task[key]);
-            } else {
-                value.textContent = task[key] || '-';
+            if (promise_date && task.update_promise_date) {
+                promise_date.value = task.update_promise_date;
             }
 
-            detailItem.appendChild(label);
-            detailItem.appendChild(value);
-            detailsGrid.appendChild(detailItem);
-        });
-    }
+            if (paymentDate && task.update_payment_date) {
+                paymentDate.value = task.update_payment_date;
+            }
 
-    function formatDateTime(value) {
-        if (!value || typeof value !== 'string') return '-';
-
-        // Handles: 2025-12-23T23:35
-        const date = new Date(value);
-        if (isNaN(date)) return value;
-
-        return date.toLocaleString('en-US', {
-            month: 'short',   // Dec
-            day: '2-digit',   // 23
-            year: 'numeric',  // 2025
-            hour: '2-digit',
-            minute: '2-digit',
-            hour12: true      // AM / PM
-        });
-    }
-
-    function openModal(task) {
-        currentTask = task;
-        populateRowDetails(task);
-        const modal = document.getElementById('detailModal');
-        if (modal) {
-            modal.style.display = 'block';
-            document.body.style.overflow = 'hidden';
-        }
-    }
-
-    function closeModal() {
-        const modal = document.getElementById('detailModal');
-        if (modal) {
-            modal.style.display = 'none';
-            document.body.style.overflow = 'auto';
-        }
-        const form = document.getElementById('detailForm');
-        if (form) form.reset();
-    }
-
-    function saveDetails() {
-        const formData = {
-            agreementId: currentTask.aggrement_id,
-            customerName: currentTask.customer_name,
-            code: document.getElementById('code')?.value || '',
-            newMobileNumber: document.getElementById('newMobileNumber')?.value || '',
-            projection: document.getElementById('projection')?.value || '',
-            promiseDate: document.getElementById('promiseDate')?.value || '',
-            promiseAmount: document.getElementById('promiseAmount')?.value || '',
-            customerRemarks: document.getElementById('customerRemarks')?.value || '',
-            referenceRemarks: document.getElementById('referenceRemarks')?.value || '',
-            needGroupVisit: document.getElementById('needGroupVisit')?.value || '',
-            projectionExtended: document.getElementById('projectionExtended')?.value || '',
-            visitStatus: document.getElementById('visitStatus')?.value || '',
-            customerAvailable: document.getElementById('customerAvailable')?.value || '',
-            vehicleAvailable: document.getElementById('vehicleAvailable')?.value || '',
-            thirdPartyStatus: document.getElementById('thirdPartyStatus')?.value || '',
-            thirdPartyDetails: document.getElementById('thirdPartyDetails')?.value || '',
-            newUpdateAddress: document.getElementById('newUpdateAddress')?.value || '',
-            status: document.getElementById('status')?.value || '',
-            payment: document.getElementById('payment')?.value || '',
-            paymentMode: document.getElementById('paymentMode')?.value || '',
-            paymentAmount: document.getElementById('paymentAmount')?.value || '',
-            paymentDate: document.getElementById('paymentDate')?.value || ''
-        };
-
-        console.log('Form Data:', formData);
-
-        // TODO: Send data to server via AJAX
-        // Example:
-        // fetch('/save-details/', {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //         'X-CSRFToken': getCookie('csrftoken')
-        //     },
-        //     body: JSON.stringify(formData)
-        // })
-        // .then(response => response.json())
-        // .then(data => {
-        //     alert('Details saved successfully!');
-        //     closeModal();
-        // });
-
-        alert('Details saved successfully for Agreement ID: ' + currentTask.aggrement_id);
-        closeModal();
-    }
-
-    // Helper function to get CSRF token
-    function getCookie(name) {
-        let cookieValue = null;
-        if (document.cookie && document.cookie !== '') {
-            const cookies = document.cookie.split(';');
-            for (let i = 0; i < cookies.length; i++) {
-                const cookie = cookies[i].trim();
-                if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                    break;
+            // ✅ FIX 1: Code dropdown — use update_category or fallback to category
+            if (codeSelect) {
+                const codeValue = task.update_category || task.category || '';
+                codeSelect.value = codeValue;
+                if (codeSelect.value !== codeValue) {
+                    console.warn(`Category value "${codeValue}" not found in dropdown options`);
+                    codeSelect.value = '';
                 }
             }
-        }
-        return cookieValue;
-    }
 
-    window.onclick = function(event) {
-        const modal = document.getElementById('detailModal');
-        if (event.target == modal) {
+            if (newMobileNumber) newMobileNumber.value = task.new_mobile_number || '';
+
+            if (customerRemarks) {
+                customerRemarks.value = (task.update_customer_remark && task.update_customer_remark !== '-')
+                    ? task.update_customer_remark : '';
+            }
+
+            if (referenceRemarks) {
+                referenceRemarks.value = (task.update_reference_remark && task.update_reference_remark !== '-')
+                    ? task.update_reference_remark : '';
+            }
+
+            if (needGroupVisit) {
+                needGroupVisit.value = (task.update_need_group_visit && task.update_need_group_visit !== '-')
+                    ? task.update_need_group_visit : '';
+            }
+
+            if (projectionExtended) {
+                projectionExtended.value = (task.update_visit_projection && task.update_visit_projection !== '-')
+                    ? task.update_visit_projection : '';
+            }
+
+            if (customerAvailable) {
+                customerAvailable.value = (task.update_customer_available && task.update_customer_available !== '-')
+                    ? task.update_customer_available : '';
+            }
+
+            if (vehicleAvailable) {
+                vehicleAvailable.value = (task.update_vehicle_available && task.update_vehicle_available !== '-')
+                    ? task.update_vehicle_available : '';
+            }
+
+            if (thirdPartyStatus) {
+                thirdPartyStatus.value = (task.update_third_party_status && task.update_third_party_status !== '-')
+                    ? task.update_third_party_status : '';
+            }
+
+            if (thirdPartyDetails) {
+                thirdPartyDetails.value = (task.update_third_party_details && task.update_third_party_details !== '-')
+                    ? task.update_third_party_details : '';
+            }
+
+            if (newUpdateAddress) {
+                newUpdateAddress.value = (task.update_new_address && task.update_new_address !== '-')
+                    ? task.update_new_address : '';
+            }
+
+            if (locationStatus) {
+                locationStatus.value = (task.update_location_status && task.update_location_status !== '-')
+                    ? task.update_location_status : 'RF';
+            }
+
+            if (reciptNo) {
+                reciptNo.value = (task.update_recipt_no && task.update_recipt_no !== '-')
+                    ? task.update_recipt_no : '';
+            }
+
+            if (paymentMode) {
+                paymentMode.value = (task.update_payment_mode && task.update_payment_mode !== '-')
+                    ? task.update_payment_mode : '';
+            }
+
+            if (paymentAmount) {
+                paymentAmount.value = (task.update_payment_amount && task.update_payment_amount !== '-')
+                    ? task.update_payment_amount : '';
+            }
+
+            // ─── Build Details Grid ───────────────────────────────────────────────
+
+            detailsGrid.innerHTML = '';
+
+            const displayKeys = [
+                'aggrement_id', 'category', 'customer_name', 'product_type',
+                'tc_name', 'branch', 'count_of_cases', 'old_or_new',
+                'bucket', 'npa_status', 'pos_amount', 'emi_amount',
+                'emi_due_amount', 'total_charges', 'bcc_pending', 'penal_pending',
+                'disbursement_amount', 'loan_amount', 'disbursement_date',
+                'emi_start_date', 'emi_end_date', 'emi_cycle_date',
+                'make', 'manufacturer_description', 'registration_number', 'vehicle_age',
+                'employer', 'father_name', 'fe_name', 'fe_mobile_number',
+                'tl_name', 'customer_mobile_number', 'new_mobile_number',
+                'customer_address', 'update_new_address', 'customer_office_address',
+                'pin_code', 'reference_details', 'collection_manager_name',
+                'finance_company_name', 'update_recipt_no', 'update_payment_amount',
+                'update_payment_date', 'update_location_status'
+            ];
+
+            // Keys to skip in the display grid
+            const skipKeys = new Set([
+                'sl', 'admin_id_id', 'task_id', 'api_image_status',
+                'update_promise_date', 'update_promise_amount',
+                'update_customer_remark', 'update_reference_remark',
+                'update_need_group_visit', 'update_visit_projection',
+                'update_customer_available', 'update_vehicle_available',
+                'update_third_party_status', 'update_third_party_details',
+                'update_payment_mode', 'recipt_amount', 'recipt_date',
+                'mode', 'latitude', 'longitude'
+            ]);
+
+            // ✅ FIX 2: Was "di.forEach" — must be "displayKeys.forEach"
+            displayKeys.forEach(key => {
+                if (skipKeys.has(key)) return; // ✅ FIX 3: Cleaner skip using Set
+
+                const detailItem = document.createElement('div');
+                detailItem.className = 'detail-item';
+
+                const label = document.createElement('div');
+                label.className = 'detail-label';
+                label.textContent = fieldLabels[key] || key; // make sure fieldLabels is defined globally
+
+                const value = document.createElement('div');
+                value.className = 'detail-value';
+
+                // ✅ FIX 4: Format date only for payment date key (was checking wrong key name)
+                if (key === 'update_payment_date') {
+                    value.textContent = formatDateTime(task[key]) || '-';
+                } else {
+                    value.textContent = task[key] || '-';
+                }
+
+                detailItem.appendChild(label);
+                detailItem.appendChild(value);
+                detailsGrid.appendChild(detailItem);
+            });
+        }
+
+        function formatDateTime(value) {
+            if (!value || typeof value !== 'string') return '-';
+
+            // Handles: 2025-12-23T23:35
+            const date = new Date(value);
+            if (isNaN(date)) return value;
+
+            return date.toLocaleString('en-US', {
+                month: 'short',   // Dec
+                day: '2-digit',   // 23
+                year: 'numeric',  // 2025
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: true      // AM / PM
+            });
+        }
+
+        function openModal(task) {
+            console.log("CLICKED", task);
+            currentTask = task;
+            populateRowDetails(task);
+            const modal = document.getElementById('detailModal');
+            if (modal) {
+                modal.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('detailModal');
+            if (modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+            const form = document.getElementById('detailForm');
+            if (form) form.reset();
+        }
+
+        function saveDetails() {
+            const formData = {
+                agreementId: currentTask.aggrement_id,
+                customerName: currentTask.customer_name,
+                code: document.getElementById('code')?.value || '',
+                newMobileNumber: document.getElementById('newMobileNumber')?.value || '',
+                projection: document.getElementById('projection')?.value || '',
+                promiseDate: document.getElementById('promiseDate')?.value || '',
+                promiseAmount: document.getElementById('promiseAmount')?.value || '',
+                customerRemarks: document.getElementById('customerRemarks')?.value || '',
+                referenceRemarks: document.getElementById('referenceRemarks')?.value || '',
+                needGroupVisit: document.getElementById('needGroupVisit')?.value || '',
+                projectionExtended: document.getElementById('projectionExtended')?.value || '',
+                visitStatus: document.getElementById('visitStatus')?.value || '',
+                customerAvailable: document.getElementById('customerAvailable')?.value || '',
+                vehicleAvailable: document.getElementById('vehicleAvailable')?.value || '',
+                thirdPartyStatus: document.getElementById('thirdPartyStatus')?.value || '',
+                thirdPartyDetails: document.getElementById('thirdPartyDetails')?.value || '',
+                newUpdateAddress: document.getElementById('newUpdateAddress')?.value || '',
+                status: document.getElementById('status')?.value || '',
+                payment: document.getElementById('payment')?.value || '',
+                paymentMode: document.getElementById('paymentMode')?.value || '',
+                paymentAmount: document.getElementById('paymentAmount')?.value || '',
+                paymentDate: document.getElementById('paymentDate')?.value || ''
+            };
+
+            console.log('Form Data:', formData);
+
+            // TODO: Send data to server via AJAX
+            // Example:
+            // fetch('/save-details/', {
+            //     method: 'POST',
+            //     headers: {
+            //         'Content-Type': 'application/json',
+            //         'X-CSRFToken': getCookie('csrftoken')
+            //     },
+            //     body: JSON.stringify(formData)
+            // })
+            // .then(response => response.json())
+            // .then(data => {
+            //     alert('Details saved successfully!');
+            //     closeModal();
+            // });
+
+            alert('Details saved successfully for Agreement ID: ' + currentTask.aggrement_id);
             closeModal();
         }
-    }
 
-
-    function renderTable(tasks) {
-        const tbody = document.getElementById('table-body');
-        if (!tbody) return;
-        tbody.innerHTML = '';
-        if (!tasks || tasks.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="44" style="text-align:center;padding:40px;color:#999;">No results found</td></tr>';
-            return;
+        // Helper function to get CSRF token
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
         }
-        const offset = (currentPage - 1) * PAGE_SIZE;
-        tasks.forEach((task, i) => {
-            const row = document.createElement('tr');
-            row.onclick = function() { openModal(task); };
-            row.style.cursor = 'pointer';
-            row.innerHTML = `
-                <td>${offset + i + 1}</td>
-                <td>${task.aggrement_id || ''}</td>
-                <td>${task.customer_name || ''}</td>
-                <td>${task.category || 'NA'}</td>
-                <td>${task.product_type || ''}</td>
-                <td>${task.tc_name || ''}</td>
-                <td style="text-align:center;">
-                    ${task.latitude && task.longitude ? `
-                        <a href="https://www.google.com/maps?q=${task.latitude},${task.longitude}"
-                            target="_blank" rel="noopener noreferrer"
-                            style="color:#1a73e8;text-decoration:none;display:inline-flex;align-items:center;padding:6px 12px;border-radius:4px;background:#e8f0fe;"
-                            onclick="event.stopPropagation()">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="margin-right:4px;">
-                                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-                            </svg>Map
-                        </a>` : '<span>N/A</span>'}
-                </td>
-                <td>${task.branch || ''}</td>
-                <td>${task.count_of_cases || ''}</td>
-                <td>${task.old_or_new || ''}</td>
-                <td>${task.bucket || ''}</td>
-                <td>${task.mode || ''}</td>
-                <td>${task.npa_status || ''}</td>
-                <td>${task.pos_amount || ''}</td>
-                <td>${task.emi_amount || ''}</td>
-                <td>${task.emi_due_amount || ''}</td>
-                <td>${task.total_charges || ''}</td>
-                <td>${task.recipt_amount || ''}</td>
-                <td>${task.recipt_date || ''}</td>
-                <td>${task.bcc_pending || ''}</td>
-                <td>${task.penal_pending || ''}</td>
-                <td>${task.disbursement_amount || ''}</td>
-                <td>${task.loan_amount || ''}</td>
-                <td>${task.disbursement_date || ''}</td>
-                <td>${task.emi_start_date || ''}</td>
-                <td>${task.emi_end_date || ''}</td>
-                <td>${task.emi_cycle_date || ''}</td>
-                <td>${task.make || ''}</td>
-                <td>${task.manufacturer_description || ''}</td>
-                <td>${task.registration_number || ''}</td>
-                <td>${task.vehicle_age || ''}</td>
-                <td>${task.employer || ''}</td>
-                <td>${task.father_name || ''}</td>
-                <td>${task.fe_name || ''}</td>
-                <td>${task.fe_mobile_number || ''}</td>
-                <td>${task.tl_name || ''}</td>
-                <td>${task.customer_mobile_number || ''}</td>
-                <td>${task.new_mobile_number || ''}</td>
-                <td>${task.customer_address || ''}</td>
-                <td>${task.customer_office_address || ''}</td>
-                <td>${task.pin_code || ''}</td>
-                <td>${task.reference_details || ''}</td>
-                <td>${task.collection_manager_name || ''}</td>
-                <td>${task.finance_company_name || ''}</td>
-            `;
-            tbody.appendChild(row);
-        });
-    }
 
-    // ── Single DOMContentLoaded ───────────────────────────────────────
-    document.addEventListener('DOMContentLoaded', function() {
-        initializeFilters();
-        fetchTasks(1);
+        window.onclick = function(event) {
+            const modal = document.getElementById('detailModal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
 
-        const categoryCards = document.querySelectorAll('.category-card');
-        if (categoryCards.length > 0) categoryCards[0].classList.add('active');
-        categoryCards.forEach(card => {
-            card.addEventListener('click', function() {
-                categoryCards.forEach(c => c.classList.remove('active'));
-                this.classList.add('active');
-                filterByCategory(this.getAttribute('data-category'));
+
+        function renderTable(tasks) {
+            const tbody = document.getElementById('table-body');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+            if (!tasks || tasks.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="44" style="text-align:center;padding:40px;color:#999;">No results found</td></tr>';
+                return;
+            }
+            const offset = (currentPage - 1) * PAGE_SIZE;
+            tasks.forEach((task, i) => {
+                const row = document.createElement('tr');
+                row.onclick = function() { openModal(task); };
+                row.style.cursor = 'pointer';
+                row.innerHTML = `
+                    <td>${offset + i + 1}</td>
+                    <td>${task.aggrement_id || ''}</td>
+                    <td>${task.customer_name || ''}</td>
+                    <td>${task.category || 'NA'}</td>
+                    <td>${task.product_type || ''}</td>
+                    <td>${task.tc_name || ''}</td>
+                    <td style="text-align:center;">
+                        ${task.latitude && task.longitude ? `
+                            <a href="https://www.google.com/maps?q=${task.latitude},${task.longitude}"
+                                target="_blank" rel="noopener noreferrer"
+                                style="color:#1a73e8;text-decoration:none;display:inline-flex;align-items:center;padding:6px 12px;border-radius:4px;background:#e8f0fe;"
+                                onclick="event.stopPropagation()">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="margin-right:4px;">
+                                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                                </svg>Map
+                            </a>` : '<span>N/A</span>'}
+                    </td>
+                    <td>${task.branch || ''}</td>
+                    <td>${task.count_of_cases || ''}</td>
+                    <td>${task.old_or_new || ''}</td>
+                    <td>${task.bucket || ''}</td>
+                    <td>${task.mode || ''}</td>
+                    <td>${task.npa_status || ''}</td>
+                    <td>${task.pos_amount || ''}</td>
+                    <td>${task.emi_amount || ''}</td>
+                    <td>${task.emi_due_amount || ''}</td>
+                    <td>${task.total_charges || ''}</td>
+                    <td>${task.recipt_amount || ''}</td>
+                    <td>${task.recipt_date || ''}</td>
+                    <td>${task.bcc_pending || ''}</td>
+                    <td>${task.penal_pending || ''}</td>
+                    <td>${task.disbursement_amount || ''}</td>
+                    <td>${task.loan_amount || ''}</td>
+                    <td>${task.disbursement_date || ''}</td>
+                    <td>${task.emi_start_date || ''}</td>
+                    <td>${task.emi_end_date || ''}</td>
+                    <td>${task.emi_cycle_date || ''}</td>
+                    <td>${task.make || ''}</td>
+                    <td>${task.manufacturer_description || ''}</td>
+                    <td>${task.registration_number || ''}</td>
+                    <td>${task.vehicle_age || ''}</td>
+                    <td>${task.employer || ''}</td>
+                    <td>${task.father_name || ''}</td>
+                    <td>${task.fe_name || ''}</td>
+                    <td>${task.fe_mobile_number || ''}</td>
+                    <td>${task.tl_name || ''}</td>
+                    <td>${task.customer_mobile_number || ''}</td>
+                    <td>${task.new_mobile_number || ''}</td>
+                    <td>${task.customer_address || ''}</td>
+                    <td>${task.customer_office_address || ''}</td>
+                    <td>${task.pin_code || ''}</td>
+                    <td>${task.reference_details || ''}</td>
+                    <td>${task.collection_manager_name || ''}</td>
+                    <td>${task.finance_company_name || ''}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // ── Single DOMContentLoaded ───────────────────────────────────────
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeFilters();
+            fetchTasks(1);
+
+            const categoryCards = document.querySelectorAll('.category-card');
+            if (categoryCards.length > 0) categoryCards[0].classList.add('active');
+            categoryCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    categoryCards.forEach(c => c.classList.remove('active'));
+                    this.classList.add('active');
+                    filterByCategory(this.getAttribute('data-category'));
+                });
             });
         });
-    });
-</script>
+    </script>
 
     <!-- <script>
     document.querySelector(".sweet-26").onclick = function () {
