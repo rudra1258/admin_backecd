@@ -336,6 +336,9 @@ def admin_login(request):
                     }
                 )
                 
+                user.login_status = 'Active'
+                user.save()
+                
                 return JsonResponse({
                     'success': True,
                     'message': 'Telecaller login successful!',
@@ -370,6 +373,7 @@ def admin_logout(request):
         try:
             user = CreateUser.objects.get(id=user_id)
             user.active_session_key = None
+            user.login_status = 'Inactive'
             user.save()
         except CreateUser.DoesNotExist:
             pass
