@@ -277,7 +277,27 @@ class GsLogin(models.Model):
 
     def __str__(self):
         return f"{self.name} ({self.email})"
+    
+class RepoLogin(models.Model):
+    gs_login_id = models.AutoField(primary_key=True)
+    user_id = models.ForeignKey(CreateUser, on_delete = models.CASCADE, null=True, blank=True)
+    admin_id = models.CharField(max_length=50)
+    name = models.CharField(max_length=100)
+    email = models.EmailField(max_length = 100)
+    mobile_no = models.CharField(max_length=15, )
+    status = models.CharField(max_length=20, default="Inactive")  # Active / Inactive
+    login_time = models.DateTimeField(null=True, blank=True)
+    logout_time = models.DateTimeField(null=True, blank=True)
 
+    image = models.ImageField(upload_to='repo_login/', null=True, blank=True)
+
+    longitude = models.CharField(max_length=50, null=True, blank=True)
+    latitude = models.CharField(max_length=50, null=True, blank=True)
+    
+
+    def __str__(self):
+        return f"{self.name} ({self.email})"
+    
 class leave_request(models.Model):
     leave_id = models.AutoField(primary_key=True)
     admin_id = models.ForeignKey(admin_user_model, on_delete = models.CASCADE)

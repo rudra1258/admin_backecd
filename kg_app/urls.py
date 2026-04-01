@@ -31,6 +31,7 @@ urlpatterns = [
     path('create_user/', views.create_user, name='create_user'),
     path('dashboard/', views.dashboard, name='dashboard'),
     path('groundstaff/', views.groundstaff, name='groundstaff'),
+    path('repo_boy/', views.repo_boy, name='repo_boy'),
     path('gs_login/', views.gs_login, name='gs_login'),
     path('leave/', views.leave, name='leave'),
     path('get-leave-details/', views.get_leave_details, name='get_leave_details'),
@@ -48,6 +49,7 @@ urlpatterns = [
     path("change-staff-password/", views.change_staff_password, name="change_staff_password"),
     path("change_tc_password/", views.change_tc_password, name="change_tc_password"),
     path("change_tl_password/", views.change_tl_password, name="change_tl_password"),
+    path("change_repoboy_password/", views.change_repo_password, name="change_repoboy_password"),
     path('bulk-delete-tasks/', views.bulk_delete_tasks, name='bulk_delete_tasks'),
 
     path('download-sample/', views.download_sample_excel_user_create, name='download_sample_excel'),
@@ -60,6 +62,7 @@ urlpatterns = [
     path('telecaller/delete/<int:id>/', views.tc_delete, name='tc_delete'),
     path('teamlead/delete/<int:id>/', views.tl_delete, name='tl_delete'),
     path('groundstaff/delete/<int:id>/', views.gs_delete, name='gs_delete'),
+    path('repo_boy/delete/<int:id>/', views.repo_delete, name='repo_delete'),
     path('task/delete/<int:id>/', views.task_delete, name='task_delete'),
     path('complete_task/delete/<int:id>/', views.task_delete_complete, name='task_delete_complete'),
 

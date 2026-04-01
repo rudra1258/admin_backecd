@@ -1621,6 +1621,17 @@ def groundstaff(request):
     )
     return render(request, "groundstaff.html",{"data":staff_list})
 
+def repo_boy(request):
+    session_admin_id = request.session.get('admin_id')
+    if not session_admin_id:
+        return render(request, 'index.html')
+    admin_id_pk = admin_user_model.objects.get(pk = session_admin_id)
+    staff_list = CreateUser.objects.filter(
+        admin_id = admin_id_pk,
+        role = 'repoboy'
+    )
+    return render(request, "repo_boy.html",{"data":staff_list})
+
 def gs_login(request):
     session_admin_id = request.session.get("admin_id")
     # navigate to login page if not login
@@ -1869,6 +1880,15 @@ def gs_delete(request, id):
     emp.delete()
     return redirect('kg_app:groundstaff')   # change to your list page URL name
 
+def repo_delete(request, id):
+    session_admin_id = request.session.get("admin_id")
+    # navigate to login page if not login
+    if not session_admin_id:
+        return render(request, 'index.html')
+    emp = get_object_or_404(CreateUser, id=id)
+    emp.delete()
+    return redirect('kg_app:repo_boy')
+
 def feddback_history(request):
     session_admin_id = request.session.get("admin_id")
     # navigate to login page if not login
@@ -1911,6 +1931,7 @@ def admin_profile(request):
     telecaller_list = user_list.filter(role='telecaller')
     teamlead_list = user_list.filter(role='teamlead')
     groundstaff_list = user_list.filter(role='groundstaff')
+    repoboy_list = user_list.filter(role='repoboy')
     
     remaining_users = admin_id_pk.user_count - user_list.count()
     
@@ -1918,12 +1939,14 @@ def admin_profile(request):
     telecaller_percentage = round((telecaller_list.count() / admin_id_pk.user_count) * 100, 2)
     teamlead_percentage = round((teamlead_list.count() / admin_id_pk.user_count) * 100, 2)
     groundstaff_percentage = round((groundstaff_list.count() / admin_id_pk.user_count) * 100, 2)
+    repoboy_percentage = round((repoboy_list.count() / admin_id_pk.user_count) * 100, 2)
     
     print("remaining users - ", remaining_users)
     print("admin user count - ", admin_id_pk.user_count)
     print("user lict - ", user_list.count())
     
     print("remaining percentage - ", remaining_percentage)
+    print("repo boy  percentage - ", repoboy_percentage)
     
     return render(request, "admin_profile.html", {
         "admin": admin_id_pk,
@@ -1931,11 +1954,13 @@ def admin_profile(request):
         "telecaller_list_length": telecaller_list.count(),
         "teamlead_list_length": teamlead_list.count(),
         "groundstaff_list_length": groundstaff_list.count(),
+        "repoboy_list_length": repoboy_list.count(),
         "remaining_users": remaining_users,
         "remaining_percentage": remaining_percentage,
         "telecaller_percentage": telecaller_percentage,
         "teamlead_percentage": teamlead_percentage,
         "groundstaff_percentage": groundstaff_percentage,
+        "repoboy_percentage": repoboy_percentage,
         }) 
 
 def team_management(request):
@@ -2152,6 +2177,23 @@ def change_tl_password(request):
         staff.save()
 
     return redirect('kg_app:teamlead')
+
+def change_repo_password(request):
+    session_admin_id = request.session.get("admin_id")
+    # navigate to login page if not login
+    if not session_admin_id:
+        return render(request, 'index.html')
+    admin_id_pk = admin_user_model.objects.get(pk=session_admin_id)
+    
+    if request.method == "POST":
+        staff_id = request.POST.get("staff_id")
+        password = request.POST.get("password")
+
+        staff = CreateUser.objects.get(id=staff_id)
+        staff.password = password
+        staff.save()
+
+    return redirect('kg_app:repo_boy')
 
 
 

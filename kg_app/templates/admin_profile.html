@@ -1517,6 +1517,20 @@
                             </div>
                         </div>
 
+                        <div class="user-row groundstaff">
+                            <div class="row-icon">🛻</div>
+                            <div class="row-info">
+                                <div class="row-name">Repo Boy</div>
+                                <div class="row-bar-bg">
+                                    <div class="row-bar-fill" id="bar4" style="width:0%"></div>
+                                </div>
+                            </div>
+                            <div style="text-align:right;">
+                                <div class="row-count">{{repoboy_list_length}}</div>
+                                <div class="row-pct groundstaff">{{repoboy_percentage}}%</div>
+                            </div>
+                        </div>
+
                     </div>
 
                     <div class="divider"></div>
@@ -1633,6 +1647,7 @@
                 document.getElementById('bar1').style.width = '{{telecaller_percentage}}%';
                 document.getElementById('bar2').style.width = '{{teamlead_percentage}}%';
                 document.getElementById('bar3').style.width = '{{groundstaff_percentage}}%';
+                document.getElementById('bar4').style.width = '{{repoboy_percentage}}%';
             }, 80);
         }
 
@@ -1645,6 +1660,7 @@
                 document.getElementById('bar1').style.width = '0%';
                 document.getElementById('bar2').style.width = '0%';
                 document.getElementById('bar3').style.width = '0%';
+                document.getElementById('bar4').style.width = '0%';
             }, 250);
         }
 
