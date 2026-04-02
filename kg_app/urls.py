@@ -45,12 +45,14 @@ urlpatterns = [
     path('feddback_history/', views.feddback_history, name='feddback_history'),
     path('admin_profile/', views.admin_profile, name='admin_profile'),
     path('team_management/', views.team_management, name='team_management'),
+    path('telecaller/<int:telecaller_id>/team/', views.telecaller_team_detail, name='telecaller_team_detail'),
     path('tlAssignToTc/', views.tlAssignToTc, name='tlAssignToTc'),
     path("change-staff-password/", views.change_staff_password, name="change_staff_password"),
     path("change_tc_password/", views.change_tc_password, name="change_tc_password"),
     path("change_tl_password/", views.change_tl_password, name="change_tl_password"),
     path("change_repoboy_password/", views.change_repo_password, name="change_repoboy_password"),
     path('bulk-delete-tasks/', views.bulk_delete_tasks, name='bulk_delete_tasks'),
+    path('pending-bulk-delete-tasks/', views.pending_bulk_delete_tasks, name='pending_bulk_delete_tasks'),
 
     path('download-sample/', views.download_sample_excel_user_create, name='download_sample_excel'),
     path('import_users_from_excel/', views.import_users_from_excel, name='import_users_from_excel'),
@@ -65,6 +67,7 @@ urlpatterns = [
     path('repo_boy/delete/<int:id>/', views.repo_delete, name='repo_delete'),
     path('task/delete/<int:id>/', views.task_delete, name='task_delete'),
     path('complete_task/delete/<int:id>/', views.task_delete_complete, name='task_delete_complete'),
+    path('pending_task/delete/<int:id>/', views.pending_task_delete_complete, name='pending_task_delete'),
 
     # telecaller urls 
     

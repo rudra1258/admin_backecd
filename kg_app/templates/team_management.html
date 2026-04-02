@@ -60,25 +60,6 @@
         rel="stylesheet" />
 
     <style>
-        /*
-  ════════════════════════════════════════════════
-  Django endpoints consumed by this page:
-
-  GET  /api/users/telecaller/          → list telecallers
-  GET  /api/users/teamlead/            → list teamleads
-  GET  /api/users/groundstaff/         → list groundstaff
-  GET  /api/users/repoboy/             → list repoboys
-  GET  /api/hierarchy/                 → full nested hierarchy
-  GET  /api/unassigned/teamlead/       → unassigned teamleads
-  GET  /api/unassigned/groundstaff/    → unassigned groundstaff
-
-  POST /api/users/create/              → add any member (all model fields)
-  POST /api/assign/teamlead/           → assign teamlead → telecaller
-  POST /api/assign/groundstaff/bulk/   → bulk assign groundstaff → teamlead
-  POST /api/unassign/                  → unassign any user (new view)
-  ════════════════════════════════════════════════
-*/
-
         .margin_left_auto {
             margin-left: auto;
         }
@@ -1596,6 +1577,27 @@
                     </div>
                 </div>
 
+                <!-- Telecaller Team Modal -->
+                <div id="tcTeamModal" style="display:none;position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,0.45);backdrop-filter:blur(3px);align-items:center;justify-content:center">
+                    <div style="background:#fff;border-radius:16px;width:92%;max-width:480px;max-height:80vh;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.2);display:flex;flex-direction:column">
+                        
+                        <!-- Modal Header -->
+                        <div style="padding:18px 20px 14px;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;justify-content:space-between">
+                        <div>
+                            <div style="font-size:1rem;font-weight:700;color:#1a1a2e" id="tcModalTitle">Team Overview</div>
+                            <div style="font-size:0.78rem;color:#888;margin-top:2px" id="tcModalSub"></div>
+                        </div>
+                        <button onclick="closeTcTeamModal()" style="background:#f4f4f8;border:none;border-radius:8px;width:32px;height:32px;cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center;color:#555">✕</button>
+                        </div>
+
+                        <!-- Modal Body -->
+                        <div id="tcTeamModalBody" style="overflow-y:auto;padding:16px 20px;flex:1">
+                        <div id="tcTeamLoading" style="text-align:center;padding:30px;color:#aaa;font-size:0.9rem">Loading...</div>
+                        <div id="tcTeamContent" style="display:none"></div>
+                        </div>
+                    </div>
+                </div>
+
                 <div id="assignLeadModal-2" class="lead-modal-overlay-2">
                     <div class="lead-modal">
 
@@ -1732,7 +1734,10 @@
                                                         {{ tc.first_name|slice:":1" }}{{ tc.last_name|slice:":1" }}
                                                     </div>
                                                     <div style="flex:1;min-width:0">
-                                                        <div class="tc-name">{{ tc.first_name }} {{ tc.last_name }}
+                                                        <div class="tc-name" 
+                                                            style="cursor:pointer;color:var(--primary, #6c63ff)" 
+                                                            onclick="openTelecallerTeamModal({{ tc.id }}, '{{ tc.first_name }} {{ tc.last_name }}')">
+                                                            {{ tc.first_name }} {{ tc.last_name }}
                                                         </div>
                                                         <div class="tc-meta">{{ tc.username }} · {{tc.subordinates.count }} lead{{tc.subordinates.count|pluralize }}</div>
                                                     </div>
@@ -1775,31 +1780,55 @@
                                                 <button class="btn btn-ghost btn-xs" onclick="openAssignLeadModal()">+ Assign</button>
                                             </div>
                                         </div>
+
                                         <div class="panel-body" style="padding:10px 12px;max-height:320px;overflow-y:auto">
                                             {% if teamleads %}
-                                            {% for lead in teamleads %}
-                                            {% with cnt=lead.subordinates.count %}
-                                            <div class="lead-card">
-                                                <div class="av av-lead" style="width:30px;height:30px;font-size:0.7rem">
-                                                    {{ lead.first_name|slice:":1" }}{{ lead.last_name|slice:":1" }}
-                                                </div>
-                                                <div class="lead-card-info">
-                                                    <div class="lead-card-name">{{ lead.first_name }} {{ lead.last_name }}</div>
-                                                    <div class="lead-card-sub">
-                                                        {{ lead.username }} · {{ cnt }} staff
-                                                        {% if lead.assigned_to %}· → {{ lead.assigned_to.first_name }}{% endif %}
+                                                {% for lead in teamleads %}
+                                                    {% with cnt=lead.subordinates.count %}
+                                                    <div class="lead-card">
+                                                        <div class="av av-lead" style="width:30px;height:30px;font-size:0.7rem">
+                                                            {{ lead.first_name|slice:":1" }}{{ lead.last_name|slice:":1" }}
+                                                        </div>
+
+                                                        <div class="lead-card-info">
+                                                            <div class="lead-card-name">{{ lead.first_name }} {{ lead.last_name }}</div>
+                                                            <div class="lead-card-sub">
+                                                                {{ lead.username }} · {{ cnt }} staff
+                                                                {% if lead.assigned_to %}
+                                                                    · → {{ lead.assigned_to.first_name }}
+                                                                {% endif %}
+                                                            </div>
+                                                        </div>
+
+                                                        {% if lead.is_assignment_locked %}
+                                                            <span class="badge badge-lock">🔒 locked</span>
+                                                        {% endif %}
+
+                                                        <span class="badge badge-ground">{{ cnt }}</span>
+
+                                                        {% if lead.assigned_to %}
+                                                        <button type="button"
+                                                            class="btn btn-ghost btn-xs"
+                                                            onclick="if(confirm('Unassign {{ lead.first_name }} {{ lead.last_name }}?')) document.getElementById('unassign-form-{{ lead.id }}').submit()">
+                                                            Unassign
+                                                        </button>
+
+                                                        <form method="POST"
+                                                            action="{% url 'kg_app:team_management' %}"
+                                                            id="unassign-form-{{ lead.id }}"
+                                                            style="display:none">
+                                                            {% csrf_token %}
+                                                            <input type="hidden" name="action" value="unassign" />
+                                                            <input type="hidden" name="user_id" value="{{ lead.id }}" />
+                                                        </form>
+                                                        {% endif %}
                                                     </div>
-                                                </div>
-                                                {% if lead.is_assignment_locked %}
-                                                <span class="badge badge-lock">🔒 locked</span>
-                                                {% endif %}
-                                                <span class="badge badge-ground">{{ cnt }}</span>
-                                            </div>
-                                            {% endwith %}
-                                            {% endfor %}
+                                                    {% endwith %}
+                                                {% endfor %}
                                             {% else %}
-                                            <div
-                                                style="text-align:center;color:var(--muted);font-size:0.99rem;padding:20px 0">No team leads found</div>
+                                                <div style="text-align:center;color:var(--muted);font-size:0.99rem;padding:20px 0">
+                                                    No team leads found
+                                                </div>
                                             {% endif %}
                                         </div>
                                     </div>
@@ -2333,6 +2362,91 @@
 
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
+    <script>
+        function openTelecallerTeamModal(telecallerId, name) {
+        const modal = document.getElementById('tcTeamModal');
+        modal.style.display = 'flex';
+        document.getElementById('tcModalTitle').textContent = name + "'s Team";
+        document.getElementById('tcModalSub').textContent = 'Team Leads & Ground Staff';
+        document.getElementById('tcTeamLoading').style.display = 'block';
+        document.getElementById('tcTeamContent').style.display = 'none';
+
+        fetch(`/telecaller/${telecallerId}/team/`)
+            .then(r => r.json())
+            .then(data => {
+            renderTcTeam(data);
+            })
+            .catch(() => {
+            document.getElementById('tcTeamLoading').textContent = 'Failed to load.';
+            });
+        }
+
+        function renderTcTeam(data) {
+        const loading = document.getElementById('tcTeamLoading');
+        const content = document.getElementById('tcTeamContent');
+        loading.style.display = 'none';
+        content.style.display = 'block';
+
+        if (!data.teamleads || data.teamleads.length === 0) {
+            content.innerHTML = `<div style="text-align:center;color:#bbb;padding:30px 0;font-size:0.95rem">No team leads assigned yet</div>`;
+            return;
+        }
+
+        let html = '';
+        data.teamleads.forEach(tl => {
+            const statusColor = tl.status === 'Active' ? '#22c55e' : '#e11d48';
+            const statusBg = tl.status === 'Active' ? '#dcfce7' : '#fce7f3';
+
+            let gsHtml = '';
+            if (tl.groundstaff && tl.groundstaff.length > 0) {
+            tl.groundstaff.forEach(gs => {
+                const gsColor = gs.status === 'Active' ? '#22c55e' : '#e11d48';
+                const gsBg = gs.status === 'Active' ? '#dcfce7' : '#fce7f3';
+                gsHtml += `
+                <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;background:#f8f8fc;border-radius:8px;margin-top:6px">
+                    <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;font-size:0.68rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">${gs.initials}</div>
+                    <div style="flex:1;min-width:0">
+                    <div style="font-size:0.83rem;font-weight:600;color:#222;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${gs.name}</div>
+                    <div style="font-size:0.72rem;color:#999">${gs.username}</div>
+                    </div>
+                    <span style="font-size:0.68rem;font-weight:600;color:${gsColor};background:${gsBg};padding:2px 8px;border-radius:20px">${gs.status}</span>
+                </div>`;
+            });
+            } else {
+            gsHtml = `<div style="padding:8px 10px;font-size:0.78rem;color:#ccc;font-style:italic">No ground staff assigned</div>`;
+            }
+
+        html += `
+        <div style="border:1px solid #ebebf5;border-radius:12px;margin-bottom:12px;overflow:hidden">
+            <!-- Team Lead Row -->
+            <div style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:#fff">
+            <div style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#6c63ff,#a78bfa);color:#fff;font-size:0.75rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">${tl.initials}</div>
+            <div style="flex:1;min-width:0">
+                <div style="font-size:0.88rem;font-weight:700;color:#1a1a2e">${tl.name}</div>
+                <div style="font-size:0.72rem;color:#aaa">${tl.username} · Team Lead · ${tl.groundstaff.length} ground staff</div>
+            </div>
+            <span style="font-size:0.7rem;font-weight:600;color:${statusColor};background:${statusBg};padding:3px 9px;border-radius:20px">${tl.status}</span>
+            </div>
+            <!-- Ground Staff under this TL -->
+            <div style="padding:0 10px 10px;background:#fdfdff">
+            <div style="font-size:0.7rem;font-weight:600;color:#bbb;letter-spacing:0.5px;text-transform:uppercase;padding:6px 2px 2px">Ground Staff</div>
+            ${gsHtml}
+            </div>
+        </div>`;
+    });
+
+    content.innerHTML = html;
+    }
+
+        function closeTcTeamModal() {
+            document.getElementById('tcTeamModal').style.display = 'none';
+        }
+
+        // Close on backdrop click
+        document.getElementById('tcTeamModal').addEventListener('click', function(e) {
+            if (e.target === this) closeTcTeamModal();
+        });
+    </script>
 
     <script>
         $(document).ready(function() {

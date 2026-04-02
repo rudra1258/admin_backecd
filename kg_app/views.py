@@ -931,6 +931,15 @@ def task_delete_complete(request, id):
     emp.delete()
     return redirect('kg_app:complete_task')
 
+def pending_task_delete_complete(request, id):
+    session_admin_id = request.session.get("admin_id")
+    # navigate to login page if not login
+    if not session_admin_id:
+        return render(request, 'index.html')
+    emp = get_object_or_404(Create_task, task_id=id)
+    emp.delete()
+    return redirect('kg_app:pending_task')
+
 def bulk_delete_tasks(request):
     session_admin_id = request.session.get("admin_id")
 
@@ -944,6 +953,20 @@ def bulk_delete_tasks(request):
             Create_task.objects.filter(task_id__in=task_ids).delete()
 
     return redirect('kg_app:complete_task')
+
+def pending_bulk_delete_tasks(request):
+    session_admin_id = request.session.get("admin_id")
+
+    if not session_admin_id:
+        return render(request, 'index.html')
+
+    if request.method == "POST":
+        task_ids = request.POST.getlist("task_ids")
+
+        if task_ids:
+            Create_task.objects.filter(task_id__in=task_ids).delete()
+
+    return redirect('kg_app:pending_task')
 
 def create_task(request):
     session_admin_id = request.session.get("admin_id")
@@ -2101,6 +2124,49 @@ def team_management(request):
     }
     return render(request, 'team_management.html', context)
 
+def telecaller_team_detail(request, telecaller_id):
+    """Returns JSON of teamleads and groundstaff under a telecaller."""
+    telecaller = get_object_or_404(CreateUser, id=telecaller_id, role='telecaller')
+    
+    # Team leads directly assigned to this telecaller
+    teamleads = CreateUser.objects.filter(
+        assigned_to=telecaller, role='teamlead'
+    ).prefetch_related('subordinates')
+    
+    data = {
+        'telecaller': {
+            'name': f"{telecaller.first_name} {telecaller.last_name}",
+            'username': telecaller.username,
+            'status': telecaller.login_status or 'Inactive',
+        },
+        'teamleads': []
+    }
+    
+    for tl in teamleads:
+        # Ground staff assigned to this team lead
+        groundstaff = CreateUser.objects.filter(
+            assigned_to=tl, role='groundstaff'
+        )
+        data['teamleads'].append({
+            'id': tl.id,
+            'name': f"{tl.first_name} {tl.last_name}",
+            'username': tl.username,
+            'status': tl.login_status or 'Inactive',
+            'initials': tl.first_name[0].upper() + tl.last_name[0].upper() if tl.last_name else tl.first_name[0].upper(),
+            'groundstaff': [
+                {
+                    'id': gs.id,
+                    'name': f"{gs.first_name} {gs.last_name}",
+                    'username': gs.username,
+                    'status': gs.login_status or 'Inactive',
+                    'initials': gs.first_name[0].upper() + gs.last_name[0].upper() if gs.last_name else gs.first_name[0].upper(),
+                }
+                for gs in groundstaff
+            ]
+        })
+    
+    return JsonResponse(data)
+
 def tlAssignToTc(request):
     session_admin_id = request.session.get("admin_id")
     # navigate to login page if not login
@@ -2341,25 +2407,55 @@ def tc_dashboard(request):
 
 def tc_teamlead(request):
     session_admin_id = request.session.get('tc_admin_id')
+    session_tc_user_id = request.session.get("user_id")
+    
     if not session_admin_id:
         return render(request, 'index.html')
-    admin_id_pk = admin_user_model.objects.get(pk = session_admin_id)
+    
+    # Get the logged-in telecaller's own record
+    telecaller = get_object_or_404(CreateUser, pk=session_tc_user_id, role='telecaller')
+    
+    # Only teamleads assigned to THIS telecaller
     caller_list = CreateUser.objects.filter(
-        admin_id = admin_id_pk,
-        role = 'teamlead'
+        assigned_to=telecaller,
+        role='teamlead'
     )
-    return render(request, "tc_screens/tc_teamlead.html",{"data":caller_list})
+    
+    return render(request, "tc_screens/tc_teamlead.html", {"data": caller_list})
 
 def tc_groundstaff(request):
     session_admin_id = request.session.get('tc_admin_id')
+    session_tc_user_id = request.session.get("user_id")
+    
     if not session_admin_id:
         return render(request, 'index.html')
-    admin_id_pk = admin_user_model.objects.get(pk = session_admin_id)
-    staff_list = CreateUser.objects.filter(
-        admin_id = admin_id_pk,
-        role = 'groundstaff'
+    
+    # Get the logged-in telecaller's own record
+    telecaller = get_object_or_404(CreateUser, pk=session_tc_user_id, role='telecaller')
+    
+    # Get all teamleads under this telecaller
+    teamleads_under_tc = CreateUser.objects.filter(
+        assigned_to=telecaller,
+        role='teamlead'
     )
-    return render(request, "tc_screens/tc_groundstaff.html",{"data":staff_list})
+    
+    # Get all groundstaff assigned to any of those teamleads
+    staff_list = CreateUser.objects.filter(
+        assigned_to__in=teamleads_under_tc,
+        role='groundstaff'
+    )
+    
+    return render(request, "tc_screens/tc_groundstaff.html", {"data": staff_list})
+
+
+def tl_login(request):
+    session_admin_id = request.session.get("admin_id")
+    # navigate to login page if not login
+    if not session_admin_id:
+        return render(request, 'index.html')
+    
+    login_status = TlLogin.objects.filter(admin_id = session_admin_id).order_by('-login_time')
+    return render(request, "tl_login.html", {"login_status":login_status})
 
 def tc_tl_login(request):
     session_admin_id = request.session.get("tc_admin_id")

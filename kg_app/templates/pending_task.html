@@ -75,6 +75,143 @@
     .margin_left_auto {
       margin-left: auto;
     }
+
+    /* Action bar */
+    .action-bar {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 12px;
+    }
+
+    /* Delete button */
+    .delete-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, #ff4d4f, #d9363e);
+      color: #fff;
+      border: none;
+      padding: 10px 18px;
+      font-size: 14px;
+      font-weight: 500;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(255, 77, 79, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    .delete-btn:hover {
+      background: linear-gradient(135deg, #ff7875, #cf1322);
+      transform: translateY(-1px);
+    }
+
+    .delete-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    /* Table */
+    .custom-table {
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .custom-table thead {
+      background: #f8f9fa;
+    }
+
+    .custom-table th, .custom-table td {
+      padding: 10px;
+      text-align: center;
+    }
+
+    /* Status badge */
+    .status-badge {
+      background: #e6f7ff;
+      color: #1890ff;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+    }
+
+    /* Icon button */
+    .icon-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+      color: black;              /* default black */
+      transition: color 0.3s ease;
+    }
+
+    .icon-btn i {
+      color: black;              /* ensure icon is black */
+      transition: color 0.3s ease;
+    }
+
+    .icon-btn:hover i {
+      color: red;                /* hover → red */
+    }
+
+    /* Container */
+    .custom-checkbox {
+      display: inline-block;
+      position: relative;
+      cursor: pointer;
+    }
+
+    /* Hide default checkbox */
+    .custom-checkbox input {
+      position: absolute;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    /* Custom box */
+    .checkmark {
+      height: 18px;
+      width: 18px;
+      background-color: #fff;
+      border: 2px solid #ccc;
+      border-radius: 5px;
+      display: inline-block;
+      transition: all 0.25s ease;
+    }
+
+    /* Hover effect */
+    .custom-checkbox:hover .checkmark {
+      border-color: #5250c3;
+    }
+
+    /* Checked state */
+    .custom-checkbox input:checked + .checkmark {
+      background-color: #5250c3;
+      border-color: #5250c3;
+    }
+
+    /* Tick mark */
+    .checkmark::after {
+      content: "";
+      position: absolute;
+      display: none;
+    }
+
+    /* Show tick */
+    .custom-checkbox input:checked + .checkmark::after {
+      display: block;
+    }
+
+    /* Tick design */
+    .custom-checkbox .checkmark::after {
+      left: 6px;
+      top: 2px;
+      width: 4px;
+      height: 9px;
+      border: solid white;
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg);
+    }
+
   </style>
 
 </head>
@@ -126,48 +263,72 @@
                   </div>
                   <div class="card-body">
                     <div class="table-responsive">
-                      <table class="display dataTable" id="basic-9">
-                        <thead style="background:#f8f9fa;">
-                          <tr>
-                            <th>Sl</th>
-                            <th>Agreement Id</th>
-                            <th>Category</th>
-                            <th>Customer Name</th>
-                            <th>Mobile Number</th>
-                            <th>TC Name</th>
-                            <th>GS Name </th>
-                            <th>Status</th>
-                            <!-- <th>Action</th> -->
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {% for task in create_task_list %}
-                          <tr>
-                            <td>{{forloop.counter}}</td>
-                            <td>{{task.aggrement_id}}</td>
-                            <td>{{task.category}}</td>
-                            <td>{{task.customer_name}}</td>
-                            <td>{{task.customer_mobile_number}}</td>
-                            <td>{{task.tc_name}}</td>
-                            <td>{{task.fe_name}}</td>
-                            <td>{{task.update_location_status}}</td>
-                            <!-- <td>
-                              <ul class="action" style="display:flex;gap:10px;list-style:none;padding:0;margin:0;">
-                                <li class="delete">
-                                  <form method="post" action="{% url 'kg_app:task_delete' task.task_id %}"
-                                    onsubmit="return confirm('Delete this record?');" style="display:inline;">
+
+                      <form id="bulkDeleteForm" method="post" action="{% url 'kg_app:pending_bulk_delete_tasks' %}">
+                        {% csrf_token %}
+
+                        <!-- Top Action Bar -->
+                        <div class="action-bar">
+                          <button type="submit" class="delete-btn" id="deleteBtn">
+                            <i class="fa-solid fa-trash"></i>
+                            Delete Selected (<span id="selectedCount">0</span>)
+                          </button>
+                        </div>
+
+                        <table class="display dataTable" id="basic-9">
+                          <thead style="background:#f8f9fa;">
+                            <tr>
+                              <th>
+                                <label class="custom-checkbox">
+                                  <input type="checkbox" id="select_all">
+                                  <span class="checkmark"></span>
+                                </label>
+                              </th>
+                              <th>Sl</th>
+                              <th>Agreement Id</th>
+                              <th>Category</th>
+                              <th>Customer Name</th>
+                              <th>Mobile Number</th>
+                              <th>TC Name</th>
+                              <th>GS Name </th>
+                              <th>Status</th>
+                              <th>Action</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {% for task in create_task_list %}
+                            <tr>
+                              <td>
+                                <label class="custom-checkbox">
+                                  <input type="checkbox" name="task_ids" value="{{task.task_id}}" class="row-checkbox">
+                                  <span class="checkmark"></span>
+                                </label>
+                              </td>
+                              <td>{{forloop.counter}}</td>
+                              <td>{{task.aggrement_id}}</td>
+                              <td>{{task.category}}</td>
+                              <td>{{task.customer_name}}</td>
+                              <td>{{task.customer_mobile_number}}</td>
+                              <td>{{task.tc_name}}</td>
+                              <td>{{task.fe_name}}</td>
+                              <td>{{task.update_location_status}}</td>
+                              <td>
+                                  <!-- Single delete -->
+                                  <form method="post"
+                                        action="{% url 'kg_app:pending_task_delete' task.task_id %}"
+                                        onsubmit="return confirm('Delete this record?');"
+                                        style="display:inline;">
                                     {% csrf_token %}
-                                    <button type="submit" style="background:none;border:0;cursor:pointer;color:red;">
+                                    <button type="submit" class="icon-btn">
                                       <i class="fa-solid fa-trash-can"></i>
                                     </button>
                                   </form>
-                                </li>
-                              </ul>
-                            </td> -->
-                          </tr>
-                          {% endfor %}
-                        </tbody>
-                      </table>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                          </tbody>
+                        </table>
+                      </form>
                     </div>
                   </div>
                 </div>
@@ -267,6 +428,45 @@
 
   <!-- custom script -->
   <script src="{% static 'assets/js/script.js' %}"></script>
+
+  <script>
+    // Select All
+    document.getElementById("select_all").addEventListener("change", function() {
+        let checkboxes = document.querySelectorAll('.row-checkbox');
+        checkboxes.forEach(cb => cb.checked = this.checked);
+        updateSelection();
+    });
+
+    // Count + Button state
+    const checkboxes = document.querySelectorAll('.row-checkbox');
+    const deleteBtn = document.getElementById("deleteBtn");
+    const selectedCount = document.getElementById("selectedCount");
+
+    checkboxes.forEach(cb => {
+        cb.addEventListener("change", updateSelection);
+    });
+
+    function updateSelection() {
+        let checked = document.querySelectorAll('.row-checkbox:checked').length;
+
+        selectedCount.innerText = checked;
+
+        deleteBtn.disabled = checked === 0;
+    }
+
+    // Form validation
+    document.getElementById("bulkDeleteForm").addEventListener("submit", function(e) {
+        let checked = document.querySelectorAll('.row-checkbox:checked');
+
+        if (checked.length === 0) {
+            alert("⚠️ Please select at least one task to delete!");
+            e.preventDefault();
+        }
+    });
+
+    // Initialize button state
+    updateSelection();
+  </script>
 
 
   <script>
