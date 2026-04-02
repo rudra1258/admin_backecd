@@ -2975,13 +2975,17 @@ def tc_approve_leave(request):
     return render(request, "tc_screens/tc_leave_request.html")
 
 def tc_reject_leave(request):
+    session_admin_id = request.session.get("tc_admin_id")
+    session_tc_id = request.session.get("user_id")
+    # Check if admin is logged in
+    if not session_admin_id:
+        return render(request, 'index.html')
+    
     if request.method == 'POST':
         # Get the session admin_id
         session_admin_id = request.session.get("admin_id")
         
-        # Check if admin is logged in
-        if not session_admin_id:
-            return render(request, 'index.html')
+        
         
         # leave_id = request.POST.get('leave_id')
         reject_reason = request.POST.get('reject_reason')
