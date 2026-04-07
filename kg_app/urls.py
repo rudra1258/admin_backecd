@@ -16,7 +16,8 @@ urlpatterns = [
     
     
     # path('', views.index, name='index'),
-    path('', views.admin_login, name='admin_login'),
+    path('', views.landing_page, name='landing_page'),
+    path('admin_login', views.admin_login, name='admin_login'),
     path('admin_logout/', views.admin_logout, name='admin_logout'),
     
     path('assign_task/api/', views.assign_task_api, name='assign_task_api'),
