@@ -830,7 +830,7 @@
         .table-wrap {
             border: 1.5px solid var(--border);
             border-radius: 12px;
-            overflow: hidden
+            overflow: auto;
         }
 
         .data-table {
@@ -1727,7 +1727,7 @@
                                             {% with leads=tc.subordinates.filter %}
                                             {% with lead_count=tc.subordinates.count %}
                                             {% with pct=lead_count|floatformat:0 %}
-                                            <div class="tc-item">
+                                            <div class="tc-item" onclick="openTelecallerTeamModal({{ tc.id }}, '{{ tc.first_name }} {{ tc.last_name }}')">
                                                 <div class="tc-row">
                                                     <div class="av av-tele"
                                                         style="width:32px;height:32px;font-size:0.77rem">
@@ -1874,14 +1874,14 @@
                                 <div class="panel">
                                     <div class="panel-head">
                                         <div class="panel-title">Ground Staff</div>
-                                        <div class="tabs">
+                                        <!-- <div class="tabs">
                                             <a href="?tab=all"
                                                 class="tab {% if tab == 'all' or not tab %}active{% endif %}">All</a>
                                             <a href="?tab=unassigned"
                                                 class="tab {% if tab == 'unassigned' %}active{% endif %}">Unassigned</a>
                                             <a href="?tab=assigned"
                                                 class="tab {% if tab == 'assigned' %}active{% endif %}">Assigned</a>
-                                        </div>
+                                        </div> -->
                                     </div>
                                     <div class="panel-body">
 

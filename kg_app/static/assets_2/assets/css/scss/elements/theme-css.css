@@ -11213,7 +11213,7 @@ header .flaticon-list {
 }
 .service_box.style_four .service_content:hover .image_box::before {
   bottom: 0;
-  opacity: 0.9;
+  opacity: 0.0;
 }
 .service_box.style_five .service_content {
   position: relative;
@@ -11298,7 +11298,7 @@ header .flaticon-list {
 }
 .service_box.style_five .service_content:hover .image_box::before {
   left: 0;
-  opacity: 0.9;
+  opacity: 0.0;
 }
 .service_box.style_five .service_content:hover .content_inner span {
   border-color: var(--primary-color-one);
