@@ -3812,3 +3812,53 @@ class LeaveRequestByUserAPIView(APIView):
             },
             status=status.HTTP_200_OK
         )
+# attendance APIs
+
+@api_view(['GET'])
+def get_user_attendance(request, user_id):
+    """
+    Returns attendance records for a user.
+    Defaults to last 3 months. Pass ?months=1 for shorter range.
+    """
+    months = int(request.query_params.get('months', 3))
+    from_date = date.today() - timedelta(days=30 * months)
+
+    records = Attendance.objects.filter(
+        user_id=user_id,
+        date__gte=from_date
+    ).order_by('-date')
+
+    serializer = AttendanceSerializer(records, many=True)
+
+    # Summary counts
+    total   = records.count()
+    present = records.filter(status='Present').count()
+    absent  = records.filter(status='Absent').count()
+    leave   = records.filter(status='Leave').count()
+
+    return Response({
+        'success': True,
+        'summary': {
+            'total': total, 'present': present,
+            'absent': absent, 'leave': leave,
+            'percentage': round((present / total * 100), 1) if total else 0
+        },
+        'data': serializer.data
+    })
+
+
+@api_view(['GET'])
+def get_all_attendance(request):
+    """
+    Admin view — all users' attendance.
+    Filter by ?date=YYYY-MM-DD or ?admin_id=xxx
+    """
+    filter_date = request.query_params.get('date', str(date.today()))
+    admin_id    = request.query_params.get('admin_id')
+
+    qs = Attendance.objects.filter(date=filter_date)
+    if admin_id:
+        qs = qs.filter(admin_id=admin_id)
+
+    serializer = AttendanceSerializer(qs, many=True)
+    return Response({'success': True, 'data': serializer.data})

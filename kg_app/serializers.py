@@ -223,3 +223,10 @@ class LeaveRequestSerializer(serializers.ModelSerializer):
             'reject_reason',
         ]
         read_only_fields = ['leave_id', 'submit_time', 'leave_status']
+        
+class AttendanceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model  = Attendance
+        fields = '__all__'
+
+

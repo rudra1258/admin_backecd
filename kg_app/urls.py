@@ -234,5 +234,8 @@ urlpatterns = [
     # http://127.0.0.1:8000/api/v1/leave-request/user/10/
 
 
+    path('attendance/user/<int:user_id>/', get_user_attendance),
+    path('attendance/all/', get_all_attendance),
+
 
 ]
