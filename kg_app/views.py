@@ -2462,7 +2462,6 @@ def tc_groundstaff(request):
     
     return render(request, "tc_screens/tc_groundstaff.html", {"data": staff_list})
 
-
 def tl_login(request):
     session_admin_id = request.session.get("admin_id")
     # navigate to login page if not login
@@ -3192,6 +3191,7 @@ def create_gs_login(request):
         return Response({
             'success': True,
             'message': 'GS Login record created successfully',
+            'attendance_marked': attendance_status,
             'data': serializer.data
         }, status=status.HTTP_201_CREATED)
 
@@ -3706,6 +3706,8 @@ def update_gs_login(request, gs_login_id):
         data=request.data,
         partial=True   # 🔥 THIS makes PATCH work
     )
+    
+    print("Updating GS Login ID:", request.data.get('login_time'), "with data:", request.data)  # DEBUG
 
     if serializer.is_valid():
         serializer.save()
@@ -3812,6 +3814,11 @@ class LeaveRequestByUserAPIView(APIView):
             },
             status=status.HTTP_200_OK
         )
+        
+        
+        
+        
+        
 # attendance APIs
 
 @api_view(['GET'])

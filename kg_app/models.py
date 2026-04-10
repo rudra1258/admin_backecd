@@ -326,7 +326,7 @@ class Attendance(models.Model):
 
     attendance_id = models.AutoField(primary_key=True)
     user_id       = models.ForeignKey(
-        'CreateUser', on_delete=models.CASCADE, related_name='attendances'
+        CreateUser, on_delete=models.CASCADE, related_name='attendances'
     )
     admin_id      = models.CharField(max_length=50)
     date          = models.DateField(default=date.today)
