@@ -1,0 +1,1184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ground Staff Attendance</title>
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f5f5f3;
+            --bg-tertiary: #eeede8;
+            --text-primary: #1a1a18;
+            --text-secondary: #6b6b66;
+            --text-tertiary: #9b9b96;
+            --border-light: rgba(0, 0, 0, 0.10);
+            --border-mid: rgba(0, 0, 0, 0.18);
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --green: #1D9E75;
+            --green-bg: #E1F5EE;
+            --green-text: #0F6E56;
+            --red: #D85A30;
+            --red-bg: #FAECE7;
+            --red-text: #993C1D;
+            --amber: #BA7517;
+            --amber-bg: #FAEEDA;
+            --amber-text: #854F0B;
+            --blue-bg: #E6F1FB;
+            --blue-text: #185FA5;
+            --purple-bg: #EEEDFE;
+            --purple-text: #534AB7;
+            --pink-bg: #FBEAF0;
+            --pink-text: #993556;
+            --gray-bg: #F1EFE8;
+            --gray-text: #5F5E5A;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+
+        /* Nav */
+        .topnav {
+            background: var(--bg-primary);
+            border-bottom: 0.5px solid var(--border-light);
+            padding: 0 24px;
+            height: 52px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .topnav-brand {
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        .topnav-brand span {
+            color: var(--green-text);
+        }
+
+        .topnav-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .topnav-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: var(--blue-bg);
+            color: var(--blue-text);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        /* Page */
+        .page {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 28px 24px;
+        }
+
+        .page-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .page-title {
+            font-size: 18px;
+            font-weight: 500;
+        }
+
+        .page-sub {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-top: 3px;
+        }
+
+        /* Toolbar */
+        .toolbar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .search-wrap {
+            position: relative;
+        }
+
+        .search-wrap svg {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 14px;
+            height: 14px;
+            stroke: var(--text-tertiary);
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .search-wrap input {
+            padding: 8px 12px 8px 32px;
+            font-size: 13px;
+            border: 0.5px solid var(--border-mid);
+            border-radius: var(--radius-md);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            width: 220px;
+            outline: none;
+        }
+
+        .search-wrap input:focus {
+            border-color: var(--text-secondary);
+        }
+
+        .fsel {
+            padding: 8px 12px;
+            font-size: 13px;
+            border: 0.5px solid var(--border-mid);
+            border-radius: var(--radius-md);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            outline: none;
+            cursor: pointer;
+        }
+
+        /* Summary */
+        .summary-strip {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .scard {
+            background: var(--bg-primary);
+            border: 0.5px solid var(--border-light);
+            border-radius: var(--radius-lg);
+            padding: 14px 16px;
+        }
+
+        .scard-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .scard-value {
+            font-size: 24px;
+            font-weight: 500;
+            margin-top: 4px;
+        }
+
+        /* Table */
+        .table-card {
+            background: var(--bg-primary);
+            border: 0.5px solid var(--border-light);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+
+        thead tr {
+            background: var(--bg-secondary);
+        }
+
+        th {
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: .04em;
+            padding: 10px 16px;
+            text-align: left;
+            border-bottom: 0.5px solid var(--border-light);
+        }
+
+        td {
+            font-size: 13px;
+            color: var(--text-primary);
+            padding: 12px 16px;
+            border-bottom: 0.5px solid var(--border-light);
+            vertical-align: middle;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        tbody tr {
+            cursor: pointer;
+            transition: background .12s;
+        }
+
+        tbody tr:hover {
+            background: var(--bg-secondary);
+        }
+
+        tbody tr:hover .view-btn {
+            opacity: 1;
+        }
+
+        .avatar {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 500;
+            flex-shrink: 0;
+        }
+
+        .name-cell {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nm {
+            font-weight: 500;
+            font-size: 13px;
+        }
+
+        .em {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-top: 1px;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .badge.active {
+            background: var(--green-bg);
+            color: var(--green-text);
+        }
+
+        .badge.inactive {
+            background: var(--gray-bg);
+            color: var(--gray-text);
+        }
+
+        .badge.on-leave {
+            background: var(--amber-bg);
+            color: var(--amber-text);
+        }
+
+        .pct-bar {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .bar-track {
+            flex: 1;
+            height: 5px;
+            background: var(--border-light);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .bar-fill {
+            height: 100%;
+            border-radius: 3px;
+        }
+
+        .pct-label {
+            font-size: 12px;
+            font-weight: 500;
+            min-width: 34px;
+            text-align: right;
+        }
+
+        .view-btn {
+            opacity: 0;
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--blue-text);
+            background: var(--blue-bg);
+            border: none;
+            padding: 5px 12px;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: opacity .15s;
+            white-space: nowrap;
+        }
+
+        /* Pagination */
+        .pagination-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 11px 16px;
+            border-top: 0.5px solid var(--border-light);
+            background: var(--bg-secondary);
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .pg-info {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .pg-controls {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .pg-btn {
+            min-width: 32px;
+            height: 32px;
+            border: 0.5px solid var(--border-mid);
+            border-radius: var(--radius-md);
+            background: var(--bg-primary);
+            color: var(--text-secondary);
+            font-size: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 6px;
+            transition: all .12s;
+        }
+
+        .pg-btn:hover:not(:disabled):not(.active) {
+            background: var(--bg-secondary);
+        }
+
+        .pg-btn:disabled {
+            opacity: .35;
+            cursor: default;
+        }
+
+        .pg-btn.active {
+            background: var(--text-primary);
+            color: var(--bg-primary);
+            border-color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .pg-btn.ellipsis {
+            border: none;
+            background: none;
+            cursor: default;
+            color: var(--text-tertiary);
+        }
+
+        .pg-size-wrap {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .pg-size-wrap select {
+            padding: 5px 10px;
+            font-size: 12px;
+            border: 0.5px solid var(--border-mid);
+            border-radius: var(--radius-md);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            outline: none;
+            cursor: pointer;
+        }
+
+        /* Modal */
+        .overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.45);
+            z-index: 100;
+            align-items: flex-start;
+            justify-content: center;
+            padding: 32px 16px;
+            overflow-y: auto;
+        }
+
+        .overlay.open {
+            display: flex;
+        }
+
+        .modal {
+            background: var(--bg-primary);
+            border: 0.5px solid var(--border-mid);
+            border-radius: var(--radius-lg);
+            width: 100%;
+            max-width: 740px;
+            overflow: hidden;
+            animation: su .2s ease;
+        }
+
+        @keyframes su {
+            from {
+                transform: translateY(14px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            padding: 18px 22px;
+            border-bottom: 0.5px solid var(--border-light);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .mh-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .m-av {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 13px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .m-title {
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        .m-sub {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 2px;
+        }
+
+        .close-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: var(--bg-secondary);
+            border: 0.5px solid var(--border-light);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: var(--text-secondary);
+            transition: background .12s;
+        }
+
+        .close-btn:hover {
+            background: var(--bg-tertiary);
+        }
+
+        .modal-stats {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 8px;
+            padding: 14px 22px;
+            border-bottom: 0.5px solid var(--border-light);
+        }
+
+        .mstat {
+            background: var(--bg-secondary);
+            border-radius: var(--radius-md);
+            padding: 10px 12px;
+        }
+
+        .mstat-label {
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+
+        .mstat-value {
+            font-size: 22px;
+            font-weight: 500;
+            margin-top: 3px;
+        }
+
+        .mstat-value.p {
+            color: var(--green);
+        }
+
+        .mstat-value.a {
+            color: var(--red);
+        }
+
+        .mstat-value.l {
+            color: var(--amber);
+        }
+
+        .mstat-value.pct {
+            color: var(--text-primary);
+        }
+
+        .months-nav {
+            display: flex;
+            gap: 6px;
+            padding: 12px 22px;
+            border-bottom: 0.5px solid var(--border-light);
+            overflow-x: auto;
+        }
+
+        .months-nav::-webkit-scrollbar {
+            display: none;
+        }
+
+        .month-tab {
+            padding: 5px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            border: 0.5px solid var(--border-mid);
+            background: transparent;
+            color: var(--text-secondary);
+            white-space: nowrap;
+            transition: all .12s;
+        }
+
+        .month-tab.active {
+            background: var(--text-primary);
+            color: var(--bg-primary);
+            border-color: var(--text-primary);
+        }
+
+        .month-tab:hover:not(.active) {
+            background: var(--bg-secondary);
+        }
+
+        .cal-body {
+            padding: 16px 22px 22px;
+        }
+
+        .cal-grid-wrap {
+            border: 0.5px solid var(--border-light);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+        }
+
+        .dow-header {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            background: var(--bg-secondary);
+            border-bottom: 0.5px solid var(--border-light);
+        }
+
+        .dow-header span {
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            text-align: center;
+            padding: 8px 0;
+        }
+
+        .day-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+        }
+
+        .dc {
+            border-right: 0.5px solid var(--border-light);
+            border-bottom: 0.5px solid var(--border-light);
+            min-height: 62px;
+            padding: 6px 8px;
+        }
+
+        .dc:nth-child(7n) {
+            border-right: none;
+        }
+
+        .dc.empty {
+            background: var(--bg-secondary);
+        }
+
+        .dc.future {
+            opacity: .4;
+        }
+
+        .dc-num {
+            font-size: 11px;
+            color: var(--text-secondary);
+            line-height: 1;
+        }
+
+        .dc.is-today .dc-num {
+            background: var(--text-primary);
+            color: var(--bg-primary);
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 500;
+        }
+
+        .dc-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            margin-top: 5px;
+        }
+
+        .dc-dot.present {
+            background: var(--green);
+        }
+
+        .dc-dot.absent {
+            background: var(--red);
+        }
+
+        .dc-dot.leave {
+            background: var(--amber);
+        }
+
+        .dc-dot.weekend,
+        .dc-dot.future {
+            background: var(--border-light);
+        }
+
+        .dc-tag {
+            font-size: 10px;
+            font-weight: 500;
+            margin-top: 3px;
+            line-height: 1.3;
+        }
+
+        .dc-tag.present {
+            color: var(--green-text);
+        }
+
+        .dc-tag.absent {
+            color: var(--red-text);
+        }
+
+        .dc-tag.leave {
+            color: var(--amber-text);
+        }
+
+        .dc-tag.weekend {
+            color: var(--text-tertiary);
+        }
+
+        .dc-login {
+            font-size: 10px;
+            color: var(--text-tertiary);
+            margin-top: 2px;
+        }
+
+        .legend-row {
+            display: flex;
+            gap: 16px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+
+        .leg {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .leg-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        @media (max-width: 640px) {
+            .page {
+                padding: 16px 12px;
+            }
+
+            .summary-strip {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .modal-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            th:nth-child(5),
+            td:nth-child(5) {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="topnav">
+        <div class="topnav-brand">GS <span>Attendance</span></div>
+        <div class="topnav-right">Admin Panel <div class="topnav-avatar">AD</div>
+        </div>
+    </nav>
+
+    <div class="page">
+        <div class="page-header">
+            <div>
+                <div class="page-title">Ground staff</div>
+                <div class="page-sub">Click any staff member to view their 3-month attendance calendar</div>
+            </div>
+            <div class="toolbar">
+                <div class="search-wrap">
+                    <svg viewBox="0 0 24 24">
+                        <circle cx="11" cy="11" r="8" />
+                        <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                    </svg>
+                    <input type="text" id="search-input" placeholder="Search name, role, email..." oninput="onSearch()">
+                </div>
+                <select class="fsel" id="status-filter" onchange="onSearch()">
+                    <option value="">All statuses</option>
+                    <option value="active">Active</option>
+                    <option value="inactive">Inactive</option>
+                    <option value="on-leave">On leave</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="summary-strip">
+            <div class="scard">
+                <div class="scard-label">Total staff</div>
+                <div class="scard-value" id="s-total" style="color:var(--text-primary)">0</div>
+            </div>
+            <div class="scard">
+                <div class="scard-label">Active</div>
+                <div class="scard-value" id="s-active" style="color:var(--green)">0</div>
+            </div>
+            <div class="scard">
+                <div class="scard-label">On leave</div>
+                <div class="scard-value" id="s-leave" style="color:var(--amber)">0</div>
+            </div>
+            <div class="scard">
+                <div class="scard-label">Inactive</div>
+                <div class="scard-value" id="s-inactive" style="color:var(--red)">0</div>
+            </div>
+        </div>
+
+        <div class="table-card">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width:5%">#</th>
+                        <th style="width:29%">Name</th>
+                        <th style="width:14%">Role</th>
+                        <th style="width:12%">Status</th>
+                        <th style="width:14%">Mobile</th>
+                        <th style="width:17%">Attendance (3M)</th>
+                        <th style="width:9%"></th>
+                    </tr>
+                </thead>
+                <tbody id="gs-tbody"></tbody>
+            </table>
+            <div class="pagination-bar">
+                <div class="pg-info" id="pg-info">Showing 1–10 of 100</div>
+                <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+                    <div class="pg-size-wrap">
+                        Rows per page
+                        <select id="pg-size" onchange="onPageSizeChange()">
+                            <option value="10" selected>10</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                        </select>
+                    </div>
+                    <div class="pg-controls" id="pg-controls"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="overlay" id="overlay" onclick="handleOverlayClick(event)">
+        <div class="modal" id="modal-box">
+            <div class="modal-header">
+                <div class="mh-left">
+                    <div class="m-av" id="m-avatar"></div>
+                    <div>
+                        <div class="m-title" id="m-name"></div>
+                        <div class="m-sub" id="m-sub"></div>
+                    </div>
+                </div>
+                <button class="close-btn" onclick="closeModal()">&#10005;</button>
+            </div>
+            <div class="modal-stats">
+                <div class="mstat">
+                    <div class="mstat-label">Present</div>
+                    <div class="mstat-value p" id="ms-p">0</div>
+                </div>
+                <div class="mstat">
+                    <div class="mstat-label">Absent</div>
+                    <div class="mstat-value a" id="ms-a">0</div>
+                </div>
+                <div class="mstat">
+                    <div class="mstat-label">Leave</div>
+                    <div class="mstat-value l" id="ms-l">0</div>
+                </div>
+                <div class="mstat">
+                    <div class="mstat-label">Attendance %</div>
+                    <div class="mstat-value pct" id="ms-pct">0%</div>
+                </div>
+            </div>
+            <div class="months-nav" id="months-nav"></div>
+            <div class="cal-body">
+                <div class="cal-grid-wrap">
+                    <div class="dow-header">
+                        <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
+                    </div>
+                    <div class="day-grid" id="day-grid"></div>
+                </div>
+                <div class="legend-row">
+                    <div class="leg">
+                        <div class="leg-dot" style="background:var(--green)"></div>Present
+                    </div>
+                    <div class="leg">
+                        <div class="leg-dot" style="background:var(--red)"></div>Absent
+                    </div>
+                    <div class="leg">
+                        <div class="leg-dot" style="background:var(--amber)"></div>Leave
+                    </div>
+                    <div class="leg">
+                        <div class="leg-dot" style="background:var(--border-light)"></div>Weekend
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /* ── Config ── */
+        const TODAY = new Date(2026, 3, 10);
+        const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        const AV_COLORS = [
+            { bg: '#E6F1FB', fg: '#185FA5' }, { bg: '#E1F5EE', fg: '#0F6E56' },
+            { bg: '#FAEEDA', fg: '#854F0B' }, { bg: '#FAECE7', fg: '#993C1D' },
+            { bg: '#EEEDFE', fg: '#534AB7' }, { bg: '#FBEAF0', fg: '#993556' },
+            { bg: '#EAF3DE', fg: '#3B6D11' }, { bg: '#F1EFE8', fg: '#5F5E5A' },
+        ];
+        const ROLES = ['Gate Agent', 'Ramp Staff', 'Baggage Handler', 'Check-in Agent', 'Security', 'Fueling Crew', 'Ground Controller', 'Marshaller'];
+        const STATUSES = ['active', 'active', 'active', 'active', 'active', 'inactive', 'inactive', 'on-leave'];
+        const FIRST = ['Rahul', 'Priya', 'Amit', 'Sunita', 'Vikram', 'Meena', 'Rohit', 'Kavya', 'Arjun', 'Deepa', 'Sanjay', 'Nisha', 'Raj', 'Anita', 'Suresh', 'Pooja', 'Kiran', 'Mohan', 'Lata', 'Anil', 'Bharat', 'Chitra', 'Dev', 'Asha', 'Eshan', 'Fatima', 'Ganesh', 'Hema', 'Inder', 'Jaya', 'Kumar', 'Lalita', 'Manoj', 'Neha', 'Omkar', 'Parvati', 'Rekha', 'Sachin', 'Tara', 'Uma', 'Vinod', 'Yash', 'Zara', 'Akash', 'Bhavna', 'Chirag', 'Disha', 'Eshaan', 'Falak', 'Govind'];
+        const LAST = ['Sharma', 'Patel', 'Kumar', 'Devi', 'Singh', 'Joshi', 'Nair', 'Reddy', 'Mehta', 'Gupta', 'Verma', 'Shah', 'Rao', 'Iyer', 'Pillai', 'Naidu', 'Jain', 'Agarwal', 'Mishra', 'Pandey', 'Trivedi', 'Chauhan', 'Tiwari', 'Srivastava', 'Bose', 'Das', 'Mukherjee', 'Ghosh', 'Chatterjee', 'Banerjee'];
+
+        /* ── Generate 100 staff ── */
+        const STAFF = Array.from({ length: 100 }, (_, i) => {
+            const fn = FIRST[i % FIRST.length];
+            const ln = LAST[i % LAST.length];
+            const name = fn + ' ' + ln;
+            return {
+                id: i + 1, name,
+                email: fn.toLowerCase() + '.' + ln.toLowerCase().slice(0, 3) + (i + 1) + '@gs.com',
+                role: ROLES[i % ROLES.length],
+                mobile: '9' + String(8000000000 + i * 37).slice(0, 9),
+                status: STATUSES[i % STATUSES.length],
+            };
+        });
+
+        /* ── Helpers ── */
+        function getInitials(n) { return n.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2); }
+        function dateKey(y, m, d) { return `${y}-${String(m + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`; }
+
+        /* ── Attendance generator ──
+           Replace with real API:
+           async function fetchAttendance(userId) {
+             const res  = await fetch(`/api/attendance/user/${userId}/?months=3`);
+             const json = await res.json();
+             const map  = {};
+             json.data.forEach(r => {
+               map[r.date] = { status: r.status.toLowerCase(), login: r.login_time, logout: r.logout_time };
+             });
+             return map;
+           }
+        ── */
+        function genAttendance(userId) {
+            const data = {}, seed = userId * 7;
+            for (let d = new Date(2026, 0, 1); d <= TODAY; d.setDate(d.getDate() + 1)) {
+                const key = dateKey(d.getFullYear(), d.getMonth(), d.getDate());
+                const dow = d.getDay();
+                if (dow === 0 || dow === 6) { data[key] = { status: 'weekend' }; continue; }
+                const n = (d.getDate() + d.getMonth() * 31 + seed) % 10;
+                if (n < 1) { data[key] = { status: 'absent', login: null, logout: null }; }
+                else if (n < 2) { data[key] = { status: 'leave', login: null, logout: null }; }
+                else {
+                    const e = (d.getDate() + seed) % 3;
+                    const lh = e === 0 ? 9 : 10, lm = e === 0 ? 15 : e === 1 ? 20 : 45;
+                    const oh = 17 + ((d.getDate() + seed) % 2), om = (d.getDate() * 3 + seed) % 60;
+                    data[key] = {
+                        status: 'present',
+                        login: lh + ':' + String(lm).padStart(2, '0') + ' AM',
+                        logout: oh + ':' + String(om).padStart(2, '0') + ' PM',
+                    };
+                }
+            }
+            return data;
+        }
+
+        function calcSummary(data) {
+            let p = 0, a = 0, l = 0;
+            Object.values(data).forEach(r => {
+                if (r.status === 'present') p++;
+                else if (r.status === 'absent') a++;
+                else if (r.status === 'leave') l++;
+            });
+            const t = p + a + l;
+            return { present: p, absent: a, leave: l, pct: t ? Math.round(p / t * 100) : 0 };
+        }
+
+        /* Pre-compute summaries */
+        const summaryCache = {};
+        STAFF.forEach(gs => { summaryCache[gs.id] = calcSummary(genAttendance(gs.id)); });
+
+        /* ── State ── */
+        let filtered = [...STAFF];
+        let curPage = 1;
+        let pageSize = 10;
+
+        /* ── Summary strip ── */
+        document.getElementById('s-total').textContent = STAFF.length;
+        document.getElementById('s-active').textContent = STAFF.filter(g => g.status === 'active').length;
+        document.getElementById('s-leave').textContent = STAFF.filter(g => g.status === 'on-leave').length;
+        document.getElementById('s-inactive').textContent = STAFF.filter(g => g.status === 'inactive').length;
+
+        /* ── Table ── */
+        function renderTable() {
+            const start = (curPage - 1) * pageSize;
+            const end = Math.min(start + pageSize, filtered.length);
+            const slice = filtered.slice(start, end);
+
+            document.getElementById('gs-tbody').innerHTML = slice.map((gs, i) => {
+                const rowNum = start + i + 1;
+                const globalIdx = STAFF.indexOf(gs);
+                const av = AV_COLORS[globalIdx % AV_COLORS.length];
+                const s = summaryCache[gs.id];
+                const pctColor = s.pct >= 80 ? 'var(--green)' : s.pct >= 60 ? 'var(--amber)' : 'var(--red)';
+                const statusLabel = { active: 'Active', inactive: 'Inactive', 'on-leave': 'On leave' }[gs.status] || gs.status;
+                return `
+        <tr onclick="openModal(${gs.id})">
+          <td style="color:var(--text-tertiary);font-size:12px">${rowNum}</td>
+          <td><div class="name-cell">
+            <div class="avatar" style="background:${av.bg};color:${av.fg}">${getInitials(gs.name)}</div>
+            <div><div class="nm">${gs.name}</div><div class="em">${gs.email}</div></div>
+          </div></td>
+          <td style="color:var(--text-secondary);font-size:12px">${gs.role}</td>
+          <td><span class="badge ${gs.status}">${statusLabel}</span></td>
+          <td style="color:var(--text-secondary);font-size:12px">${gs.mobile}</td>
+          <td><div class="pct-bar">
+            <div class="bar-track"><div class="bar-fill" style="width:${s.pct}%;background:${pctColor}"></div></div>
+            <span class="pct-label" style="color:${pctColor}">${s.pct}%</span>
+          </div></td>
+          <td><button class="view-btn">View</button></td>
+        </tr>`;
+            }).join('');
+
+            renderPagination();
+        }
+
+        /* ── Pagination ── */
+        function renderPagination() {
+            const total = filtered.length;
+            const totalPages = Math.ceil(total / pageSize) || 1;
+            const start = total === 0 ? 0 : (curPage - 1) * pageSize + 1;
+            const end = Math.min(curPage * pageSize, total);
+
+            document.getElementById('pg-info').textContent = `Showing ${start}–${end} of ${total} staff`;
+
+            function pageNums(cur, tot) {
+                if (tot <= 7) return Array.from({ length: tot }, (_, i) => i + 1);
+                const pages = [1];
+                if (cur > 4) pages.push('…');
+                for (let p = Math.max(2, cur - 2); p <= Math.min(tot - 1, cur + 2); p++) pages.push(p);
+                if (cur < tot - 3) pages.push('…');
+                pages.push(tot);
+                return pages;
+            }
+
+            const nums = pageNums(curPage, totalPages);
+            let html = `<button class="pg-btn" onclick="goPage(${curPage - 1})" ${curPage === 1 ? 'disabled' : ''}>&#8592;</button>`;
+            nums.forEach(n => {
+                if (n === '…') {
+                    html += `<button class="pg-btn ellipsis">&#8230;</button>`;
+                } else {
+                    html += `<button class="pg-btn${n === curPage ? ' active' : ''}" onclick="goPage(${n})">${n}</button>`;
+                }
+            });
+            html += `<button class="pg-btn" onclick="goPage(${curPage + 1})" ${curPage === totalPages ? 'disabled' : ''}>&#8594;</button>`;
+            document.getElementById('pg-controls').innerHTML = html;
+        }
+
+        function goPage(p) {
+            const totalPages = Math.ceil(filtered.length / pageSize) || 1;
+            if (p < 1 || p > totalPages) return;
+            curPage = p;
+            renderTable();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function onPageSizeChange() {
+            pageSize = parseInt(document.getElementById('pg-size').value);
+            curPage = 1;
+            renderTable();
+        }
+
+        /* ── Search / filter ── */
+        function onSearch() {
+            const q = document.getElementById('search-input').value.toLowerCase();
+            const st = document.getElementById('status-filter').value;
+            filtered = STAFF.filter(g => {
+                const mq = g.name.toLowerCase().includes(q) || g.role.toLowerCase().includes(q) || g.email.toLowerCase().includes(q);
+                const ms = !st || g.status === st;
+                return mq && ms;
+            });
+            curPage = 1;
+            renderTable();
+        }
+
+        renderTable();
+
+        /* ── Modal ── */
+        let activeData = {};
+        let activeMonth = { y: TODAY.getFullYear(), m: TODAY.getMonth() };
+
+        function getAvailableMonths() {
+            const months = [];
+            let y = 2026, m = 0;
+            while (y < TODAY.getFullYear() || (y === TODAY.getFullYear() && m <= TODAY.getMonth())) {
+                months.push({ y, m });
+                m++; if (m > 11) { m = 0; y++; }
+            }
+            return months;
+        }
+
+        function openModal(id) {
+            const gs = STAFF.find(g => g.id === id);
+            if (!gs) return;
+            const av = AV_COLORS[(gs.id - 1) % AV_COLORS.length];
+            activeData = genAttendance(gs.id);
+            const s = calcSummary(activeData);
+            activeMonth = { y: TODAY.getFullYear(), m: TODAY.getMonth() };
+
+            const el = document.getElementById('m-avatar');
+            el.textContent = getInitials(gs.name);
+            el.style.background = av.bg;
+            el.style.color = av.fg;
+            document.getElementById('m-name').textContent = gs.name;
+            document.getElementById('m-sub').textContent = gs.role + ' · ' + gs.mobile;
+            document.getElementById('ms-p').textContent = s.present;
+            document.getElementById('ms-a').textContent = s.absent;
+            document.getElementById('ms-l').textContent = s.leave;
+            document.getElementById('ms-pct').textContent = s.pct + '%';
+
+            const mms = getAvailableMonths();
+            document.getElementById('months-nav').innerHTML = mms.map(mm =>
+                `<button class="month-tab${mm.m === activeMonth.m && mm.y === activeMonth.y ? ' active' : ''}" onclick="switchMonth(${mm.y},${mm.m},this)">${MONTHS[mm.m].slice(0, 3)} ${mm.y}</button>`
+            ).join('');
+
+            renderCalendar(activeMonth.y, activeMonth.m);
+            document.getElementById('overlay').classList.add('open');
+        }
+
+        function switchMonth(y, m, btn) {
+            document.querySelectorAll('.month-tab').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            activeMonth = { y, m };
+            renderCalendar(y, m);
+        }
+
+        function renderCalendar(year, month) {
+            const firstDow = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            let html = '';
+
+            for (let i = 0; i < firstDow; i++) html += `<div class="dc empty"></div>`;
+
+            for (let d = 1; d <= daysInMonth; d++) {
+                const dt = new Date(year, month, d);
+                const key = dateKey(year, month, d);
+                const isToday = dt.toDateString() === TODAY.toDateString();
+                const isFuture = dt > TODAY;
+                const r = activeData[key];
+
+                let cls = 'dc' + (isToday ? ' is-today' : '') + (isFuture ? ' future' : '');
+                let inner = `<div class="dc-num">${d}</div>`;
+
+                if (r && !isFuture) {
+                    inner += `<div class="dc-dot ${r.status}"></div>`;
+                    if (r.status !== 'weekend') {
+                        const tag = r.status.charAt(0).toUpperCase() + r.status.slice(1);
+                        inner += `<div class="dc-tag ${r.status}">${tag}</div>`;
+                        if (r.login) inner += `<div class="dc-login">${r.login}</div>`;
+                    }
+                } else if (isFuture) {
+                    inner += `<div class="dc-dot future"></div>`;
+                }
+                html += `<div class="${cls}">${inner}</div>`;
+            }
+
+            const rem = (firstDow + daysInMonth) % 7;
+            if (rem !== 0) for (let i = 0; i < 7 - rem; i++) html += `<div class="dc empty"></div>`;
+
+            document.getElementById('day-grid').innerHTML = html;
+        }
+
+        function closeModal() { document.getElementById('overlay').classList.remove('open'); }
+        function handleOverlayClick(e) { if (e.target === document.getElementById('overlay')) closeModal(); }
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+    </script>
+</body>
+
+</html>

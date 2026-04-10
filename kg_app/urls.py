@@ -54,6 +54,7 @@ urlpatterns = [
     path("change_repoboy_password/", views.change_repo_password, name="change_repoboy_password"),
     path('bulk-delete-tasks/', views.bulk_delete_tasks, name='bulk_delete_tasks'),
     path('pending-bulk-delete-tasks/', views.pending_bulk_delete_tasks, name='pending_bulk_delete_tasks'),
+    path('attendance/', views.attendance, name='attendance'),
 
     path('download-sample/', views.download_sample_excel_user_create, name='download_sample_excel'),
     path('import_users_from_excel/', views.import_users_from_excel, name='import_users_from_excel'),

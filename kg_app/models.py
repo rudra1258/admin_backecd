@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils import timezone
-from datetime import timedelta
+from datetime import date, timedelta
 
 # Create your models here.
 class admin_user_model(models.Model):
@@ -315,5 +315,38 @@ class leave_request(models.Model):
     leave_status = models.CharField(max_length=20, default="Pending")
     submit_time = models.DateTimeField(auto_now_add=True)
     reject_reason = models.TextField(null=True, blank=True)
-
     
+class Attendance(models.Model):
+    STATUS_CHOICES = [
+        ('Present', 'Present'),
+        ('Absent',  'Absent'),
+        ('Leave',   'Leave'),
+        ('Weekend', 'Weekend'),
+    ]
+
+    attendance_id = models.AutoField(primary_key=True)
+    user_id       = models.ForeignKey(
+        'CreateUser', on_delete=models.CASCADE, related_name='attendances'
+    )
+    admin_id      = models.CharField(max_length=50)
+    date          = models.DateField(default=date.today)
+    status        = models.CharField(
+        max_length=20, choices=STATUS_CHOICES, default='Absent'
+    )
+    login_time    = models.DateTimeField(null=True, blank=True)
+    logout_time   = models.DateTimeField(null=True, blank=True)
+    marked_by     = models.CharField(
+        max_length=20,
+        choices=[('auto', 'Auto'), ('manual', 'Manual')],
+        default='auto'
+    )
+    notes         = models.TextField(null=True, blank=True)
+    created_at    = models.DateTimeField(auto_now_add=True)
+    updated_at    = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = ('user_id', 'date')   # one record per user per day
+        ordering        = ['-date']
+
+    def __str__(self):
+        return f"{self.user_id} | {self.date} | {self.status}"

@@ -22,6 +22,8 @@ from django.core.serializers.json import DjangoJSONEncoder
 from django.shortcuts import render
 from django.db.models import Count, Q
 import json
+from .attendance_utils import mark_attendance_on_login 
+from django.utils.dateparse import parse_datetime
 
 
 # Create your views here.
@@ -2263,6 +2265,17 @@ def change_repo_password(request):
 
     return redirect('kg_app:repo_boy')
 
+def attendance(request):
+    session_admin_id = request.session.get("admin_id")
+    # navigate to login page if not login
+    if not session_admin_id:
+        return render(request, 'index.html')
+    # admin_id_pk = admin_user_model.objects.get(pk=session_admin_id)
+    
+    # attendance_list = attendance.objects.filter(admin_id=admin_id_pk).order_by('-date')
+    
+    return render(request, "attendance.html")
+
 
 
 
@@ -3165,6 +3178,13 @@ def create_gs_login(request):
         
         user.login_status = login_status
         user.save()
+        
+        # ────────────────────────────────────────────
+        # ATTENDANCE: parse login_time and mark today
+        # ────────────────────────────────────────────
+        parsed_login = parse_datetime(str(login_time)) or timezone.now()
+        attendance_status = mark_attendance_on_login(user, admin_id, parsed_login)
+        # ────────────────────────────────────────────
 
         # Serialize and return the created object
         serializer = GsLoginSerializer(gs_login)
