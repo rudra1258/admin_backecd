@@ -6,7 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Ground Staff Attendance</title>
     <style>
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
         :root {
             --bg-primary: #ffffff;
@@ -15,8 +21,8 @@
             --text-primary: #1a1a18;
             --text-secondary: #6b6b66;
             --text-tertiary: #9b9b96;
-            --border-light: rgba(0,0,0,.10);
-            --border-mid: rgba(0,0,0,.18);
+            --border-light: rgba(0, 0, 0, .10);
+            --border-mid: rgba(0, 0, 0, .18);
             --radius-md: 8px;
             --radius-lg: 12px;
             --green: #1D9E75;
@@ -38,7 +44,12 @@
             --gray-text: #5F5E5A;
         }
 
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg-tertiary); color: var(--text-primary); min-height: 100vh; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
 
         /* ── Nav ── */
         .topnav {
@@ -53,458 +64,1099 @@
             top: 0;
             z-index: 50;
         }
-        .topnav-brand { font-size: 15px; font-weight: 500; }
-        .topnav-brand span { color: var(--green-text); }
-        .topnav-right { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--text-secondary); }
-        .topnav-avatar { width: 30px; height: 30px; border-radius: 50%; background: var(--blue-bg); color: var(--blue-text); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 500; }
+
+        .topnav-brand {
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        .topnav-brand span {
+            color: var(--green-text);
+        }
+
+        .topnav-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .topnav-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: var(--blue-bg);
+            color: var(--blue-text);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 500;
+        }
 
         /* ── Page ── */
-        .page { max-width: 1100px; margin: 0 auto; padding: 28px 24px; }
-        .page-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 20px; flex-wrap: wrap; gap: 12px; }
-        .page-title { font-size: 18px; font-weight: 500; }
-        .page-sub { font-size: 13px; color: var(--text-secondary); margin-top: 3px; }
+        .page {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 28px 24px;
+        }
+
+        .page-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .page-title {
+            font-size: 18px;
+            font-weight: 500;
+        }
+
+        .page-sub {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-top: 3px;
+        }
 
         /* ── Toolbar ── */
-        .toolbar { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-        .search-wrap { position: relative; }
-        .search-wrap svg { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); width: 14px; height: 14px; stroke: var(--text-tertiary); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-        .search-wrap input { padding: 8px 12px 8px 32px; font-size: 13px; border: 0.5px solid var(--border-mid); border-radius: var(--radius-md); background: var(--bg-primary); color: var(--text-primary); width: 220px; outline: none; }
-        .search-wrap input:focus { border-color: var(--text-secondary); }
-        .fsel { padding: 8px 12px; font-size: 13px; border: 0.5px solid var(--border-mid); border-radius: var(--radius-md); background: var(--bg-primary); color: var(--text-primary); outline: none; cursor: pointer; }
+        .toolbar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .search-wrap {
+            position: relative;
+        }
+
+        .search-wrap svg {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 14px;
+            height: 14px;
+            stroke: var(--text-tertiary);
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .search-wrap input {
+            padding: 8px 12px 8px 32px;
+            font-size: 13px;
+            border: 0.5px solid var(--border-mid);
+            border-radius: var(--radius-md);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            width: 220px;
+            outline: none;
+        }
+
+        .search-wrap input:focus {
+            border-color: var(--text-secondary);
+        }
+
+        .fsel {
+            padding: 8px 12px;
+            font-size: 13px;
+            border: 0.5px solid var(--border-mid);
+            border-radius: var(--radius-md);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            outline: none;
+            cursor: pointer;
+        }
 
         /* ── Summary ── */
-        .summary-strip { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-bottom: 20px; }
-        .scard { background: var(--bg-primary); border: 0.5px solid var(--border-light); border-radius: var(--radius-lg); padding: 14px 16px; }
-        .scard-label { font-size: 12px; color: var(--text-secondary); }
-        .scard-value { font-size: 24px; font-weight: 500; margin-top: 4px; }
+        .summary-strip {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .scard {
+            background: var(--bg-primary);
+            border: 0.5px solid var(--border-light);
+            border-radius: var(--radius-lg);
+            padding: 14px 16px;
+        }
+
+        .scard-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .scard-value {
+            font-size: 24px;
+            font-weight: 500;
+            margin-top: 4px;
+        }
 
         /* ── Table ── */
-        .table-card { background: var(--bg-primary); border: 0.5px solid var(--border-light); border-radius: var(--radius-lg); overflow: hidden; }
-        table { width: 100%; border-collapse: collapse; table-layout: fixed; }
-        thead tr { background: var(--bg-secondary); }
-        th { font-size: 11px; font-weight: 500; color: var(--text-secondary); text-transform: uppercase; letter-spacing: .04em; padding: 10px 16px; text-align: left; border-bottom: 0.5px solid var(--border-light); }
-        td { font-size: 13px; color: var(--text-primary); padding: 12px 16px; border-bottom: 0.5px solid var(--border-light); vertical-align: middle; }
-        tbody tr:last-child td { border-bottom: none; }
-        tbody tr { cursor: pointer; transition: background .12s; }
-        tbody tr:hover { background: var(--bg-secondary); }
-        tbody tr:hover .view-btn { opacity: 1; }
+        .table-card {
+            background: var(--bg-primary);
+            border: 0.5px solid var(--border-light);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+        }
 
-        .avatar { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 500; flex-shrink: 0; }
-        .name-cell { display: flex; align-items: center; gap: 10px; }
-        .nm { font-weight: 500; font-size: 13px; }
-        .em { font-size: 11px; color: var(--text-secondary); margin-top: 1px; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
 
-        .badge { display: inline-flex; align-items: center; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 500; }
-        .badge.Present, .badge.Active  { background: var(--green-bg); color: var(--green-text); }
-        .badge.Absent   { background: var(--red-bg);   color: var(--red-text);   }
-        .badge.Leave    { background: var(--amber-bg); color: var(--amber-text); }
-        .badge.Inactive { background: var(--gray-bg);  color: var(--gray-text);  }
+        thead tr {
+            background: var(--bg-secondary);
+        }
 
-        .pct-bar { display: flex; align-items: center; gap: 8px; }
-        .bar-track { flex: 1; height: 5px; background: var(--border-light); border-radius: 3px; overflow: hidden; }
-        .bar-fill { height: 100%; border-radius: 3px; }
-        .pct-label { font-size: 12px; font-weight: 500; min-width: 34px; text-align: right; }
+        th {
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: .04em;
+            padding: 10px 16px;
+            text-align: left;
+            border-bottom: 0.5px solid var(--border-light);
+        }
 
-        .view-btn { opacity: 0; font-size: 11px; font-weight: 500; color: var(--blue-text); background: var(--blue-bg); border: none; padding: 5px 12px; border-radius: var(--radius-md); cursor: pointer; transition: opacity .15s; white-space: nowrap; }
+        td {
+            font-size: 13px;
+            color: var(--text-primary);
+            padding: 12px 16px;
+            border-bottom: 0.5px solid var(--border-light);
+            vertical-align: middle;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        tbody tr {
+            cursor: pointer;
+            transition: background .12s;
+        }
+
+        tbody tr:hover {
+            background: var(--bg-secondary);
+        }
+
+        tbody tr:hover .view-btn {
+            opacity: 1;
+        }
+
+        .avatar {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 500;
+            flex-shrink: 0;
+        }
+
+        .name-cell {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nm {
+            font-weight: 500;
+            font-size: 13px;
+        }
+
+        .em {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-top: 1px;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .badge.Present,
+        .badge.Active {
+            background: var(--green-bg);
+            color: var(--green-text);
+        }
+
+        .badge.Absent {
+            background: var(--red-bg);
+            color: var(--red-text);
+        }
+
+        .badge.Leave {
+            background: var(--amber-bg);
+            color: var(--amber-text);
+        }
+
+        .badge.Inactive {
+            background: var(--gray-bg);
+            color: var(--gray-text);
+        }
+
+        .pct-bar {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .bar-track {
+            flex: 1;
+            height: 5px;
+            background: var(--border-light);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .bar-fill {
+            height: 100%;
+            border-radius: 3px;
+        }
+
+        .pct-label {
+            font-size: 12px;
+            font-weight: 500;
+            min-width: 34px;
+            text-align: right;
+        }
+
+        .view-btn {
+            opacity: 0;
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--blue-text);
+            background: var(--blue-bg);
+            border: none;
+            padding: 5px 12px;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: opacity .15s;
+            white-space: nowrap;
+        }
 
         /* ── Loading / Error ── */
-        .state-row td { text-align: center; padding: 40px 16px; color: var(--text-secondary); font-size: 13px; }
-        .spinner { display: inline-block; width: 20px; height: 20px; border: 2px solid var(--border-mid); border-top-color: var(--text-primary); border-radius: 50%; animation: spin .7s linear infinite; vertical-align: middle; margin-right: 8px; }
-        @keyframes spin { to { transform: rotate(360deg); } }
+        .state-row td {
+            text-align: center;
+            padding: 40px 16px;
+            color: var(--text-secondary);
+            font-size: 13px;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border-mid);
+            border-top-color: var(--text-primary);
+            border-radius: 50%;
+            animation: spin .7s linear infinite;
+            vertical-align: middle;
+            margin-right: 8px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
 
         /* ── Pagination ── */
-        .pagination-bar { display: flex; align-items: center; justify-content: space-between; padding: 11px 16px; border-top: 0.5px solid var(--border-light); background: var(--bg-secondary); flex-wrap: wrap; gap: 8px; }
-        .pg-info { font-size: 12px; color: var(--text-secondary); }
-        .pg-controls { display: flex; align-items: center; gap: 4px; }
-        .pg-btn { min-width: 32px; height: 32px; border: 0.5px solid var(--border-mid); border-radius: var(--radius-md); background: var(--bg-primary); color: var(--text-secondary); font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0 6px; transition: all .12s; }
-        .pg-btn:hover:not(:disabled):not(.active) { background: var(--bg-secondary); }
-        .pg-btn:disabled { opacity: .35; cursor: default; }
-        .pg-btn.active { background: var(--text-primary); color: var(--bg-primary); border-color: var(--text-primary); font-weight: 500; }
-        .pg-btn.ellipsis { border: none; background: none; cursor: default; color: var(--text-tertiary); }
-        .pg-size-wrap { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text-secondary); }
-        .pg-size-wrap select { padding: 5px 10px; font-size: 12px; border: 0.5px solid var(--border-mid); border-radius: var(--radius-md); background: var(--bg-primary); color: var(--text-primary); outline: none; cursor: pointer; }
+        .pagination-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 11px 16px;
+            border-top: 0.5px solid var(--border-light);
+            background: var(--bg-secondary);
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .pg-info {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .pg-controls {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .pg-btn {
+            min-width: 32px;
+            height: 32px;
+            border: 0.5px solid var(--border-mid);
+            border-radius: var(--radius-md);
+            background: var(--bg-primary);
+            color: var(--text-secondary);
+            font-size: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 6px;
+            transition: all .12s;
+        }
+
+        .pg-btn:hover:not(:disabled):not(.active) {
+            background: var(--bg-secondary);
+        }
+
+        .pg-btn:disabled {
+            opacity: .35;
+            cursor: default;
+        }
+
+        .pg-btn.active {
+            background: var(--text-primary);
+            color: var(--bg-primary);
+            border-color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .pg-btn.ellipsis {
+            border: none;
+            background: none;
+            cursor: default;
+            color: var(--text-tertiary);
+        }
+
+        .pg-size-wrap {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .pg-size-wrap select {
+            padding: 5px 10px;
+            font-size: 12px;
+            border: 0.5px solid var(--border-mid);
+            border-radius: var(--radius-md);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            outline: none;
+            cursor: pointer;
+        }
 
         /* ── Modal ── */
-        .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.45); z-index: 100; align-items: flex-start; justify-content: center; padding: 32px 16px; overflow-y: auto; }
-        .overlay.open { display: flex; }
-        .modal { background: var(--bg-primary); border: 0.5px solid var(--border-mid); border-radius: var(--radius-lg); width: 100%; max-width: 740px; overflow: hidden; animation: su .2s ease; }
-        @keyframes su { from { transform: translateY(14px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        .modal-header { padding: 18px 22px; border-bottom: 0.5px solid var(--border-light); display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-        .mh-left { display: flex; align-items: center; gap: 12px; }
-        .m-av { width: 40px; height: 40px; border-radius: 50%; font-size: 13px; font-weight: 500; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-        .m-title { font-size: 15px; font-weight: 500; }
-        .m-sub { font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
-        .close-btn { width: 30px; height: 30px; border-radius: 50%; background: var(--bg-secondary); border: 0.5px solid var(--border-light); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; color: var(--text-secondary); transition: background .12s; }
-        .close-btn:hover { background: var(--bg-tertiary); }
-        .modal-stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; padding: 14px 22px; border-bottom: 0.5px solid var(--border-light); }
-        .mstat { background: var(--bg-secondary); border-radius: var(--radius-md); padding: 10px 12px; }
-        .mstat-label { font-size: 11px; color: var(--text-secondary); }
-        .mstat-value { font-size: 22px; font-weight: 500; margin-top: 3px; }
-        .mstat-value.p { color: var(--green); }
-        .mstat-value.a { color: var(--red); }
-        .mstat-value.l { color: var(--amber); }
+        .overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, .45);
+            z-index: 100;
+            align-items: flex-start;
+            justify-content: center;
+            padding: 32px 16px;
+            overflow-y: auto;
+        }
 
-        .months-nav { display: flex; gap: 6px; padding: 12px 22px; border-bottom: 0.5px solid var(--border-light); overflow-x: auto; }
-        .months-nav::-webkit-scrollbar { display: none; }
-        .month-tab { padding: 5px 16px; border-radius: 20px; font-size: 12px; font-weight: 500; cursor: pointer; border: 0.5px solid var(--border-mid); background: transparent; color: var(--text-secondary); white-space: nowrap; transition: all .12s; }
-        .month-tab.active { background: var(--text-primary); color: var(--bg-primary); border-color: var(--text-primary); }
-        .month-tab:hover:not(.active) { background: var(--bg-secondary); }
+        .overlay.open {
+            display: flex;
+        }
 
-        .cal-body { padding: 16px 22px 22px; }
-        .cal-grid-wrap { border: 0.5px solid var(--border-light); border-radius: var(--radius-md); overflow: hidden; }
-        .dow-header { display: grid; grid-template-columns: repeat(7, 1fr); background: var(--bg-secondary); border-bottom: 0.5px solid var(--border-light); }
-        .dow-header span { font-size: 11px; font-weight: 500; color: var(--text-secondary); text-align: center; padding: 8px 0; }
-        .day-grid { display: grid; grid-template-columns: repeat(7, 1fr); }
-        .dc { border-right: 0.5px solid var(--border-light); border-bottom: 0.5px solid var(--border-light); min-height: 62px; padding: 6px 8px; }
-        .dc:nth-child(7n) { border-right: none; }
-        .dc.empty { background: var(--bg-secondary); }
-        .dc.future { opacity: .4; }
-        .dc-num { font-size: 11px; color: var(--text-secondary); line-height: 1; }
-        .dc.is-today .dc-num { background: var(--text-primary); color: var(--bg-primary); border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-weight: 500; }
-        .dc-dot { width: 7px; height: 7px; border-radius: 50%; margin-top: 5px; }
-        .dc-dot.present, .dc-dot.Present { background: var(--green); }
-        .dc-dot.absent,  .dc-dot.Absent  { background: var(--red); }
-        .dc-dot.leave,   .dc-dot.Leave   { background: var(--amber); }
-        .dc-dot.weekend, .dc-dot.future  { background: var(--border-light); }
-        .dc-tag { font-size: 10px; font-weight: 500; margin-top: 3px; line-height: 1.3; }
-        .dc-tag.present, .dc-tag.Present { color: var(--green-text); }
-        .dc-tag.absent,  .dc-tag.Absent  { color: var(--red-text); }
-        .dc-tag.leave,   .dc-tag.Leave   { color: var(--amber-text); }
-        .dc-tag.weekend  { color: var(--text-tertiary); }
-        .dc-login { font-size: 10px; color: var(--text-tertiary); margin-top: 2px; }
-        .legend-row { display: flex; gap: 16px; margin-top: 12px; flex-wrap: wrap; }
-        .leg { display: flex; align-items: center; gap: 5px; font-size: 12px; color: var(--text-secondary); }
-        .leg-dot { width: 8px; height: 8px; border-radius: 50%; }
+        .modal {
+            background: var(--bg-primary);
+            border: 0.5px solid var(--border-mid);
+            border-radius: var(--radius-lg);
+            width: 100%;
+            max-width: 740px;
+            overflow: hidden;
+            animation: su .2s ease;
+        }
+
+        @keyframes su {
+            from {
+                transform: translateY(14px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            padding: 18px 22px;
+            border-bottom: 0.5px solid var(--border-light);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .mh-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .m-av {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 13px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .m-title {
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        .m-sub {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 2px;
+        }
+
+        .close-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: var(--bg-secondary);
+            border: 0.5px solid var(--border-light);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: var(--text-secondary);
+            transition: background .12s;
+        }
+
+        .close-btn:hover {
+            background: var(--bg-tertiary);
+        }
+
+        .modal-stats {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 8px;
+            padding: 14px 22px;
+            border-bottom: 0.5px solid var(--border-light);
+        }
+
+        .mstat {
+            background: var(--bg-secondary);
+            border-radius: var(--radius-md);
+            padding: 10px 12px;
+        }
+
+        .mstat-label {
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+
+        .mstat-value {
+            font-size: 22px;
+            font-weight: 500;
+            margin-top: 3px;
+        }
+
+        .mstat-value.p {
+            color: var(--green);
+        }
+
+        .mstat-value.a {
+            color: var(--red);
+        }
+
+        .mstat-value.l {
+            color: var(--amber);
+        }
+
+        .months-nav {
+            display: flex;
+            gap: 6px;
+            padding: 12px 22px;
+            border-bottom: 0.5px solid var(--border-light);
+            overflow-x: auto;
+        }
+
+        .months-nav::-webkit-scrollbar {
+            display: none;
+        }
+
+        .month-tab {
+            padding: 5px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            border: 0.5px solid var(--border-mid);
+            background: transparent;
+            color: var(--text-secondary);
+            white-space: nowrap;
+            transition: all .12s;
+        }
+
+        .month-tab.active {
+            background: var(--text-primary);
+            color: var(--bg-primary);
+            border-color: var(--text-primary);
+        }
+
+        .month-tab:hover:not(.active) {
+            background: var(--bg-secondary);
+        }
+
+        .cal-body {
+            padding: 16px 22px 22px;
+        }
+
+        .cal-grid-wrap {
+            border: 0.5px solid var(--border-light);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+        }
+
+        .dow-header {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            background: var(--bg-secondary);
+            border-bottom: 0.5px solid var(--border-light);
+        }
+
+        .dow-header span {
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            text-align: center;
+            padding: 8px 0;
+        }
+
+        .day-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+        }
+
+        .dc {
+            border-right: 0.5px solid var(--border-light);
+            border-bottom: 0.5px solid var(--border-light);
+            min-height: 62px;
+            padding: 6px 8px;
+        }
+
+        .dc:nth-child(7n) {
+            border-right: none;
+        }
+
+        .dc.empty {
+            background: var(--bg-secondary);
+        }
+
+        .dc.future {
+            opacity: .4;
+        }
+
+        .dc-num {
+            font-size: 11px;
+            color: var(--text-secondary);
+            line-height: 1;
+        }
+
+        .dc.is-today .dc-num {
+            background: var(--text-primary);
+            color: var(--bg-primary);
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 500;
+        }
+
+        .dc-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            margin-top: 5px;
+        }
+
+        .dc-dot.present,
+        .dc-dot.Present {
+            background: var(--green);
+        }
+
+        .dc-dot.absent,
+        .dc-dot.Absent {
+            background: var(--red);
+        }
+
+        .dc-dot.leave,
+        .dc-dot.Leave {
+            background: var(--amber);
+        }
+
+        .dc-dot.weekend,
+        .dc-dot.future {
+            background: var(--border-light);
+        }
+
+        .dc-tag {
+            font-size: 10px;
+            font-weight: 500;
+            margin-top: 3px;
+            line-height: 1.3;
+        }
+
+        .dc-tag.present,
+        .dc-tag.Present {
+            color: var(--green-text);
+        }
+
+        .dc-tag.absent,
+        .dc-tag.Absent {
+            color: var(--red-text);
+        }
+
+        .dc-tag.leave,
+        .dc-tag.Leave {
+            color: var(--amber-text);
+        }
+
+        .dc-tag.weekend {
+            color: var(--text-tertiary);
+        }
+
+        .dc-login {
+            font-size: 10px;
+            color: var(--text-tertiary);
+            margin-top: 2px;
+        }
+
+        .legend-row {
+            display: flex;
+            gap: 16px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+
+        .leg {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .leg-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
 
         /* Modal loading */
-        .modal-loading { padding: 40px; text-align: center; color: var(--text-secondary); font-size: 13px; }
+        .modal-loading {
+            padding: 40px;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 13px;
+        }
 
         /* Toast */
-        .toast { position: fixed; bottom: 24px; right: 24px; background: var(--text-primary); color: var(--bg-primary); padding: 10px 18px; border-radius: var(--radius-md); font-size: 13px; z-index: 200; opacity: 0; transform: translateY(8px); transition: all .2s; pointer-events: none; }
-        .toast.show { opacity: 1; transform: translateY(0); }
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: var(--text-primary);
+            color: var(--bg-primary);
+            padding: 10px 18px;
+            border-radius: var(--radius-md);
+            font-size: 13px;
+            z-index: 200;
+            opacity: 0;
+            transform: translateY(8px);
+            transition: all .2s;
+            pointer-events: none;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
 
         @media (max-width: 640px) {
-            .page { padding: 16px 12px; }
-            .summary-strip { grid-template-columns: repeat(2, 1fr); }
-            .modal-stats { grid-template-columns: repeat(2, 1fr); }
-            th:nth-child(5), td:nth-child(5) { display: none; }
+            .page {
+                padding: 16px 12px;
+            }
+
+            .summary-strip {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .modal-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            th:nth-child(5),
+            td:nth-child(5) {
+                display: none;
+            }
         }
     </style>
 </head>
+
 <body>
 
-<nav class="topnav">
-    <div class="topnav-brand">GS <span>Attendance</span></div>
-    <div class="topnav-right">
-        <span id="nav-admin-label">Admin Panel</span>
-        <div class="topnav-avatar" id="nav-avatar">AD</div>
-    </div>
-</nav>
-
-<div class="page">
-    <div class="page-header">
-        <div>
-            <div class="page-title">Ground staff</div>
-            <div class="page-sub">Click any staff member to view their attendance calendar</div>
+    <nav class="topnav">
+        <div class="topnav-brand">GS <span>Attendance</span></div>
+        <div class="topnav-right">
+            <span id="nav-admin-label">Admin Panel</span>
+            <div class="topnav-avatar" id="nav-avatar">AD</div>
         </div>
-        <div class="toolbar">
-            <div class="search-wrap">
-                <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                <input type="text" id="search-input" placeholder="Search name, role, email..." oninput="onSearch()">
+    </nav>
+
+    <div class="page">
+        <div class="page-header">
+            <div>
+                <div class="page-title">Ground staff</div>
+                <div class="page-sub">Click any staff member to view their attendance calendar</div>
             </div>
-            <select class="fsel" id="status-filter" onchange="onSearch()">
-                <option value="">All statuses</option>
-                <option value="Present">Present</option>
-                <option value="Absent">Absent</option>
-                <option value="Leave">Leave</option>
-            </select>
-            <select class="fsel" id="date-filter" onchange="loadAllAttendance()"></select>
-        </div>
-    </div>
-
-    <div class="summary-strip">
-        <div class="scard"><div class="scard-label">Total staff</div><div class="scard-value" id="s-total" style="color:var(--text-primary)">—</div></div>
-        <div class="scard"><div class="scard-label">Present</div><div class="scard-value" id="s-present" style="color:var(--green)">—</div></div>
-        <div class="scard"><div class="scard-label">On Leave</div><div class="scard-value" id="s-leave" style="color:var(--amber)">—</div></div>
-        <div class="scard"><div class="scard-label">Absent</div><div class="scard-value" id="s-absent" style="color:var(--red)">—</div></div>
-    </div>
-
-    <div class="table-card">
-        <table>
-            <thead>
-                <tr>
-                    <th style="width:5%">#</th>
-                    <th style="width:26%">Name</th>
-                    <th style="width:14%">Role</th>
-                    <th style="width:12%">Today's Status</th>
-                    <th style="width:14%">Mobile</th>
-                    <th style="width:20%">Attendance (3M)</th>
-                    <th style="width:9%"></th>
-                </tr>
-            </thead>
-            <tbody id="gs-tbody">
-                <tr class="state-row"><td colspan="7"><span class="spinner"></span>Loading staff...</td></tr>
-            </tbody>
-        </table>
-        <div class="pagination-bar">
-            <div class="pg-info" id="pg-info">—</div>
-            <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
-                <div class="pg-size-wrap">
-                    Rows per page
-                    <select id="pg-size" onchange="onPageSizeChange()">
-                        <option value="10" selected>10</option>
-                        <option value="25">25</option>
-                        <option value="50">50</option>
-                    </select>
+            <div class="toolbar">
+                <div class="search-wrap">
+                    <svg viewBox="0 0 24 24">
+                        <circle cx="11" cy="11" r="8" />
+                        <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                    </svg>
+                    <input type="text" id="search-input" placeholder="Search name, role, email..." oninput="onSearch()">
                 </div>
-                <div class="pg-controls" id="pg-controls"></div>
+                <select class="fsel" id="status-filter" onchange="onSearch()">
+                    <option value="">All statuses</option>
+                    <option value="Present">Present</option>
+                    <option value="Absent">Absent</option>
+                    <option value="Leave">Leave</option>
+                </select>
+                <select class="fsel" id="date-filter" onchange="loadAllAttendance()"></select>
             </div>
         </div>
-    </div>
-</div>
 
-<!-- Modal -->
-<div class="overlay" id="overlay" onclick="handleOverlayClick(event)">
-    <div class="modal" id="modal-box">
-        <div class="modal-header">
-            <div class="mh-left">
-                <div class="m-av" id="m-avatar"></div>
-                <div>
-                    <div class="m-title" id="m-name"></div>
-                    <div class="m-sub" id="m-sub"></div>
+        <div class="summary-strip">
+            <div class="scard">
+                <div class="scard-label">Total staff</div>
+                <div class="scard-value" id="s-total" style="color:var(--text-primary)">—</div>
+            </div>
+            <div class="scard">
+                <div class="scard-label">Present</div>
+                <div class="scard-value" id="s-present" style="color:var(--green)">—</div>
+            </div>
+            <div class="scard">
+                <div class="scard-label">On Leave</div>
+                <div class="scard-value" id="s-leave" style="color:var(--amber)">—</div>
+            </div>
+            <div class="scard">
+                <div class="scard-label">Absent</div>
+                <div class="scard-value" id="s-absent" style="color:var(--red)">—</div>
+            </div>
+        </div>
+
+        <div class="table-card">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width:5%">#</th>
+                        <th style="width:26%">Name</th>
+                        <th style="width:14%">Role</th>
+                        <th style="width:12%">Today's Status</th>
+                        <th style="width:14%">Mobile</th>
+                        <th style="width:20%">Attendance (3M)</th>
+                        <th style="width:9%"></th>
+                    </tr>
+                </thead>
+                <tbody id="gs-tbody">
+                    <tr class="state-row">
+                        <td colspan="7"><span class="spinner"></span>Loading staff...</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="pagination-bar">
+                <div class="pg-info" id="pg-info">—</div>
+                <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+                    <div class="pg-size-wrap">
+                        Rows per page
+                        <select id="pg-size" onchange="onPageSizeChange()">
+                            <option value="10" selected>10</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                        </select>
+                    </div>
+                    <div class="pg-controls" id="pg-controls"></div>
                 </div>
             </div>
-            <button class="close-btn" onclick="closeModal()">&#10005;</button>
-        </div>
-        <div id="modal-inner">
-            <div class="modal-loading"><span class="spinner"></span>Loading attendance...</div>
         </div>
     </div>
-</div>
 
-<div class="toast" id="toast"></div>
+    <!-- Modal -->
+    <div class="overlay" id="overlay" onclick="handleOverlayClick(event)">
+        <div class="modal" id="modal-box">
+            <div class="modal-header">
+                <div class="mh-left">
+                    <div class="m-av" id="m-avatar"></div>
+                    <div>
+                        <div class="m-title" id="m-name"></div>
+                        <div class="m-sub" id="m-sub"></div>
+                    </div>
+                </div>
+                <button class="close-btn" onclick="closeModal()">&#10005;</button>
+            </div>
+            <div id="modal-inner">
+                <div class="modal-loading"><span class="spinner"></span>Loading attendance...</div>
+            </div>
+        </div>
+    </div>
 
-<script>
-/* ══════════════════════════════════════════════
-   CONFIG — adjust these to match your setup
-══════════════════════════════════════════════ */
-/*const API_BASE   = 'http://stafflynk.in/api/v1/attendance'; for local -- http://127.0.0.1:8000/*/ 
-const API_BASE   = 'http://stafflynk.in/api/v1/attendance';
-const MONTHS_STR = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-const TODAY      = new Date();
+    <div class="toast" id="toast"></div>
 
-// Avatar colour palette
-const AV_COLORS = [
-    {bg:'#E6F1FB',fg:'#185FA5'},{bg:'#E1F5EE',fg:'#0F6E56'},
-    {bg:'#FAEEDA',fg:'#854F0B'},{bg:'#FAECE7',fg:'#993C1D'},
-    {bg:'#EEEDFE',fg:'#534AB7'},{bg:'#FBEAF0',fg:'#993556'},
-    {bg:'#EAF3DE',fg:'#3B6D11'},{bg:'#F1EFE8',fg:'#5F5E5A'},
-];
+    <script>
+        /* ══════════════════════════════════════════════
+           CONFIG — adjust these to match your setup
+        ══════════════════════════════════════════════ */
+        /*const API_BASE   = 'http://stafflynk.in/api/v1/attendance'; for local -- http://127.0.0.1:8000/*/
+        const API_BASE = 'http://127.0.0.1:8000/api/v1/attendance';
+        const MONTHS_STR = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        const TODAY = new Date();
 
-/* ══════════════════════════════════════════════
-   SESSION — read admin info stored in Django
-   session (available as page-level JS variables
-   injected by your Django template, OR fall back
-   to a meta tag / data-attribute approach)
-══════════════════════════════════════════════ */
-// If you render this as a Django template, replace the block below with:
-//   const SESSION = { adminId: "{{ request.session.admin_id }}", adminName: "{{ request.session.admin_username }}" };
-// For now we read from a <meta> tag or use defaults.
-function getSessionMeta(name) {
-    const el = document.querySelector(`meta[name="${name}"]`);
-    return el ? el.content : null;
-}
-const SESSION = {
-    adminId:   getSessionMeta('admin-id')   || '',
-    adminName: getSessionMeta('admin-name') || 'Admin',
-};
+        // Avatar colour palette
+        const AV_COLORS = [
+            { bg: '#E6F1FB', fg: '#185FA5' }, { bg: '#E1F5EE', fg: '#0F6E56' },
+            { bg: '#FAEEDA', fg: '#854F0B' }, { bg: '#FAECE7', fg: '#993C1D' },
+            { bg: '#EEEDFE', fg: '#534AB7' }, { bg: '#FBEAF0', fg: '#993556' },
+            { bg: '#EAF3DE', fg: '#3B6D11' }, { bg: '#F1EFE8', fg: '#5F5E5A' },
+        ];
 
-// Populate nav
-(function () {
-    const lbl = document.getElementById('nav-admin-label');
-    const av  = document.getElementById('nav-avatar');
-    if (SESSION.adminName) {
-        lbl.textContent = SESSION.adminName;
-        av.textContent  = SESSION.adminName.split(' ').map(w => w[0]).join('').toUpperCase().slice(0,2);
-    }
-})();
+        /* ══════════════════════════════════════════════
+           SESSION — read admin info stored in Django
+           session (available as page-level JS variables
+           injected by your Django template, OR fall back
+           to a meta tag / data-attribute approach)
+        ══════════════════════════════════════════════ */
+        // If you render this as a Django template, replace the block below with:
+        //   const SESSION = { adminId: "{{ request.session.admin_id }}", adminName: "{{ request.session.admin_username }}" };
+        // For now we read from a <meta> tag or use defaults.
+        function getSessionMeta(name) {
+            const el = document.querySelector(`meta[name="${name}"]`);
+            return el ? el.content : null;
+        }
+        const SESSION = {
+            adminId: getSessionMeta('admin-id') || '',
+            adminName: getSessionMeta('admin-name') || 'Admin',
+        };
 
-/* ══════════════════════════════════════════════
-   UTILITIES
-══════════════════════════════════════════════ */
-function getInitials(n) { return n.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2); }
-function fmtDate(d)     { return d.toISOString().slice(0,10); }
-function avColor(idx)   { return AV_COLORS[idx % AV_COLORS.length]; }
+        // Populate nav
+        (function () {
+            const lbl = document.getElementById('nav-admin-label');
+            const av = document.getElementById('nav-avatar');
+            if (SESSION.adminName) {
+                lbl.textContent = SESSION.adminName;
+                av.textContent = SESSION.adminName.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
+            }
+        })();
 
-function showToast(msg, dur = 3000) {
-    const t = document.getElementById('toast');
-    t.textContent = msg;
-    t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), dur);
-}
+        /* ══════════════════════════════════════════════
+           UTILITIES
+        ══════════════════════════════════════════════ */
+        function getInitials(n) { return n.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2); }
+        function fmtDate(d) { return d.toISOString().slice(0, 10); }
+        function avColor(idx) { return AV_COLORS[idx % AV_COLORS.length]; }
 
-/* ══════════════════════════════════════════════
-   DATE SELECTOR — last 30 days
-══════════════════════════════════════════════ */
-(function buildDateFilter() {
-    const sel = document.getElementById('date-filter');
-    for (let i = 0; i < 30; i++) {
-        const d = new Date(TODAY);
-        d.setDate(d.getDate() - i);
-        const v = fmtDate(d);
-        const opt = document.createElement('option');
-        opt.value = v;
-        opt.textContent = i === 0 ? 'Today — ' + v : v;
-        if (i === 0) opt.selected = true;
-        sel.appendChild(opt);
-    }
-})();
+        function showToast(msg, dur = 3000) {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), dur);
+        }
 
-/* ══════════════════════════════════════════════
-   API CALLS
-══════════════════════════════════════════════ */
-/**
- * GET /api/v1/attendance/all/?date=YYYY-MM-DD&admin_id=xxx
- * Returns { success, data: [ { user_id, user__first_name, user__role, user__phone_number, user__email, status, login_time, logout_time, ... } ] }
- *
- * NOTE: If your serializer returns all Attendance fields with FK as integer,
- * we also try to read user info from the record directly.
- * Adapt the field-name mapping in normaliseRecord() if your serializer differs.
- */
-async function apiFetchAllAttendance(date, adminId) {
-    let url = `${API_BASE}/all/?date=${date}`;
-    if (adminId) url += `&admin_id=${adminId}`;
-    const res = await fetch(url, { credentials: 'include' });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    return res.json();
-}
+        /* ══════════════════════════════════════════════
+           DATE SELECTOR — last 30 days
+        ══════════════════════════════════════════════ */
+        (function buildDateFilter() {
+            const sel = document.getElementById('date-filter');
+            for (let i = 0; i < 30; i++) {
+                const d = new Date(TODAY);
+                d.setDate(d.getDate() - i);
+                const v = fmtDate(d);
+                const opt = document.createElement('option');
+                opt.value = v;
+                opt.textContent = i === 0 ? 'Today — ' + v : v;
+                if (i === 0) opt.selected = true;
+                sel.appendChild(opt);
+            }
+        })();
 
-/**
- * GET /api/v1/attendance/user/<id>/?months=3
- * Returns { success, summary: { present, absent, leave, percentage }, data: [...] }
- */
-async function apiFetchUserAttendance(userId, months = 3) {
-    const url = `${API_BASE}/user/${userId}/?months=${months}`;
-    const res = await fetch(url, { credentials: 'include' });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    return res.json();
-}
+        /* ══════════════════════════════════════════════
+           API CALLS
+        ══════════════════════════════════════════════ */
+        /**
+         * GET /api/v1/attendance/all/?date=YYYY-MM-DD&admin_id=xxx
+         * Returns { success, data: [ { user_id, user__first_name, user__role, user__phone_number, user__email, status, login_time, logout_time, ... } ] }
+         *
+         * NOTE: If your serializer returns all Attendance fields with FK as integer,
+         * we also try to read user info from the record directly.
+         * Adapt the field-name mapping in normaliseRecord() if your serializer differs.
+         */
+        async function apiFetchAllAttendance(date, adminId) {
+            let url = `${API_BASE}/all/?date=${date}`;
+            if (adminId) url += `&admin_id=${adminId}`;
+            const res = await fetch(url, { credentials: 'include' });
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            return res.json();
+        }
 
-/* ══════════════════════════════════════════════
-   NORMALISE RECORD
-   Maps raw serializer output → standard shape.
-   Adjust field names to match your actual model.
-══════════════════════════════════════════════ */
-function normaliseRecord(r, idx) {
-    // Support both annotated querysets (user__first_name) and FK integer (user_id)
-    const name  = r.name       || r.user_name  || r.user__first_name || `Staff #${r.user_id}`;
-    const email = r.email      || r.user__email || '';
-    const role  = r.role       || r.user__role  || '—';
-    const phone = r.mobile_no  || r.user__phone_number || r.phone || '—';
-    const uid   = r.user_id?.id ?? r.user_id ?? r.id ?? idx;
+        /**
+         * GET /api/v1/attendance/user/<id>/?months=3
+         * Returns { success, summary: { present, absent, leave, percentage }, data: [...] }
+         */
+        async function apiFetchUserAttendance(userId, months = 3) {
+            const url = `${API_BASE}/user/${userId}/?months=${months}`;
+            const res = await fetch(url, { credentials: 'include' });
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            return res.json();
+        }
 
-    return { uid, name, email, role, phone, status: r.status || '—', login_time: r.login_time, logout_time: r.logout_time, _raw: r };
-}
+        /* ══════════════════════════════════════════════
+           NORMALISE RECORD
+           Maps raw serializer output → standard shape.
+           Adjust field names to match your actual model.
+        ══════════════════════════════════════════════ */
+        function normaliseRecord(r, idx) {
+            // Support both annotated querysets (user__first_name) and FK integer (user_id)
+            const name = r.name || r.user_name || r.user__first_name || `Staff #${r.user_id}`;
+            const email = r.email || r.user__email || '';
+            const role = r.role || r.user__role || '—';
+            const phone = r.mobile_no || r.user__phone_number || r.phone || '—';
+            const uid = r.user_id?.id ?? r.user_id ?? r.id ?? idx;
 
-/* ══════════════════════════════════════════════
-   STATE
-══════════════════════════════════════════════ */
-let allRecords = [];   // full list from API for selected date
-let filtered   = [];
-let curPage    = 1;
-let pageSize   = 10;
+            return { uid, name, email, role, phone, status: r.status || '—', login_time: r.login_time, logout_time: r.logout_time, _raw: r };
+        }
 
-/* ══════════════════════════════════════════════
-   LOAD ALL ATTENDANCE (date-level view)
-══════════════════════════════════════════════ */
-async function loadAllAttendance() {
-    const date    = document.getElementById('date-filter').value;
-    const adminId = SESSION.adminId;
+        /* ══════════════════════════════════════════════
+           STATE
+        ══════════════════════════════════════════════ */
+        let allRecords = [];   // full list from API for selected date
+        let filtered = [];
+        let curPage = 1;
+        let pageSize = 10;
 
-    document.getElementById('gs-tbody').innerHTML =
-        `<tr class="state-row"><td colspan="7"><span class="spinner"></span>Loading...</td></tr>`;
-    resetSummary();
+        /* ══════════════════════════════════════════════
+           LOAD ALL ATTENDANCE (date-level view)
+        ══════════════════════════════════════════════ */
+        async function loadAllAttendance() {
+            const date = document.getElementById('date-filter').value;
+            const adminId = SESSION.adminId;
 
-    try {
-        const json = await apiFetchAllAttendance(date, adminId);
-        if (!json.success) throw new Error(json.message || 'API error');
+            document.getElementById('gs-tbody').innerHTML =
+                `<tr class="state-row"><td colspan="7"><span class="spinner"></span>Loading...</td></tr>`;
+            resetSummary();
 
-        allRecords = (json.data || []).map((r, i) => normaliseRecord(r, i));
-        filtered   = [...allRecords];
-        curPage    = 1;
+            try {
+                const json = await apiFetchAllAttendance(date, adminId);
+                if (!json.success) throw new Error(json.message || 'API error');
 
-        updateSummary();
-        renderTable();
-    } catch (err) {
-        console.error(err);
-        document.getElementById('gs-tbody').innerHTML =
-            `<tr class="state-row"><td colspan="7">⚠ Failed to load: ${err.message}</td></tr>`;
-        showToast('Error: ' + err.message);
-    }
-}
+                allRecords = (json.data || []).map((r, i) => normaliseRecord(r, i));
+                filtered = [...allRecords];
+                curPage = 1;
 
-/* ══════════════════════════════════════════════
-   SUMMARY STRIP
-══════════════════════════════════════════════ */
-function resetSummary() {
-    ['s-total','s-present','s-leave','s-absent'].forEach(id => document.getElementById(id).textContent = '—');
-}
+                updateSummary();
+                renderTable();
+            } catch (err) {
+                console.error(err);
+                document.getElementById('gs-tbody').innerHTML =
+                    `<tr class="state-row"><td colspan="7">⚠ Failed to load: ${err.message}</td></tr>`;
+                showToast('Error: ' + err.message);
+            }
+        }
 
-function updateSummary() {
-    const total   = allRecords.length;
-    const present = allRecords.filter(r => r.status === 'Present').length;
-    const leave   = allRecords.filter(r => r.status === 'Leave').length;
-    const absent  = allRecords.filter(r => r.status === 'Absent').length;
-    document.getElementById('s-total').textContent   = total;
-    document.getElementById('s-present').textContent = present;
-    document.getElementById('s-leave').textContent   = leave;
-    document.getElementById('s-absent').textContent  = absent;
-}
+        /* ══════════════════════════════════════════════
+           SUMMARY STRIP
+        ══════════════════════════════════════════════ */
+        function resetSummary() {
+            ['s-total', 's-present', 's-leave', 's-absent'].forEach(id => document.getElementById(id).textContent = '—');
+        }
 
-/* ══════════════════════════════════════════════
-   SEARCH + FILTER
-══════════════════════════════════════════════ */
-function onSearch() {
-    const q  = document.getElementById('search-input').value.toLowerCase();
-    const st = document.getElementById('status-filter').value;
-    filtered = allRecords.filter(r => {
-        const mq = r.name.toLowerCase().includes(q) || r.role.toLowerCase().includes(q) || r.email.toLowerCase().includes(q);
-        const ms = !st || r.status === st;
-        return mq && ms;
-    });
-    curPage = 1;
-    renderTable();
-}
+        function updateSummary() {
+            const total = allRecords.length;
+            const present = allRecords.filter(r => r.status === 'Present').length;
+            const leave = allRecords.filter(r => r.status === 'Leave').length;
+            const absent = allRecords.filter(r => r.status === 'Absent').length;
+            document.getElementById('s-total').textContent = total;
+            document.getElementById('s-present').textContent = present;
+            document.getElementById('s-leave').textContent = leave;
+            document.getElementById('s-absent').textContent = absent;
+        }
 
-/* ══════════════════════════════════════════════
-   TABLE RENDER
-══════════════════════════════════════════════ */
-function statusBadge(s) {
-    const label = s || '—';
-    const cls   = ['Present','Absent','Leave'].includes(label) ? label : 'Inactive';
-    return `<span class="badge ${cls}">${label}</span>`;
-}
+        /* ══════════════════════════════════════════════
+           SEARCH + FILTER
+        ══════════════════════════════════════════════ */
+        function onSearch() {
+            const q = document.getElementById('search-input').value.toLowerCase();
+            const st = document.getElementById('status-filter').value;
+            filtered = allRecords.filter(r => {
+                const mq = r.name.toLowerCase().includes(q) || r.role.toLowerCase().includes(q) || r.email.toLowerCase().includes(q);
+                const ms = !st || r.status === st;
+                return mq && ms;
+            });
+            curPage = 1;
+            renderTable();
+        }
 
-function renderTable() {
-    const start = (curPage - 1) * pageSize;
-    const end   = Math.min(start + pageSize, filtered.length);
-    const slice = filtered.slice(start, end);
+        /* ══════════════════════════════════════════════
+           TABLE RENDER
+        ══════════════════════════════════════════════ */
+        function statusBadge(s) {
+            const label = s || '—';
+            const cls = ['Present', 'Absent', 'Leave'].includes(label) ? label : 'Inactive';
+            return `<span class="badge ${cls}">${label}</span>`;
+        }
 
-    if (slice.length === 0) {
-        document.getElementById('gs-tbody').innerHTML =
-            `<tr class="state-row"><td colspan="7">No records found.</td></tr>`;
-        renderPagination();
-        return;
-    }
+        function renderTable() {
+            const start = (curPage - 1) * pageSize;
+            const end = Math.min(start + pageSize, filtered.length);
+            const slice = filtered.slice(start, end);
 
-    document.getElementById('gs-tbody').innerHTML = slice.map((r, i) => {
-        const rowNum = start + i + 1;
-        const av     = avColor(allRecords.indexOf(r));
-        // 3-month % is loaded per-user on modal open; show a placeholder bar here
-        const pctColor = r.status === 'Present' ? 'var(--green)' : r.status === 'Absent' ? 'var(--red)' : 'var(--amber)';
-        const dot = r.status === 'Present' ? 100 : r.status === 'Leave' ? 50 : 0;
+            if (slice.length === 0) {
+                document.getElementById('gs-tbody').innerHTML =
+                    `<tr class="state-row"><td colspan="7">No records found.</td></tr>`;
+                renderPagination();
+                return;
+            }
 
-        return `
+            document.getElementById('gs-tbody').innerHTML = slice.map((r, i) => {
+                const rowNum = start + i + 1;
+                const av = avColor(allRecords.indexOf(r));
+                // 3-month % is loaded per-user on modal open; show a placeholder bar here
+                const pctColor = r.status === 'Present' ? 'var(--green)' : r.status === 'Absent' ? 'var(--red)' : 'var(--amber)';
+                const dot = r.status === 'Present' ? 100 : r.status === 'Leave' ? 50 : 0;
+
+                return `
         <tr onclick="openModal(${JSON.stringify(r.uid)}, ${JSON.stringify(r.name)}, ${JSON.stringify(r.role)}, ${JSON.stringify(r.phone)}, ${allRecords.indexOf(r)})">
           <td style="color:var(--text-tertiary);font-size:12px">${rowNum}</td>
           <td><div class="name-cell">
@@ -522,101 +1174,101 @@ function renderTable() {
           </td>
           <td><button class="view-btn">View</button></td>
         </tr>`;
-    }).join('');
+            }).join('');
 
-    renderPagination();
-}
+            renderPagination();
+        }
 
-/* ══════════════════════════════════════════════
-   PAGINATION
-══════════════════════════════════════════════ */
-function renderPagination() {
-    const total      = filtered.length;
-    const totalPages = Math.ceil(total / pageSize) || 1;
-    const start      = total === 0 ? 0 : (curPage - 1) * pageSize + 1;
-    const end        = Math.min(curPage * pageSize, total);
+        /* ══════════════════════════════════════════════
+           PAGINATION
+        ══════════════════════════════════════════════ */
+        function renderPagination() {
+            const total = filtered.length;
+            const totalPages = Math.ceil(total / pageSize) || 1;
+            const start = total === 0 ? 0 : (curPage - 1) * pageSize + 1;
+            const end = Math.min(curPage * pageSize, total);
 
-    document.getElementById('pg-info').textContent = `Showing ${start}–${end} of ${total} staff`;
+            document.getElementById('pg-info').textContent = `Showing ${start}–${end} of ${total} staff`;
 
-    function pageNums(cur, tot) {
-        if (tot <= 7) return Array.from({length: tot}, (_, i) => i + 1);
-        const pages = [1];
-        if (cur > 4) pages.push('…');
-        for (let p = Math.max(2, cur-2); p <= Math.min(tot-1, cur+2); p++) pages.push(p);
-        if (cur < tot - 3) pages.push('…');
-        pages.push(tot);
-        return pages;
-    }
-
-    const nums = pageNums(curPage, totalPages);
-    let html = `<button class="pg-btn" onclick="goPage(${curPage-1})" ${curPage===1?'disabled':''}>&#8592;</button>`;
-    nums.forEach(n => {
-        html += n === '…'
-            ? `<button class="pg-btn ellipsis">&#8230;</button>`
-            : `<button class="pg-btn${n===curPage?' active':''}" onclick="goPage(${n})">${n}</button>`;
-    });
-    html += `<button class="pg-btn" onclick="goPage(${curPage+1})" ${curPage===totalPages?'disabled':''}>&#8594;</button>`;
-    document.getElementById('pg-controls').innerHTML = html;
-}
-
-function goPage(p) {
-    const totalPages = Math.ceil(filtered.length / pageSize) || 1;
-    if (p < 1 || p > totalPages) return;
-    curPage = p;
-    renderTable();
-    window.scrollTo({top:0, behavior:'smooth'});
-}
-
-function onPageSizeChange() {
-    pageSize = parseInt(document.getElementById('pg-size').value);
-    curPage  = 1;
-    renderTable();
-}
-
-/* ══════════════════════════════════════════════
-   MODAL — per-user 3-month calendar
-══════════════════════════════════════════════ */
-let activeAttData  = {};  // { 'YYYY-MM-DD': { status, login_time, logout_time } }
-let activeModalMonth = { y: TODAY.getFullYear(), m: TODAY.getMonth() };
-
-async function openModal(uid, name, role, phone, colorIdx) {
-    const av = avColor(colorIdx);
-
-    // Set header immediately
-    const el = document.getElementById('m-avatar');
-    el.textContent  = getInitials(name);
-    el.style.background = av.bg;
-    el.style.color      = av.fg;
-    document.getElementById('m-name').textContent = name;
-    document.getElementById('m-sub').textContent  = role + (phone && phone !== '—' ? ' · ' + phone : '');
-
-    // Show modal with loading state
-    document.getElementById('modal-inner').innerHTML =
-        `<div class="modal-loading"><span class="spinner"></span>Loading attendance...</div>`;
-    document.getElementById('overlay').classList.add('open');
-
-    try {
-        const json = await apiFetchUserAttendance(uid, 3);
-        if (!json.success) throw new Error(json.message || 'API error');
-
-        // Build date-keyed map from API data
-        activeAttData = {};
-        (json.data || []).forEach(r => {
-            // r.date expected as 'YYYY-MM-DD'
-            if (r.date) {
-                activeAttData[r.date] = {
-                    status:      r.status      || '—',
-                    login_time:  r.login_time  || null,
-                    logout_time: r.logout_time || null,
-                };
+            function pageNums(cur, tot) {
+                if (tot <= 7) return Array.from({ length: tot }, (_, i) => i + 1);
+                const pages = [1];
+                if (cur > 4) pages.push('…');
+                for (let p = Math.max(2, cur - 2); p <= Math.min(tot - 1, cur + 2); p++) pages.push(p);
+                if (cur < tot - 3) pages.push('…');
+                pages.push(tot);
+                return pages;
             }
-        });
 
-        const sum = json.summary || {};
-        activeModalMonth = { y: TODAY.getFullYear(), m: TODAY.getMonth() };
+            const nums = pageNums(curPage, totalPages);
+            let html = `<button class="pg-btn" onclick="goPage(${curPage - 1})" ${curPage === 1 ? 'disabled' : ''}>&#8592;</button>`;
+            nums.forEach(n => {
+                html += n === '…'
+                    ? `<button class="pg-btn ellipsis">&#8230;</button>`
+                    : `<button class="pg-btn${n === curPage ? ' active' : ''}" onclick="goPage(${n})">${n}</button>`;
+            });
+            html += `<button class="pg-btn" onclick="goPage(${curPage + 1})" ${curPage === totalPages ? 'disabled' : ''}>&#8594;</button>`;
+            document.getElementById('pg-controls').innerHTML = html;
+        }
 
-        // Build modal inner HTML
-        document.getElementById('modal-inner').innerHTML = `
+        function goPage(p) {
+            const totalPages = Math.ceil(filtered.length / pageSize) || 1;
+            if (p < 1 || p > totalPages) return;
+            curPage = p;
+            renderTable();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function onPageSizeChange() {
+            pageSize = parseInt(document.getElementById('pg-size').value);
+            curPage = 1;
+            renderTable();
+        }
+
+        /* ══════════════════════════════════════════════
+           MODAL — per-user 3-month calendar
+        ══════════════════════════════════════════════ */
+        let activeAttData = {};  // { 'YYYY-MM-DD': { status, login_time, logout_time } }
+        let activeModalMonth = { y: TODAY.getFullYear(), m: TODAY.getMonth() };
+
+        async function openModal(uid, name, role, phone, colorIdx) {
+            const av = avColor(colorIdx);
+
+            // Set header immediately
+            const el = document.getElementById('m-avatar');
+            el.textContent = getInitials(name);
+            el.style.background = av.bg;
+            el.style.color = av.fg;
+            document.getElementById('m-name').textContent = name;
+            document.getElementById('m-sub').textContent = role + (phone && phone !== '—' ? ' · ' + phone : '');
+
+            // Show modal with loading state
+            document.getElementById('modal-inner').innerHTML =
+                `<div class="modal-loading"><span class="spinner"></span>Loading attendance...</div>`;
+            document.getElementById('overlay').classList.add('open');
+
+            try {
+                const json = await apiFetchUserAttendance(uid, 3);
+                if (!json.success) throw new Error(json.message || 'API error');
+
+                // Build date-keyed map from API data
+                activeAttData = {};
+                (json.data || []).forEach(r => {
+                    // r.date expected as 'YYYY-MM-DD'
+                    if (r.date) {
+                        activeAttData[r.date] = {
+                            status: r.status || '—',
+                            login_time: r.login_time || null,
+                            logout_time: r.logout_time || null,
+                        };
+                    }
+                });
+
+                const sum = json.summary || {};
+                activeModalMonth = { y: TODAY.getFullYear(), m: TODAY.getMonth() };
+
+                // Build modal inner HTML
+                document.getElementById('modal-inner').innerHTML = `
         <div class="modal-stats">
             <div class="mstat"><div class="mstat-label">Present</div><div class="mstat-value p">${sum.present ?? '—'}</div></div>
             <div class="mstat"><div class="mstat-label">Absent</div><div class="mstat-value a">${sum.absent ?? '—'}</div></div>
@@ -639,92 +1291,93 @@ async function openModal(uid, name, role, phone, colorIdx) {
             </div>
         </div>`;
 
-        buildMonthTabs();
-        renderCalendar(activeModalMonth.y, activeModalMonth.m);
+                buildMonthTabs();
+                renderCalendar(activeModalMonth.y, activeModalMonth.m);
 
-    } catch (err) {
-        console.error(err);
-        document.getElementById('modal-inner').innerHTML =
-            `<div class="modal-loading">⚠ Failed to load attendance: ${err.message}</div>`;
-    }
-}
-
-/* ── Month tabs ── */
-function buildMonthTabs() {
-    // Show months from 3 months ago up to current month
-    const tabs = [];
-    for (let i = 2; i >= 0; i--) {
-        const d = new Date(TODAY.getFullYear(), TODAY.getMonth() - i, 1);
-        tabs.push({ y: d.getFullYear(), m: d.getMonth() });
-    }
-    document.getElementById('months-nav').innerHTML = tabs.map(t =>
-        `<button class="month-tab${t.m === activeModalMonth.m && t.y === activeModalMonth.y ? ' active' : ''}"
-            onclick="switchMonth(${t.y},${t.m},this)">
-            ${MONTHS_STR[t.m].slice(0,3)} ${t.y}
-        </button>`
-    ).join('');
-}
-
-function switchMonth(y, m, btn) {
-    document.querySelectorAll('.month-tab').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    activeModalMonth = { y, m };
-    renderCalendar(y, m);
-}
-
-/* ── Calendar grid ── */
-function renderCalendar(year, month) {
-    const firstDow   = new Date(year, month, 1).getDay();
-    const daysInMonth = new Date(year, month + 1, 0).getDate();
-    let html = '';
-
-    for (let i = 0; i < firstDow; i++) html += `<div class="dc empty"></div>`;
-
-    for (let d = 1; d <= daysInMonth; d++) {
-        const dt      = new Date(year, month, d);
-        const key     = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-        const isToday = dt.toDateString() === TODAY.toDateString();
-        const isFuture= dt > TODAY;
-        const isWeekend = dt.getDay() === 0 || dt.getDay() === 6;
-        const r       = activeAttData[key];
-
-        let cls  = 'dc' + (isToday ? ' is-today' : '') + (isFuture ? ' future' : '');
-        let inner = `<div class="dc-num">${d}</div>`;
-
-        if (isFuture || isWeekend) {
-            inner += `<div class="dc-dot ${isWeekend ? 'weekend' : 'future'}"></div>`;
-            if (isWeekend) inner += `<div class="dc-tag weekend">Off</div>`;
-        } else if (r) {
-            const st = r.status; // Present / Absent / Leave
-            inner += `<div class="dc-dot ${st}"></div>`;
-            inner += `<div class="dc-tag ${st}">${st}</div>`;
-            if (r.login_time) {
-                // Show only HH:MM portion
-                const lt = String(r.login_time).slice(0,5);
-                inner += `<div class="dc-login">${lt}</div>`;
+            } catch (err) {
+                console.error(err);
+                document.getElementById('modal-inner').innerHTML =
+                    `<div class="modal-loading">⚠ Failed to load attendance: ${err.message}</div>`;
             }
-        } else {
-            // Weekday in the past with no record — likely no data
-            inner += `<div class="dc-dot absent"></div><div class="dc-tag absent">No data</div>`;
         }
 
-        html += `<div class="${cls}">${inner}</div>`;
-    }
+        /* ── Month tabs ── */
+        function buildMonthTabs() {
+            // Show months from 3 months ago up to current month
+            const tabs = [];
+            for (let i = 2; i >= 0; i--) {
+                const d = new Date(TODAY.getFullYear(), TODAY.getMonth() - i, 1);
+                tabs.push({ y: d.getFullYear(), m: d.getMonth() });
+            }
+            document.getElementById('months-nav').innerHTML = tabs.map(t =>
+                `<button class="month-tab${t.m === activeModalMonth.m && t.y === activeModalMonth.y ? ' active' : ''}"
+            onclick="switchMonth(${t.y},${t.m},this)">
+            ${MONTHS_STR[t.m].slice(0, 3)} ${t.y}
+        </button>`
+            ).join('');
+        }
 
-    const rem = (firstDow + daysInMonth) % 7;
-    if (rem !== 0) for (let i = 0; i < 7 - rem; i++) html += `<div class="dc empty"></div>`;
+        function switchMonth(y, m, btn) {
+            document.querySelectorAll('.month-tab').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            activeModalMonth = { y, m };
+            renderCalendar(y, m);
+        }
 
-    document.getElementById('day-grid').innerHTML = html;
-}
+        /* ── Calendar grid ── */
+        function renderCalendar(year, month) {
+            const firstDow = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            let html = '';
 
-function closeModal() { document.getElementById('overlay').classList.remove('open'); }
-function handleOverlayClick(e) { if (e.target === document.getElementById('overlay')) closeModal(); }
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+            for (let i = 0; i < firstDow; i++) html += `<div class="dc empty"></div>`;
 
-/* ══════════════════════════════════════════════
-   INIT
-══════════════════════════════════════════════ */
-loadAllAttendance();
-</script>
+            for (let d = 1; d <= daysInMonth; d++) {
+                const dt = new Date(year, month, d);
+                const key = `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+                const isToday = dt.toDateString() === TODAY.toDateString();
+                const isFuture = dt > TODAY;
+                const isWeekend = dt.getDay() === 0 || dt.getDay() === 6;
+                const r = activeAttData[key];
+
+                let cls = 'dc' + (isToday ? ' is-today' : '') + (isFuture ? ' future' : '');
+                let inner = `<div class="dc-num">${d}</div>`;
+
+                if (isFuture || isWeekend) {
+                    inner += `<div class="dc-dot ${isWeekend ? 'weekend' : 'future'}"></div>`;
+                    if (isWeekend) inner += `<div class="dc-tag weekend">Off</div>`;
+                } else if (r) {
+                    const st = r.status; // Present / Absent / Leave
+                    inner += `<div class="dc-dot ${st}"></div>`;
+                    inner += `<div class="dc-tag ${st}">${st}</div>`;
+                    if (r.login_time) {
+                        // Show only HH:MM portion
+                        const lt = String(r.login_time).slice(0, 5);
+                        inner += `<div class="dc-login">${lt}</div>`;
+                    }
+                } else {
+                    // Weekday in the past with no record — likely no data
+                    inner += `<div class="dc-dot absent"></div><div class="dc-tag absent">No data</div>`;
+                }
+
+                html += `<div class="${cls}">${inner}</div>`;
+            }
+
+            const rem = (firstDow + daysInMonth) % 7;
+            if (rem !== 0) for (let i = 0; i < 7 - rem; i++) html += `<div class="dc empty"></div>`;
+
+            document.getElementById('day-grid').innerHTML = html;
+        }
+
+        function closeModal() { document.getElementById('overlay').classList.remove('open'); }
+        function handleOverlayClick(e) { if (e.target === document.getElementById('overlay')) closeModal(); }
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+        /* ══════════════════════════════════════════════
+           INIT
+        ══════════════════════════════════════════════ */
+        loadAllAttendance();
+    </script>
 </body>
+
 </html>
