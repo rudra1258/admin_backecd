@@ -92,3 +92,15 @@ class LeaveRequestAdmin(admin.ModelAdmin):
     list_display = ("admin_id","user_name","user_email","user_mobile","role","leave_status","submit_time")
     search_fields = ("user_id","user_role","admin_id","leave_status")
     list_filter = ("leave_status","submit_time","from_date","to_date","admin_id")
+    
+@admin.register(Feedback)
+class FeedbackAdmin(admin.ModelAdmin):
+    list_display = ['user_id', 'rating', 'category', 'nps_score', 'short_message', 'created_at', 'updated_at']
+    list_filter = ['rating', 'category']
+    search_fields = ['user_id', 'message']
+    readonly_fields = ['user_id', 'created_at', 'updated_at']
+    ordering = ['-created_at']
+ 
+    def short_message(self, obj):
+        return (obj.message[:60] + '...') if len(obj.message) > 60 else obj.message or '—'
+    short_message.short_description = 'Message'

@@ -1,0 +1,1414 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Admiro admin is super flexible, powerful, clean &amp; modern responsive bootstrap 5 admin template with unlimited possibilities.">
+    <meta name="keywords"
+        content="admin template, Admiro admin template, best javascript admin, dashboard template, bootstrap admin template, responsive admin template, web app">
+    <meta name="author" content="pixelstrap">
+    <title>Support</title>
+    <!-- Favicon icon-->
+    <link rel="icon" href="{% static 'assets/img/favicon.png' %}" type="image/x-icon">
+    <link rel="shortcut icon" href="{% static 'assets/img/favicon.png' %}" type="image/x-icon">
+    <!-- Google font-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link
+        href="../../css2?family=Nunito+Sans:opsz,wght@6..12,200;6..12,300;6..12,400;6..12,500;6..12,600;6..12,700;6..12,800;6..12,900;6..12,1000&amp;display=swap"
+        rel="stylesheet">
+    <!-- Flag icon css -->
+    <link rel="stylesheet" href="{% static 'assets/css/vendors/flag-icon.css' %}">
+    <!-- iconly-icon-->
+    <link rel="stylesheet" href="{% static 'assets/css/iconly-icon.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/bulk-style.css' %}">
+    <!-- iconly-icon-->
+    <link rel="stylesheet" href="{% static 'assets/css/themify.css' %}">
+    <!--fontawesome-->
+    <link rel="stylesheet" href="{% static 'assets/css/fontawesome-min.css' %}">
+    <!-- Whether Icon css-->
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/vendors/weather-icons/weather-icons.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/vendors/scrollbar.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/vendors/slick.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/vendors/slick-theme.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/vendors/datatables.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/vendors/datatable-extension.css' %}">
+    <!-- App css -->
+    <link id="color" rel="stylesheet" href="{% static 'assets/css/color-1.css' %}" media="screen">
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+        integrity="sha512-…(hash)…”" crossorigin=" anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+        integrity="sha512-…(hash)…”" crossorigin=" anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="https://cdn.iconly.io/iconly.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/iconly@latest/css/iconly.css" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+        integrity="sha512-KNuNk+LZ8e2j+ozhRtX7sMGu0j1qFeIslMo7k3M5lVZhcN7sVbG7ByAzt+BrgrbM5nxp7/ECYtJ8O5E2+8Y0eA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+
+    <link rel="stylesheet" href="https://cdn.iconly.io/your-generated-hash/iconly.css">
+
+
+    <style>
+        .page-wrapper .page-body-wrapper .page-body {
+            padding: 0px !important;
+        }
+
+        .page-title {
+            padding: 0px !important;
+        }
+
+        @media (min-width: 576px) {
+            .page-title {
+                padding: 0px !important;
+            }
+        }
+
+        .container,
+        .container-fluid,
+        .container-xxl,
+        .container-xl,
+        .container-lg,
+        .container-md,
+        .container-sm {
+            padding: 0px !important;
+        }
+    </style>
+
+
+    <style>
+        .sidebar-pannle-main {
+            display: none;
+        }
+
+        .margin_left_auto {
+            margin-left: auto;
+        }
+
+        table.dataTable.stripe tbody tr.odd,
+        table.dataTable.display tbody tr.odd {
+            background-color: #b3b2f1;
+        }
+
+        table.dataTable.display tbody tr.odd>.sorting_1 {
+            /* background-color: var(--light-color); */
+            background-color: #b3b2f1;
+        }
+
+
+
+        /*JUSDGFHB NUSBD FBN*/
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --brand: #5250c3;
+            --brand-light: #eeedfe;
+            --brand-mid: #7f77dd;
+            --brand-dark: #3c3489;
+            --brand-deeper: #26215c;
+            --text-primary: #1a1830;
+            --text-secondary: #6b6880;
+            --text-muted: #a09db8;
+            --bg: #f7f6ff;
+            --surface: #ffffff;
+            --border: rgba(82, 80, 195, 0.12);
+            --border-hover: rgba(82, 80, 195, 0.35);
+            --radius-sm: 10px;
+            --radius-md: 14px;
+            --radius-lg: 20px;
+            --shadow-sm: 0 2px 12px rgba(82, 80, 195, 0.08);
+            --shadow-md: 0 8px 32px rgba(82, 80, 195, 0.13);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* ── HERO ── */
+        .hero {
+            background: var(--brand);
+            padding: 3rem 1.5rem 5rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-blob {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.06);
+            pointer-events: none;
+        }
+
+        .blob-1 {
+            width: 280px;
+            height: 280px;
+            top: -100px;
+            right: -60px;
+        }
+
+        .blob-2 {
+            width: 200px;
+            height: 200px;
+            bottom: -80px;
+            left: -40px;
+        }
+
+        .blob-3 {
+            width: 120px;
+            height: 120px;
+            top: 30px;
+            left: 15%;
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 720px;
+            margin: 0 auto 2.5rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .nav-logo {
+            font-family: 'Syne', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: -0.3px;
+        }
+
+        .nav-link {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.75);
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+
+        .nav-link:hover {
+            color: #fff;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.15);
+            border: 0.5px solid rgba(255, 255, 255, 0.25);
+            border-radius: 20px;
+            padding: 5px 14px;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 1.2rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-badge span {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #7bffc4;
+            display: inline-block;
+        }
+
+        .hero h1 {
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(26px, 5vw, 38px);
+            font-weight: 700;
+            color: #fff;
+            line-height: 1.2;
+            margin-bottom: 0.6rem;
+            position: relative;
+            z-index: 2;
+            letter-spacing: -0.5px;
+        }
+
+        .hero p {
+            font-size: 15px;
+            color: rgba(255, 255, 255, 0.7);
+            margin: 0 auto 2rem;
+            max-width: 380px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .search-wrap {
+            position: relative;
+            max-width: 480px;
+            margin: 0 auto;
+            z-index: 2;
+        }
+
+        .search-wrap input {
+            width: 100%;
+            padding: 16px 56px 16px 20px;
+            border-radius: var(--radius-lg);
+            border: none;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 14px;
+            outline: none;
+            background: #fff;
+            color: var(--text-primary);
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.18);
+            transition: box-shadow 0.2s;
+        }
+
+        .search-wrap input:focus {
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.22), 0 0 0 3px rgba(82, 80, 195, 0.2);
+        }
+
+        .search-wrap input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .search-btn {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--brand);
+            border: none;
+            border-radius: 12px;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.15s, transform 0.1s;
+        }
+
+        .search-btn:hover {
+            background: var(--brand-dark);
+        }
+
+        .search-btn:active {
+            transform: translateY(-50%) scale(0.95);
+        }
+
+        .search-btn svg {
+            width: 16px;
+            height: 16px;
+            fill: none;
+            stroke: white;
+            stroke-width: 2.2;
+            stroke-linecap: round;
+        }
+
+        /* ── TOPICS CARDS ── */
+        .section-wrap {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .cards-lift {
+            margin-top: 2.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        @media (max-width: 600px) {
+            .cards-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .topic-card {
+            background: var(--surface);
+            border-radius: var(--radius-md);
+            border: 0.5px solid var(--border);
+            padding: 1.2rem 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.18s, border-color 0.18s, box-shadow 0.18s;
+            box-shadow: var(--shadow-sm);
+            text-decoration: none;
+            display: block;
+        }
+
+        .topic-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--border-hover);
+            box-shadow: var(--shadow-md);
+        }
+
+        .topic-card:active {
+            transform: translateY(-2px);
+        }
+
+        .topic-icon {
+            width: 46px;
+            height: 46px;
+            border-radius: 13px;
+            background: var(--brand-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 0.8rem;
+        }
+
+        .topic-icon svg {
+            width: 22px;
+            height: 22px;
+        }
+
+        .topic-card h3 {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 3px;
+        }
+
+        .topic-card p {
+            font-size: 11.5px;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+
+        /* ── SECTION HEADER ── */
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 17px;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: -0.2px;
+        }
+
+        .see-all {
+            font-size: 13px;
+            color: var(--brand);
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.15s;
+        }
+
+        .see-all:hover {
+            opacity: 0.7;
+        }
+
+        /* ── FAQ ── */
+        .faq-wrap {
+            margin-bottom: 2rem;
+        }
+
+        .faq-item {
+            background: var(--surface);
+            border: 0.5px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 1rem 1.2rem;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: border-color 0.15s, box-shadow 0.15s;
+        }
+
+        .faq-item:hover {
+            border-color: var(--border-hover);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .faq-item.open {
+            border-color: var(--brand-mid);
+        }
+
+        .faq-q {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .faq-q-text {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .faq-icon {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: var(--brand-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: background 0.2s, transform 0.25s;
+        }
+
+        .faq-item.open .faq-icon {
+            background: var(--brand);
+            transform: rotate(45deg);
+        }
+
+        .faq-icon svg {
+            width: 12px;
+            height: 12px;
+        }
+
+        .faq-icon svg line {
+            stroke: var(--brand);
+            stroke-width: 2;
+            stroke-linecap: round;
+            transition: stroke 0.2s;
+        }
+
+        .faq-item.open .faq-icon svg line {
+            stroke: #fff;
+        }
+
+        .faq-ans {
+            font-size: 13.5px;
+            color: var(--text-secondary);
+            line-height: 1.65;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding-top 0.25s;
+        }
+
+        .faq-item.open .faq-ans {
+            max-height: 120px;
+            padding-top: 10px;
+        }
+
+        /* ── STATUS BANNER ── */
+        .status-banner {
+            background: #edfbf4;
+            border: 0.5px solid #9adbb5;
+            border-radius: var(--radius-sm);
+            padding: 0.75rem 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 1.5rem;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #22c07a;
+            flex-shrink: 0;
+            box-shadow: 0 0 0 3px rgba(34, 192, 122, 0.2);
+        }
+
+        .status-banner span {
+            font-size: 13px;
+            color: #2a6b4c;
+        }
+
+        .status-banner strong {
+            font-weight: 600;
+        }
+
+        /* ── POPULAR ARTICLES ── */
+        .article-list {
+            margin-bottom: 2rem;
+        }
+
+        .article-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--surface);
+            border: 0.5px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 0.9rem 1.1rem;
+            margin-bottom: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: border-color 0.15s, transform 0.15s;
+        }
+
+        .article-item:hover {
+            border-color: var(--border-hover);
+            transform: translateX(3px);
+        }
+
+        .article-num {
+            font-family: 'Syne', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--brand-light);
+            min-width: 28px;
+            line-height: 1;
+        }
+
+        .article-meta {
+            flex: 1;
+        }
+
+        .article-meta h4 {
+            font-size: 13.5px;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 2px;
+        }
+
+        .article-meta p {
+            font-size: 11.5px;
+            color: var(--text-secondary);
+        }
+
+        .article-arrow {
+            color: var(--text-muted);
+            font-size: 14px;
+            transition: color 0.15s;
+        }
+
+        .article-item:hover .article-arrow {
+            color: var(--brand);
+        }
+
+        /* ── CONTACT BAR ── */
+        .contact-bar {
+            background: var(--brand);
+            border-radius: var(--radius-lg);
+            padding: 1.75rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 2.5rem;
+            flex-wrap: wrap;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact-bar::before {
+            content: '';
+            position: absolute;
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.06);
+            right: -40px;
+            top: -60px;
+            pointer-events: none;
+        }
+
+        .contact-info {
+            position: relative;
+            z-index: 1;
+        }
+
+        .contact-info h3 {
+            font-family: 'Syne', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+
+        .contact-info p {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .contact-btns {
+            display: flex;
+            gap: 10px;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 1;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 11px 20px;
+            border-radius: var(--radius-sm);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: opacity 0.15s, transform 0.1s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn:active {
+            transform: scale(0.97);
+        }
+
+        .btn-white {
+            background: #fff;
+            color: var(--brand);
+        }
+
+        .btn-white:hover {
+            opacity: 0.9;
+        }
+
+        .btn-ghost {
+            background: rgba(255, 255, 255, 0.12);
+            color: #fff;
+            border: 0.5px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-ghost:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* ── FOOTER ── */
+        footer {
+            text-align: center;
+            padding: 1.5rem 1rem 2.5rem;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        footer a {
+            color: var(--brand);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* ── ANIMATIONS ── */
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(16px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero h1,
+        .hero p,
+        .search-wrap,
+        .hero-badge {
+            animation: fadeUp 0.5s ease both;
+        }
+
+        .hero-badge {
+            animation-delay: 0s;
+        }
+
+        .hero h1 {
+            animation-delay: 0.08s;
+        }
+
+        .hero p {
+            animation-delay: 0.16s;
+        }
+
+        .search-wrap {
+            animation-delay: 0.24s;
+        }
+    </style>
+
+    <!-- support css -->
+
+    <style>
+        /* ===============================
+        SUPPORT POPUP MODAL - STAFFLYNK
+        Theme: #5957c5
+        ================================= */
+
+        .support-modal {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100vh;
+            background: rgba(15, 23, 42, 0.45);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 999999;
+            padding: 20px;
+        }
+
+        /* Modal box */
+        .support-modal-box {
+            width: 100%;
+            max-width: 520px;
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 28px;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.18);
+            position: relative;
+            animation: supportPopupShow 0.28s ease;
+            border: 1px solid rgba(89, 87, 197, 0.08);
+        }
+
+        /* Smooth popup animation */
+        @keyframes supportPopupShow {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.96);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* Header */
+        .support-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .support-modal-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #5957c5;
+            margin: 0;
+        }
+
+        /* Close button */
+        .support-close-btn {
+            width: 36px;
+            height: 36px;
+            border: none;
+            border-radius: 10px;
+            background: #f4f4ff;
+            color: #5957c5;
+            font-size: 20px;
+            cursor: pointer;
+            transition: 0.25s;
+        }
+
+        .support-close-btn:hover {
+            background: #5957c5;
+            color: #ffffff;
+        }
+
+        /* Labels */
+        .support-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+            margin-top: 14px;
+        }
+
+        /* Input field */
+        .support-input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid #dcdcf5;
+            border-radius: 14px;
+            font-size: 14px;
+            outline: none;
+            transition: 0.25s;
+            background: #fcfcff;
+        }
+
+        /* Textarea */
+        .support-textarea {
+            width: 100%;
+            min-height: 140px;
+            padding: 14px 16px;
+            border: 1px solid #dcdcf5;
+            border-radius: 14px;
+            font-size: 14px;
+            outline: none;
+            resize: none;
+            transition: 0.25s;
+            background: #fcfcff;
+        }
+
+        /* Focus effects */
+        .support-input:focus,
+        .support-textarea:focus {
+            border-color: #5957c5;
+            box-shadow: 0 0 0 4px rgba(89, 87, 197, 0.14);
+            background: #ffffff;
+        }
+
+        /* Footer buttons */
+        .support-modal-footer {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        /* Cancel button */
+        .support-cancel-btn {
+            flex: 1;
+            border: none;
+            padding: 14px;
+            border-radius: 14px;
+            background: #f1f1f8;
+            color: #333;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.25s;
+        }
+
+        .support-cancel-btn:hover {
+            background: #e6e6f6;
+        }
+
+        /* Send button */
+        .support-send-btn {
+            flex: 1;
+            border: none;
+            padding: 14px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, #5957c5, #6d6be0);
+            color: #ffffff;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 10px 24px rgba(89, 87, 197, 0.25);
+            transition: 0.25s;
+        }
+
+        .support-send-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 28px rgba(89, 87, 197, 0.32);
+        }
+
+        /* Mobile responsive */
+        @media (max-width: 576px) {
+            .support-modal-box {
+                padding: 22px;
+                border-radius: 18px;
+            }
+
+            .support-modal-title {
+                font-size: 18px;
+            }
+
+            .support-modal-footer {
+                flex-direction: column;
+            }
+        }
+    </style>
+
+</head>
+
+
+
+
+
+<body>
+    <!-- page-wrapper Start-->
+    <!-- tap on top starts-->
+    <div class="tap-top">
+        <i class="fa-solid fa-angle-up"></i>
+    </div>
+    <!-- tap on tap ends-->
+    <!-- loader-->
+    <div class="loader-wrapper">
+        <div class="loader"><span></span><span></span><span></span><span></span><span></span></div>
+    </div>
+
+    <div class="support-modal" id="supportModal">
+        <div class="support-modal-box">
+            <form action="https://api.web3forms.com/submit" method="POST">
+                <input type="hidden" name="access_key" value="c6ab9e6f-079c-4082-bd0e-b6dfe1c9996f">
+                <div class="support-modal-header">
+                    <h3 class="support-modal-title">Raise Support Ticket</h3>
+                    <button class="support-close-btn">&times;</button>
+                </div>
+                <!-- Optional: But Recommended: To Prevent SPAM Submission. 
+                    Make sure its hidden by default -->
+                <input type="checkbox" name="botcheck" id="" style="display: none;">
+                <!-- Optional: From Name you want to see in the email
+                    Default is "Notifications". you can overwrite here -->
+                <input type="hidden" name="from_name" value="StaffLynk Support">
+                <!-- Optional: Can be type="hidden" or type="text" for subject -->
+                <input type="hidden" name="subject" value="{{admin_username}}, {{admin_mobile}}">
+                <!-- Custom URL -->
+                <input type="hidden" name="redirect" value="http://127.0.0.1:8000/support/">
+
+
+
+
+
+
+
+                <input type="email" class="support-input" name="email" value="{{admin_email}}" required hidden >
+                <label class="support-label">Title</label>
+                <input type="text"  class="support-input"  name="name" placeholder="Enter issue title">
+
+                <label class="support-label">Explain the Problem</label>
+                <textarea class="support-textarea"  placeholder="Describe your problem..." name="message"></textarea>
+
+                <div class="support-modal-footer">
+                    <button class="support-cancel-btn">Cancel</button>
+                    <button type="submit" class="support-send-btn">Send Ticket</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <div class="page-wrapper compact-wrapper" id="pageWrapper">
+
+        <!-- this is header section -->
+        {% include 'common/header.html' %}
+        <!--header section end -->
+
+
+
+
+
+
+        <!-- Page Body Start-->
+        <div class="page-body-wrapper">
+            <!-- Page sidebar start-->
+            {% include 'common/sidebar.html' %}
+            <!-- Page sidebar end-->
+
+            <!-- body section start  -->
+            <div class="page-body">
+                <div class="container-fluid">
+                    <div class="page-title">
+                        <!-- HERO -->
+                        <section class="hero">
+                            <div class="hero-blob blob-1"></div>
+                            <div class="hero-blob blob-2"></div>
+                            <div class="hero-blob blob-3"></div>
+
+                            <nav class="nav">
+                                <div class="nav-logo">HelpDesk</div>
+                                <a href="#" class="nav-link">My tickets</a>
+                            </nav>
+
+                            <div class="hero-badge">
+                                <span></span> Support team online now
+                            </div>
+                            <h1>How can we help you?</h1>
+                            <p>Search our knowledge base or browse popular topics below</p>
+
+                            <div class="search-wrap">
+                                <input type="text" id="searchInput" placeholder="Search articles, topics, guides…" />
+                                <button class="search-btn" onclick="handleSearch()">
+                                    <svg viewBox="0 0 24 24">
+                                        <circle cx="11" cy="11" r="6" />
+                                        <line x1="16.5" y1="16.5" x2="22" y2="22" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </section>
+
+                        <!-- TOPIC CARDS -->
+                        <div class="section-wrap cards-lift">
+                            <div class="cards-grid">
+
+                                <a href="#" class="topic-card openSupportBtn" >
+                                    <div class="topic-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="#5250c3" stroke-width="1.8"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <circle cx="12" cy="8" r="4" />
+                                            <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
+                                        </svg>
+                                    </div>
+                                    <h3>Account</h3>
+                                    <p>Profile, password & login</p>
+                                </a>
+
+                                <a href="#" class="topic-card openSupportBtn" >
+                                    <div class="topic-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="#5250c3" stroke-width="1.8"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <rect x="2" y="3" width="20" height="14" rx="2" />
+                                            <path d="M8 21h8M12 17v4" />
+                                        </svg>
+                                    </div>
+                                    <h3>Technical</h3>
+                                    <p>Bugs, errors & fixes</p>
+                                </a> 
+
+                                <a href="#" class="topic-card openSupportBtn" >
+                                    <div class="topic-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="#5250c3" stroke-width="1.8"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+                                        </svg>
+                                    </div>
+                                    <h3>Billing</h3>
+                                    <p>Plans & invoices</p>
+                                </a>
+
+                            </div>
+                        </div>
+
+                        <!-- MAIN CONTENT -->
+                        <div class="section-wrap">
+
+                            <!-- STATUS -->
+                            <!-- <div class="status-banner">
+                                <div class="status-dot"></div>
+                                <span><strong>All systems operational</strong> — No incidents reported today</span>
+                            </div> -->
+
+                            <!-- FAQ -->
+                            <section class="faq-wrap">
+                                <div class="section-header">
+                                    <h2 class="section-title">Frequently asked</h2>
+                                </div>
+
+                                <div class="faq-item" onclick="toggleFaq(this)">
+                                    <div class="faq-q">
+                                        <span class="faq-q-text">What is Stafflynk?</span>
+                                        <div class="faq-icon">
+                                            <svg viewBox="0 0 12 12">
+                                                <line x1="6" y1="1" x2="6" y2="11" />
+                                                <line x1="1" y1="6" x2="11" y2="6" />
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="faq-ans">Stafflynk is a field workforce and recovery management platform
+                                        that helps organizations manage, track, and monitor their on-ground teams in
+                                        real time with complete accountability.</div>
+                                </div>
+
+                                <div class="faq-item" onclick="toggleFaq(this)">
+                                    <div class="faq-q">
+                                        <span class="faq-q-text">Who can use Stafflynk?</span>
+                                        <div class="faq-icon">
+                                            <svg viewBox="0 0 12 12">
+                                                <line x1="6" y1="1" x2="6" y2="11" />
+                                                <line x1="1" y1="6" x2="11" y2="6" />
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="faq-ans">Stafflynk is ideal for: <br>
+                                        Recovery & collection agencies<br>
+                                        NBFCs and banks<br>
+                                        Field sales teams<br>
+                                        Service and verification teams<br>
+                                        Any organization managing field staff
+                                    </div>
+                                </div>
+
+                                <div class="faq-item" onclick="toggleFaq(this)">
+                                    <div class="faq-q">
+                                        <span class="faq-q-text">What problems does Stafflynk solve?</span>
+                                        <div class="faq-icon">
+                                            <svg viewBox="0 0 12 12">
+                                                <line x1="6" y1="1" x2="6" y2="11" />
+                                                <line x1="1" y1="6" x2="11" y2="6" />
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="faq-ans">Stafflynk removes confusion in field operations by providing:
+                                        <br>
+                                        Real-time staff tracking <br>
+                                        Visit proof and reporting <br>
+                                        Performance monitoring <br>
+                                        Centralized control over field teams</div>
+                                </div>
+
+                                <div class="faq-item" onclick="toggleFaq(this)">
+                                    <div class="faq-q">
+                                        <span class="faq-q-text">Is my data safe and private?</span>
+                                        <div class="faq-icon">
+                                            <svg viewBox="0 0 12 12">
+                                                <line x1="6" y1="1" x2="6" y2="11" />
+                                                <line x1="1" y1="6" x2="11" y2="6" />
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="faq-ans">Yes. Stafflynk ensures secure data handling with role-based
+                                        access and protected cloud storage.</div>
+                                </div>
+
+                                <div class="faq-item" onclick="toggleFaq(this)">
+                                    <div class="faq-q">
+                                        <span class="faq-q-text">Can Stafflynk be customized for our
+                                            organization?</span>
+                                        <div class="faq-icon">
+                                            <svg viewBox="0 0 12 12">
+                                                <line x1="6" y1="1" x2="6" y2="11" />
+                                                <line x1="1" y1="6" x2="11" y2="6" />
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="faq-ans">Yes. Stafflynk can be configured based on your team size and
+                                        operational needs.</div>
+                                </div>
+
+                            </section>
+
+
+
+                            <!-- CONTACT BAR -->
+                            <div class="contact-bar">
+                                <div class="contact-info">
+                                    <h3>Still need help?</h3>
+                                    <p>Our support team responds within 2 hours</p>
+                                </div>
+                                <div class="contact-btns">
+                                    <a href="#" class="btn btn-ghost">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                                        </svg>
+                                        Live chat
+                                    </a>
+                                    <a href="mailto:support@helpdesk.com" class="btn btn-white">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                                            <rect x="2" y="4" width="20" height="16" rx="2" />
+                                            <path d="m2 7 10 8 10-8" />
+                                        </svg>
+                                        Email us
+                                    </a>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Container-fluid starts-->
+            {% include 'common/footer.html'%}
+        </div>
+        <!-- page body end  -->
+
+    </div>
+
+
+
+
+    <!-- jquery-->
+    <script src="{% static 'assets/js/vendors/jquery/jquery.min.js' %}"></script>
+    <!-- bootstrap js-->
+    <script src="{% static 'assets/js/vendors/bootstrap/dist/js/bootstrap.bundle.min.js' %}" defer=""></script>
+    <script src="{% static 'assets/js/vendors/bootstrap/dist/js/popper.min.js' %}" defer=""></script>
+    <!--fontawesome-->
+    <script src="{% static 'assets/js/vendors/font-awesome/fontawesome-min.js' %}"></script>
+    <!-- feather-->
+    <script src="{% static 'assets/js/vendors/feather-icon/feather.min.js' %}"></script>
+    <script src="{% static 'assets/js/vendors/feather-icon/custom-script.js' %}"></script>
+    <!-- sidebar -->
+    <script src="{% static 'assets/js/sidebar.js' %}"></script>
+    <!-- height_equal-->
+    <script src="{% static 'assets/js/height-equal.js' %}"></script>
+    <!-- config-->
+    <script src="{% static 'assets/js/config.js' %}"></script>
+    <!-- apex-->
+    <script src="{% static 'assets/js/chart/apex-chart/apex-chart.js' %}"></script>
+    <script src="{% static 'assets/js/chart/apex-chart/stock-prices.js' %}"></script>
+    <!-- scrollbar-->
+    <script src="{% static 'assets/js/scrollbar/simplebar.js' %}"></script>
+    <script src="{% static 'assets/js/scrollbar/custom.js' %}"></script>
+    <!-- slick-->
+    <script src="{% static 'assets/js/slick/slick.min.js' %}"></script>
+    <script src="{% static 'assets/js/slick/slick.js' %}"></script>
+    <!-- data_table-->
+    <script src="{% static 'assets/js/js-datatables/datatables/jquery.dataTables.min.js' %}"></script>
+    <!-- page_datatable-->
+    <script src="{% static 'assets/js/js-datatables/datatables/datatable.custom.js' %}"></script>
+    <!-- page_datatable1-->
+    <script src="{% static 'assets/js/js-datatables/datatables/datatable.custom1.js' %}"></script>
+    <!-- page_datatable-->
+    <script src="{% static 'assets/js/datatable/datatables/datatable.custom.js' %}"></script>
+    <!-- theme_customizer-->
+    <script src="{% static 'assets/js/theme-customizer/customizer.js' %}"></script>
+    <!-- tilt-->
+    <script src="{% static 'assets/js/animation/tilt/tilt.jquery.js' %}"></script>
+    <!-- page_tilt-->
+    <script src="{% static 'assets/js/animation/tilt/tilt-custom.js' %}"></script>
+    <!-- dashboard_1-->
+    <script src="{% static 'assets/js/dashboard/dashboard_1.js' %}"></script>
+
+
+    <!-- slick-->
+    <script src="{% static 'assets/js/slick/slick.min.js' %}"></script>
+    <script src="{% static 'assets/js/slick/slick.js' %}"></script>
+    <!-- datatable-->
+    <script src="{% static 'assets/js/datatable/datatables/jquery.dataTables.min.js' %}"></script>
+    <!-- datatable_extension-->
+    <script src="{% static 'assets/js/datatable/datatable-extension/dataTables.buttons.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/jszip.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/buttons.colVis.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/pdfmake.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/vfs_fonts.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/dataTables.autoFill.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/dataTables.select.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/buttons.bootstrap4.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/buttons.html5.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/buttons.print.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/dataTables.bootstrap4.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/dataTables.responsive.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/responsive.bootstrap4.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/dataTables.keyTable.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/dataTables.colReorder.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/dataTables.fixedHeader.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/dataTables.rowReorder.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/dataTables.scroller.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/custom.js' %}"></script>
+
+    <!-- datatable-->
+    <script src="{% static 'assets/js/datatable/datatables/jquery.dataTables.min.js' %}"></script>
+    <!-- page_datatable -->
+    <script src="{% static 'assets/js/js-datatables/datatables/datatable.custom.js' %}"></script>
+    <!-- page_datatable-->
+    <!-- <script src="{% static 'assets/js/datatable/datatables/datatable.custom.js' %}"></script> -->
+    <!-- theme_customizer-->
+    <script src="{% static 'assets/js/theme-customizer/customizer.js' %}"></script>
+
+    <!-- custom script -->
+    <script src="{% static 'assets/js/script.js' %}"></script>
+
+    <script>
+        document.getElementById("supportForm").addEventListener("submit", function(e) {
+            e.preventDefault();
+
+            fetch("/send-support-email/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": "{{ csrf_token }}"
+                },
+                body: JSON.stringify({
+                    title: document.getElementById("ticketTitle").value,
+                    problem: document.getElementById("ticketProblem").value
+                })
+            })
+            .then(res => res.json())
+            .then(data => alert(data.message));
+        });
+    </script>
+
+
+    <script>
+        function toggleFaq(el) {
+            const isOpen = el.classList.contains('open');
+            document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+            if (!isOpen) el.classList.add('open');
+        }
+
+        function handleSearch() {
+            const q = document.getElementById('searchInput').value.trim();
+            if (q) alert('Searching for: ' + q);
+        }
+
+        document.getElementById('searchInput').addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') handleSearch();
+        });
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const modal = document.getElementById("supportModal");
+            const openBtns = document.querySelectorAll(".openSupportBtn");
+            const closeBtn = document.querySelector(".support-close-btn");
+            const cancelBtn = document.querySelector(".support-cancel-btn");
+
+            // Open modal for all buttons
+            openBtns.forEach(btn => {
+                btn.addEventListener("click", function (e) {
+                    e.preventDefault();
+                    modal.style.display = "flex";
+                });
+            });
+
+            // Close modal
+            function closeModal() {
+                modal.style.display = "none";
+            }
+
+            // Close button
+            if (closeBtn) {
+                closeBtn.addEventListener("click", function (e) {
+                    e.preventDefault();
+                    closeModal();
+                });
+            }
+
+            // Cancel button
+            if (cancelBtn) {
+                cancelBtn.addEventListener("click", function (e) {
+                    e.preventDefault();
+                    closeModal();
+                });
+            }
+
+            // Close when clicking outside
+            window.addEventListener("click", function (e) {
+                if (e.target === modal) {
+                    closeModal();
+                }
+            });
+
+            // ✅ Close on ESC key
+            document.addEventListener("keydown", function (e) {
+                if (e.key === "Escape" && modal.style.display === "flex") {
+                    closeModal();
+                }
+            });
+
+            // Close buttons
+            if (closeBtn) closeBtn.addEventListener("click", closeModal);
+            if (cancelBtn) cancelBtn.addEventListener("click", closeModal);
+
+            // Click outside modal box closes it
+            modal.addEventListener("click", function (e) {
+                if (e.target === modal) {
+                    closeModal();
+                }
+            });
+
+            // Send button action
+            
+        });
+    </script>
+
+</body>
+
+</html>

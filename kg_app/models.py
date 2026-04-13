@@ -351,3 +351,35 @@ class Attendance(models.Model):
     def __str__(self):
         return f"{self.user_id} | {self.date} | {self.status}"
     
+class Feedback(models.Model):
+    RATING_CHOICES = [(i, i) for i in range(1, 6)]
+    NPS_CHOICES = [(i, i) for i in range(0, 11)]
+ 
+    CATEGORY_CHOICES = [
+        ('Design', 'Design & UI'),
+        ('Performance', 'Performance'),
+        ('Features', 'Features'),
+        ('Support', 'Support'),
+        ('Pricing', 'Pricing'),
+        ('Other', 'Other'),
+    ]
+ 
+    # One feedback per admin — enforced by unique constraint on user_id
+    user_id = models.CharField(max_length=255, unique=True, db_index=True)
+ 
+    rating = models.PositiveSmallIntegerField(choices=RATING_CHOICES)
+    category = models.CharField(max_length=20, choices=CATEGORY_CHOICES, blank=True)
+    message = models.TextField(max_length=300, blank=True)
+    nps_score = models.SmallIntegerField(choices=NPS_CHOICES, null=True, blank=True)
+ 
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+ 
+    class Meta:
+        ordering = ['-created_at']
+        verbose_name = 'Feedback'
+        verbose_name_plural = 'Feedback Submissions'
+ 
+    def __str__(self):
+        return f"User {self.user_id} | {'⭐' * self.rating} | {self.category or 'No category'}"
+    

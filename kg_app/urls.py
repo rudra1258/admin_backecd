@@ -17,6 +17,7 @@ urlpatterns = [
     
     path('', views.admin_login, name='index'),
     path('testing/dev/home-page', views.landing_page, name='landing_page'),
+    path('test_screen/', views.test_page, name='test_screen'),
     path('admin_login', views.admin_login, name='admin_login'),
     path('admin_logout/', views.admin_logout, name='admin_logout'),
     
@@ -55,6 +56,11 @@ urlpatterns = [
     path('bulk-delete-tasks/', views.bulk_delete_tasks, name='bulk_delete_tasks'),
     path('pending-bulk-delete-tasks/', views.pending_bulk_delete_tasks, name='pending_bulk_delete_tasks'),
     path('attendance/', views.attendance, name='attendance'),
+    path('support/', views.support, name='support'),
+    path('feedback/', views.feedback, name='feedback'),
+    path("send-support-email/", views.send_support_email, name="send_support_email"),
+    path('submit/', views.submit_feedback, name='submit'),
+    path('list/', views.feedback_list, name='list'),
 
     path('download-sample/', views.download_sample_excel_user_create, name='download_sample_excel'),
     path('import_users_from_excel/', views.import_users_from_excel, name='import_users_from_excel'),

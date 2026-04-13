@@ -25,6 +25,12 @@ import json
 from .attendance_utils import mark_attendance_on_login 
 from django.utils.dateparse import parse_datetime
 
+from django.core.mail import EmailMessage
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_http_methods
+from django.views.decorators.csrf import csrf_exempt
+from .forms import FeedbackForm
+
 
 # Create your views here.
 
@@ -160,6 +166,9 @@ from django.utils.dateparse import parse_datetime
     
 #     return render(request, 'index.html')
 
+def test_page(request):
+    return render(request, "test_screen.html")
+
 def landing_page(request):
     return render(request, "landing_page.html")
 
@@ -197,6 +206,7 @@ def admin_login(request):
                         request.session['admin_id'] = admin_user.admin_id
                         request.session['admin_username'] = admin_user.username
                         request.session['admin_email'] = admin_user.email
+                        request.session['mobile_number'] = admin_user.mobile_number
                         request.session['admin_user_count'] = admin_user.user_count
                         
                         return JsonResponse({
@@ -2275,6 +2285,141 @@ def attendance(request):
     # attendance_list = attendance.objects.filter(admin_id=admin_id_pk).order_by('-date')
     
     return render(request, "attendance.html")
+
+def support(request):
+    session_admin_id = request.session.get("admin_id")
+    session_admin_email = request.session.get("admin_email")
+    session_admin_mobile = request.session.get("mobile_number")
+    session_admin_username = request.session.get("admin_username")
+    # navigate to login page if not login
+    if not session_admin_id:
+        return render(request, 'index.html')
+    return render(request, "support.html", {
+        "admin_email": session_admin_email,
+        "admin_mobile": session_admin_mobile,
+        "admin_username": session_admin_username
+    })
+    
+def feedback(request):
+    session_admin_id = request.session.get("admin_id")
+    # navigate to login page if not login
+    if not session_admin_id:
+        return render(request, 'index.html')
+    admin_id_pk = admin_user_model.objects.get(pk=session_admin_id)    
+    return render(request, "feedback.html")
+
+@csrf_exempt
+def send_support_email(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+
+        title = data.get("title")
+        problem = data.get("problem")
+
+        # Get logged-in user email dynamically
+        # user_email = request.session.get("email")
+        user_email = "rudraprasad7788@gmail.com"
+
+        email = EmailMessage(
+            subject=f"Support Ticket: {title}",
+            body=f"""
+New support ticket received.
+
+Employee Email: {user_email}
+
+Issue Title: {title}
+
+Problem:
+{problem}
+            """,
+            from_email="rudraprasad7788@gmail.com",
+            to=["stafflynk.in@gmail.com"],
+            reply_to=[user_email]
+        )
+
+        email.send(fail_silently=False)
+
+        return JsonResponse({
+            "message": "Support ticket sent successfully ✅"
+        })
+        
+# feedback        
+def feedback_page(request):
+    user_id = request.session.get('admin_id')
+ 
+    if not user_id:
+        return JsonResponse({'error': 'Unauthorized. Please log in.'}, status=401)
+ 
+    existing = Feedback.objects.filter(user_id=user_id).first()
+ 
+    context = {
+        'is_edit': existing is not None,
+        'existing': existing,
+    }
+    return render(request, 'feedback/feedback.html', context)
+ 
+ 
+@require_http_methods(['POST'])
+def submit_feedback(request):
+    user_id = request.session.get('admin_id')
+ 
+    if not user_id:
+        return JsonResponse({'error': 'Unauthorized. Please log in.'}, status=401)
+ 
+    try:
+        data = json.loads(request.body)
+    except (json.JSONDecodeError, ValueError):
+        return JsonResponse({'success': False, 'error': 'Invalid JSON payload.'}, status=400)
+ 
+    # Try to find existing feedback for this user
+    existing = Feedback.objects.filter(user_id=user_id).first()
+ 
+    if existing:
+        # UPDATE existing record
+        form = FeedbackForm(data, instance=existing)
+        created = False
+    else:
+        # CREATE new record — inject user_id into data
+        form = FeedbackForm(data)
+        created = True
+ 
+    if form.is_valid():
+        feedback = form.save(commit=False)
+        feedback.user_id = user_id  # always set user_id before saving
+        feedback.save()
+        return JsonResponse({
+            'success': True,
+            'created': created,
+            'message': 'Feedback submitted!' if created else 'Feedback updated successfully!',
+        }, status=201 if created else 200)
+ 
+    return JsonResponse({'success': False, 'errors': form.errors}, status=400)
+ 
+def feedback_list(request):
+    """Admin-style view listing all feedback submissions."""
+    feedbacks = Feedback.objects.all()
+ 
+    # Optional query filters
+    category = request.GET.get('category')
+    rating = request.GET.get('rating')
+ 
+    if category:
+        feedbacks = feedbacks.filter(category=category)
+    if rating:
+        feedbacks = feedbacks.filter(rating=rating)
+ 
+    context = {
+        'feedbacks': feedbacks,
+        'total': feedbacks.count(),
+        'avg_rating': round(
+            sum(f.rating for f in feedbacks) / feedbacks.count(), 1
+        ) if feedbacks.exists() else 0,
+        'avg_nps': round(
+            sum(f.nps_score for f in feedbacks if f.nps_score is not None) /
+            feedbacks.filter(nps_score__isnull=False).count(), 1
+        ) if feedbacks.filter(nps_score__isnull=False).exists() else None,
+    }
+    return render(request, 'feedback.html', context)
 
 
 
