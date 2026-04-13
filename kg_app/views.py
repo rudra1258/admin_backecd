@@ -240,6 +240,8 @@ def admin_login(request):
                 request.session['admin_id'] = admin_user.admin_id
                 request.session['admin_username'] = admin_user.username
                 request.session['admin_email'] = admin_user.email
+                request.session['mobile_number'] = admin_user.mobile_number
+                request.session['admin_user_count'] = admin_user.user_count
                 
                 # Save session first to generate session key
                 request.session.save()
@@ -2294,6 +2296,9 @@ def support(request):
     # navigate to login page if not login
     if not session_admin_id:
         return render(request, 'index.html')
+    print("Admin email for support:", session_admin_email)
+    print("Admin mobile for support:", session_admin_mobile)
+    print("Admin username for support:", session_admin_username)
     return render(request, "support.html", {
         "admin_email": session_admin_email,
         "admin_mobile": session_admin_mobile,
