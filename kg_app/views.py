@@ -2430,6 +2430,50 @@ def feedback_list(request):
 
 
 
+
+#                ***********************
+#           *****                       *****
+#        ***                                 ***
+#      **                                       **
+#     **                                         **
+#    **            ***********************         **
+#    **           *     LANDING PAGE VIEW    *      **
+#    **            ***********************         **
+#     **                                         **
+#      **                                       **
+#        ***                                 ***
+#           *****                       *****
+#                ***********************
+
+
+def contact_message_submit(request):
+    if request.method == "POST":
+        name = request.POST.get("name")
+        email = request.POST.get("email")
+        mobile = request.POST.get("mobile")
+        message = request.POST.get("message")
+
+        contact_message.objects.create(
+            name=name,
+            email=email,
+            subject=mobile,
+            message=message
+        )
+
+        messages.success(request, "Your message has been received. We'll get back to you shortly!")
+        return redirect("kg_app:landing_page")
+        
+def email_list_submit(request):
+    if request.method == "POST":
+        email = request.POST.get("EMAIL")
+        email_list.objects.create(email=email)
+        messages.success(request, "Your message has been received. We'll get back to you shortly!")
+        return redirect("kg_app:landing_page")
+
+
+
+
+
 #                ***********************
 #           *****                       *****
 #        ***                                 ***

@@ -61,6 +61,8 @@ urlpatterns = [
     path("send-support-email/", views.send_support_email, name="send_support_email"),
     path('submit/', views.submit_feedback, name='submit'),
     path('list/', views.feedback_list, name='list'),
+    path('contact_message_submit/', views.contact_message_submit, name='contact_message_submit'),
+    path('email_list_submit/', views.email_list_submit, name='email_list_submit'),
 
     path('download-sample/', views.download_sample_excel_user_create, name='download_sample_excel'),
     path('import_users_from_excel/', views.import_users_from_excel, name='import_users_from_excel'),

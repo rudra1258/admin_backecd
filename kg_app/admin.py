@@ -104,3 +104,24 @@ class FeedbackAdmin(admin.ModelAdmin):
     def short_message(self, obj):
         return (obj.message[:60] + '...') if len(obj.message) > 60 else obj.message or '—'
     short_message.short_description = 'Message'
+    
+
+
+@admin.register(email_list)
+class EmailListAdmin(admin.ModelAdmin):
+    list_display = ("email_id", "email", "created_at")
+    search_fields = ("email",)
+    list_filter = ("created_at",)
+    ordering = ("-created_at",)
+
+
+@admin.register(contact_message)
+class ContactMessageAdmin(admin.ModelAdmin):
+    list_display = ("message_id", "name", "email", "subject", "created_at")
+    search_fields = ("name", "email", "subject", "message")
+    list_filter = ("created_at",)
+    ordering = ("-created_at",)
+    
+    
+    
+

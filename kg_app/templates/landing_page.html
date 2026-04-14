@@ -32,6 +32,14 @@
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
    <style>
+
+      @media (min-width: 992px) {
+         .col-lg-1 {
+            flex: 0 0 auto;
+            width: 15.333333% !important;
+         }
+      }
+
       .col-lg-8{
          width: 100% !important;
       }
@@ -138,6 +146,42 @@
 
    </style>
 
+   <!-- mini pop up -->
+    <style>
+      .success-popup{
+         position: fixed;
+         top:0;
+         left:0;
+         width:100%;
+         height:100%;
+         background: rgba(0,0,0,0.6);
+         display:flex;
+         justify-content:center;
+         align-items:center;
+         z-index:9999;
+      }
+      .success-box{
+         background:white;
+         padding:30px;
+         border-radius:15px;
+         text-align:center;
+         max-width:400px;
+         box-shadow:0 10px 30px rgba(0,0,0,0.2);
+      }
+      .success-box p{
+         font-size:18px;
+         margin-bottom:20px;
+      }
+      .success-box button{
+         background:#5957c5;
+         color:white;
+         border:none;
+         padding:10px 25px;
+         border-radius:8px;
+         cursor:pointer;
+      }
+   </style>
+
 </head>
 <body class="home theme-creote page-home-default-one">
    <div id="page" class="page_wapper hfeed site">
@@ -151,6 +195,17 @@
             </div>
             <div class="overlay"></div>
          </div>
+
+         {% if messages %}
+            {% for message in messages %}
+               <div id="successPopup" class="success-popup">
+                     <div class="success-box">
+                        <p>{{ message }}</p>
+                        <button onclick="closeSuccessPopup()">OK</button>
+                     </div>
+               </div>
+            {% endfor %}
+         {% endif %}
          <!----pre loader end----->
          <!---- pre loader ----->
          <!-- <div class="preloader-wrap" id="testLoader" style="display:none;">
@@ -172,14 +227,14 @@
                                  <i class="icon-placeholder"></i>
                                  <div class="text">
                                     <small>Location</small>
-                                    <span>61W Business Str Hobert, LA </span>
+                                    <span>Gangotrinagar,Lane 3 (l), Bhubaneswar , 751002</span>
                                  </div>
                               </div>
                               <div class="contntent email">
                                  <i class="icon-email"></i>
                                  <div class="text">
                                     <small>Email</small>
-                                    <a href="mailto:sendmail@creote.com">sendmail@creote.com</a>
+                                    <a href="mailto:sendmail@creote.com">stafflynk.in@gmail.com</a>
                                  </div>
                               </div>
                            </div>
@@ -188,11 +243,11 @@
                                  <i class="icon-phone-call"></i>
                                  <div class="text">
                                     <small>Phone</small>
-                                    <a href="tel:+9806071234">+9806071234</a>
+                                    <a href="tel:+9806071234">+91 63707 13652</a>
                                  </div>
                               </div>
                               <!-- <button onclick="showTestLoader()">Test Loader</button> -->
-                              <div class="contntent media">
+                              <!-- <div class="contntent media">
                                  <i class="icon-share"></i>
                                  <div class="text">
                                     <small>Share</small>
@@ -209,7 +264,7 @@
                                        <i class="fa fa-telegram"></i>
                                     </a>
                                  </div>
-                              </div>
+                              </div> -->
                            </div>
                         </div>
                      </div>
@@ -294,6 +349,7 @@
             <section class="slider style_one pag_position_two">
                <div class="banner_carousel owl-carousel owl_nav_none owl_dots_block theme_carousel owl-theme"
                data-options='{"loop": true, "margin": 0, "autoheight":true, "lazyload":true, "nav": true, "dots": true, "autoplay": true, "autoplayTimeout": 7000, "smartSpeed": 1800, "responsive":{ "0" :{ "items": "1" }, "768" :{ "items" : "1" } , "1000":{ "items" : "1" }}}'>
+
                   <div class="slide-item">
                      <div class="slide-item-content content_left">
                         <div class="image-layer" style="background-image:url({% static  'assets_2/assets/images/sliders/slider-2-bg.jpg' %})"></div>
@@ -308,8 +364,8 @@
                                        Manage employees, automate workflows, monitor attendance, and generate reports —
                                        all in one intelligent system built for modern businesses.
                                     </p>
-                                    <a href="#" target="_blank" rel="nofollow" class="theme-btn one  animated _zoomIn">
-                                       Read More </a>
+                                    <!-- <a href="#" target="_blank" rel="nofollow" class="theme-btn one  animated _zoomIn">
+                                       Read More </a> -->
                                  </div>
                               </div>
                               <div class="col-lg-5 col-md-12  col-sm-12 col-xs-12 image_column">
@@ -321,6 +377,7 @@
                         </div>
                      </div>
                   </div>
+
                   <div class="slide-item">
                      <div class="slide-item-content content_right">
                         <div class="image-layer" style="background-image:url({% static  'assets_2/assets/images/sliders/slider-2-bg.jpg' %})"></div>
@@ -335,8 +392,8 @@
                                        and intelligent automation tools. From enterprise applications to secure data
                                        systems, we deliver technology that improves performance and accelerates growth.
                                     </p>
-                                    <a href="#" target="_blank" rel="nofollow" class="theme-btn one">
-                                       Read More </a>
+                                    <!-- <a href="#" target="_blank" rel="nofollow" class="theme-btn one">
+                                       Read More </a> -->
                                  </div>
                               </div>
                               <div class="col-lg-5 col-md-12  col-sm-12 col-xs-12 image_column">
@@ -348,6 +405,7 @@
                         </div>
                      </div>
                   </div>
+
                   <div class="slide-item">
                      <div class="slide-item-content content_left">
                         <div class="image-layer" style="background-image:url({% static  'assets_2/assets/images/sliders/slider-2-bg.jpg' %})"></div>
@@ -362,8 +420,8 @@
                                        We create secure web platforms, business software, and custom IT solutions that
                                        streamline operations and support long-term innovation for growing companies.
                                     </p>
-                                    <a href="#" target="_blank" rel="nofollow" class="theme-btn one">
-                                       Read More </a>
+                                    <!-- <a href="#" target="_blank" rel="nofollow" class="theme-btn one">
+                                       Read More </a> -->
                                  </div>
                               </div>
                               <div class="col-lg-5 col-md-12  col-sm-12 col-xs-12 image_column">
@@ -375,6 +433,7 @@
                         </div>
                      </div>
                   </div>
+                  
                </div>
             </section>
             <!---slider-end---->
@@ -659,7 +718,7 @@
                                     </li>
                                  </ul>
                                  <div class="toll_free">
-                                    <a href="tel:8917683493"> <i class="icon-phone-call"></i>Call For Free Consultation</a>
+                                    <a href="tel:6370713652"> <i class="icon-phone-call"></i>Call For Free Consultation</a>
                                  </div>
                               </div>
                               <div class="s_tab_wrapper">
@@ -961,7 +1020,7 @@
             <!---price-tab-end--->
 
             <!---testimonial--->
-            <section class="testimonial bg_op_1" style="background-image: url({% static  'assets_2/assets/images/testimonialbg.jpg' %});">
+            <section class="testimonial bg_op_1" id="testimonial_section" style="background-image: url({% static  'assets_2/assets/images/testimonialbg.jpg' %});">
                <div class="row align-items-center">
                   <div class="col-xxl-5 col-xl-5 col-lg-5 col-md-12 pd_zero">
                      <div class="image">
@@ -1314,10 +1373,11 @@
                               <p>For receiving our news and updates in your inbox directly. </p>
                            </div>
                            <div class="item_scubscribe">
-                              <form class="mc4wp-form" method="post" data-name="Subscibe">
+                              <form class="mc4wp-form" method="post" data-name="Subscibe" action="{% url 'kg_app:email_list_submit' %}">
+                                 {% csrf_token %}
                                  <div class="mc4wp-form-fields">
                                     <input type="email" name="EMAIL" placeholder="Your email address" required="">
-                                    <input type="submit" value="Sign up">
+                                    <input type="submit" value="Subscibe">
                                  </div>
                               </form>
                            </div>
@@ -1357,7 +1417,7 @@
                                  <div class="help_con">
                                     <h6>Need Help?</h6>
                                     <h2>
-                                       <a href="#" target="_blank" rel="nofollow"> Free Consultation</a>
+                                       <a class="contact-toggler" rel="nofollow"> Free Consultation</a>
                                     </h2>
                                  </div>
                               </div>
@@ -1367,34 +1427,7 @@
                  
                   </div>
                   <div class="col-lg-1 hidden-lg"></div>
-                  <div class="col-xl-2 col-lg-3 col-md-6 col-sm-12">
-                     <div class="footer_widgets wid_tit style_one">
-                        <div class="fo_wid_title">
-                           <h2>Information</h2>
-                        </div>
-                     </div>
-                     <!--===============spacing==============-->
-                        <div class="mr_bottom_20"></div>
-                     <!--===============spacing==============-->
-                     <div class="footer_widgets clearfix navigation_foo light_color style_one">
-                        <div class="navigation_foo_box">
-                           <div class="navigation_foo_box">
-                              <div class="navigation_foo_inner">
-                                 <div class="menu-information-container">
-                                    <ul class="menu">
-                                       <li class="menu-item"><a href="#">How it’s Work</a></li>
-                                       <li class="menu-item"><a href="#">Partners</a></li>
-                                       <li class="menu-item"><a href="#">Testimonials</a></li>
-                                       <li class="menu-item"><a href="#">Key Areas</a></li>
-                                       <li class="menu-item"><a href="#">Case Studies</a></li>
-                                       <li class="menu-item"><a href="#">Pricing</a></li>
-                                    </ul>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
+                  
                   <div class="col-xl-2 col-lg-3 col-md-6 col-sm-12">
                      <div class="footer_widgets wid_tit style_one">
                         <div class="fo_wid_title">
@@ -1409,12 +1442,11 @@
                            <div class="navigation_foo_inner">
                               
                                  <ul class="menu">
-                                    <li class="menu-item"><a href="#">Careers</a></li>
-                                    <li class="menu-item"><a href="#">Infrastructure</a></li>
-                                    <li class="menu-item"><a href="#">Client Support</a></li>
-                                    <li class="menu-item"><a href="#">Privacy Policy</a></li>
-                                    <li class="menu-item"><a href="#">Terms of Use</a></li>
-                                    <li class="menu-item"><a href="#">Sitemap</a></li>
+                                    <li class="menu-item"><a href="#customer_service_section">About Us</a></li>
+                                    <li class="menu-item"><a href="#service_section">Services</a></li>
+                                    <li class="menu-item"><a href="#pricing_section">Pricing</a></li>
+                                    <li class="menu-item"><a href="#testimonial_section">Feedback</a></li>
+                                    <li class="menu-item"><a href="#faq_section">FAQ's</a></li>
                                  </ul>
                             
                            </div>
@@ -1436,19 +1468,18 @@
                            <div class="foo_cont_inner">
                               <div class="top">
                                  <h6> Location</h6>
-                                 <p> 280 Granite Run Drive Suite #200
-                                    Lancaster, PA 1760
+                                 <p> Gangotrinagar,Lane 3 (l), Bhubaneswar , 751002
                                  </p>
                               </div>
                               <div class="bottom">
                                  <h6> Contact</h6>
                                  <div class="con_content">
                                     <h5> Phone :</h5>
-                                    <a href="tel:+9806071234"> +98 060 712 34</a>
+                                    <a href="tel:+916370713652">+91 63707 13652</a>
                                  </div>
                                  <div class="con_content">
                                     <h5> Mail Us :</h5>
-                                    <a href="tel:sendmail@creote.com"> sendmail@creote.com</a>
+                                    <a href="mailto:stafflynk.in@gmail.com"> stafflynk.in@gmail.com</a>
                                  </div>
                               </div>
                            </div>
@@ -1469,7 +1500,7 @@
                <div class="row align-items-center">
                   <div class="col-lg-6 col-md-12 col-sm-12">
                      <div class="footer_copy_content">
-                        © 2023 <a href="https://themeforest.net/user/steelthemes">Steelthemes.</a> All Rights
+                        © 2025 <a href="https://themeforest.net/user/steelthemes">Steelthemes.</a> All Rights
                         Reserved.
                      </div>
                   </div>
@@ -1535,7 +1566,8 @@
                <div class="row">
                   <div class="col-lg-5 col-md-12 form_inner">
                      <div class="form_content">
-                        <form class="contact-form" method="post" action="sendemail.php">
+                        <form class="contact-form" method="post" action="{% url 'kg_app:contact_message_submit' %}">
+                           {% csrf_token %}
                            <p>
                               <label> Your name<br />
                                  <input type="text" name="name" value="" size="40" aria-required="true"
@@ -1552,9 +1584,9 @@
                               </label>
                            </p>
                            <p>
-                              <label> Subject<br />
-                                 <input type="text" name="subject" value="" size="40" aria-required="true"
-                                    aria-invalid="false" placeholder="Enter Your Subject" />
+                              <label>Mobile No.<br />
+                                 <input type="tel" name="mobile" value=""  aria-required="true" maxlength="10" pattern="[0-9]{10}" oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                                 inputmode="numeric" aria-invalid="false" placeholder="Enter Your Mobile No." />
                                  <br />
                                  <i class="fa fa-folder"></i><br />
                               </label>
@@ -1653,6 +1685,11 @@
             setTimeout(() => {
                loader.style.display = "none";
             }, 3000);
+         }
+      </script>
+      <script>
+         function closeSuccessPopup() {
+            document.getElementById("successPopup").style.display = "none";
          }
       </script>
 
