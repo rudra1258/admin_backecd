@@ -25,6 +25,11 @@ class GsLoginSerializer(serializers.ModelSerializer):
     class Meta:
         model = GsLogin
         fields = '__all__'
+
+class RepoLoginSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RepoLogin
+        fields = '__all__'
         
 class TlLoginSerializer(serializers.ModelSerializer):
     class Meta:

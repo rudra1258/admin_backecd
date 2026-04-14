@@ -2363,7 +2363,6 @@ def feedback_page(request):
     }
     return render(request, 'feedback/feedback.html', context)
  
- 
 @require_http_methods(['POST'])
 def submit_feedback(request):
     user_id = request.session.get('admin_id')
@@ -4063,3 +4062,97 @@ def get_all_attendance(request):
 
     serializer = AttendanceSerializer(qs, many=True)
     return Response({'success': True, 'data': serializer.data})
+
+@api_view(['POST'])
+def create_repo_login(request):
+    """
+    API to create a new GS Login record
+    Required fields: admin_id, name, email, mobile_no, status, image, longitude, latitude
+    """
+    try:
+        # Get data from request
+        user_id = request.data.get('user_id')
+        admin_id = request.data.get('admin_id')
+        name = request.data.get('name')
+        email = request.data.get('email')
+        mobile_no = request.data.get('mobile_no')
+        status_value = request.data.get('status')
+        image = request.FILES.get('image')
+        longitude = request.data.get('longitude')
+        latitude = request.data.get('latitude')
+        login_time = request.data.get('login_time', None)
+        logout_time = request.data.get('logout_time', None)
+        login_status = request.data.get('login_status')
+
+        # Validate required fields
+        if not all([user_id, admin_id, name, email, mobile_no, status_value, image, longitude, latitude, login_time, login_status]):
+            return Response({
+                'success': False,
+                'message': 'All fields are required: user_id, admin_id, name, email, mobile_no, status, image, longitude, latitude, login_time, login_status'
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+        # Check if email already exists
+        # if GsLogin.objects.filter(email=email).exists():
+        #     return Response({
+        #         'success': False,
+        #         'message': 'Email already exists'
+        #     }, status=status.HTTP_400_BAD_REQUEST)
+
+        # # Check if mobile number already exists
+        # if GsLogin.objects.filter(mobile_no=mobile_no).exists():
+        #     return Response({
+        #         'success': False,
+        #         'message': 'Mobile number already exists'
+        #     }, status=status.HTTP_400_BAD_REQUEST)
+
+        # Create new GsLogin record
+        try:
+            user = CreateUser.objects.get(pk=user_id)
+        except CreateUser.DoesNotExist:
+            return Response({
+                'success': False,
+                'message': f'User with id {user_id} does not exist'
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        repo_login = RepoLogin.objects.create(
+            user_id=user,
+            admin_id=admin_id,
+            name=name,
+            email=email,
+            mobile_no=mobile_no,
+            status=status_value,
+            image=image,
+            longitude=longitude,
+            latitude=latitude,
+            login_time=login_time if login_time else None,
+            logout_time=logout_time if logout_time else None
+        )
+        
+        user.login_status = login_status
+        user.save()
+        
+        # ────────────────────────────────────────────
+        # ATTENDANCE: parse login_time and mark today
+        # ────────────────────────────────────────────
+        # parsed_login = parse_datetime(str(login_time)) or timezone.now()
+        # attendance_status = mark_attendance_on_login(user, admin_id, parsed_login)
+        # ────────────────────────────────────────────
+
+        # Serialize and return the created object
+        serializer = RepoLoginSerializer(repo_login)
+        
+        return Response({
+            'success': True,
+            'message': 'GS Login record created successfully',
+            # 'attendance_marked': attendance_status,
+            'data': serializer.data
+        }, status=status.HTTP_201_CREATED)
+
+    except Exception as e:
+        return Response({
+            'success': False,
+            'message': str(e)
+        }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+

@@ -106,6 +106,7 @@ urlpatterns = [
     path('update-image-status-drf/', views.update_api_image_status_drf, name='update_image_status_drf'),
     path('gs-login/create/', views.create_gs_login, name='create_gs_login'),#http://127.0.0.1:8000/api/v1/gs-login/create/
     path('tl-login/create/', views.create_tl_login, name='create_tl_login'),#http://127.0.0.1:8000/api/v1/tl-login/create/
+    path('repo-login/create/', views.create_repo_login, name='create_repo_login'),#http://127.0.0.1:8000/api/v1/repo-login/create/
     
     # task GET endpoints
     path('tasks/get/', views.get_tasks, name='get_tasks'),#http://127.0.0.1:8000/api/v1/tasks/get/
