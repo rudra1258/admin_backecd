@@ -35,6 +35,7 @@ urlpatterns = [
     path('groundstaff/', views.groundstaff, name='groundstaff'),
     path('repo_boy/', views.repo_boy, name='repo_boy'),
     path('gs_login/', views.gs_login, name='gs_login'),
+    path('repo_login/', views.repo_login, name='repo_login'),
     path('leave/', views.leave, name='leave'),
     path('get-leave-details/', views.get_leave_details, name='get_leave_details'),
     path('approve_leave/', views.approve_leave, name='approve_leave'),

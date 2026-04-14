@@ -1683,6 +1683,18 @@ def gs_login(request):
     
     return render(request, "gs_login.html", {"login_status":login_status})
 
+def repo_login(request):
+    session_admin_id = request.session.get("admin_id")
+    # navigate to login page if not login
+    if not session_admin_id:
+        return render(request, 'index.html')
+    
+    login_status = RepoLogin.objects.filter(admin_id = session_admin_id).order_by('-login_time')
+    
+    print(f"Ground Staff Login Status Count: {login_status.count()}")
+    
+    return render(request, "repo_login.html", {"login_status":login_status})
+
 def leave(request):
     session_admin_id = request.session.get("admin_id")
     # navigate to login page if not login
