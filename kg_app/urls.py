@@ -235,6 +235,7 @@ urlpatterns = [
     
     path('update-gs-login/<int:gs_login_id>/', views.update_gs_login, name='update_gs_login'),
     path('update-tl-login/<int:tl_login_id>/', views.update_tl_login, name='update_tl_login'),
+    path('update-repo-login/<int:repo_login_id>/', views.update_repo_login, name='update_repo_login'),
 
 
     path('leave-request/create/', LeaveRequestCreateAPIView.as_view(), name='leave-request-create'),

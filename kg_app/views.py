@@ -4011,6 +4011,49 @@ def update_tl_login(request, tl_login_id):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+@api_view(['PATCH'])
+@parser_classes([JSONParser, MultiPartParser, FormParser])
+def update_repo_login(request, repo_login_id):
+    try:
+        repo_login = RepoLogin.objects.get(gs_login_id=repo_login_id)
+    except RepoLogin.DoesNotExist:
+        return Response(
+            {"error": "Repo Login not found"},
+            status=status.HTTP_404_NOT_FOUND
+        )
+
+    serializer = RepoLoginUpdateSerializer(
+        repo_login,
+        data=request.data,
+        partial=True   # 🔥 THIS makes PATCH work
+    )
+    
+    print("Updating GS Login ID:", request.data.get('login_time'), "with data:", request.data)  # DEBUG
+
+    if serializer.is_valid():
+        serializer.save()
+
+        # ✅ Update login_status in CreateUser if status is being updated
+        new_status = request.data.get('status')
+        if new_status and repo_login.user_id:
+            try:
+                create_user = CreateUser.objects.get(id=repo_login.user_id.id)
+                create_user.login_status = new_status  # maps repo_login.status → CreateUser.login_status
+                create_user.save(update_fields=['login_status'])
+            except CreateUser.DoesNotExist:
+                pass  # user_id reference broken, skip silently
+
+        return Response(
+            {
+                "message": "GS Login updated successfully",
+                "data": serializer.data
+            },
+            status=status.HTTP_200_OK
+        )
+
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 class LeaveRequestCreateAPIView(APIView):
 
     def post(self, request):

@@ -197,6 +197,21 @@ class TlLoginUpdateSerializer(serializers.ModelSerializer):
             'latitude',
             'longitude',
         ]
+        
+class RepoLoginUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = GsLogin
+        fields = [
+            'name',
+            'email',
+            'mobile_no',
+            'status',
+            'login_time',
+            'logout_time',
+            'image',
+            'latitude',
+            'longitude',
+        ]
 
 # leave request post method 
 class LeaveRequestSerializer(serializers.ModelSerializer):
