@@ -3858,6 +3858,38 @@ def get_tl_login_by_user_id(request, user_id):
             "status": False,
             "message": "No GS login found for this user"
         }, status=status.HTTP_404_NOT_FOUND)
+        
+@api_view(['GET'])
+def get_repo_login_by_user_id(request, user_id):
+    try:
+        repo_login = RepoLogin.objects.get(user_id=user_id)
+
+        data = {
+            "gs_login_id": repo_login.gs_login_id,
+            "user_id": repo_login.user_id.id if repo_login.user_id else None,
+            "admin_id": repo_login.admin_id,
+            "name": repo_login.name,
+            "email": repo_login.email,
+            "mobile_no": repo_login.mobile_no,
+            "status": repo_login.status,
+            "login_time": repo_login.login_time,
+            "logout_time": repo_login.logout_time,
+            "image": repo_login.image.name if repo_login.image else None,
+            "latitude": repo_login.latitude,
+            "longitude": repo_login.longitude,
+        }
+
+        return Response({
+            "status": True,
+            "message": "GS login fetched successfully",
+            "data": data
+        }, status=status.HTTP_200_OK)
+
+    except RepoLogin.DoesNotExist:
+        return Response({
+            "status": False,
+            "message": "No Repo login found for this user"
+        }, status=status.HTTP_404_NOT_FOUND)
 
 
 

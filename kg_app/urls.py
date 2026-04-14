@@ -226,6 +226,7 @@ urlpatterns = [
     # method get - -
     path( 'gs-login/<int:user_id>/', get_gs_login_by_user_id, name='get_gs_login_by_user_id' ),
     path( 'tl-login/<int:user_id>/', get_tl_login_by_user_id, name='get_tl_login_by_user_id' ),
+    path( 'repo-login/<int:user_id>/', get_repo_login_by_user_id, name='get_repo_login_by_user_id' ),
     # http://127.0.0.1:8000/api/v1/gs-login/23/
     
     # to update gs login details by gs_login_id
