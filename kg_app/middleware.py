@@ -99,8 +99,10 @@ class AutoLogoutMiddleware:
         expiry_time = timezone.now() - timedelta(hours=10)
 
         self._auto_logout(GsLogin, expiry_time)
+        self._auto_logout(RepoLogin, expiry_time)
         self._auto_logout(TlLogin, expiry_time)
         self._auto_logout(TcLogin, expiry_time)
+        
 
         response = self.get_response(request)
         return response
