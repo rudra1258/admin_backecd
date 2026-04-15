@@ -4241,5 +4241,29 @@ def create_repo_login(request):
             'message': str(e)
         }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+class TasksWithRegistrationNumberView(APIView):
+    def get(self, request):
+        admin_id = request.query_params.get('admin_id', None)
+
+        # Filter out empty/null/zero registration numbers
+        queryset = Create_task.objects.exclude(
+            Q(registration_number__isnull=True) |
+            Q(registration_number='') |
+            Q(registration_number='0')
+        )
+
+        # Further filter by admin_id if provided
+        if admin_id:
+            queryset = queryset.filter(admin_id=admin_id)
+
+        serializer = CreateTaskSerializer(queryset, many=True)
+        return Response({
+            "status": True,
+            "count": queryset.count(),
+            "data": serializer.data
+        }, status=status.HTTP_200_OK)
+
+
+
 
 

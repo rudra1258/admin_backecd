@@ -248,6 +248,8 @@ urlpatterns = [
 
     path('attendance/user/<int:user_id>/', get_user_attendance),
     path('attendance/all/', get_all_attendance),
+    
+    path('tasks/with-registration/', TasksWithRegistrationNumberView.as_view(), name='tasks-with-registration'),
 
 
 ]
