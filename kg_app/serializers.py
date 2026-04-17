@@ -249,4 +249,14 @@ class AttendanceSerializer(serializers.ModelSerializer):
         model  = Attendance
         fields = '__all__'
 
+class TrackRepoSearchHistorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = track_repo_search_history
+        fields = '__all__'
+
+
+
+
+
+
 

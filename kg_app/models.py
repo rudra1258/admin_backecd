@@ -303,7 +303,7 @@ class leave_request(models.Model):
     admin_id = models.ForeignKey(admin_user_model, on_delete = models.CASCADE)
     user_id = models.ForeignKey(CreateUser, on_delete = models.CASCADE)
     user_name = models.CharField(max_length=100)
-    user_email = models.CharField()
+    user_email = models.CharField(max_length = 80)
     user_mobile = models.CharField(max_length=15)
     role = models.CharField(max_length=50)
     leave_type = models.CharField(max_length=50)
@@ -354,34 +354,27 @@ class Attendance(models.Model):
 class Feedback(models.Model):
     RATING_CHOICES = [(i, i) for i in range(1, 6)]
     NPS_CHOICES = [(i, i) for i in range(0, 11)]
- 
-    CATEGORY_CHOICES = [
-        ('Design', 'Design & UI'),
-        ('Performance', 'Performance'),
-        ('Features', 'Features'),
-        ('Support', 'Support'),
-        ('Pricing', 'Pricing'),
-        ('Other', 'Other'),
-    ]
- 
-    # One feedback per admin — enforced by unique constraint on user_id
+
     user_id = models.CharField(max_length=255, unique=True, db_index=True)
- 
     rating = models.PositiveSmallIntegerField(choices=RATING_CHOICES)
-    category = models.CharField(max_length=20, choices=CATEGORY_CHOICES, blank=True)
+
+    # store multiple categories safely
+    category = models.TextField(blank=True)
+
     message = models.TextField(max_length=300, blank=True)
     nps_score = models.SmallIntegerField(choices=NPS_CHOICES, null=True, blank=True)
- 
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
- 
+
     class Meta:
         ordering = ['-created_at']
-        verbose_name = 'Feedback'
-        verbose_name_plural = 'Feedback Submissions'
- 
+
+    def get_categories(self):
+        return self.category.split(',') if self.category else []
+
     def __str__(self):
-        return f"User {self.user_id} | {'⭐' * self.rating} | {self.category or 'No category'}"
+        return f"{self.user_id} | {self.rating}"
  
 class email_list(models.Model):
     email_id = models.AutoField(primary_key=True)
@@ -401,5 +394,19 @@ class contact_message(models.Model):
 
     def __str__(self):
         return f"{self.name} - {self.subject}" 
- 
+
+class track_repo_search_history(models.Model):
+    search_id = models.AutoField(primary_key=True)
+    admin_id = models.ForeignKey(admin_user_model, on_delete=models.CASCADE, default = 1)
+    user_id = models.ForeignKey(CreateUser, on_delete=models.CASCADE)
+    search_query = models.CharField(max_length=255)
+    vehicle_registration_number = models.CharField(max_length=30)
+    customer_name = models.CharField(max_length=100)
+    customer_mobile_number = models.CharField(max_length=15)
+    search_time = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"User {self.user_id} | {self.search_query} | {self.search_time}"
+    
+    
     

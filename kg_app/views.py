@@ -30,6 +30,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
 from .forms import FeedbackForm
+from rest_framework.generics import ListCreateAPIView
+
 
 
 # Create your views here.
@@ -2378,38 +2380,44 @@ def feedback_page(request):
 @require_http_methods(['POST'])
 def submit_feedback(request):
     user_id = request.session.get('admin_id')
- 
+
     if not user_id:
-        return JsonResponse({'error': 'Unauthorized. Please log in.'}, status=401)
- 
+        return JsonResponse({
+            'success': False,
+            'error': 'Unauthorized. Please log in.'
+        }, status=401)
+
     try:
         data = json.loads(request.body)
-    except (json.JSONDecodeError, ValueError):
-        return JsonResponse({'success': False, 'error': 'Invalid JSON payload.'}, status=400)
- 
-    # Try to find existing feedback for this user
-    existing = Feedback.objects.filter(user_id=user_id).first()
- 
-    if existing:
-        # UPDATE existing record
-        form = FeedbackForm(data, instance=existing)
-        created = False
-    else:
-        # CREATE new record — inject user_id into data
-        form = FeedbackForm(data)
-        created = True
- 
-    if form.is_valid():
-        feedback = form.save(commit=False)
-        feedback.user_id = user_id  # always set user_id before saving
-        feedback.save()
+    except json.JSONDecodeError:
         return JsonResponse({
-            'success': True,
-            'created': created,
-            'message': 'Feedback submitted!' if created else 'Feedback updated successfully!',
-        }, status=201 if created else 200)
- 
-    return JsonResponse({'success': False, 'errors': form.errors}, status=400)
+            'success': False,
+            'error': 'Invalid JSON payload.'
+        }, status=400)
+
+    rating = data.get('rating')
+    categories = data.get('category', [])
+    message = data.get('message', '').strip()
+    nps_score = data.get('nps_score')
+
+    # convert list -> string
+    category_str = ','.join(categories) if isinstance(categories, list) else ''
+
+    feedback, created = Feedback.objects.update_or_create(
+        user_id=user_id,
+        defaults={
+            'rating': rating,
+            'category': category_str,
+            'message': message,
+            'nps_score': nps_score,
+        }
+    )
+
+    return JsonResponse({
+        'success': True,
+        'created': created,
+        'message': 'Feedback submitted!' if created else 'Feedback updated successfully!',
+    }, status=201 if created else 200)
  
 def feedback_list(request):
     """Admin-style view listing all feedback submissions."""
@@ -4262,6 +4270,20 @@ class TasksWithRegistrationNumberView(APIView):
             "count": queryset.count(),
             "data": serializer.data
         }, status=status.HTTP_200_OK)
+
+class SearchHistoryListCreateAPI(ListCreateAPIView):
+    serializer_class = TrackRepoSearchHistorySerializer
+
+    def get_queryset(self):
+        queryset = track_repo_search_history.objects.all().order_by('-search_time')
+
+        admin_id = self.request.query_params.get('admin_id')
+
+        if admin_id:
+            queryset = queryset.filter(admin_id=admin_id)
+
+        return queryset
+
 
 
 

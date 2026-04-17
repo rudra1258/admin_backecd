@@ -641,11 +641,11 @@
                         </div>
 
                         {# Pass existing data cleanly via hidden inputs — no JS injection issues #}
-                        <input type="" id="prefill-rating"
+                        <input type="hidden" id="prefill-rating"
                             value="{% if existing %}{{ existing.rating }}{% else %}0{% endif %}">
-                        <input type="" id="prefill-category"
+                        <input type="hidden" id="prefill-category"
                             value="{% if existing %}{{ existing.category }}{% else %}{% endif %}">
-                        <input type="" id="prefill-nps"
+                        <input type="hidden" id="prefill-nps"
                             value="{% if existing %}{{ existing.nps_score }}{% else %}{% endif %}">
 
 
@@ -742,6 +742,7 @@
 
     <!-- custom script -->
     <script src="{% static 'assets/js/script.js' %}"></script>
+    <!-- 7077777762 -->
 
     <script>
         const SUBMIT_URL = "{% url 'kg_app:submit' %}";
@@ -755,9 +756,10 @@
         const prefillNps = prefillNpsRaw !== '' ? parseInt(prefillNpsRaw) : null;
 
         const ratingLabels = ['', 'Terrible', 'Poor', 'Okay', 'Good', 'Excellent'];
+
         let rating = 0;
         let npsScore = null;
-        let selectedCat = '';
+        let selectedCat = [];
 
         const stars = document.querySelectorAll('.star');
         const ratingLabel = document.getElementById('rating-label');
@@ -770,7 +772,7 @@
         const toastMsg = document.getElementById('toast-msg');
 
         // Build NPS buttons
-        for (let i = 0; i <= 10; i++) {
+        for (let i = 1; i <= 10; i++) {
             const btn = document.createElement('button');
             btn.type = 'button';
             btn.className = 'nps-btn';
@@ -783,46 +785,62 @@
         function setRating(val) {
             rating = val;
             ratingLabel.textContent = ratingLabels[val] || '';
+
             stars.forEach(s => {
                 s.classList.remove('hovered');
                 s.classList.toggle('active', +s.dataset.v <= val);
             });
+
             submitBtn.disabled = false;
         }
 
         stars.forEach(star => {
             const val = +star.dataset.v;
+
             star.addEventListener('mouseenter', () => {
                 stars.forEach(s => {
                     s.classList.toggle('hovered', +s.dataset.v <= val && +s.dataset.v > rating);
                     s.classList.toggle('active', +s.dataset.v <= rating);
                 });
             });
+
             star.addEventListener('mouseleave', () => {
                 stars.forEach(s => {
                     s.classList.remove('hovered');
                     s.classList.toggle('active', +s.dataset.v <= rating);
                 });
             });
+
             star.addEventListener('click', () => setRating(val));
         });
 
-        // ── Category functions ───────────────────────────────────────
-        function setCategory(cat) {
-            selectedCat = cat;
-            document.querySelectorAll('.cat-btn').forEach(b => {
-                b.classList.toggle('selected', b.dataset.cat === cat);
+        // ── Category functions (MULTI SELECT) ───────────────────────
+        function toggleCategory(cat) {
+            const index = selectedCat.indexOf(cat);
+
+            if (index > -1) {
+                selectedCat.splice(index, 1); // remove
+            } else {
+                selectedCat.push(cat); // add
+            }
+
+            document.querySelectorAll('.cat-btn').forEach(btn => {
+                btn.classList.toggle(
+                    'selected',
+                    selectedCat.includes(btn.dataset.cat)
+                );
             });
         }
 
         document.getElementById('categories').addEventListener('click', e => {
             const btn = e.target.closest('.cat-btn');
-            if (btn) setCategory(btn.dataset.cat);
+            if (btn) toggleCategory(btn.dataset.cat);
         });
 
         // ── NPS functions ────────────────────────────────────────────
         function setNPS(val) {
             npsScore = val;
+
             document.querySelectorAll('.nps-btn').forEach(b => {
                 b.classList.toggle('selected', +b.dataset.n === val);
             });
@@ -841,9 +859,22 @@
         // ── Pre-fill on page load ────────────────────────────────────
         if (IS_EDIT) {
             if (prefillRating > 0) setRating(prefillRating);
-            if (prefillCategory !== '') setCategory(prefillCategory);
+
+            if (prefillCategory !== '') {
+                selectedCat = prefillCategory.split(',').map(cat => cat.trim());
+
+                document.querySelectorAll('.cat-btn').forEach(btn => {
+                    btn.classList.toggle(
+                        'selected',
+                        selectedCat.includes(btn.dataset.cat)
+                    );
+                });
+            }
+
             if (prefillNps !== null) setNPS(prefillNps);
-            // message + char count already rendered server-side in the textarea
+
+            // message + char count already rendered server-side
+            charCount.textContent = msgArea.value.length;
         }
 
         // ── Toast helper ─────────────────────────────────────────────
@@ -851,12 +882,14 @@
             toastMsg.textContent = msg;
             toast.className = 'toast ' + type;
             toast.classList.add('show');
+
             setTimeout(() => toast.classList.remove('show'), 3500);
         }
 
         // ── Submit ───────────────────────────────────────────────────
         submitBtn.addEventListener('click', async () => {
             if (rating === 0) return;
+
             submitBtn.disabled = true;
             submitBtn.textContent = IS_EDIT ? 'Updating...' : 'Sending...';
             errorMsg.style.display = 'none';
@@ -880,7 +913,7 @@
 
                 if (data.success) {
                     showToast(data.message, 'success');
-                    submitBtn.textContent = 'Update Feedback';
+                    submitBtn.textContent = IS_EDIT ? 'Update Feedback' : 'Send Feedback';
                     submitBtn.disabled = false;
                 } else {
                     const errs = Object.values(data.errors || {}).flat().join(' ');

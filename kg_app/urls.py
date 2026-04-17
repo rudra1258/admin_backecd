@@ -250,6 +250,20 @@ urlpatterns = [
     path('attendance/all/', get_all_attendance),
     
     path('tasks/with-registration/', TasksWithRegistrationNumberView.as_view(), name='tasks-with-registration'),
+    
+    path('search-history/', SearchHistoryListCreateAPI.as_view(), name='search_history_api'),
+    # POST /api/v1/search-history/
+    # request body:
+    # {
+    #     "admin_id": 1,
+    #     "user_id": 5,
+    #     "search_query": "Honda City",
+    #     "vehicle_registration_number": "OD02AB1234",
+    #     "customer_name": "Rudra",
+    #     "customer_mobile_number": "9876543210"
+    # }
+    # GET /api/v1/search-history/
+    # GET /api/v1/search-history/?admin_id=1
 
 
 ]
