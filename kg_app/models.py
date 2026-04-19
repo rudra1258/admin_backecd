@@ -409,4 +409,35 @@ class track_repo_search_history(models.Model):
         return f"User {self.user_id} | {self.search_query} | {self.search_time}"
     
     
-    
+class MarqueeMessage(models.Model):
+    id = models.AutoField(primary_key=True)
+    message = models.TextField(help_text="Text to display in the marquee banner.")
+    is_active = models.BooleanField(
+        default=True,
+        help_text="Toggle to show or hide the marquee on the site."
+    )
+    speed = models.PositiveIntegerField(
+        default=40,
+        help_text="Scroll speed in seconds (lower = faster)."
+    )
+    background_color = models.CharField(
+        max_length=20,
+        default="#5250c3",
+        help_text="Background color (hex or CSS value)."
+    )
+    text_color = models.CharField(
+        max_length=20,
+        default="#ffffff",
+        help_text="Text color (hex or CSS value)."
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+ 
+    class Meta:
+        verbose_name = "Marquee Message"
+        verbose_name_plural = "Marquee Messages"
+        ordering = ["-created_at"]
+ 
+    def __str__(self):
+        status = "✅ Active" if self.is_active else "❌ Hidden"
+        return f"[{status}] {self.message[:60]}"

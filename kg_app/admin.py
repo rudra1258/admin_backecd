@@ -122,6 +122,12 @@ class ContactMessageAdmin(admin.ModelAdmin):
     list_filter = ("created_at",)
     ordering = ("-created_at",)
     
-    
+@admin.register(MarqueeMessage)
+class MarqueeMessageAdmin(admin.ModelAdmin):
+    list_display = ("message", "is_active", "updated_at")
+    list_editable = ("is_active",)
+    fields = ("message", "is_active")
+
+
     
 

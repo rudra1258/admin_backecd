@@ -32,6 +32,9 @@ from django.views.decorators.csrf import csrf_exempt
 from .forms import FeedbackForm
 from rest_framework.generics import ListCreateAPIView
 
+from django.contrib.admin.views.decorators import staff_member_required
+from django.views.decorators.http import require_POST
+
 
 
 # Create your views here.
@@ -1637,8 +1640,14 @@ def dashboard(request):
     print(f"Pending leave requests count: {leave_request_data}")
 
     leave_requests_length = len(leave_requests)
+    marquee = MarqueeMessage.objects.filter(is_active=True).first()
+    all_marquees = MarqueeMessage.objects.all()
+    context = {
+        "marquee": marquee,
+        "all_marquees": all_marquees,
+    }
     
-    return render(request, "dashboard.html", {
+    return render(request, "dashboard.html",  {
         "user_length":user_length, 
         "login_status_len":login_status_len,
         "leave_requests_length":leave_requests_length,
@@ -1649,6 +1658,7 @@ def dashboard(request):
         "telecallers_json": telecallers_json,
         "teamleads_json": teamleads_json,
         "groundstaff_json": groundstaff_json,
+        "marquee": marquee,
         })
 
 def groundstaff(request):
@@ -2445,6 +2455,75 @@ def feedback_list(request):
     }
     return render(request, 'feedback.html', context)
 
+def repo_search_history(request):
+    session_admin_id = request.session.get("admin_id")
+    # navigate to login page if not login
+    if not session_admin_id:
+        return render(request, 'index.html')
+    admin_id_pk = admin_user_model.objects.get(pk=session_admin_id)
+    
+    search_history = track_repo_search_history.objects.filter(admin_id=admin_id_pk).order_by('-search_time')
+    
+    return render(request, "repo_search_history.html", {"search_history": search_history})
+
+
+
+def marquee_demo(request):
+    """
+    Public demo page that shows the marquee section with a toggle button.
+    """
+    marquee = MarqueeMessage.objects.filter(is_active=True).first()
+    all_marquees = MarqueeMessage.objects.all()
+    context = {
+        "marquee": marquee,
+        "all_marquees": all_marquees,
+    }
+    return render(request, "test_screen.html", {"marquee": marquee,})
+ 
+ 
+@staff_member_required
+def toggle_marquee(request, pk):
+    """
+    Admin shortcut: toggle is_active on a MarqueeMessage, then redirect back to list.
+    Accessible from the admin list's "Toggle" button.
+    """
+    obj = get_object_or_404(MarqueeMessage, pk=pk)
+    obj.is_active = not obj.is_active
+    obj.save(update_fields=["is_active"])
+    return redirect("/admin/marquee_app/marqueemessage/")
+ 
+ 
+@csrf_exempt
+@require_POST
+def toggle_marquee_api(request, pk):
+    """
+    AJAX endpoint: toggle is_active and return the new state as JSON.
+    Called by the front-end toggle button (no page reload needed).
+    """
+    obj = get_object_or_404(MarqueeMessage, pk=pk)
+    obj.is_active = not obj.is_active
+    obj.save(update_fields=["is_active"])
+    return JsonResponse({
+        "id": obj.pk,
+        "is_active": obj.is_active,
+        "message": obj.message,
+    })
+ 
+ 
+def get_active_marquee_api(request):
+    """
+    Returns the currently active marquee as JSON (useful for JS fetch / polling).
+    """
+    marquee = MarqueeMessage.objects.filter(is_active=True).first()
+    if marquee:
+        return JsonResponse({
+            "is_active": True,
+            "message": marquee.message,
+            "background_color": marquee.background_color,
+            "text_color": marquee.text_color,
+            "speed": marquee.speed,
+        })
+    return JsonResponse({"is_active": False})
 
 
 

@@ -15,7 +15,8 @@ urlpatterns = [
     # admin urls 
     
     
-    path('', views.admin_login, name='index'),
+    path('login/', views.admin_login, name='index'),
+    path('', views.landing_page, name='landing_page'),
     path('testing/dev/home-page', views.landing_page, name='landing_page'),
     path('test_screen/', views.test_page, name='test_screen'),
     path('admin_login', views.admin_login, name='admin_login'),
@@ -68,6 +69,23 @@ urlpatterns = [
     path('download-sample/', views.download_sample_excel_user_create, name='download_sample_excel'),
     path('import_users_from_excel/', views.import_users_from_excel, name='import_users_from_excel'),
     path('download-failed-rows/', views.download_failed_import_rows, name='download_failed_rows'),
+    
+    
+    path('repo-search-history/', views.repo_search_history, name='repo_search_history'),
+
+    path(
+        "admin/marquee_app/marqueemessage/<int:pk>/toggle/",
+        views.toggle_marquee,
+        name="toggle_marquee",
+    ),
+    
+    path("marquee/", views.marquee_demo, name="marquee_demo"),
+ 
+    # AJAX / API endpoints
+    path("api/marquee/active/", views.get_active_marquee_api, name="active_marquee_api"),
+    path("api/marquee/<int:pk>/toggle/", views.toggle_marquee_api, name="toggle_marquee_api"),
+
+
     
     # Task Import URLs
     path('import-tasks/', views.import_tasks_from_excel, name='import_tasks'),

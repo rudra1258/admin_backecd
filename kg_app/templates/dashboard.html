@@ -506,6 +506,82 @@
       box-shadow: 0 0 6px rgba(255, 255, 255, 0.8);
     }
   </style>
+
+  <style>
+    /* ── Marquee Bar ── */
+
+    :root {
+      --brand: #5250c3;
+      --brand-light: #7b79d4;
+      --brand-glow: rgba(82, 80, 195, 0.35);
+      --bg: #0d0c1a;
+      --surface2: #1c1b38;
+      --text: #e8e7ff;
+      --muted: #8886bb;
+      --border: rgba(82, 80, 195, 0.25);
+    }
+
+    #marquee-wrapper {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+      background: var(--brand);
+      border-bottom: 1px solid var(--brand-light);
+      box-shadow: 0 2px 24px var(--brand-glow);
+      transition: max-height 0.5s cubic-bezier(0.4,0,0.2,1),
+                  opacity 0.4s ease,
+                  transform 0.4s ease;
+      max-height: 56px;
+      opacity: 1;
+      transform: translateY(0);
+      border-radius: 10px;
+    }
+
+    #marquee-wrapper.hidden {
+      max-height: 0;
+      opacity: 0;
+      transform: translateY(-100%);
+      pointer-events: none;
+    }
+
+    #marquee-track {
+      display: flex;
+      align-items: center;
+      height: 52px;
+      width: max-content;
+      animation: scroll-marquee 35s linear infinite;
+    }
+
+    #marquee-wrapper:hover #marquee-track {
+      animation-play-state: paused;
+    }
+
+    @keyframes scroll-marquee {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    .marquee-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 0 48px;
+      white-space: nowrap;
+      font-family: 'Syne', sans-serif;
+      font-size: 13.5px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: #fff;
+    }
+
+    .marquee-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.55);
+      flex-shrink: 0;
+    }
+  </style>
 </head>
 
 <body>
@@ -534,9 +610,25 @@
 
       <!-- Page sidebar end-->
       <div class="page-body">
+        <!-- ── MARQUEE SECTION ── -->
+          {% if marquee %}
+            <div id="marquee-wrapper">
+              <div id="marquee-track">
+                {% for i in "12345678" %}
+                  <span class="marquee-item">
+                    <span class="marquee-dot"></span>
+                    {{ marquee.message }}
+                  </span>
+                {% endfor %}
+              </div>
+            </div>
+          {% endif %}
         <div class="dashboard-container">
+
+          
+
           <div class="header">
-            <h1>Agency Admin Dashboard</h1>
+            <h1>Admin Dashboard</h1>
             <div class="header-actions">
               <button class="btn btn-secondary" onclick="window.location.href='{% url 'kg_app:create_user' %}'">
                 <span class="icon">👤</span> Create User
