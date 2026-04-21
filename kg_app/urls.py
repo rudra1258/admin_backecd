@@ -282,6 +282,12 @@ urlpatterns = [
     # }
     # GET /api/v1/search-history/
     # GET /api/v1/search-history/?admin_id=1
-
+    
+    
+    # notifications/ - for FCM token management
+    path('fcm/upsert/', FCMTokenUpsertView.as_view(), name='fcm-upsert'),
+    # { "user_id": 1, "fcm_token": "abc123" } body/parameter
+    path('fcm/fetch/', FCMTokenFetchView.as_view(), name='fcm-fetch'), # get /api/v1/fcm/fetch/?user_id=1
+    
 
 ]

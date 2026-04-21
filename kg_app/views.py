@@ -35,6 +35,8 @@ from rest_framework.generics import ListCreateAPIView
 from django.contrib.admin.views.decorators import staff_member_required
 from django.views.decorators.http import require_POST
 
+from .firebase_service import send_import_notifications
+
 
 
 # Create your views here.
@@ -1142,75 +1144,249 @@ class Create_task_Viewset(viewsets.ModelViewSet):
     queryset = Create_task.objects.all().order_by('-submit_time')
     serializer_class = CreateTaskSerializer
 
+# def import_tasks_from_excel(request):
+#     session_admin_id = request.session.get("admin_id")
+#     if not session_admin_id:
+#         return render(request, 'index.html')
+#     admin_id_pk = admin_user_model.objects.get(pk=session_admin_id)
+    
+#     if request.method == 'POST' and request.FILES.get('excel_file'):
+#         excel_file = request.FILES['excel_file']
+        
+#         if not excel_file.name.endswith(('.xlsx', '.xls')):
+#             messages.error(request, 'Please upload a valid Excel file (.xlsx or .xls)')
+#             return redirect('kg_app:import_tasks')
+        
+#         try:
+#             df = pd.read_excel(excel_file)
+#             df.columns = df.columns.str.strip()
+            
+#             required_columns = [
+#                 'aggrement_id', 'customer_name', 'product_type', 'tc_name', 
+#                 'branch', 'count_of_cases', 'old_or_new', 'bucket', 'mode', 
+#                 'npa_status', 'pos_amount', 'total_charges', 'bcc_pending', 
+#                 'penal_pending', 'emi_amount', 'emi_due_amount', 'recipt_amount', 
+#                 'recipt_date', 'disbursement_amount', 'loan_amount', 'disbursement_date', 
+#                 'emi_start_date', 'emi_end_date', 'emi_cycle_date', 'make', 
+#                 'father_name', 'fe_name', 'fe_mobile_number', 'customer_mobile_number', 
+#                 'pin_code', 'customer_address', 'customer_office_address', 
+#                 'reference_details', 'collection_manager_name', 'finance_company_name',
+#                 'fe_userName', 'tc_userName', 'tl_name', 'tl_userName',
+#             ]
+            
+#             missing_columns = [col for col in required_columns if col not in df.columns]
+#             if missing_columns:
+#                 messages.error(request, f'Missing required columns: {", ".join(missing_columns)}')
+#                 return redirect('kg_app:import_tasks')
+            
+#             success_count = 0
+#             created_count = 0
+#             updated_count = 0
+#             error_count = 0
+#             errors = []
+#             failed_rows = []
+            
+#             for index, row in df.iterrows():
+#                 try:
+#                     if pd.isna(row['aggrement_id']) or pd.isna(row['customer_name']):
+#                         continue
+                    
+#                     fe_mobile = str(row['fe_mobile_number']).strip()
+#                     customer_mobile = str(row['customer_mobile_number']).strip()
+                    
+#                     if not fe_mobile.isdigit() or len(fe_mobile) != 10:
+#                         errors.append(f"Row {index + 2}: Invalid FE mobile number")
+#                         failed_rows.append({**row.to_dict(), 'error_reason': 'Invalid FE mobile number'})
+#                         error_count += 1
+#                         continue
+                    
+#                     # if not customer_mobile.isdigit() or len(customer_mobile) != 100:
+#                     #     errors.append(f"Row {index + 2}: Invalid customer mobile number")
+#                     #     failed_rows.append({**row.to_dict(), 'error_reason': 'Invalid customer mobile number'})
+#                     #     error_count += 1
+#                     #     continue
+                    
+#                     pin_code = str(row['pin_code']).strip()
+#                     if not pin_code.isdigit() or len(pin_code) != 6:
+#                         errors.append(f"Row {index + 2}: Invalid pin code")
+#                         failed_rows.append({**row.to_dict(), 'error_reason': 'Invalid pin code'})
+#                         error_count += 1
+#                         continue
+                    
+#                     task, created = Create_task.objects.update_or_create(
+#                         aggrement_id=str(row['aggrement_id']).strip(),
+#                         defaults={
+#                             'admin_id': admin_id_pk,
+#                             'customer_name': str(row['customer_name']).strip(),
+#                             'product_type': str(row['product_type']).strip(),
+#                             'tc_name': str(row['tc_name']).strip(),
+#                             'tc_userName': str(row['tc_userName']).strip(),
+#                             'branch': str(row['branch']).strip(),
+#                             'count_of_cases': str(row['count_of_cases']).strip(),
+#                             'old_or_new': str(row['old_or_new']).strip(),
+#                             'bucket': str(row['bucket']).strip(),
+#                             'mode': str(row['mode']).strip(),
+#                             'npa_status': str(row['npa_status']).strip(),
+#                             'pos_amount': str(row['pos_amount']).strip(),
+#                             'total_charges': str(row['total_charges']).strip(),
+#                             'bcc_pending': str(row['bcc_pending']).strip(),
+#                             'penal_pending': str(row['penal_pending']).strip(),
+#                             'emi_amount': str(row['emi_amount']).strip(),
+#                             'emi_due_amount': str(row['emi_due_amount']).strip(),
+#                             'recipt_amount': str(row['recipt_amount']).strip(),
+#                             'recipt_date': str(row['recipt_date']).strip(),
+#                             'disbursement_amount': str(row['disbursement_amount']).strip(),
+#                             'loan_amount': str(row['loan_amount']).strip(),
+#                             'disbursement_date': str(row['disbursement_date']).strip(),
+#                             'emi_start_date': str(row['emi_start_date']).strip(),
+#                             'emi_end_date': str(row['emi_end_date']).strip(),
+#                             'emi_cycle_date': str(row['emi_cycle_date']).strip(),
+#                             'make': str(row['make']).strip(),
+#                             'manufacturer_description': str(row.get('manufacturer_description', '')).strip() if pd.notna(row.get('manufacturer_description')) else '',
+#                             'registration_number': str(row.get('registration_number', '')).strip() if pd.notna(row.get('registration_number')) else '',
+#                             'vehicle_age': str(row.get('vehicle_age', '')).strip() if pd.notna(row.get('vehicle_age')) else '',
+#                             'employer': str(row.get('employer', '')).strip() if pd.notna(row.get('employer')) else '',
+#                             'father_name': str(row['father_name']).strip(),
+#                             'fe_name': str(row['fe_name']).strip(),
+#                             'fe_userName': str(row['fe_userName']).strip(),
+#                             'tl_name': str(row['tl_name']).strip(),
+#                             'tl_userName': str(row['tl_userName']).strip(),
+#                             'fe_mobile_number': fe_mobile,
+#                             'customer_mobile_number': customer_mobile,
+#                             'pin_code': pin_code,
+#                             'customer_address': str(row['customer_address']).strip(),
+#                             'customer_office_address': str(row['customer_office_address']).strip(),
+#                             'reference_details': str(row['reference_details']).strip(),
+#                             'collection_manager_name': str(row['collection_manager_name']).strip(),
+#                             'finance_company_name': str(row['finance_company_name']).strip(),
+#                         }
+#                     )
+                    
+#                     if created:
+#                         created_count += 1
+#                     else:
+#                         updated_count += 1
+#                     success_count += 1
+                    
+#                 except Exception as e:
+#                     errors.append(f"Row {index + 2}: {str(e)}")
+#                     failed_rows.append({**row.to_dict(), 'error_reason': str(e)})
+#                     error_count += 1
+            
+#             # Store failed rows in session
+#             if failed_rows:
+#                 clean_failed_rows = []
+#                 for r in failed_rows:
+#                     clean_row = {}
+#                     for k, v in r.items():
+#                         if pd.isna(v) if not isinstance(v, (list, dict)) else False:
+#                             clean_row[k] = ''
+#                         else:
+#                             clean_row[k] = str(v)
+#                     clean_failed_rows.append(clean_row)
+#                 request.session['failed_import_rows'] = clean_failed_rows
+#             else:
+#                 request.session.pop('failed_import_rows', None)
+
+#             # Success message
+#             if success_count > 0:
+#                 msg_parts = []
+#                 if created_count > 0:
+#                     msg_parts.append(f'{created_count} new task{"s" if created_count != 1 else ""} created')
+#                 if updated_count > 0:
+#                     msg_parts.append(f'{updated_count} existing task{"s" if updated_count != 1 else ""} updated')
+#                 messages.success(request, f'Import complete — {", ".join(msg_parts)}.')
+
+#             # Error message
+#             if error_count > 0:
+#                 error_message = f'{error_count} error{"s" if error_count != 1 else ""} occurred:<br>'
+#                 error_message += '<br>'.join(errors[:10])
+#                 if len(errors) > 10:
+#                     error_message += f'<br>...and {len(errors) - 10} more errors'
+#                 messages.warning(request, error_message)
+
+#             # Empty file
+#             if success_count == 0 and error_count == 0:
+#                 messages.info(request, 'No data found in the Excel file')
+                
+#         except Exception as e:
+#             messages.error(request, f'Error processing file: {str(e)}')
+        
+#         return redirect('kg_app:import_tasks')
+    
+#     return render(request, 'create_task.html')
+
+# ──────────────────────────────────────────
+# Excel Import with Auto Notification
+# ──────────────────────────────────────────
 def import_tasks_from_excel(request):
     session_admin_id = request.session.get("admin_id")
     if not session_admin_id:
         return render(request, 'index.html')
+
     admin_id_pk = admin_user_model.objects.get(pk=session_admin_id)
-    
+
     if request.method == 'POST' and request.FILES.get('excel_file'):
         excel_file = request.FILES['excel_file']
-        
+
         if not excel_file.name.endswith(('.xlsx', '.xls')):
             messages.error(request, 'Please upload a valid Excel file (.xlsx or .xls)')
             return redirect('kg_app:import_tasks')
-        
+
         try:
             df = pd.read_excel(excel_file)
             df.columns = df.columns.str.strip()
-            
+
             required_columns = [
-                'aggrement_id', 'customer_name', 'product_type', 'tc_name', 
-                'branch', 'count_of_cases', 'old_or_new', 'bucket', 'mode', 
-                'npa_status', 'pos_amount', 'total_charges', 'bcc_pending', 
-                'penal_pending', 'emi_amount', 'emi_due_amount', 'recipt_amount', 
-                'recipt_date', 'disbursement_amount', 'loan_amount', 'disbursement_date', 
-                'emi_start_date', 'emi_end_date', 'emi_cycle_date', 'make', 
-                'father_name', 'fe_name', 'fe_mobile_number', 'customer_mobile_number', 
-                'pin_code', 'customer_address', 'customer_office_address', 
+                'aggrement_id', 'customer_name', 'product_type', 'tc_name',
+                'branch', 'count_of_cases', 'old_or_new', 'bucket', 'mode',
+                'npa_status', 'pos_amount', 'total_charges', 'bcc_pending',
+                'penal_pending', 'emi_amount', 'emi_due_amount', 'recipt_amount',
+                'recipt_date', 'disbursement_amount', 'loan_amount', 'disbursement_date',
+                'emi_start_date', 'emi_end_date', 'emi_cycle_date', 'make',
+                'father_name', 'fe_name', 'fe_mobile_number', 'customer_mobile_number',
+                'pin_code', 'customer_address', 'customer_office_address',
                 'reference_details', 'collection_manager_name', 'finance_company_name',
                 'fe_userName', 'tc_userName', 'tl_name', 'tl_userName',
             ]
-            
+
             missing_columns = [col for col in required_columns if col not in df.columns]
             if missing_columns:
                 messages.error(request, f'Missing required columns: {", ".join(missing_columns)}')
                 return redirect('kg_app:import_tasks')
-            
+
             success_count = 0
             created_count = 0
             updated_count = 0
             error_count = 0
             errors = []
             failed_rows = []
-            
+
+            # Track task counts per fe_userName and tl_userName
+            fe_task_counts = {}
+            tl_task_counts = {}
+
             for index, row in df.iterrows():
                 try:
                     if pd.isna(row['aggrement_id']) or pd.isna(row['customer_name']):
                         continue
-                    
+
                     fe_mobile = str(row['fe_mobile_number']).strip()
                     customer_mobile = str(row['customer_mobile_number']).strip()
-                    
+
                     if not fe_mobile.isdigit() or len(fe_mobile) != 10:
                         errors.append(f"Row {index + 2}: Invalid FE mobile number")
                         failed_rows.append({**row.to_dict(), 'error_reason': 'Invalid FE mobile number'})
                         error_count += 1
                         continue
-                    
-                    # if not customer_mobile.isdigit() or len(customer_mobile) != 100:
-                    #     errors.append(f"Row {index + 2}: Invalid customer mobile number")
-                    #     failed_rows.append({**row.to_dict(), 'error_reason': 'Invalid customer mobile number'})
-                    #     error_count += 1
-                    #     continue
-                    
+
                     pin_code = str(row['pin_code']).strip()
                     if not pin_code.isdigit() or len(pin_code) != 6:
                         errors.append(f"Row {index + 2}: Invalid pin code")
                         failed_rows.append({**row.to_dict(), 'error_reason': 'Invalid pin code'})
                         error_count += 1
                         continue
-                    
+
                     task, created = Create_task.objects.update_or_create(
                         aggrement_id=str(row['aggrement_id']).strip(),
                         defaults={
@@ -1259,18 +1435,28 @@ def import_tasks_from_excel(request):
                             'finance_company_name': str(row['finance_company_name']).strip(),
                         }
                     )
-                    
+
                     if created:
                         created_count += 1
                     else:
                         updated_count += 1
                     success_count += 1
-                    
+
+                    # Count tasks per fe_userName and tl_userName only
+                    fe_user = str(row['fe_userName']).strip()
+                    tl_user = str(row['tl_userName']).strip()
+                    fe_task_counts[fe_user] = fe_task_counts.get(fe_user, 0) + 1
+                    tl_task_counts[tl_user] = tl_task_counts.get(tl_user, 0) + 1
+
                 except Exception as e:
                     errors.append(f"Row {index + 2}: {str(e)}")
                     failed_rows.append({**row.to_dict(), 'error_reason': str(e)})
                     error_count += 1
-            
+
+            # Send notifications after all rows processed
+            if success_count > 0:
+                send_import_notifications(fe_task_counts, tl_task_counts)
+
             # Store failed rows in session
             if failed_rows:
                 clean_failed_rows = []
@@ -1306,12 +1492,12 @@ def import_tasks_from_excel(request):
             # Empty file
             if success_count == 0 and error_count == 0:
                 messages.info(request, 'No data found in the Excel file')
-                
+
         except Exception as e:
             messages.error(request, f'Error processing file: {str(e)}')
-        
+
         return redirect('kg_app:import_tasks')
-    
+
     return render(request, 'create_task.html')
 
 def download_failed_import_rows(request):
@@ -4220,7 +4406,6 @@ def get_user_attendance(request, user_id):
         'data': serializer.data
     })
 
-
 @api_view(['GET'])
 def get_all_attendance(request):
     """
@@ -4363,7 +4548,78 @@ class SearchHistoryListCreateAPI(ListCreateAPIView):
 
         return queryset
 
+class FCMTokenUpsertView(APIView):
+    def post(self, request):
+        user_id = request.data.get('user_id')
+        username = request.data.get('username')
+        fcm_token = request.data.get('fcm_token')
 
+        if not user_id or not fcm_token:
+            return Response(
+                {"error": "user_id and fcm_token are required."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        try:
+            user = CreateUser.objects.get(pk=user_id)
+        except CreateUser.DoesNotExist:
+            return Response(
+                {"error": f"User with id {user_id} does not exist."},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        # ✅ Check by user only — not by token
+        existing = FCMToken.objects.filter(user_id=user).first()
+
+        if existing:
+            # UPDATE — replace old token with new one
+            existing.fcm_token = fcm_token
+            existing.username = user.username
+            existing.is_active = True
+            existing.save()
+            serializer = FCMTokenSerializer(existing)
+            return Response(
+                {"message": "FCM token updated.", "data": serializer.data},
+                status=status.HTTP_200_OK
+            )
+        else:
+            # CREATE — first time for this user
+            serializer = FCMTokenSerializer(data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(
+                    {"message": "FCM token created.", "data": serializer.data},
+                    status=status.HTTP_201_CREATED
+                )
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class FCMTokenFetchView(APIView):
+    """
+    GET - Fetch all active FCM tokens for a user
+    Query Param: /api/fcm/fetch/?user_id=1
+    """
+    def get(self, request):
+        user_id = request.query_params.get('user_id')
+
+        if not user_id:
+            return Response(
+                {"error": "user_id is required."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        tokens = FCMToken.objects.filter(user_id=user_id, is_active=True)
+
+        if not tokens.exists():
+            return Response(
+                {"message": "No active FCM tokens found.", "data": []},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        serializer = FCMTokenSerializer(tokens, many=True)
+        return Response(
+            {"message": "FCM tokens fetched.", "data": serializer.data},
+            status=status.HTTP_200_OK
+        )
 
 
 

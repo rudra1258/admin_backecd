@@ -128,6 +128,56 @@ class MarqueeMessageAdmin(admin.ModelAdmin):
     list_editable = ("is_active",)
     fields = ("message", "is_active")
 
+@admin.register(FCMToken)
+class FCMTokenAdmin(admin.ModelAdmin):
+    list_display = (
+        'token_id',
+        'user_id',
+        'device_type',
+        'device_name',
+        'is_active',
+        'created_at',
+        'updated_at',
+    )
 
-    
+    list_filter = (
+        'device_type',
+        'is_active',
+        'created_at',
+    )
+
+    search_fields = (
+        'user_id__username',   # change if CreateUser uses different field
+        'fcm_token',
+        'device_name',
+    )
+
+    readonly_fields = (
+        'created_at',
+        'updated_at',
+    )
+
+    ordering = ('-created_at',)
+
+    fieldsets = (
+        ('User Information', {
+            'fields': ('user_id',)
+        }),
+        ('Device Information', {
+            'fields': (
+                'fcm_token',
+                'device_type',
+                'device_name',
+                'is_active',
+            )
+        }),
+        ('Timestamps', {
+            'fields': (
+                'created_at',
+                'updated_at',
+            )
+        }),
+    )
+
+
 

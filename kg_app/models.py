@@ -407,8 +407,7 @@ class track_repo_search_history(models.Model):
 
     def __str__(self):
         return f"User {self.user_id} | {self.search_query} | {self.search_time}"
-    
-    
+       
 class MarqueeMessage(models.Model):
     id = models.AutoField(primary_key=True)
     message = models.TextField(help_text="Text to display in the marquee banner.")
@@ -441,3 +440,33 @@ class MarqueeMessage(models.Model):
     def __str__(self):
         status = "✅ Active" if self.is_active else "❌ Hidden"
         return f"[{status}] {self.message[:60]}"
+
+class FCMToken(models.Model):
+    token_id = models.AutoField(primary_key=True)
+    username = models.CharField(max_length=100, null=True, blank=True)
+    user_id = models.ForeignKey(
+        CreateUser,
+        on_delete=models.CASCADE,
+        related_name='fcm_tokens'
+    )
+    fcm_token = models.TextField(unique=True)
+    device_type = models.CharField(
+        max_length=20,
+        choices=[
+            ('android', 'Android'),
+            ('ios', 'iOS'),
+            ('web', 'Web'),
+        ],
+        default='android'
+    )
+    device_name = models.CharField(
+        max_length=100,
+        blank=True,
+        null=True
+    )
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.user_id} - {self.device_type}"

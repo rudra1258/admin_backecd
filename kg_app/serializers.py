@@ -254,6 +254,13 @@ class TrackRepoSearchHistorySerializer(serializers.ModelSerializer):
         model = track_repo_search_history
         fields = '__all__'
 
+class FCMTokenSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FCMToken
+        fields = ['token_id', 'username' , 'user_id', 'fcm_token', 'is_active', 'created_at', 'updated_at']
+        read_only_fields = ['token_id', 'created_at', 'updated_at']
+
+
 
 
 
