@@ -99,6 +99,8 @@ class Create_task(models.Model):
     manufacturer_description = models.CharField(max_length = 500, null=True, blank=True)
     registration_number = models.CharField(max_length = 30, null=True, blank=True)
     vehicle_age = models.CharField(max_length = 20, null=True, blank=True)
+    engine_number = models.CharField(max_length = 50, null=True, blank=True)
+    chassis_number = models.CharField(max_length = 50, null=True, blank=True)
     
     # customer details 
     employer = models.CharField(max_length = 100, null=True, blank=True)
@@ -470,3 +472,6 @@ class FCMToken(models.Model):
 
     def __str__(self):
         return f"{self.user_id} - {self.device_type}"
+    
+
+

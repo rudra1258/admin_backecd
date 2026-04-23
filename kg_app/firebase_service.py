@@ -3,7 +3,7 @@ from firebase_admin import credentials, messaging
 
 # Initialize Firebase once
 if not firebase_admin._apps:
-    cred = credentials.Certificate("firebase_credentials.json")
+    cred = credentials.Certificate("kg_app/firebase_credentials.json")
     firebase_admin.initialize_app(cred)
 
 

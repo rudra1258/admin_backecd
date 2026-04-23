@@ -1054,6 +1054,8 @@ def create_task(request):
         manufacturer_description = request.POST.get("manufacturer_description")
         registration_number = request.POST.get("registration_number")
         vehicle_age = request.POST.get("vehicle_age")
+        engine_number = request.POST.get("engine_number")
+        chassis_number = request.POST.get("chassis_number")
         
         # customer details
         employer = request.POST.get("employer")
@@ -1110,6 +1112,8 @@ def create_task(request):
             manufacturer_description = manufacturer_description,
             registration_number = registration_number,
             vehicle_age = vehicle_age,
+            engine_number = engine_number,
+            chassis_number = chassis_number,
             
             # customer details
             employer = employer,
@@ -1419,6 +1423,8 @@ def import_tasks_from_excel(request):
                             'manufacturer_description': str(row.get('manufacturer_description', '')).strip() if pd.notna(row.get('manufacturer_description')) else '',
                             'registration_number': str(row.get('registration_number', '')).strip() if pd.notna(row.get('registration_number')) else '',
                             'vehicle_age': str(row.get('vehicle_age', '')).strip() if pd.notna(row.get('vehicle_age')) else '',
+                            'engine_number': str(row.get('engine_number', '')).strip() if pd.notna(row.get('engine_number')) else '',
+                            'chassis_number': str(row.get('chassis_number', '')).strip() if pd.notna(row.get('chassis_number')) else '',
                             'employer': str(row.get('employer', '')).strip() if pd.notna(row.get('employer')) else '',
                             'father_name': str(row['father_name']).strip(),
                             'fe_name': str(row['fe_name']).strip(),
@@ -1568,6 +1574,8 @@ def download_task_sample_excel(request):
         'manufacturer_description': ['Honda City 2023 Model', 'Maruti Swift VXI'],
         'registration_number': ['MH01AB1234', 'DL02CD5678'],
         'vehicle_age': ['1 year', '2 years'],
+        'engine_number': ['ENG12345', 'ENG67890'], 
+        'chassis_number': ['CHS12345', 'CHS67890'],
         
         # Customer details
         'employer': ['ABC Corp', 'XYZ Ltd'],
@@ -4574,7 +4582,7 @@ class FCMTokenUpsertView(APIView):
         if existing:
             # UPDATE — replace old token with new one
             existing.fcm_token = fcm_token
-            existing.username = user.username
+            existing.username = username
             existing.is_active = True
             existing.save()
             serializer = FCMTokenSerializer(existing)
