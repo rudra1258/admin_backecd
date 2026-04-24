@@ -25,7 +25,15 @@ urlpatterns = [
     path('api/v1/', include(('kg_app.urls', 'kg_app'), namespace='kg_app_v1')),
 ]
 
-# For static and media files during development
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+# media files
+urlpatterns += static(
+    settings.MEDIA_URL,
+    document_root=settings.MEDIA_ROOT
+)
+
+# static files
+urlpatterns += static(
+    settings.STATIC_URL,
+    document_root=settings.STATICFILES_DIRS[0]
+)
+

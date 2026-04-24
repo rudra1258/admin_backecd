@@ -17,7 +17,7 @@ urlpatterns = [
     
     path('login/', views.admin_login, name='index'),
     path('', views.landing_page, name='landing_page'),
-    path('testing/dev/home-page', views.landing_page, name='landing_page'),
+    path('testing/dev/home-page', views.landing_page, name='landing_page_demo'),
     path('test_screen/', views.test_page, name='test_screen'),
     path('admin_login', views.admin_login, name='admin_login'),
     path('admin_logout/', views.admin_logout, name='admin_logout'),
