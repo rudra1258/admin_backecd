@@ -86,6 +86,7 @@ urlpatterns = [
     path("repo-task-list/", views.repo_task_list, name="repo_task_list"),
     path('bulk-delete-repo-tasks/', views.bulk_delete_repo_tasks, name='bulk_delete_repo_tasks'),
     path('repo_task/delete/<int:id>/', views.single_delete_repo_tasks, name='single_delete_repo_tasks'),
+    path('repo-tasks/<int:admin_id>/', views.RepoTaskListAPIView.as_view(), name='repo_task_list_api'),
 
     
     

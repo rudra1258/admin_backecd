@@ -2861,7 +2861,7 @@ def bulk_delete_repo_tasks(request):
         if task_ids:
             RepoTaskCreate.objects.filter(repo_task_id__in=task_ids).delete()
 
-    return redirect('kg_app:complete_task')
+    return redirect('kg_app:repo_task_list')
 
 def single_delete_repo_tasks(request, id):
     session_admin_id = request.session.get("admin_id")
@@ -2870,7 +2870,48 @@ def single_delete_repo_tasks(request, id):
         return render(request, 'index.html')
     emp = get_object_or_404(RepoTaskCreate, repo_task_id=id)
     emp.delete()
-    return redirect('kg_app:complete_task')
+    return redirect('kg_app:repo_task_list')
+
+class RepoTaskListAPIView(APIView):
+
+    def get(self, request, admin_id):
+        try:
+            # Check if admin exists
+            admin = admin_user_model.objects.get(pk=admin_id)
+        except admin_user_model.DoesNotExist:
+            return Response(
+                {
+                    "status": "error",
+                    "message": f"Admin with id {admin_id} not found.",
+                    "data": []
+                },
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        tasks = RepoTaskCreate.objects.filter(admin_id=admin).order_by('-created_at')
+
+        if not tasks.exists():
+            return Response(
+                {
+                    "status": "success",
+                    "message": "No tasks found for this admin.",
+                    "total": 0,
+                    "data": []
+                },
+                status=status.HTTP_200_OK
+            )
+
+        serializer = RepoTaskSerializer(tasks, many=True)
+
+        return Response(
+            {
+                "status": "success",
+                "message": "Tasks fetched successfully.",
+                "total": tasks.count(),
+                "data": serializer.data
+            },
+            status=status.HTTP_200_OK
+        )
 
 
 

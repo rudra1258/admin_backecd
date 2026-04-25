@@ -260,7 +260,24 @@ class FCMTokenSerializer(serializers.ModelSerializer):
         fields = ['token_id', 'username' , 'user_id', 'fcm_token', 'is_active', 'created_at', 'updated_at']
         read_only_fields = ['token_id', 'created_at', 'updated_at']
 
-
+class RepoTaskSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RepoTaskCreate
+        fields = [
+            'repo_task_id',
+            'customer_name',
+            'vehicle_registration_number',
+            'model',
+            'engine_number',
+            'chassis_number',
+            'bucket',
+            'branch',
+            'collection_manager_name',
+            'collection_manager_mobile_number',
+            'finance_company_name',
+            'created_at',
+            'updated_at',
+        ]
 
 
 
