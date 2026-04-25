@@ -80,6 +80,16 @@ urlpatterns = [
     ),
     
     path("marquee/", views.marquee_demo, name="marquee_demo"),
+    path("repo-task-create/", views.repo_task_create, name="repo_task_create"),
+    path('repo-task-excel-upload/', views.repo_task_excel_upload, name='repo_task_excel_upload'),
+    
+    path("repo-task-list/", views.repo_task_list, name="repo_task_list"),
+    path('bulk-delete-repo-tasks/', views.bulk_delete_repo_tasks, name='bulk_delete_repo_tasks'),
+    path('repo_task/delete/<int:id>/', views.single_delete_repo_tasks, name='single_delete_repo_tasks'),
+
+    
+    
+
  
     # AJAX / API endpoints
     path("api/marquee/active/", views.get_active_marquee_api, name="active_marquee_api"),

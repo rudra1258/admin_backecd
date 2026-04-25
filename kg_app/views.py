@@ -36,6 +36,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.views.decorators.http import require_POST
 
 from .firebase_service import send_import_notifications
+import openpyxl
 
 
 
@@ -2719,6 +2720,158 @@ def get_active_marquee_api(request):
         })
     return JsonResponse({"is_active": False})
 
+def repo_task_create(request):
+    session_admin_id = request.session.get("admin_id")
+    # navigate to login page if not login
+    if not session_admin_id:
+        return render(request, 'index.html')
+    admin_id_pk = admin_user_model.objects.get(pk=session_admin_id)
+    
+    if request.method == 'POST':
+        customer_name = request.POST.get('customer_name')
+        vechile_registration_number = request.POST.get('vechile_registration_number')
+        model = request.POST.get("model")
+        engine_number = request.POST.get("engine_number")
+        chassis_number = request.POST.get("chassis_number")
+        bucket = request.POST.get("bucket")
+        branch = request.POST.get("branch")
+        collection_manager_name = request.POST.get("collection_manager_name")
+        collection_manager_mobile_number = request.POST.get("collection_manager_mobile_number")
+        finance_company_name = request.POST.get("finance_company_name")
+        
+        RepoTaskCreate.objects.create(
+            admin_id = admin_id_pk,
+            customer_name = customer_name,
+            vehicle_registration_number = vechile_registration_number,
+            model = model,
+            engine_number = engine_number,
+            chassis_number = chassis_number,
+            bucket = bucket,
+            branch = branch,
+            collection_manager_name = collection_manager_name,
+            collection_manager_mobile_number = collection_manager_mobile_number,
+            finance_company_name  = finance_company_name
+        )
+        messages.success(request, 'Task created successfully!')
+        return redirect("kg_app:repo_task_create")
+    
+    return render(request, "repo_task_create.html")
+
+def repo_task_excel_upload(request):
+    session_admin_id = request.session.get("admin_id")
+    if not session_admin_id:
+        return render(request, 'index.html')
+    
+    if request.method == 'POST':
+        excel_file = request.FILES.get('excel_file')
+        
+        # Validation
+        if not excel_file:
+            messages.error(request, 'Please select an Excel file to upload.')
+            return redirect('kg_app:repo_task_create')
+        
+        if not excel_file.name.endswith(('.xlsx', '.xls')):
+            messages.error(request, 'Invalid file format. Only .xlsx and .xls are allowed.')
+            return redirect('kg_app:repo_task_create')
+        
+        try:
+            admin_id_pk = admin_user_model.objects.get(pk=session_admin_id)
+            wb = openpyxl.load_workbook(excel_file)
+            ws = wb.active
+            
+            # Skip header row (row 1), read from row 2
+            rows_created = 0
+            errors = []
+            
+            for row_num, row in enumerate(ws.iter_rows(min_row=2, values_only=True), start=2):
+                # Skip completely empty rows
+                if not any(row):
+                    continue
+                
+                # Unpack columns in order matching the sample excel
+                (
+                    customer_name,
+                    vehicle_registration_number,
+                    model,
+                    engine_number,
+                    chassis_number,
+                    bucket,
+                    branch,
+                    collection_manager_name,
+                    collection_manager_mobile_number,
+                    finance_company_name,
+                ) = (row + (None,) * 10)[:10]
+                
+                # Required field check
+                if not customer_name or not vehicle_registration_number:
+                    errors.append(f"Row {row_num}: Customer Name and Registration Number are required.")
+                    continue
+                
+                RepoTaskCreate.objects.create(
+                    admin_id=admin_id_pk,
+                    customer_name=str(customer_name).strip(),
+                    vehicle_registration_number=str(vehicle_registration_number).strip(),
+                    model=str(model).strip() if model else '',
+                    engine_number=str(engine_number).strip() if engine_number else '',
+                    chassis_number=str(chassis_number).strip() if chassis_number else '',
+                    bucket=str(bucket).strip() if bucket else '',
+                    branch=str(branch).strip() if branch else '',
+                    collection_manager_name=str(collection_manager_name).strip() if collection_manager_name else '',
+                    collection_manager_mobile_number=str(collection_manager_mobile_number).strip() if collection_manager_mobile_number else '',
+                    finance_company_name=str(finance_company_name).strip() if finance_company_name else '',
+                )
+                rows_created += 1
+            
+            if errors:
+                for error in errors:
+                    messages.warning(request, error)
+            
+            if rows_created > 0:
+                messages.success(request, f'{rows_created} task(s) uploaded successfully!')
+            else:
+                messages.error(request, 'No valid data found in the Excel file.')
+                
+        except Exception as e:
+            messages.error(request, f'Error processing file: {str(e)}')
+        
+        return redirect('kg_app:repo_task_create')
+    
+    return redirect('kg_app:repo_task_create')
+
+def repo_task_list(request):
+    session_admin_id = request.session.get("admin_id")
+    # navigate to login page if not login
+    if not session_admin_id:
+        return render(request, 'index.html')
+    
+    admin_id_pk = admin_user_model.objects.get(pk=session_admin_id)
+    repo_tasks = RepoTaskCreate.objects.filter(admin_id=admin_id_pk).order_by('-created_at')
+    print("repo task list length -- ", repo_tasks.count)
+    return render(request, "repo_task_list.html", {"repo_tasks": repo_tasks})
+
+def bulk_delete_repo_tasks(request):
+    session_admin_id = request.session.get("admin_id")
+
+    if not session_admin_id:
+        return render(request, 'index.html')
+
+    if request.method == "POST":
+        task_ids = request.POST.getlist("task_ids")
+
+        if task_ids:
+            RepoTaskCreate.objects.filter(repo_task_id__in=task_ids).delete()
+
+    return redirect('kg_app:complete_task')
+
+def single_delete_repo_tasks(request, id):
+    session_admin_id = request.session.get("admin_id")
+    # navigate to login page if not login
+    if not session_admin_id:
+        return render(request, 'index.html')
+    emp = get_object_or_404(RepoTaskCreate, repo_task_id=id)
+    emp.delete()
+    return redirect('kg_app:complete_task')
+
 
 
 
@@ -3524,6 +3677,8 @@ def tc_reject_leave(request):
             })
     
     return JsonResponse({'success': False, 'message': 'Invalid request method'})
+
+
 
 
 

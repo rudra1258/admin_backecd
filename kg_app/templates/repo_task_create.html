@@ -1,0 +1,702 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Admiro admin is super flexible, powerful, clean &amp; modern responsive bootstrap 5 admin template with unlimited possibilities.">
+    <meta name="keywords"
+        content="admin template, Admiro admin template, best javascript admin, dashboard template, bootstrap admin template, responsive admin template, web app">
+    <meta name="author" content="pixelstrap">
+    <title>Repo Boy</title>
+    <!-- Favicon icon-->
+    <link rel="icon" href="{% static 'assets/img/favicon.png' %}" type="image/x-icon">
+    <link rel="shortcut icon" href="{% static 'assets/img/favicon.png' %}" type="image/x-icon">
+    <!-- Google font-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link
+        href="../../css2?family=Nunito+Sans:opsz,wght@6..12,200;6..12,300;6..12,400;6..12,500;6..12,600;6..12,700;6..12,800;6..12,900;6..12,1000&amp;display=swap"
+        rel="stylesheet">
+    <!-- Flag icon css -->
+    <link rel="stylesheet" href="{% static 'assets/css/vendors/flag-icon.css' %}">
+    <!-- iconly-icon-->
+    <link rel="stylesheet" href="{% static 'assets/css/iconly-icon.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/bulk-style.css' %}">
+    <!-- iconly-icon-->
+    <link rel="stylesheet" href="{% static 'assets/css/themify.css' %}">
+    <!--fontawesome-->
+    <link rel="stylesheet" href="{% static 'assets/css/fontawesome-min.css' %}">
+    <!-- Whether Icon css-->
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/vendors/weather-icons/weather-icons.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/vendors/scrollbar.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/vendors/slick.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/vendors/slick-theme.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/vendors/datatables.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/vendors/datatable-extension.css' %}">
+    <!-- App css -->
+    <link id="color" rel="stylesheet" href="{% static 'assets/css/color-1.css' %}" media="screen">
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+        integrity="sha512-…(hash)…”" crossorigin=" anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+        integrity="sha512-…(hash)…”" crossorigin=" anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="https://cdn.iconly.io/iconly.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/iconly@latest/css/iconly.css" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+        integrity="sha512-KNuNk+LZ8e2j+ozhRtX7sMGu0j1qFeIslMo7k3M5lVZhcN7sVbG7ByAzt+BrgrbM5nxp7/ECYtJ8O5E2+8Y0eA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+
+    <link rel="stylesheet" href="https://cdn.iconly.io/your-generated-hash/iconly.css">
+
+
+
+
+    <style>
+        /*.dataTables_length{
+      display : none;
+    }*/
+
+        .sidebar-pannle-main {
+            display: none;
+        }
+
+        .margin_left_auto {
+            margin-left: auto;
+        }
+
+        table.dataTable.stripe tbody tr.odd,
+        table.dataTable.display tbody tr.odd {
+            background-color: #b3b2f1;
+        }
+
+        table.dataTable.display tbody tr.odd>.sorting_1 {
+            /* background-color: var(--light-color); */
+            background-color: #b3b2f1;
+        }
+    </style>
+
+    <style>
+        /* ===== Theme Variables ===== */
+        :root {
+            --primary: #5250c3;
+            --primary-dark: #3d3ba8;
+            --primary-light: #f3f2ff;
+            --primary-border: #c5c4e8;
+            --primary-shadow: rgba(82, 80, 195, 0.15);
+        }
+
+        /* ===== Excel Section ===== */
+        .excel-section {
+            background: var(--primary-light);
+            border: 1.5px solid var(--primary) !important;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .excel-section-title {
+            color: var(--primary);
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        /* ===== Download Button ===== */
+        .btn-primary-outline {
+            border: 1.5px solid var(--primary);
+            color: var(--primary);
+            background: transparent;
+            width: 100%;
+            transition: background 0.2s ease, color 0.2s ease;
+        }
+
+        .btn-primary-outline:hover {
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+        }
+
+        /* ===== Upload Button ===== */
+        .btn-primary-solid {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: #fff;
+            transition: background 0.2s ease;
+        }
+
+        .btn-primary-solid:hover {
+            background: var(--primary-dark);
+            border-color: var(--primary-dark);
+            color: #fff;
+        }
+
+        /* ===== File Input ===== */
+        .excel-file-input {
+            border-color: var(--primary-border);
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .excel-file-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 0.2rem var(--primary-shadow);
+            outline: none;
+        }
+
+        /* ===== Status Badge ===== */
+        .excel-status-badge {
+            background: var(--primary);
+            color: #fff;
+            padding: 0.4rem 0.6rem;
+            border-radius: 6px;
+            width: 100%;
+            display: block;
+            font-size: 0.8rem;
+            text-align: center;
+            white-space: normal;
+            word-break: break-word;
+        }
+
+        /* ===== Divider ===== */
+        .or-divider {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .or-divider hr {
+            flex-grow: 1;
+            border-color: var(--primary);
+            opacity: 0.3;
+            margin: 0;
+        }
+
+        .or-divider span {
+            padding: 0 0.75rem;
+            color: var(--primary);
+            font-size: 0.8rem;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        /* ===== Form Inputs ===== */
+        .themed-input {
+            border-color: var(--primary-border);
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .themed-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 0.2rem var(--primary-shadow);
+            outline: none;
+        }
+
+        /* ===== Reset Button ===== */
+        .btn-reset-outline {
+            border: 1.5px solid var(--primary-border);
+            color: var(--primary);
+            background: transparent;
+            transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+        }
+
+        .btn-reset-outline:hover {
+            background: var(--primary-light);
+            border-color: var(--primary);
+            color: var(--primary-dark);
+        }
+
+
+        /* ===== Toast Notification ===== */
+        .repo-toast {
+            min-width: 300px;
+            border: none;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 8px 24px rgba(82, 80, 195, 0.18);
+            animation: slideInRight 0.4s ease;
+        }
+
+        .repo-toast--success .repo-toast__header {
+            background: var(--primary);
+            color: #fff;
+        }
+
+        .repo-toast--success .repo-toast__icon {
+            color: #fff;
+            font-size: 1.1rem;
+        }
+
+        .repo-toast--error .repo-toast__header {
+            background: #dc3545;
+            color: #fff;
+        }
+
+        .repo-toast--warning .repo-toast__header {
+            background: #fd7e14;
+            color: #fff;
+        }
+
+        .repo-toast__title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+
+        .repo-toast__body {
+            background: #fff;
+            color: #333;
+            font-size: 0.875rem;
+            padding: 0.75rem 1rem;
+            border-left: 4px solid var(--primary);
+        }
+
+        .repo-toast--error .repo-toast__body {
+            border-left-color: #dc3545;
+        }
+
+        .repo-toast--warning .repo-toast__body {
+            border-left-color: #fd7e14;
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(60px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* ===== Required Star ===== */
+        .required-star {
+            color: #e74c3c;
+            margin-left: 3px;
+            font-size: 0.85rem;
+        }
+
+    </style>
+
+</head>
+
+
+
+
+
+<body>
+    <!-- page-wrapper Start-->
+    <!-- tap on top starts-->
+    <div class="tap-top">
+        <i class="fa-solid fa-angle-up"></i>
+    </div>
+    <!-- tap on tap ends-->
+    <!-- loader-->
+    <div class="loader-wrapper">
+        <div class="loader"><span></span><span></span><span></span><span></span><span></span></div>
+    </div>
+
+
+    <div class="page-wrapper compact-wrapper" id="pageWrapper">
+
+        <!-- this is header section -->
+        {% include 'common/header.html' %}
+        <!--header section end -->
+
+
+
+
+
+        <!-- Page Body Start-->
+        <div class="page-body-wrapper">
+            <!-- Page sidebar start-->
+            {% include 'common/sidebar.html' %}
+            <!-- Page sidebar end-->
+
+            <!-- body section start  -->
+            <div class="page-body">
+                <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 9999;">
+                    {% if messages %}
+                    {% for message in messages %}
+                    <div class="toast repo-toast repo-toast--{{ message.tags }} show" role="alert" aria-live="assertive"
+                        aria-atomic="true" data-bs-autohide="true" data-bs-delay="4000">
+                        <div class="toast-header repo-toast__header">
+                            <i class="icofont icofont-check-circled me-2 repo-toast__icon"></i>
+                            <strong class="me-auto repo-toast__title">
+                                {% if message.tags == 'success' %}Success
+                                {% elif message.tags == 'error' %}Error
+                                {% elif message.tags == 'warning' %}Warning
+                                {% else %}Notice{% endif %}
+                            </strong>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="toast-body repo-toast__body">
+                            {{ message }}
+                        </div>
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+
+                <div class="container-fluid">
+                    <div class="page-title">
+                        <div class="row">
+                            <!-- table start -->
+                            <div class="col-md-6" style="margin: auto;">
+                                <div class="card">
+                                    <div class="card-header card-no-border pb-0">
+                                        <h3>Create Task For Repo</h3>
+                                    </div>
+                                    <!-- Excel Upload / Download Section -->
+                                    <div class="card-body pb-0">
+                                        <div class="excel-section">
+                                            <h6 class="excel-section-title" style="text-align: center;">
+                                                <i class="icofont icofont-file-excel me-2"></i>Bulk Upload via Excel
+                                            </h6>
+                                            <div class="row g-3 align-items-center">
+
+
+
+                                                <!-- File Upload -->
+                                                <div class="col-sm-5">
+                                                    <form method="POST" enctype="multipart/form-data" action="{% url 'kg_app:repo_task_excel_upload' %}">
+                                                        {% csrf_token %}
+                                                        <div class="input-group">
+                                                            <input
+                                                                class="form-control excel-file-input"
+                                                                type="file"
+                                                                id="excelFileInput"
+                                                                name="excel_file"
+                                                                accept=".xlsx, .xls"
+                                                                onchange="handleExcelUpload(event)"
+                                                            >
+                                                            <button class="btn btn-primary-solid" type="submit">
+                                                                <i class="icofont icofont-upload me-1"></i> Upload
+                                                            </button>
+                                                        </div>
+                                                        <small class="text-muted d-block mt-1" style="text-align: center;">
+                                                            Accepted formats: <strong>.xlsx</strong>, <strong>.xls</strong>
+                                                        </small>
+                                                    </form>
+                                                </div>
+
+                                                <!-- Status -->
+                                                <div class="col-sm-3">
+                                                    <div id="excelStatus" class="d-none">
+                                                        <span class="excel-status-badge" id="excelStatusText">
+                                                            <i class="icofont icofont-check-circled me-1"></i> File
+                                                            ready to upload
+                                                        </span>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Download Sample -->
+                                                <div class="col-sm-4">
+                                                    <a href="#" id="downloadDummyExcel" class="btn btn-primary-outline"
+                                                        onclick="downloadDummyExcel(event)">
+                                                        <i class="icofont icofont-download me-1"></i> Download Sample
+                                                        Excel
+                                                    </a>
+                                                    <small class="text-muted d-block mt-1"
+                                                        style="text-align: center;">Download the sample
+                                                        template.</small>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Divider -->
+                                    <div class="px-4">
+                                        <div class="or-divider">
+                                            <hr>
+                                            <span>OR FILL MANUALLY</span>
+                                            <hr>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="card-body basic-form">
+                                        <form class="theme-form row g-3" method="post" enctype="multipart/form-data" id="uploadForm" action={% url "kg_app:repo_task_create" %}>
+                                            {% csrf_token %}
+                                            <div class="col-sm-3">
+                                                <label class="form-label">Customer Name<span class="required-star">*</span></label>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <input class="form-control" type="text"
+                                                    placeholder="Enter Customer Name" name="customer_name" required>
+                                            </div>
+
+                                            <div class="col-sm-3">
+                                                <label class="form-label">Registration Number<span class="required-star">*</span></label>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <input class="form-control" type="text"
+                                                    placeholder="Enter Vehicle Registration Number"
+                                                    name="vechile_registration_number" required>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <label class="form-label">Model<span class="required-star">*</span></label>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <input class="form-control" type="text" placeholder="Enter Model"
+                                                    name="model" required>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <label class="form-label">Engine Number<span class="required-star">*</span></label>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <input class="form-control" type="text"
+                                                    placeholder="Enter Engine Number" name="engine_number" required>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <label class="form-label">Chassiss Number<span class="required-star">*</span></label>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <input class="form-control" type="text"
+                                                    placeholder="Enter Chassiss Number" name="chassis_number" required>
+                                            </div>
+
+                                            <div class="col-sm-3">
+                                                <label class="form-label">BKT/DPT<span class="required-star">*</span></label>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <input class="form-control" type="text" placeholder="Enter Bucket"
+                                                    name="bucket" required>  
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <label class="form-label">Branch<span class="required-star">*</span></label>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <input class="form-control" type="text" placeholder="Enter Branch"
+                                                    name="branch" required>
+                                            </div>
+
+                                            <div class="col-sm-3">
+                                                <label class="form-label">CLM<span class="required-star">*</span></label>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <input class="form-control" type="text"
+                                                    placeholder="Enter Collection Manager Name"
+                                                    name="collection_manager_name" required>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <label class="form-label">CLM Mobile Number<span class="required-star">*</span></label>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <input class="form-control" type="tel"
+                                                    placeholder="Enter CLM Mobile Number"
+                                                    name="collection_manager_mobile_number" required>
+                                            </div>
+
+                                            <div class="col-sm-3">
+                                                <label class="form-label">Finance Company<span class="required-star">*</span></label>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <input class="form-control" type="text"
+                                                    placeholder="Enter Finance Company Name"
+                                                    name="finance_company_name" required>
+                                            </div>
+
+                                            <div class="col-12 d-flex gap-2 justify-content-end mt-2">
+                                                <button type="reset" class="btn btn-reset-outline">
+                                                    <i class="icofont icofont-refresh me-1"></i> Reset
+                                                </button>
+                                                <button type="submit" class="btn btn-primary-solid px-4">
+                                                    <i class="icofont icofont-paper-plane me-1"></i> Submit
+                                                </button>
+                                            </div>
+
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Container-fluid starts-->
+            {% include 'common/footer.html'%}
+        </div>
+        <!-- page body end  -->
+
+    </div>
+
+
+
+
+    <!-- jquery-->
+    <script src="{% static 'assets/js/vendors/jquery/jquery.min.js' %}"></script>
+    <!-- bootstrap js-->
+    <script src="{% static 'assets/js/vendors/bootstrap/dist/js/bootstrap.bundle.min.js' %}" defer=""></script>
+    <script src="{% static 'assets/js/vendors/bootstrap/dist/js/popper.min.js' %}" defer=""></script>
+    <!--fontawesome-->
+    <script src="{% static 'assets/js/vendors/font-awesome/fontawesome-min.js' %}"></script>
+    <!-- feather-->
+    <script src="{% static 'assets/js/vendors/feather-icon/feather.min.js' %}"></script>
+    <script src="{% static 'assets/js/vendors/feather-icon/custom-script.js' %}"></script>
+    <!-- sidebar -->
+    <script src="{% static 'assets/js/sidebar.js' %}"></script>
+    <!-- height_equal-->
+    <script src="{% static 'assets/js/height-equal.js' %}"></script>
+    <!-- config-->
+    <script src="{% static 'assets/js/config.js' %}"></script>
+    <!-- apex-->
+    <script src="{% static 'assets/js/chart/apex-chart/apex-chart.js' %}"></script>
+    <script src="{% static 'assets/js/chart/apex-chart/stock-prices.js' %}"></script>
+    <!-- scrollbar-->
+    <script src="{% static 'assets/js/scrollbar/simplebar.js' %}"></script>
+    <script src="{% static 'assets/js/scrollbar/custom.js' %}"></script>
+    <!-- slick-->
+    <script src="{% static 'assets/js/slick/slick.min.js' %}"></script>
+    <script src="{% static 'assets/js/slick/slick.js' %}"></script>
+    <!-- data_table-->
+    <script src="{% static 'assets/js/js-datatables/datatables/jquery.dataTables.min.js' %}"></script>
+    <!-- page_datatable-->
+    <script src="{% static 'assets/js/js-datatables/datatables/datatable.custom.js' %}"></script>
+    <!-- page_datatable1-->
+    <script src="{% static 'assets/js/js-datatables/datatables/datatable.custom1.js' %}"></script>
+    <!-- page_datatable-->
+    <script src="{% static 'assets/js/datatable/datatables/datatable.custom.js' %}"></script>
+    <!-- theme_customizer-->
+    <script src="{% static 'assets/js/theme-customizer/customizer.js' %}"></script>
+    <!-- tilt-->
+    <script src="{% static 'assets/js/animation/tilt/tilt.jquery.js' %}"></script>
+    <!-- page_tilt-->
+    <script src="{% static 'assets/js/animation/tilt/tilt-custom.js' %}"></script>
+    <!-- dashboard_1-->
+    <script src="{% static 'assets/js/dashboard/dashboard_1.js' %}"></script>
+
+
+    <!-- slick-->
+    <script src="{% static 'assets/js/slick/slick.min.js' %}"></script>
+    <script src="{% static 'assets/js/slick/slick.js' %}"></script>
+    <!-- datatable-->
+    <script src="{% static 'assets/js/datatable/datatables/jquery.dataTables.min.js' %}"></script>
+    <!-- datatable_extension-->
+    <script src="{% static 'assets/js/datatable/datatable-extension/dataTables.buttons.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/jszip.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/buttons.colVis.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/pdfmake.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/vfs_fonts.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/dataTables.autoFill.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/dataTables.select.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/buttons.bootstrap4.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/buttons.html5.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/buttons.print.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/dataTables.bootstrap4.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/dataTables.responsive.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/responsive.bootstrap4.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/dataTables.keyTable.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/dataTables.colReorder.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/dataTables.fixedHeader.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/dataTables.rowReorder.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/dataTables.scroller.min.js' %}"></script>
+    <script src="{% static 'assets/js/datatable/datatable-extension/custom.js' %}"></script>
+
+    <!-- datatable-->
+    <script src="{% static 'assets/js/datatable/datatables/jquery.dataTables.min.js' %}"></script>
+    <!-- page_datatable -->
+    <script src="{% static 'assets/js/js-datatables/datatables/datatable.custom.js' %}"></script>
+    <!-- page_datatable-->
+    <!-- <script src="{% static 'assets/js/datatable/datatables/datatable.custom.js' %}"></script> -->
+    <!-- theme_customizer-->
+    <script src="{% static 'assets/js/theme-customizer/customizer.js' %}"></script>
+
+    <!-- custom script -->
+    <script src="{% static 'assets/js/script.js' %}"></script>
+
+    <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+
+    <script>
+        function handleExcelUpload(event) {
+            const file = event.target.files[0];
+            const statusDiv = document.getElementById('excelStatus');
+            const statusText = document.getElementById('excelStatusText');
+
+            if (file) {
+                statusDiv.classList.remove('d-none');
+                statusText.innerHTML = `<i class="icofont icofont-check-circled me-1"></i> "${file.name}" ready`;
+            } else {
+                statusDiv.classList.add('d-none');
+            }
+        }
+
+        function submitExcel() {
+            const fileInput = document.getElementById('excelFileInput');
+            if (!fileInput.files.length) {
+                alert('Please select an Excel file first.');
+                return;
+            }
+            // Add your upload logic here (e.g., FormData + fetch/axios)
+            alert('Uploading: ' + fileInput.files[0].name);
+        }
+
+        function downloadDummyExcel(event) {
+            event.preventDefault();
+
+            // Requires SheetJS (xlsx) library loaded in your project
+            // npm install xlsx  OR  <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js">
+
+            if (typeof XLSX === 'undefined') {
+                alert('SheetJS library is required. Please include it in your project.');
+                return;
+            }
+
+            const headers = [
+                "Customer Name",
+                "Registration Number",
+                "Model",
+                "Engine Number",
+                "Chassis Number",
+                "BKT/DPT",
+                "Branch",
+                "CLM",
+                "CLM Mobile Number",
+                "Finance Company"
+            ];
+
+            const dummyData = [
+                ["John Doe", "MH12AB1234", "Honda City", "ENG123456", "CHS654321", "B1", "Mumbai", "Rahul Sharma", "9876543210", "HDFC Finance"],
+                ["Jane Smith", "DL05XY5678", "Maruti Swift", "ENG789012", "CHS210987", "B2", "Delhi", "Amit Kumar", "9123456789", "Bajaj Finance"]
+            ];
+
+            const wsData = [headers, ...dummyData];
+            const ws = XLSX.utils.aoa_to_sheet(wsData);
+
+            // Set column widths
+            ws['!cols'] = headers.map(() => ({ wch: 22 }));
+
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Repo Tasks");
+            XLSX.writeFile(wb, "repo_task_sample.xlsx");
+        }
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const toasts = document.querySelectorAll('.repo-toast');
+            toasts.forEach(function (toastEl) {
+            const toast = new bootstrap.Toast(toastEl);
+            toast.show();
+            });
+        });
+    </script>
+
+</body>
+
+</html>

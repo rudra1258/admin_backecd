@@ -258,11 +258,11 @@
               <div class="col-sm-12">
                 <div class="card">
                   <div class="card-header pb-0 card-no-border">
-                    <h3>Completed Task</h3>
+                    <h3>Repo Tasks</h3>
                   </div>
                   <div class="card-body">
                     <div class="table-responsive">
-                      <form id="bulkDeleteForm" method="post" action="{% url 'kg_app:bulk_delete_tasks' %}">
+                      <form id="bulkDeleteForm" method="post" action="{% url 'kg_app:bulk_delete_repo_tasks' %}">
                         {% csrf_token %}
 
                         <!-- Top Action Bar -->
@@ -283,19 +283,22 @@
                                 </label>
                               </th>
                               <th>Sl</th>
-                              <th>Agreement Id</th>
-                              <th>Category</th>
                               <th>Customer Name</th>
-                              <th>Mobile Number</th>
-                              <th>TC Name</th>
-                              <th>FE Name</th>
-                              <th>Status</th>
+                              <th>Vehicle Registration Number</th>
+                              <th>Model</th>
+                              <th>Engine Number</th>
+                              <th>Chassis Number</th>
+                              <th>Bucket</th>
+                              <th>Branch</th>
+                              <th>Collection Manager</th>
+                              <th>Collection Manager Mobile</th>
+                              <th>Finance Company</th>
                               <th>Action</th>
                             </tr>
                           </thead>
 
                           <tbody>
-                            {% for task in task_list %}
+                            {% for task in repo_tasks %}
                             <tr>
                               <td>
                                 <label class="custom-checkbox">
@@ -305,20 +308,21 @@
                               </td>
 
                               <td>{{forloop.counter}}</td>
-                              <td>{{task.aggrement_id}}</td>
-                              <td>{{task.category}}</td>
                               <td>{{task.customer_name}}</td>
-                              <td>{{task.customer_mobile_number}}</td>
-                              <td>{{task.tc_name}}</td>
-                              <td>{{task.fe_name}}</td>
-                              <td>
-                                <span class="status-badge">{{task.update_location_status}}</span>
-                              </td>
+                              <td>{{task.vehicle_registration_number}}</td>
+                              <td>{{task.model}}</td>
+                              <td>{{task.engine_number}}</td>
+                              <td>{{task.chassis_number}}</td>
+                              <td>{{task.bucket}}</td>
+                              <td>{{task.branch}}</td>
+                              <td>{{task.collection_manager_name}}</td>
+                              <td>{{task.collection_manager_mobile_number}}</td>
+                              <td>{{task.finance_company_name}}</td>
 
                               <td>
                                 <!-- Single delete -->
                                 <form method="post"
-                                      action="{% url 'kg_app:task_delete_complete' task.task_id %}"
+                                      action="{% url 'kg_app:single_delete_repo_tasks' task.repo_task_id %}"
                                       onsubmit="return confirm('Delete this record?');"
                                       style="display:inline;">
                                   {% csrf_token %}
@@ -472,52 +476,6 @@
   </script>
 
 
-  <script>
-  const customers = [
-  { sl: 1, agreementId: "AG1031", customerName: "Aarav Nanda", mobile: "9845123476", email: "aarav.nanda@example.com", address: "Cuttack, Odisha", telecallerName: "Tanvi Behera", teamleadName: "Rupali Mohanty", groundStaffName: "Sourav Patra", status: "Active" },
-  { sl: 2, agreementId: "AG1032", customerName: "Ishita Reddy", mobile: "9812312345", email: "ishita.reddy@example.com", address: "Bhubaneswar, Odisha", telecallerName: "Amit Nayak", teamleadName: "Sujata Sethi", groundStaffName: "Bikram Dash", status: "Pending" },
-  { sl: 3, agreementId: "AG1033", customerName: "Karan Sahu", mobile: "9765432155", email: "karan.sahu@example.com", address: "Rourkela, Odisha", telecallerName: "Neha Rout", teamleadName: "Rajesh Patnaik", groundStaffName: "Chandan Behera", status: "Completed" },
-  { sl: 4, agreementId: "AG1034", customerName: "Mitali Mohanty", mobile: "9834021198", email: "mitali.mohanty@example.com", address: "Balasore, Odisha", telecallerName: "Tapan Sen", teamleadName: "Sneha Pradhan", groundStaffName: "Hari Nayak", status: "Follow-up" },
-  { sl: 5, agreementId: "AG1035", customerName: "Vivek Kumar", mobile: "9876543201", email: "vivek.kumar@example.com", address: "Berhampur, Odisha", telecallerName: "Sasmita Patra", teamleadName: "Abhinav Das", groundStaffName: "Madhusudan Reddy", status: "Active" },
-  { sl: 6, agreementId: "AG1036", customerName: "Nikita Sethi", mobile: "9812003456", email: "nikita.sethi@example.com", address: "Angul, Odisha", telecallerName: "Lalit Swain", teamleadName: "Sunil Mohanty", groundStaffName: "Rakesh Nayak", status: "Completed" },
-  { sl: 7, agreementId: "AG1037", customerName: "Akhil Patra", mobile: "9823456712", email: "akhil.patra@example.com", address: "Sambalpur, Odisha", telecallerName: "Manisha Das", teamleadName: "Rohit Sen", groundStaffName: "Prakash Rout", status: "Pending" },
-  { sl: 8, agreementId: "AG1038", customerName: "Shruti Nayak", mobile: "9877612345", email: "shruti.nayak@example.com", address: "Puri, Odisha", telecallerName: "Niharika Behera", teamleadName: "Madan Dash", groundStaffName: "Tapan Kumar", status: "Follow-up" },
-  { sl: 9, agreementId: "AG1039", customerName: "Rohit Swain", mobile: "9900112233", email: "rohit.swain@example.com", address: "Jharsuguda, Odisha", telecallerName: "Sushmita Rani", teamleadName: "Dilip Mohanty", groundStaffName: "Bijay Patra", status: "Active" },
-  { sl: 10, agreementId: "AG1040", customerName: "Anjali Das", mobile: "9812349087", email: "anjali.das@example.com", address: "Bhubaneswar, Odisha", telecallerName: "Rahul Behera", teamleadName: "Kalyani Patnaik", groundStaffName: "Jitesh Reddy", status: "Completed" },
-  { sl: 11, agreementId: "AG1041", customerName: "Sanjay Mohapatra", mobile: "9867543210", email: "sanjay.mohapatra@example.com", address: "Khurda, Odisha", telecallerName: "Lopamudra Nanda", teamleadName: "Ankit Nayak", groundStaffName: "Harish Sen", status: "Pending" },
-  { sl: 12, agreementId: "AG1042", customerName: "Kritika Patnaik", mobile: "9822009988", email: "kritika.patnaik@example.com", address: "Balangir, Odisha", telecallerName: "Manoj Rout", teamleadName: "Pallavi Sahu", groundStaffName: "Debasis Behera", status: "Follow-up" },
-  { sl: 13, agreementId: "AG1043", customerName: "Ramesh Swain", mobile: "9890022344", email: "ramesh.swain@example.com", address: "Cuttack, Odisha", telecallerName: "Sujata Patra", teamleadName: "Ritesh Das", groundStaffName: "Kishore Sen", status: "Active" },
-  { sl: 14, agreementId: "AG1044", customerName: "Poonam Rani", mobile: "9911445566", email: "poonam.rani@example.com", address: "Berhampur, Odisha", telecallerName: "Anurag Nayak", teamleadName: "Snehal Patnaik", groundStaffName: "Rohit Reddy", status: "Pending" },
-  { sl: 15, agreementId: "AG1045", customerName: "Deepak Sethi", mobile: "9887650011", email: "deepak.sethi@example.com", address: "Sambalpur, Odisha", telecallerName: "Ritika Behera", teamleadName: "Manas Sen", groundStaffName: "Gopal Patnaik", status: "Completed" }
-];
-
-
-
-
-  const tbody = document.getElementById("table-body");
-
-  customers.forEach(emp => {
-
-    //const parts = emp.joining.split('/'); // [yyyy, mm, dd]
-  //const formattedDate = `${parts[2]}/${parts[1]}/${parts[0]}`;
-
-    tbody.innerHTML += `
-      <tr>
-        <td>${emp.sl}</td>
-        <td>${emp.agreementId}</td>
-        <td>${emp.customerName}</td>
-        <td>${emp.mobile}</td>
-        <td>${emp.email}</td>
-        <td>${emp.address}</td>
-        <td>${emp.telecallerName}</td>
-        <td>${emp.teamleadName}</td>
-        <td>${emp.groundStaffName}</td>
-        <td>${emp.status}</td>
-
-       
-      </tr>`;
-  });
-</script>
 
 </body>
 

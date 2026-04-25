@@ -181,3 +181,114 @@ class FCMTokenAdmin(admin.ModelAdmin):
 
 
 
+@admin.register(RepoTaskCreate)
+class RepoTaskCreateAdmin(admin.ModelAdmin):
+    # Table view columns
+    list_display = (
+        "repo_task_id",
+        "customer_name",
+        "vehicle_registration_number",
+        "model",
+        "engine_number",
+        "chassis_number",
+        "bucket",
+        "branch",
+        "collection_manager_name",
+        "collection_manager_mobile_number",
+        "finance_company_name",
+        "admin_id",
+        "created_at",
+    )
+
+    # Search bar fields
+    search_fields = (
+        "customer_name",
+        "vehicle_registration_number",
+        "model",
+        "engine_number",
+        "chassis_number",
+        "collection_manager_name",
+        "collection_manager_mobile_number",
+        "finance_company_name",
+        "branch",
+        "bucket",
+    )
+
+    # Right-side filters
+    list_filter = (
+        "bucket",
+        "branch",
+        "finance_company_name",
+        "created_at",
+        "updated_at",
+        "admin_id",
+    )
+
+    # Default ordering
+    ordering = ("-created_at",)
+
+    # Read-only fields
+    readonly_fields = (
+        "repo_task_id",
+        "created_at",
+        "updated_at",
+    )
+
+    # Cleaner form layout
+    fieldsets = (
+        ("Admin Information", {
+            "fields": ("admin_id",)
+        }),
+
+        ("Customer Details", {
+            "fields": (
+                "customer_name",
+            )
+        }),
+
+        ("Vehicle Information", {
+            "fields": (
+                "vehicle_registration_number",
+                "model",
+                "engine_number",
+                "chassis_number",
+            )
+        }),
+
+        ("Branch & Bucket Details", {
+            "fields": (
+                "bucket",
+                "branch",
+            )
+        }),
+
+        ("Collection Manager Details", {
+            "fields": (
+                "collection_manager_name",
+                "collection_manager_mobile_number",
+            )
+        }),
+
+        ("Finance Company Details", {
+            "fields": (
+                "finance_company_name",
+            )
+        }),
+
+        ("Timestamps", {
+            "fields": (
+                "repo_task_id",
+                "created_at",
+                "updated_at",
+            )
+        }),
+    )
+
+    # Pagination
+    list_per_page = 25
+
+
+
+
+
+
