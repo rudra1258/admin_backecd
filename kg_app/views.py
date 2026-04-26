@@ -4359,7 +4359,7 @@ def get_repo_login_by_user_id(request, user_id):
         return Response({
             "status": True,
             "message": "GS login fetched successfully",
-            "data": data
+            "RepoData": data
         }, status=status.HTTP_200_OK)
 
     except RepoLogin.DoesNotExist:
