@@ -208,6 +208,45 @@
 
   </style>
 
+  <!-- buttons -->
+   <style>
+    .export-buttons {
+      display: flex;
+      gap: 12px;
+      flex-direction: row-reverse;
+      padding: 10px 0px;
+      margin-left: auto; /* pushes buttons to right */
+    }
+
+    .export-btn {
+      background: #5250c3 !important;
+      color: #fff !important;
+      border: none !important;
+      padding: 10px 22px !important;
+      border-radius: 8px !important;
+      font-size: 14px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 150px;
+      cursor: pointer;
+      transition: 0.3s ease;
+      box-shadow: 0 4px 12px rgba(82, 80, 195, 0.18);
+    }
+
+    .export-btn:hover {
+      background: #403ea8 !important;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(82, 80, 195, 0.28);
+    }
+
+    .export-btn i {
+      margin-right: 8px;
+      font-size: 16px;
+    }
+  </style>
+
 </head>
 
 
@@ -224,48 +263,6 @@
   <!-- loader-->
   <div class="loader-wrapper">
     <div class="loader"><span></span><span></span><span></span><span></span><span></span></div>
-  </div>
-
-  <div id="passwordModal" class="modal-overlay">
-    <div class="modal-card">
-
-      <div class="modal-header">
-        <h3>Change Password</h3>
-        <button class="close-btn" onclick="closePasswordPopup()">✕</button>
-      </div>
-
-      <form method="post" action="{% url 'kg_app:change_staff_password' %}">
-        {% csrf_token %}
-        <input type="hidden" name="staff_id" id="staff_id">
-
-        <div class="form-group">
-          <label>New Password</label>
-
-          <div class="password-input">
-            <input
-              type="password"
-              id="password"
-              name="password"
-              placeholder="Enter new password"
-              required
-            >
-
-            <button type="button" class="eye-btn" onclick="togglePassword()">
-              👁
-            </button>
-          </div>
-
-        </div>
-
-        <div class="modal-actions">
-          <button type="button" class="btn-cancel" onclick="closePasswordPopup()">Cancel</button>
-          <button type="submit" class="btn-save">Update Password</button>
-        </div>
-
-      </form>
-
-    </div>
-
   </div>
 
 
@@ -297,6 +294,11 @@
                     <h3>Repo Search History</h3>
                   </div>
                   <div class="card-body">
+                    <!-- Right Side Export Buttons -->
+                    <div class="export-buttons">
+                      <button class="btn btn-primary" type="button" data-bs-toggle="tooltip" title="Download pdf" id="exportPdf">Export PDF</button>
+                      <button class="btn btn-primary" type="button" data-bs-toggle="tooltip" title="Download excel" id="exportExcel">Export Excel</button>
+                    </div>
                     <div class="table-responsive">
                       <table class="display dataTable" id="basic-9">
                         <thead style="background:#f8f9fa;">
@@ -427,81 +429,41 @@
   <!-- custom script -->
   <script src="{% static 'assets/js/script.js' %}"></script>
 
-  <script>
-    function togglePassword() {
-        const password = document.getElementById("password");
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-        if(password.type === "password"){
-            password.type = "text";
-        } else {
-            password.type = "password";
-        }
-    }
-  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
 
   <script>
-    function openPasswordPopup(id, password){
-      document.getElementById("passwordModal").style.display = "flex";
-      document.getElementById("staff_id").value = id;
-      document.getElementById("password").value = password;
-
-    }
-
-    function closePasswordPopup(){
-      document.getElementById("passwordModal").style.display = "none";
-    }
-  </script>
-
-  <script>
-    // Sample dataset generator for 80 employees
-    const firstNames = ["Ravi", "Priya", "Amit", "Neha", "Vikram", "Sanya", "Rohit", "Anjali", "Siddharth", "Pooja", "Manish", "Isha", "Karan", "Ritika", "Saurabh", "Neelam", "Aditya", "Shreya", "Vivek", "Deepika", "Rajan", "Ananya", "Arjun", "Sakshi", "Rohan"];
-    const lastNames = ["Sharma", "Singh", "Kumar", "Gupta", "Reddy", "Mehta", "Verma", "Nair", "Joshi", "Kapoor", "Choudhary", "Pandey", "Malhotra", "Bhatia", "Jain", "Roy", "Deshmukh", "Dutta", "Rao", "Mishra", "Saxena", "Tripathi", "Shukla", "Patel", "Chatterjee"];
-    const cities = ["Delhi", "Mumbai", "Bangalore", "Hyderabad", "Chennai", "Pune", "Kolkata", "Jaipur", "Lucknow", "Bhubaneswar", "Ahmedabad", "Trivandrum", "Nagpur", "Chandigarh"];
-    const streets = ["MG Road", "Park Street", "Laxmi Nagar", "Bandra West", "Indira Nagar", "Sector 15", "Civil Lines", "Kumar Street", "Ring Road", "Shastri Nagar"];
-
-    function randomItem(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
-    function randomMobile() { return "9" + Math.floor(100000000 + Math.random() * 900000000); }
-    function randomEmail(name) { return name.toLowerCase().replace(" ", ".") + "@example.com"; }
-    function randomDate(start = "2010-01-01", end = "2023-12-31") {
-      const startDate = new Date(start);
-      const endDate = new Date(end);
-      const date = new Date(startDate.getTime() + Math.random() * (endDate.getTime() - startDate.getTime()));
-      return date.toISOString().split('T')[0];
-    }
-
-    const employees = [];
-    for (let i = 1; i <= 80; i++) {
-      const first = randomItem(firstNames);
-      const last = randomItem(lastNames);
-      const name = first + " " + last;
-      const mobile = randomMobile();
-      const email = randomEmail(name);
-      const address = `${Math.floor(Math.random() * 200 + 1)}, ${randomItem(streets)}, ${randomItem(cities)}`;
-      const joinDate = randomDate();
-
-      employees.push({ sl: i, name, mobile, email, address, joinDate });
-    }
-
-    // Populate table body
-    const tbody = document.getElementById("table-body");
-    employees.forEach(emp => {
-      tbody.innerHTML += `
-    <tr>
-      <td>${emp.sl}</td>
-      <td>${emp.name}</td>
-      <td>${emp.mobile}</td>
-      <td>${emp.email}</td>
-      <td>${emp.address}</td>
-      <td>${emp.joinDate}</td>
-      <td>
-        <ul class="action" style="display:flex;gap:10px;list-style:none;padding:0;margin:0;">
-          <li class="edit"><a href="#"><i class="fa-solid fa-pen"></i></a></li>
-          <li class="delete"><a href="#"><i class="fa-solid fa-trash-can"></i></a></li>
-        </ul>
-      </td>
-    </tr>`;
+    // Export to Excel
+    document.getElementById("exportExcel").addEventListener("click", function () {
+      let table = document.getElementById("basic-9");
+      let workbook = XLSX.utils.table_to_book(table, { sheet: "Repo Search History" });
+      XLSX.writeFile(workbook, "Repo_Search_History.xlsx");
     });
 
+    // Export to PDF
+    document.getElementById("exportPdf").addEventListener("click", function () {
+      const { jsPDF } = window.jspdf;
+      let doc = new jsPDF('landscape');
+
+      doc.text("Repo Search History", 14, 15);
+
+      doc.autoTable({
+        html: '#basic-9',
+        startY: 22,
+        theme: 'grid',
+        styles: {
+          fontSize: 8
+        },
+        headStyles: {
+          fillColor: [82, 80, 195]
+        }
+      });
+
+      doc.save("Repo_Search_History.pdf");
+    });
   </script>
 
 </body>
