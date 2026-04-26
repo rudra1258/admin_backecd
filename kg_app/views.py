@@ -2883,7 +2883,7 @@ class RepoTaskListAPIView(APIView):
                 {
                     "status": "error",
                     "message": f"Admin with id {admin_id} not found.",
-                    "data": []
+                    "reptTaskdata": []
                 },
                 status=status.HTTP_404_NOT_FOUND
             )
@@ -2896,7 +2896,7 @@ class RepoTaskListAPIView(APIView):
                     "status": "success",
                     "message": "No tasks found for this admin.",
                     "total": 0,
-                    "data": []
+                    "reptTaskdata": []
                 },
                 status=status.HTTP_200_OK
             )
@@ -2908,7 +2908,7 @@ class RepoTaskListAPIView(APIView):
                 "status": "success",
                 "message": "Tasks fetched successfully.",
                 "total": tasks.count(),
-                "data": serializer.data
+                "reptTaskdata": serializer.data
             },
             status=status.HTTP_200_OK
         )
