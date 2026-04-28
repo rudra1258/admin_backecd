@@ -182,6 +182,33 @@
       }
    </style>
 
+   <!-- mobile contact button css -->
+    <style>
+      .mobile-contact-btn {
+         margin-top: 20px;
+         text-align: center;
+         padding: 0 20px;
+      }
+
+      .contact-btn {
+         display: block;
+         width: 100%;
+         background: #5250c3;
+         color: #fff;
+         padding: 14px 20px;
+         border-radius: 8px;
+         font-size: 16px;
+         font-weight: 600;
+         text-decoration: none;
+         transition: 0.3s;
+      }
+
+      .contact-btn:hover {
+         background: #4341a8;
+         color: #fff;
+      }
+   </style>
+
 </head>
 <body class="home theme-creote page-home-default-one">
    <div id="page" class="page_wapper hfeed site">
@@ -289,6 +316,7 @@
                            <span class="line"></span>
                            <span class="line"></span>
                            <span class="line"></span>
+                           
                         </div>
                         <div class="header_content_collapse">
                            <div class="header_menu_box">
@@ -450,6 +478,7 @@
                            <div class="before_title"> Check Out </div>
                            <h2>Customer Service Section</h2>
                         </div>
+                        <button type="button" class="open_demo_pop_up"><i class="fas fa-envelope"></i></button>
                         <!--===============spacing==============-->
                            <div class="pd_bottom_20"></div>
                         <!--===============spacing==============-->
@@ -727,7 +756,7 @@
                                        <div class="tab_content one"
                                           style="background-image:url({% static  'assets/landing_page_assets/assets/images/tab-image.jpg' %})">
                                           <div class="content_image">
-                                             <h6>Why Creote</h6>
+                                             <h6>Why StaffLynk</h6>
 
                                              <h2>Affordable Pricing Plans</h2>
                                              <p>Get cost-effective solutions designed for businesses of every size. Our flexible pricing ensures you only pay for what you need while maximizing value and performance.</p>
@@ -1530,12 +1559,19 @@
          <div class="menu-backdrop"></div>
          <nav class="menu-box">
             <div class="close-btn"><i class="icon-close"></i></div>
-            <form role="search" method="get" action="#">
+            <!-- <form role="search" method="get" action="#">
                <input type="search" class="search" placeholder="Search..." value="" name="s" title="Search" />
                <button type="submit" class="sch_btn"> <i class="icon-search"></i></button>
-            </form>
+            </form> -->
             <div class="menu-outer">
                <!--Here Menu Will Come Automatically Via Javascript / Same Menu as in Header-->
+            </div>
+            <!-- Contact Us Button -->
+            <div class="mobile-contact-btn">
+               <a href="{% url 'kg_app:admin_login' %}" target="_blank" rel="" class="contact-btn">Login</a>
+            </div>
+            <div class="mobile-contact-btn">
+               <a class="contact-btn open_demo_pop_up">Contact Us</a>
             </div>
          </nav>
       </div>
@@ -1691,6 +1727,30 @@
          function closeSuccessPopup() {
             document.getElementById("successPopup").style.display = "none";
          }
+      </script>
+
+      <script>
+         function creote_modal_popup () {
+            //Search Popup
+            if($('.modal_popup').length){  
+               //Show Popup
+               $('.open_demo_pop_up').on('click', function() {
+                  $('.modal_popup').addClass('contact-popup-visible');
+               });
+               $(document).keydown(function(e){
+                  if(e.keyCode === 27) {
+                        $('.modal_popup').removeClass('contact-popup-visible');
+                  }
+               });
+               //Hide Popup
+               $('.close-modal ').on('click', function() {
+                  $('.modal_popup').removeClass('contact-popup-visible');
+               });
+            }
+         }
+         $(document).ready(function () {
+            creote_modal_popup();
+         });
       </script>
 
   </body>

@@ -93,6 +93,16 @@ if($('.crt_mobile_menu').length){
     $('.crt_mobile_menu .menu-backdrop,.crt_mobile_menu .close-btn').on('click', function() {
         $('body').removeClass('crt_mobile_menu-visible');
     });
+
+    // Close menu when clicking any nav item
+    $('.crt_mobile_menu .menu-outer').on('click', 'a', function () {
+        $('body').removeClass('crt_mobile_menu-visible');
+    });
+
+    // Close menu when clicking Contact Us button
+    $('.mobile-contact-btn .contact-btn').on('click', function () {
+        $('body').removeClass('crt_mobile_menu-visible');
+    });
 }
 
 $(function() {
