@@ -13,7 +13,7 @@ admin.site.register(task_update)
 
 @admin.register(admin_user_model)
 class AdminUserModelAdmin(admin.ModelAdmin):
-    list_display = ("username", "email", "mobile_number", "created_at")
+    list_display = ("username", "email", "mobile_number", "created_at", "canLogin")
     search_fields = ("username","email")
 
 @admin.register(CreateUser)

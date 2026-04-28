@@ -16,7 +16,7 @@ class admin_user_model(models.Model):
     login_status = models.BooleanField(default = True)
     active_session_key = models.CharField(max_length=255, null=True, blank=True) 
     last_login_device = models.CharField(max_length=255, null=True, blank=True) 
-    
+    canLogin = models.BooleanField(default=True)  # New field to control login access
     def __str__(self):
         return f"{self.username}"
     

@@ -204,6 +204,12 @@ def admin_login(request):
             print("Admin user found:", admin_user.username)
             print("Provided password:", password)
             
+            if not admin_user.canLogin:
+                return JsonResponse({
+                    'success': False,
+                    'message': 'Your account has been disabled. Please contact support.'
+                })
+            
             # Verify password
             if password == admin_user.password:
                 # Check if user is already logged in on another device
