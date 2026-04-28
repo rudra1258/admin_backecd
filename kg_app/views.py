@@ -284,6 +284,14 @@ def admin_login(request):
         try:
             user = CreateUser.objects.get(email=email)
             
+            print("User found: ********************************** ", user.admin_id.canLogin)
+            
+            if not user.admin_id.canLogin:
+                return JsonResponse({
+                    'success': False,
+                    'message': 'Your account has been disabled. Please contact support.'
+                })
+            
             # Check if user role is allowed to login
             allowed_roles = ['telecaller']
             
@@ -292,6 +300,8 @@ def admin_login(request):
                     'success': False,
                     'message': 'Access denied. Only telecallers can login through this portal.'
                 })
+                
+            
             
             # Verify user password
             if password == user.password:
