@@ -7,8 +7,8 @@ app_name = 'kg_app'  # important for namespacing URLs
 
 
 router = routers.DefaultRouter()
-# router.register(r'createUserList', views.CreateUserViewSet)
-# router.register(r'createTaskList', views.Create_task_Viewset)
+router.register(r'createUserList', views.CreateUserViewSet)
+router.register(r'createTaskList', views.Create_task_Viewset)
 
 urlpatterns = [
     
