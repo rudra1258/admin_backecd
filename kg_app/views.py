@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
+
+from kg_app.middleware import jwt_required
 from . models import *
 from django.contrib import messages
 from django.contrib.auth.hashers import check_password, make_password
@@ -4019,6 +4021,7 @@ def user_login(request):
                         'last_name': user.last_name,
                         'role': user.role,
                         'my_admin_id': user.admin_id.admin_id,
+                        'can_login': user.admin_id.canLogin,
                         'phone_number': user.phone_number,
                         'password': user.password,
                         'isMobile_login': user.isMobile_login,
@@ -4038,28 +4041,26 @@ def user_login(request):
     
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)       
         
-
-
-@api_view(['GET'])
-def get_tasks(request):
-    """
-    GET endpoint to retrieve tasks with optional admin_id filter
-    URL: /api/tasks/get/?admin_id=<id>
-    """
-    admin_id = request.query_params.get('admin_id', None)
+# @api_view(['GET'])
+# def get_tasks(request):
+#     """
+#     GET endpoint to retrieve tasks with optional admin_id filter
+#     URL: /api/tasks/get/?admin_id=<id>
+#     """
+#     admin_id = request.query_params.get('admin_id', None)
     
-    if admin_id:
-        tasks = Create_task.objects.filter(admin_id=admin_id)
-    else:
-        tasks = Create_task.objects.all()
+#     if admin_id:
+#         tasks = Create_task.objects.filter(admin_id=admin_id)
+#     else:
+#         tasks = Create_task.objects.all()
     
-    serializer = TaskSerializer(tasks, many=True)
+#     serializer = TaskSerializer(tasks, many=True)
     
-    return Response({
-        'success': True,
-        'count': len(serializer.data),
-        'data': serializer.data
-    }, status=status.HTTP_200_OK)
+#     return Response({
+#         'success': True,
+#         'count': len(serializer.data),
+#         'data': serializer.data
+#     }, status=status.HTTP_200_OK)
 
 
 @api_view(['GET'])
@@ -4296,6 +4297,7 @@ def get_gs_login_by_user_id(request, user_id):
         data = {
             "gs_login_id": gs_login.gs_login_id,
             "user_id": gs_login.user_id.id if gs_login.user_id else None,
+            "can_login": gs_login.user_id.admin_id.canLogin if gs_login.user_id and gs_login.user_id.admin_id else None,
             "admin_id": gs_login.admin_id,
             "name": gs_login.name,
             "email": gs_login.email,
@@ -4328,6 +4330,7 @@ def get_tl_login_by_user_id(request, user_id):
         data = {
             "tl_login_id": tl_login.tl_login_id,
             "user_id": tl_login.user_id.id if tl_login.user_id else None,
+            "can_login": tl_login.user_id.admin_id.canLogin if tl_login.user_id and tl_login.user_id.admin_id else None,
             "admin_id": tl_login.admin_id,
             "name": tl_login.name,
             "email": tl_login.email,
@@ -4360,6 +4363,7 @@ def get_repo_login_by_user_id(request, user_id):
         data = {
             "gs_login_id": repo_login.gs_login_id,
             "user_id": repo_login.user_id.id if repo_login.user_id else None,
+            "can_login": repo_login.user_id.admin_id.canLogin if repo_login.user_id and repo_login.user_id.admin_id else None,
             "admin_id": repo_login.admin_id,
             "name": repo_login.name,
             "email": repo_login.email,
@@ -4840,6 +4844,231 @@ class FCMTokenFetchView(APIView):
             {"message": "FCM tokens fetched.", "data": serializer.data},
             status=status.HTTP_200_OK
         )
+
+
+
+
+import datetime
+from django.conf import settings
+import jwt
+
+@api_view(['POST'])
+def admin_login_for_testing(request):
+    email = request.data.get('email')
+    password = request.data.get('password')
+
+    # Validate input
+    if not email or not password:
+        return Response(
+            {'error': 'Email and password are required.'},
+            status=status.HTTP_400_BAD_REQUEST
+        )
+
+    # Fetch user
+    try:
+        admin = admin_user_model.objects.get(email=email)
+    except admin_user_model.DoesNotExist:
+        return Response(
+            {'error': 'Invalid credentials.'},
+            status=status.HTTP_401_UNAUTHORIZED
+        )
+
+    # Check login permission
+    if not admin.canLogin:
+        return Response(
+            {'error': 'Your account has been disabled. Contact support.'},
+            status=status.HTTP_403_FORBIDDEN
+        )
+
+    # Verify password
+    if not (password, admin.password):
+        return Response(
+            {'error': 'Invalid credentials.'},
+            status=status.HTTP_401_UNAUTHORIZED
+        )
+
+    # Capture device info
+    user_agent = request.META.get('HTTP_USER_AGENT', 'Unknown')
+
+    # Generate JWT token
+    payload = {
+        'admin_id': admin.admin_id,
+        'email': admin.email,
+        'role': admin.role,
+        'admin_system_id': admin.admin_system_id,
+        'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=24),
+        'iat': datetime.datetime.utcnow(),
+    }
+    token = jwt.encode(payload, settings.SECRET_KEY, algorithm='HS256')
+
+    # Generate refresh token (longer expiry)
+    refresh_payload = {
+        'admin_id': admin.admin_id,
+        'type': 'refresh',
+        'exp': datetime.datetime.utcnow() + datetime.timedelta(days=7),
+        'iat': datetime.datetime.utcnow(),
+    }
+    refresh_token = jwt.encode(refresh_payload, settings.SECRET_KEY, algorithm='HS256')
+
+    # Update session info
+    admin.login_status = True
+    admin.active_session_key = token
+    admin.last_login_device = user_agent
+    admin.save(update_fields=['login_status', 'active_session_key', 'last_login_device'])
+
+    return Response({
+        'message': 'Login successful.',
+        'token': token,
+        'refresh_token': refresh_token,
+        'admin': {
+            'admin_id': admin.admin_id,
+            'username': admin.username,
+            'email': admin.email,
+            'role': admin.role,
+            'admin_system_id': admin.admin_system_id,
+        }
+    }, status=status.HTTP_200_OK)
+
+
+
+@api_view(['GET'])
+@jwt_required
+def get_all_users(request):
+    admin_id = request.GET.get("admin_id")
+
+    if not admin_id:
+        return Response({
+            "status": False,
+            "message": "admin_id is required"
+        }, status=status.HTTP_400_BAD_REQUEST)
+
+    try:
+        users = CreateUser.objects.select_related(
+            "admin_id",
+            "assigned_to"
+        ).filter(
+            admin_id__admin_id=admin_id
+        ).order_by("-id")
+
+        data = []
+
+        for user in users:
+            data.append({
+                "id": user.id,
+                "admin_id": user.admin_id.admin_id if user.admin_id else None,
+                "admin_name": user.admin_id.username if user.admin_id else None,
+
+                "first_name": user.first_name,
+                "last_name": user.last_name,
+                "full_name": f"{user.first_name} {user.last_name}",
+
+                "email": user.email,
+                "phone_number": user.phone_number,
+                "role": user.role,
+                "username": user.username,
+                "address": user.address,
+
+                "login_status": user.login_status,
+                "isMobile_login": user.isMobile_login,
+                "last_login_device": user.last_login_device,
+
+                "assigned_to": {
+                    "id": user.assigned_to.id if user.assigned_to else None,
+                    "name": (
+                        f"{user.assigned_to.first_name} {user.assigned_to.last_name}"
+                        if user.assigned_to else None
+                    ),
+                    "role": user.assigned_to.role if user.assigned_to else None,
+                },
+
+                "is_assignment_locked": user.is_assignment_locked
+            })
+
+        return Response({
+            "status": True,
+            "message": "Users fetched successfully",
+            "count": len(data),
+            "data": data
+        })
+
+    except Exception as e:
+        return Response({
+            "status": False,
+            "message": str(e)
+        }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['GET'])
+@jwt_required
+def get_tasks(request):
+
+    queryset = Create_task.objects.all()
+
+    admin_id = request.GET.get('admin_id')
+    tc_userName = request.GET.get('tc_userName')
+    fe_userName = request.GET.get('fe_userName')
+    tl_userName = request.GET.get('tl_userName')
+
+    if admin_id:
+        queryset = queryset.filter(admin_id__admin_id=admin_id)
+
+    if tc_userName:
+        queryset = queryset.filter(tc_userName=tc_userName)
+
+    if fe_userName:
+        queryset = queryset.filter(fe_userName=fe_userName)
+
+    if tl_userName:
+        queryset = queryset.filter(tl_userName=tl_userName)
+
+    serializer = CreateTaskSerializer(queryset, many=True)
+
+    # ✅ THIS LINE CHANGED
+    return Response(serializer.data)
+
+
+
+
+
+
+@api_view(['POST'])
+def token_refresh(request):
+    refresh_token = request.data.get('refresh_token')
+
+    if not refresh_token:
+        return Response({'error': 'Refresh token required.'}, status=status.HTTP_400_BAD_REQUEST)
+
+    try:
+        payload = jwt.decode(refresh_token, settings.SECRET_KEY, algorithms=['HS256'])
+
+        if payload.get('type') != 'refresh':
+            return Response({'error': 'Invalid token type.'}, status=status.HTTP_401_UNAUTHORIZED)
+
+        admin = admin_user_model.objects.get(admin_id=payload['admin_id'])
+
+        if not admin.canLogin:
+            return Response({'error': 'Account disabled.'}, status=status.HTTP_403_FORBIDDEN)
+
+        # Issue new access token
+        new_payload = {
+            'admin_id': admin.admin_id,
+            'email': admin.email,
+            'role': admin.role,
+            'admin_system_id': admin.admin_system_id,
+            'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=24),
+            'iat': datetime.datetime.utcnow(),
+        }
+        new_token = jwt.encode(new_payload, settings.SECRET_KEY, algorithm='HS256')
+
+        admin.active_session_key = new_token
+        admin.save(update_fields=['active_session_key'])
+
+        return Response({'token': new_token}, status=status.HTTP_200_OK)
+
+    except jwt.ExpiredSignatureError:
+        return Response({'error': 'Refresh token expired. Please log in again.'}, status=status.HTTP_401_UNAUTHORIZED)
+    except (jwt.InvalidTokenError, admin_user_model.DoesNotExist):
+        return Response({'error': 'Invalid refresh token.'}, status=status.HTTP_401_UNAUTHORIZED)
+
 
 
 

@@ -4,6 +4,12 @@ from django.utils import timezone
 from datetime import timedelta
 from .models import *
 
+import jwt
+from functools import wraps
+from django.conf import settings
+from rest_framework.response import Response
+from rest_framework import status
+
 class SingleDeviceMiddleware:
     def __init__(self, get_response):
         self.get_response = get_response
@@ -128,3 +134,34 @@ class AutoLogoutMiddleware:
 
         # ✅ Mirror the status to CreateUser
         CreateUser.objects.filter(id__in=expired_user_ids).update(login_status="Inactive")
+        
+
+def jwt_required(f):
+    @wraps(f)
+    def decorated(request, *args, **kwargs):
+        token = request.headers.get('Authorization', '').replace('Bearer ', '')
+
+        if not token:
+            return Response({'error': 'Authorization token missing.'}, status=status.HTTP_401_UNAUTHORIZED)
+
+        try:
+            payload = jwt.decode(token, settings.SECRET_KEY, algorithms=['HS256'])
+            admin = admin_user_model.objects.get(admin_id=payload['admin_id'])
+
+            if admin.active_session_key != token:
+                return Response({'error': 'Session expired or logged in elsewhere.'}, status=status.HTTP_401_UNAUTHORIZED)
+
+            request.admin = admin
+
+        except jwt.ExpiredSignatureError:
+            return Response({'error': 'Token expired.'}, status=status.HTTP_401_UNAUTHORIZED)
+        except (jwt.InvalidTokenError, admin_user_model.DoesNotExist):
+            return Response({'error': 'Invalid token.'}, status=status.HTTP_401_UNAUTHORIZED)
+
+        return f(request, *args, **kwargs)
+    return decorated
+        
+        
+        
+        
+        

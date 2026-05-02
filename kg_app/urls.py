@@ -7,8 +7,8 @@ app_name = 'kg_app'  # important for namespacing URLs
 
 
 router = routers.DefaultRouter()
-router.register(r'createUserList', views.CreateUserViewSet)
-router.register(r'createTaskList', views.Create_task_Viewset)
+# router.register(r'createUserList', views.CreateUserViewSet)
+# router.register(r'createTaskList', views.Create_task_Viewset)
 
 urlpatterns = [
     
@@ -300,5 +300,17 @@ urlpatterns = [
     # { "user_id": 1, "fcm_token": "abc123" } body/parameter
     path('fcm/fetch/', FCMTokenFetchView.as_view(), name='fcm-fetch'), # get /api/v1/fcm/fetch/?user_id=1
     
+
+
+    path('admin_demo/login/', views.admin_login_for_testing, name='admin-login'),
+    # demo body for testing admin login api
+    # {
+    #     "email":"rudra@gmail.com",
+    #     "password":"Rudra@123"
+    # }
+    path('get-all-users/', get_all_users, name='get_all_users'),
+    path('admin/token/refresh/', views.token_refresh, name='token-refresh'),
+
+
 
 ]
