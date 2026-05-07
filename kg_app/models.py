@@ -1,6 +1,11 @@
 from django.db import models
 from django.utils import timezone
 from datetime import date, timedelta
+from django.utils.timezone import now
+
+
+def default_valid_till():
+    return now() + timedelta(days = 30)
 
 # Create your models here.
 class admin_user_model(models.Model):
@@ -16,7 +21,9 @@ class admin_user_model(models.Model):
     login_status = models.BooleanField(default = True)
     active_session_key = models.CharField(max_length=255, null=True, blank=True) 
     last_login_device = models.CharField(max_length=255, null=True, blank=True) 
-    canLogin = models.BooleanField(default=True)  # New field to control login access
+    canLogin = models.BooleanField(default=True)
+    isActive = models.BooleanField(default=True)
+    valid_till = models.DateTimeField(default=default_valid_till)
     def __str__(self):
         return f"{self.username}"
     
