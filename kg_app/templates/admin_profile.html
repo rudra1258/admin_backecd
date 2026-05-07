@@ -1221,6 +1221,211 @@
         }
 
         /* responsive placement — if triggered from card use positioning */
+
+        /* CHANGE PASSWORD BUTTON */
+        .change-password-btn{
+            width: 100%;
+            height: 52px;
+            border: none;
+            border-radius: 14px;
+            margin-top: 15px;
+            background: linear-gradient(135deg,#5b7cff,#3461ff);
+            color: #fff;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .change-password-btn:hover{
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(52,97,255,0.25);
+        }
+
+        /* POPUP BACKGROUND */
+        .password-popup{
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: rgba(0,0,0,0.45);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 99999;
+            backdrop-filter: blur(4px);
+        }
+
+        /* POPUP BOX */
+        .password-popup-box{
+            width: 420px;
+            background: #fff;
+            border-radius: 24px;
+            padding: 30px;
+            position: relative;
+            animation: popupShow 0.3s ease;
+        }
+
+        @keyframes popupShow{
+            from{
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to{
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .password-popup-box h2{
+            margin: 0;
+            font-size: 26px;
+            color: #1f2937;
+        }
+
+        .password-popup-box p{
+            margin-top: 8px;
+            margin-bottom: 25px;
+            color: #7b8794;
+            font-size: 14px;
+        }
+
+        /* CLOSE BUTTON */
+        .close-popup{
+            position: absolute;
+            right: 18px;
+            top: 14px;
+            font-size: 30px;
+            cursor: pointer;
+            color: #999;
+            transition: 0.3s;
+        }
+
+        .close-popup:hover{
+            color: #ff4d4d;
+        }
+
+        /* INPUT GROUP */
+        .popup-input-group{
+            margin-bottom: 18px;
+        }
+
+        .popup-input-group label{
+            display: block;
+            margin-bottom: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #6b7280;
+        }
+
+        .popup-input-group input{
+            width: 100%;
+            height: 52px;
+            border: 1px solid #dbe4ff;
+            border-radius: 14px;
+            padding: 0 15px;
+            background: #f8fbff;
+            font-size: 15px;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .popup-input-group input:focus{
+            border-color: #4f7cff;
+            background: #fff;
+            box-shadow: 0 0 0 4px rgba(79,124,255,0.12);
+        }
+
+        /* UPDATE BUTTON */
+        .popup-update-btn{
+            width: 100%;
+            height: 54px;
+            border: none;
+            border-radius: 14px;
+            background: linear-gradient(135deg,#4f7cff,#295dff);
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: 0.3s;
+        }
+
+        .popup-update-btn:hover{
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(41,93,255,0.25);
+        }
+
+        .height_min{
+            height: 1rem;
+        }
+
+        /* PASSWORD MISS-MATCH ERROR */
+        .password-error{
+            display: none;
+            color: #ef4444;
+            font-size: 13px;
+            font-weight: 500;
+            margin-top: 8px;
+            padding-left: 2px;
+        }
+
+    </style>
+
+    <!-- pop up message  -->
+    <style>
+    /* MESSAGE CONTAINER */
+    .message-container{
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 999999;
+    }
+
+    /* COMMON MESSAGE STYLE */
+    .custom-message{
+        min-width: 320px;
+        padding: 14px 18px;
+        margin-bottom: 12px;
+        border-radius: 14px;
+        color: white;
+        font-size: 14px;
+        font-weight: 500;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.12);
+        animation: slideIn 0.4s ease;
+    }
+
+    /* SUCCESS */
+    .custom-message.success{
+        background: linear-gradient(135deg,#16a34a,#22c55e);
+    }
+
+    /* ERROR */
+    .custom-message.error{
+        background: linear-gradient(135deg,#dc2626,#ef4444);
+    }
+
+    /* WARNING */
+    .custom-message.warning{
+        background: linear-gradient(135deg,#d97706,#f59e0b);
+    }
+
+    /* INFO */
+    .custom-message.info{
+        background: linear-gradient(135deg,#2563eb,#3b82f6);
+    }
+
+    @keyframes slideIn{
+        from{
+            opacity: 0;
+            transform: translateX(100px);
+        }
+        to{
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
     </style>
 
 </head>
@@ -1236,6 +1441,58 @@
     <!-- loader-->
     <div class="loader-wrapper">
         <div class="loader"><span></span><span></span><span></span><span></span><span></span></div>
+    </div>
+
+    {% if messages %}
+        <div class="message-container">
+            {% for message in messages %}
+                <div class="custom-message {{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <!-- password update POPUP -->
+    <div class="password-popup" id="passwordPopup">
+        
+        <div class="password-popup-box">
+
+            <!-- CLOSE -->
+            <span class="close-popup" onclick="closePasswordPopup()">×</span>
+
+            <h2>Update Password</h2>
+            <p>Secure your account with a new password</p>
+
+            <form method="POST" action="{% url 'kg_app:update_admin_password' %}">
+                {% csrf_token %}
+                <div class="popup-input-group">
+                    <label>Current Password</label>
+                    <input type="password"  name="current_password" placeholder="Enter current password" required>
+                </div>
+
+                <div class="popup-input-group">
+                    <label>New Password</label>
+                    <input type="password" id="newPassword" name="new_password" placeholder="Enter new password" required>
+                </div>
+
+                <div class="popup-input-group">
+                    <label>Confirm Password</label>
+                    <input type="password" id="confirmPassword" name="confirm_password" placeholder="Confirm new password" required>
+                    <!-- ERROR MESSAGE -->
+                    <span id="passwordError" class="password-error">
+                        Passwords do not match
+                    </span>
+                </div>
+
+                <button type="submit" class="popup-update-btn">
+                    Update Password
+                </button>
+
+            </form>
+
+        </div>
+
     </div>
 
 
@@ -1291,6 +1548,10 @@
                                                 <div class="hr"></div>
                                                 <button class="edit-btn" onclick="confirmLogout()">
                                                     ⏻ &nbsp; Logout
+                                                </button>
+                                                <div class="height_min"></div>
+                                                <button class="edit-btn" onclick="openPasswordPopup()">
+                                                    Change Password
                                                 </button>
                                             </div>
                                         </div>
@@ -1776,6 +2037,77 @@
         //   last_login_device: "{{ admin.last_login_device|default:'' }}",
         //   active_session_key: "{{ admin.active_session_key|default:'' }}",
         // });
+    </script>
+
+    <script>
+        function openPasswordPopup(){
+            document.getElementById("passwordPopup").style.display = "flex";
+        }
+
+        function closePasswordPopup(){
+            document.getElementById("passwordPopup").style.display = "none";
+        }
+
+        /* CLOSE WHEN CLICK OUTSIDE */
+        window.onclick = function(event){
+            let popup = document.getElementById("passwordPopup");
+
+            if(event.target == popup){
+                popup.style.display = "none";
+            }
+        }
+    </script>
+
+    <script>
+        setTimeout(() => {
+            const messages = document.querySelectorAll('.custom-message');
+
+            messages.forEach(msg => {
+                msg.style.transition = "0.4s";
+                msg.style.opacity = "0";
+                msg.style.transform = "translateX(100px)";
+
+                setTimeout(() => {
+                    msg.remove();
+                }, 400);
+            });
+
+        }, 3000);
+    </script>
+
+    <script>
+        function validatePassword(){
+
+            let newPassword = document.getElementById("newPassword").value;
+            let confirmPassword = document.getElementById("confirmPassword").value;
+            let errorText = document.getElementById("passwordError");
+
+            if(newPassword !== confirmPassword){
+
+                errorText.style.display = "block";
+
+                return false;
+            }
+
+            errorText.style.display = "none";
+
+            return true;
+        }
+
+        /* LIVE CHECK */
+        document.getElementById("confirmPassword").addEventListener("keyup", function(){
+
+            let newPassword = document.getElementById("newPassword").value;
+            let confirmPassword = this.value;
+            let errorText = document.getElementById("passwordError");
+
+            if(confirmPassword.length > 0 && newPassword !== confirmPassword){
+                errorText.style.display = "block";
+            }else{
+                errorText.style.display = "none";
+            }
+
+        });
     </script>
 
 

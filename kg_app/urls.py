@@ -48,6 +48,7 @@ urlpatterns = [
     path('tl_login/', views.tl_login, name='tl_login'),
     path('feddback_history/', views.feddback_history, name='feddback_history'),
     path('admin_profile/', views.admin_profile, name='admin_profile'),
+    path('update-admin-password/', views.update_admin_password, name='update_admin_password'),
     path('team_management/', views.team_management, name='team_management'),
     path('telecaller/<int:telecaller_id>/team/', views.telecaller_team_detail, name='telecaller_team_detail'),
     path('tlAssignToTc/', views.tlAssignToTc, name='tlAssignToTc'),

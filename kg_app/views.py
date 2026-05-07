@@ -2239,6 +2239,31 @@ def admin_profile(request):
         "repoboy_percentage": repoboy_percentage,
         }) 
 
+def update_admin_password(request):
+    session_admin_id = request.session.get("admin_id")
+    # navigate to login page if not login
+    if not session_admin_id:
+        return render(request, 'index.html')
+    admin_id_pk = admin_user_model.objects.get(pk=session_admin_id)
+    
+    if request.method == "POST":
+        current_password = request.POST.get("current_password")
+        new_password = request.POST.get("new_password")
+        confirm_password = request.POST.get("confirm_password")
+        
+        if current_password != admin_id_pk.password:
+            messages.error(request, "Current password is incorrect.")
+            return redirect('kg_app:admin_profile')
+
+        if new_password != confirm_password:
+            messages.error(request, "Passwords do not match.")
+            return redirect('kg_app:admin_profile')
+
+        admin_id_pk.password = new_password
+        admin_id_pk.save()
+        messages.success(request, "Password updated successfully!")
+        return redirect('kg_app:admin_profile')
+
 def team_management(request):
     session_admin_id = request.session.get("admin_id")
     # navigate to login page if not login
@@ -2679,8 +2704,6 @@ def repo_search_history(request):
     
     return render(request, "repo_search_history.html", {"search_history": search_history})
 
-
-
 def marquee_demo(request):
     """
     Public demo page that shows the marquee section with a toggle button.
@@ -2693,7 +2716,6 @@ def marquee_demo(request):
     }
     return render(request, "test_screen.html", {"marquee": marquee,})
  
- 
 @staff_member_required
 def toggle_marquee(request, pk):
     """
@@ -2704,7 +2726,6 @@ def toggle_marquee(request, pk):
     obj.is_active = not obj.is_active
     obj.save(update_fields=["is_active"])
     return redirect("/admin/marquee_app/marqueemessage/")
- 
  
 @csrf_exempt
 @require_POST
@@ -2721,7 +2742,6 @@ def toggle_marquee_api(request, pk):
         "is_active": obj.is_active,
         "message": obj.message,
     })
- 
  
 def get_active_marquee_api(request):
     """
