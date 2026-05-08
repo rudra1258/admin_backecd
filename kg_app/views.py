@@ -206,6 +206,12 @@ def admin_login(request):
             print("Admin user found:", admin_user.username)
             print("Provided password:", password)
             
+            if not admin_user.isActive:
+                return JsonResponse({
+                    'success': False,
+                    'message': 'Your account is deactivated. Please contact support.'
+                })
+            
             if not admin_user.canLogin:
                 return JsonResponse({
                     'success': False,
