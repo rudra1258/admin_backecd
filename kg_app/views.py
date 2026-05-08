@@ -209,7 +209,7 @@ def admin_login(request):
             if not admin_user.isActive:
                 return JsonResponse({
                     'success': False,
-                    'message': 'Your account is deactivated. Please contact support.'
+                    'message': 'Your account has been deactivated. Please contact support.'
                 })
             
             if not admin_user.canLogin:
