@@ -3002,9 +3002,7 @@ def live_locations(request):
             'email': location.employee.email,
             'latitude': location.latitude,
             'longitude': location.longitude,
-            'updated_at': location.updated_at.strftime(
-                "%d-%m-%Y %H:%M"
-            )
+            'updated_at': location.updated_at.isoformat()
 
         })
 
@@ -3058,9 +3056,7 @@ def employee_timeline(request, employee_id):
 
             'longitude': loc.longitude,
 
-            'time': loc.created_at.strftime(
-                "%I:%M %p"
-            )
+            'time': loc.created_at.isoformat()
 
         })
 

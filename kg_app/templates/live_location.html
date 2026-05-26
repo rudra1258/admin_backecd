@@ -394,117 +394,202 @@
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
     <script>
-        // Initialize map
-        var map = L.map('map').setView(
-            [20.2961, 85.8245],
-            13
-        );
 
-        // OpenStreetMap Layer
-        L.tileLayer(
-            'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-            {
-                maxZoom: 19,
-            }
-        ).addTo(map);
+      // ============================
+      // INITIALIZE MAP
+      // ============================
 
-        // Custom employee icon
-        const employeeIcon = L.icon({
+      var map = L.map('map').setView(
+          [20.2961, 85.8245],
+          13
+      );
 
-            iconUrl: '/static/location.png',
+      // ============================
+      // OPENSTREETMAP TILE
+      // ============================
 
-            iconSize: [40, 40],
+      L.tileLayer(
+          'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+          {
+              maxZoom: 19,
+          }
+      ).addTo(map);
 
-            iconAnchor: [20, 40],
+      // ============================
+      // CUSTOM EMPLOYEE ICON
+      // ============================
 
-            popupAnchor: [0, -40]
+      const employeeIcon = L.icon({
 
-        });
+          iconUrl: '/static/location.png',
 
-        // Store markers
-        let markers = [];
+          iconSize: [40, 40],
 
-        // Load employee locations
-        async function loadLocations() {
+          iconAnchor: [20, 40],
 
-            // Remove old markers
-            markers.forEach(marker => {
+          popupAnchor: [0, -40]
 
-                map.removeLayer(marker);
+      });
 
-            });
+      // ============================
+      // STORE MARKERS
+      // ============================
 
-            markers = [];
+      let markers = [];
 
-            // Fetch location data
-            let response = await fetch(
-                '/live-locations/'
-            );
+      // ============================
+      // FIRST LOAD CHECK
+      // ============================
 
-            let locations = await response.json();
+      let isFirstLoad = true;
 
-            // Add markers
-            locations.forEach(location => {
+      // ============================
+      // FORMAT DATETIME
+      // ============================
 
-                let marker = L.marker(
+      function formatDateTime(time) {
 
-                    [
-                        location.latitude,
-                        location.longitude
-                    ],
+          return new Date(time).toLocaleString('en-IN', {
 
-                    {
-                        icon: employeeIcon
-                    }
+              day: '2-digit',
+              month: 'short',
+              year: 'numeric',
+              hour: '2-digit',
+              minute: '2-digit',
+              second: '2-digit',
+              hour12: true
 
-                ).addTo(map);
+          });
+      }
 
-                // Popup details
-                marker.bindPopup(
+      // ============================
+      // LOAD EMPLOYEE LOCATIONS
+      // ============================
 
-                    `
-                    <div style="min-width:200px;">
+      async function loadLocations() {
 
-                        <h5 style="margin-bottom:10px;">
-                            ${location.first_name} ${location.last_name}
-                        </h5>
+          try {
 
-                        <b>Phone:</b>
-                        ${location.phone_number}<br>
+              // ========================
+              // REMOVE OLD MARKERS
+              // ========================
 
-                        <b>Email:</b>
-                        ${location.email}<br>
+              markers.forEach(marker => {
 
-                        <b>Updated:</b>
-                        ${location.updated_at}
+                  map.removeLayer(marker);
 
-                    </div>
-                    `
-                );
+              });
 
-                markers.push(marker);
+              markers = [];
 
-            });
+              // ========================
+              // FETCH LOCATION DATA
+              // ========================
 
-            // Auto fit all markers
-            if (markers.length > 0) {
+              let response = await fetch(
+                  '/live-locations/'
+              );
 
-                var group = new L.featureGroup(markers);
+              let locations = await response.json();
 
-                map.fitBounds(
-                    group.getBounds(),
-                    {
-                        padding: [50, 50]
-                    }
-                );
-            }
-        }
+              // ========================
+              // ADD NEW MARKERS
+              // ========================
 
-        // Initial load
-        loadLocations();
+              locations.forEach(location => {
 
-        // Refresh every 10 sec
-        //setInterval(loadLocations, 10000);
+                  let marker = L.marker(
+
+                      [
+                          location.latitude,
+                          location.longitude
+                      ],
+
+                      {
+                          icon: employeeIcon
+                      }
+
+                  ).addTo(map);
+
+                  // ====================
+                  // POPUP
+                  // ====================
+
+                  marker.bindPopup(
+
+                      `
+                      <div style="min-width:220px;">
+
+                          <h5 style="
+                              margin-bottom:10px;
+                              font-size:16px;
+                              font-weight:600;
+                          ">
+                              ${location.first_name}
+                              ${location.last_name}
+                          </h5>
+
+                          <div style="margin-bottom:5px;">
+                              <b>Phone:</b>
+                              ${location.phone_number}
+                          </div>
+
+                          <div style="margin-bottom:5px;">
+                              <b>Email:</b>
+                              ${location.email}
+                          </div>
+
+                          <div>
+                              <b>Updated:</b><br>
+                              ${formatDateTime(location.updated_at)}
+                          </div>
+
+                      </div>
+                      `
+                  );
+
+                  markers.push(marker);
+
+              });
+
+              // ========================
+              // AUTO FIT ONLY FIRST TIME
+              // ========================
+
+              if (isFirstLoad && markers.length > 0) {
+
+                  let group = new L.featureGroup(markers);
+
+                  map.fitBounds(
+                      group.getBounds(),
+                      {
+                          padding: [50, 50]
+                      }
+                  );
+
+                  isFirstLoad = false;
+              }
+
+          } catch (error) {
+
+              console.error(
+                  'Error loading locations:',
+                  error
+              );
+          }
+      }
+
+      // ============================
+      // INITIAL LOAD
+      // ============================
+
+      loadLocations();
+
+      // ============================
+      // REFRESH EVERY 10 SEC
+      // ============================
+
+      setInterval(loadLocations, 10000);
 
     </script>
 

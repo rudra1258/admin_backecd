@@ -775,7 +775,7 @@
         L.tileLayer(
             'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
             {
-                maxZoom: 15,
+                maxZoom: 20,
             }
         ).addTo(map);
 
@@ -784,8 +784,43 @@
         // ============================
 
         let markers = [];
-
         let polyline = null;
+
+        // ============================
+        // CUSTOM ICONS
+        // ============================
+
+        const startIcon = L.divIcon({
+            html: `
+                <div style="
+                    background: #22c55e;
+                    width: 18px;
+                    height: 18px;
+                    border-radius: 50%;
+                    border: 4px solid white;
+                    box-shadow: 0 0 10px rgba(0,0,0,0.4);
+                "></div>
+            `,
+            className: '',
+            iconSize: [18, 18],
+            iconAnchor: [9, 9]
+        });
+
+        const endIcon = L.divIcon({
+            html: `
+                <div style="
+                    background: #ef4444;
+                    width: 18px;
+                    height: 18px;
+                    border-radius: 50%;
+                    border: 4px solid white;
+                    box-shadow: 0 0 10px rgba(0,0,0,0.4);
+                "></div>
+            `,
+            className: '',
+            iconSize: [18, 18],
+            iconAnchor: [9, 9]
+        });
 
         // ============================
         // LOAD EMPLOYEE TIMELINE
@@ -819,9 +854,7 @@
             // ========================
 
             let response = await fetch(
-
                 `/employee-timeline/${employeeId}/`
-
             );
 
             let locations = await response.json();
@@ -829,34 +862,16 @@
             let latlngs = [];
 
             // ========================
-            // CREATE MARKERS
+            // PREPARE ROUTE POINTS
             // ========================
 
             locations.forEach(loc => {
 
-                let point = [
-
+                latlngs.push([
                     loc.latitude,
-
                     loc.longitude
+                ]);
 
-                ];
-
-                latlngs.push(point);
-
-                let marker = L.marker(point)
-
-                .addTo(map)
-
-                .bindPopup(
-
-                    `
-                    <b>Time:</b>
-                    ${loc.time}
-                    `
-                );
-
-                markers.push(marker);
             });
 
             // ========================
@@ -864,24 +879,86 @@
             // ========================
 
             polyline = L.polyline(
-
                 latlngs,
-
                 {
-                    color: 'blue',
-
-                    weight: 5
+                    color: '#2563eb',
+                    weight: 6,
+                    opacity: 0.8,
+                    smoothFactor: 1
                 }
-
             ).addTo(map);
+
+            // ========================
+            // START MARKER
+            // ========================
+
+            if (locations.length > 0) {
+
+                let start = locations[0];
+
+                let startMarker = L.marker(
+                    [start.latitude, start.longitude],
+                    {
+                        icon: startIcon
+                    }
+                )
+                .addTo(map)
+                .bindPopup(`
+                    <b>Start Point</b><br>
+                    Time: ${formatTime(start.time)}
+                `);
+
+                markers.push(startMarker);
+            }
+
+            // ========================
+            // END MARKER
+            // ========================
+
+            if (locations.length > 1) {
+
+                let end = locations[locations.length - 1];
+
+                let endMarker = L.marker(
+                    [end.latitude, end.longitude],
+                    {
+                        icon: endIcon
+                    }
+                )
+                .addTo(map)
+                .bindPopup(`
+                    <b>End Point</b><br>
+                    Time: ${formatTime(end.time)}
+                `);
+
+                markers.push(endMarker);
+            }
 
             // ========================
             // AUTO FIT ROUTE
             // ========================
 
             map.fitBounds(
-                polyline.getBounds()
+                polyline.getBounds(),
+                {
+                    padding: [50, 50]
+                }
             );
+        }
+
+        function formatTime(time) {
+
+            return new Date(time).toLocaleString('en-IN', {
+
+                day: '2-digit',
+                month: 'short',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: true
+
+            });
         }
 
     </script>
