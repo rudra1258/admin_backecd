@@ -33,6 +33,24 @@
             </g>
         </g>
     </symbol>
+    <symbol id="Location-Icon" viewBox="0 0 24 24" version="1.1"
+        xmlns="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink">
+
+        <title>Iconly/Curved/Location</title>
+
+        <g fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <g>
+
+                <!-- Location pin -->
+                <path d="M12 21C12 21 18 16.2 18 10.8C18 7.044 15.314 4.5 12 4.5C8.686 4.5 6 7.044 6 10.8C6 16.2 12 21 12 21Z" />
+
+                <!-- Inner circle -->
+                <path d="M13.5 10.5C13.5 11.328 12.828 12 12 12C11.172 12 10.5 11.328 10.5 10.5C10.5 9.672 11.172 9 12 9C12.828 9 13.5 9.672 13.5 10.5Z" />
+
+            </g>
+        </g>
+    </symbol>
     <symbol id="Tow-Truck-Icon" viewBox="0 0 24 24" version="1.1"
             xmlns="http://www.w3.org/2000/svg"
             xmlns:xlink="http://www.w3.org/1999/xlink">

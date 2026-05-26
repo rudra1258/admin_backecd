@@ -127,6 +127,21 @@
                 </svg>
                <h6 class="f-w-600">Manage Team</h6></a>          
             </li>
+            <li class="sidebar-list">
+              <!-- <i class="fa-solid fa-thumbtack"></i> -->
+              <a class="sidebar-link" href="javascript:void(0)">
+                <svg class="stroke-icon">
+                  <use href="{% static 'assets/svg/iconly-sprite.svg' %}#Location-Icon"></use>
+                </svg>
+                <h6 class="f-w-600">Location</h6>
+                <!-- <i class="iconly-Arrow-Right-2 icli"></i> -->
+                <i class="fa-solid fa-chevron-right margin_left_auto"></i>
+              </a>
+              <ul class="sidebar-submenu">
+                <li> <a href="{% url 'kg_app:live_tracking' %}">Live Location</a></li>
+                <li> <a href="{% url 'kg_app:time_line' %}">Time Line</a></li>
+              </ul>
+            </li>
             <!-- <li class="sidebar-list"><a class="sidebar-link" href="{% url 'kg_app:repo_search_history' %}">
                 <svg class="stroke-icon">
                 <use href="{% static 'assets/svg/iconly-sprite.svg' %}#History-Icon"></use>

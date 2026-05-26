@@ -505,3 +505,47 @@ class RepoTaskCreate(models.Model):
     def __str__(self):
         return f"{self.customer_name} - {self.vehicle_registration_number}"
 
+class EmployeeLocation(models.Model):
+
+    employee = models.ForeignKey(
+        CreateUser,
+        on_delete=models.CASCADE,
+        related_name='locations'
+    )
+
+    latitude = models.FloatField()
+
+    longitude = models.FloatField()
+
+    updated_at = models.DateTimeField(
+        auto_now=True
+    )
+
+    def __str__(self):
+
+        return f"{self.employee.first_name} Location"
+    
+class LocationHistory(models.Model):
+
+    employee = models.ForeignKey(
+
+        CreateUser,
+
+        on_delete=models.CASCADE,
+
+        related_name='location_history'
+    )
+
+    latitude = models.FloatField()
+
+    longitude = models.FloatField()
+
+    created_at = models.DateTimeField(
+        auto_now_add=True
+    )
+
+    def __str__(self):
+
+        return f"{self.employee.first_name} History"
+
+

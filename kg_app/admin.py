@@ -22,7 +22,6 @@ class CreateUserAdmin(admin.ModelAdmin):
     search_fields = ("first_name","last_name","email","phone_number","username")
     list_filter = ("role","created_at","admin_id")
 
-
 @admin.register(TcLogin)
 class TcLoginAdmin(admin.ModelAdmin):
     list_display = (
@@ -33,11 +32,6 @@ class TcLoginAdmin(admin.ModelAdmin):
     list_filter = ('status',)
     ordering = ('tc_login_id',)
     
-    
-
-
-
-
 @admin.register(TlLogin)
 class TLLoginAdmin(admin.ModelAdmin):
 
@@ -59,8 +53,6 @@ class TLLoginAdmin(admin.ModelAdmin):
         return "No Image"
 
     image_preview.short_description = "Image"
-
-
 
 @admin.register(GsLogin)
 class GsLoginAdmin(admin.ModelAdmin):
@@ -85,8 +77,7 @@ class GsLoginAdmin(admin.ModelAdmin):
         return "No Image"
 
     image_preview.short_description = "Image"
-    
-    
+     
 @admin.register(leave_request)
 class LeaveRequestAdmin(admin.ModelAdmin):
     list_display = ("admin_id","user_name","user_email","user_mobile","role","leave_status","submit_time")
@@ -105,15 +96,12 @@ class FeedbackAdmin(admin.ModelAdmin):
         return (obj.message[:60] + '...') if len(obj.message) > 60 else obj.message or '—'
     short_message.short_description = 'Message'
     
-
-
 @admin.register(email_list)
 class EmailListAdmin(admin.ModelAdmin):
     list_display = ("email_id", "email", "created_at")
     search_fields = ("email",)
     list_filter = ("created_at",)
     ordering = ("-created_at",)
-
 
 @admin.register(contact_message)
 class ContactMessageAdmin(admin.ModelAdmin):
@@ -178,8 +166,6 @@ class FCMTokenAdmin(admin.ModelAdmin):
             )
         }),
     )
-
-
 
 @admin.register(RepoTaskCreate)
 class RepoTaskCreateAdmin(admin.ModelAdmin):
@@ -287,6 +273,28 @@ class RepoTaskCreateAdmin(admin.ModelAdmin):
     # Pagination
     list_per_page = 25
 
+@admin.register(EmployeeLocation)
+class EmployeeLocationAdmin(admin.ModelAdmin):
+    list_display = (
+        'employee',
+        'latitude',
+        'longitude',
+        'updated_at',
+    )
+
+    list_filter = (
+        'updated_at',
+    )
+
+    search_fields = (
+        'employee__first_name',
+        'employee__last_name',
+        'employee__email',
+    )
+
+    ordering = (
+        '-updated_at',
+    )
 
 
 

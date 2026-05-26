@@ -2956,6 +2956,112 @@ class RepoTaskListAPIView(APIView):
             },
             status=status.HTTP_200_OK
         )
+        
+def live_tracking(request):
+    session_admin_id = request.session.get("admin_id")
+    # navigate to login page if not login
+    if not session_admin_id:
+        return render(request, 'index.html')
+    
+    return render(request, "live_location.html",)
+
+def time_line(request):
+    session_admin_id = request.session.get("admin_id")
+    # navigate to login page if not login
+    if not session_admin_id:
+        return render(request, 'index.html')
+    
+    admin_id_pk = admin_user_model.objects.get(pk = session_admin_id)
+    staff_list = CreateUser.objects.filter(
+        admin_id = admin_id_pk,
+        role = 'telecaller'
+    )
+
+    context = {
+        'employee_id': 3,
+        'employees': staff_list
+    }
+    return render(request, "time_line.html", context)
+
+def live_locations(request):
+    locations = EmployeeLocation.objects.select_related(
+        'employee'
+    )
+
+    data = []
+
+    for location in locations:
+
+        data.append({
+            'first_name': location.employee.first_name,
+            'last_name': location.employee.last_name,
+            'phone_number': location.employee.phone_number,
+            'email': location.employee.email,
+            'latitude': location.latitude,
+            'longitude': location.longitude,
+            'updated_at': location.updated_at.strftime(
+                "%d-%m-%Y %H:%M"
+            )
+
+        })
+
+    return JsonResponse(data, safe=False)
+
+@api_view(['POST'])
+def update_employee_location(request):
+
+    try:
+        employee_id = request.data.get('employee_id')
+        latitude = request.data.get('latitude')
+        longitude = request.data.get('longitude')
+        employee = CreateUser.objects.get(id=employee_id)
+        EmployeeLocation.objects.update_or_create(
+            employee=employee,
+            defaults={
+                'latitude': latitude,
+                'longitude': longitude,
+            }
+        )
+        LocationHistory.objects.create(
+            employee=employee,
+            latitude=latitude,
+            longitude=longitude
+        )
+        return Response({
+            'status': True,
+            'message': 'Location Updated'
+        })
+    except Exception as e:
+        return Response({
+            'status': False,
+            'message': str(e)
+        })
+
+def employee_timeline(request, employee_id):
+
+    locations = LocationHistory.objects.filter(
+
+        employee_id=employee_id
+
+    ).order_by('created_at')
+
+    data = []
+
+    for loc in locations:
+
+        data.append({
+
+            'latitude': loc.latitude,
+
+            'longitude': loc.longitude,
+
+            'time': loc.created_at.strftime(
+                "%I:%M %p"
+            )
+
+        })
+
+    return JsonResponse(data, safe=False)
 
 
 

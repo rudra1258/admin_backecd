@@ -89,6 +89,13 @@ urlpatterns = [
     path('repo_task/delete/<int:id>/', views.single_delete_repo_tasks, name='single_delete_repo_tasks'),
     path('repo-tasks/<int:admin_id>/', views.RepoTaskListAPIView.as_view(), name='repo_task_list_api'),
 
+
+    # live location tracking url and apis 
+    path('live-tracking/', views.live_tracking, name='live_tracking'),
+    path('time-line/', views.time_line, name='time_line'),
+    path('update-location/', views.update_employee_location, name='update_location'),
+    path('live-locations/', views.live_locations, name='live_locations'),
+    path('employee-timeline/<int:employee_id>/', views.employee_timeline, name='employee_timeline'),
     
     
 
