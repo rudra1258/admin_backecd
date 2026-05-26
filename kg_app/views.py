@@ -2974,18 +2974,21 @@ def time_line(request):
     admin_id_pk = admin_user_model.objects.get(pk = session_admin_id)
     staff_list = CreateUser.objects.filter(
         admin_id = admin_id_pk,
-        role = 'telecaller'
+        role = 'groundstaff'
     )
 
     context = {
-        'employee_id': 3,
+        # 'employee_id': 3,
         'employees': staff_list
     }
     return render(request, "time_line.html", context)
 
 def live_locations(request):
+    session_admin_id = request.session.get("admin_id")
     locations = EmployeeLocation.objects.select_related(
         'employee'
+    ).filter(
+        employee__admin_id = session_admin_id
     )
 
     data = []
