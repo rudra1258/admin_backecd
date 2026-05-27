@@ -640,6 +640,24 @@
         }
     </style>
 
+    <style>
+        .distance-box{
+            background:#fff;
+            padding:14px 18px;
+            border-radius:14px;
+            box-shadow:0 4px 12px rgba(0,0,0,0.08);
+            margin-bottom:15px;
+            font-size:16px;
+            font-weight:600;
+            color:#333;
+        }
+
+        #totalDistance{
+            color:#5b4bdb;
+            font-weight:700;
+        }
+    </style>
+
 </head>
 
 
@@ -680,6 +698,14 @@
                             <h4>
                                 Employees
                             </h4>
+                            <br>
+                            <!-- total distance  -->
+                            <div class="distance-box">
+                                Total Distance:
+                                <span id="totalDistance">
+                                    0 KM
+                                </span>
+                            </div>
                         </div>
                         <!-- Search -->
                         <div class="new-search-box">
@@ -690,14 +716,13 @@
                                 onkeyup="searchEmployees()"
                             >
                         </div>
+                        <!-- date filter  -->
                         <div class="timeline-filter">
-
                             <input 
                                 type="date" 
                                 id="timelineDate"
                                 class="timeline-date"
                             >
-
                             <button onclick="filterTimeline()" class="timeline-btn">
                                 Filter
                             </button>
@@ -858,6 +883,7 @@
         // ============================
 
         let markers = [];
+
         let polyline = null;
 
         let currentEmployeeId = null;
@@ -867,36 +893,89 @@
         // ============================
 
         const startIcon = L.divIcon({
+
             html: `
                 <div style="
-                    background: #22c55e;
-                    width: 18px;
-                    height: 18px;
-                    border-radius: 50%;
-                    border: 4px solid white;
-                    box-shadow: 0 0 10px rgba(0,0,0,0.4);
+                    background:#22c55e;
+                    width:18px;
+                    height:18px;
+                    border-radius:50%;
+                    border:4px solid white;
+                    box-shadow:0 0 10px rgba(0,0,0,0.4);
                 "></div>
             `,
+
             className: '',
+
             iconSize: [18, 18],
+
             iconAnchor: [9, 9]
         });
 
         const endIcon = L.divIcon({
+
             html: `
                 <div style="
-                    background: #ef4444;
-                    width: 18px;
-                    height: 18px;
-                    border-radius: 50%;
-                    border: 4px solid white;
-                    box-shadow: 0 0 10px rgba(0,0,0,0.4);
+                    background:#ef4444;
+                    width:18px;
+                    height:18px;
+                    border-radius:50%;
+                    border:4px solid white;
+                    box-shadow:0 0 10px rgba(0,0,0,0.4);
                 "></div>
             `,
+
             className: '',
+
             iconSize: [18, 18],
+
             iconAnchor: [9, 9]
         });
+
+        // ============================
+        // CALCULATE DISTANCE
+        // ============================
+
+        function calculateDistance(
+            lat1,
+            lon1,
+            lat2,
+            lon2
+        ) {
+
+            const R = 6371;
+
+            const dLat =
+                (lat2 - lat1) * Math.PI / 180;
+
+            const dLon =
+                (lon2 - lon1) * Math.PI / 180;
+
+            const a =
+
+                Math.sin(dLat / 2) *
+                Math.sin(dLat / 2)
+
+                +
+
+                Math.cos(lat1 * Math.PI / 180) *
+
+                Math.cos(lat2 * Math.PI / 180)
+
+                *
+
+                Math.sin(dLon / 2) *
+
+                Math.sin(dLon / 2);
+
+            const c =
+                2 * Math.atan2(
+                    Math.sqrt(a),
+                    Math.sqrt(1 - a)
+                );
+
+            return R * c;
+        }
 
         // ============================
         // LOAD EMPLOYEE TIMELINE
@@ -906,9 +985,10 @@
 
             currentEmployeeId = employeeId;
 
-            let selectedDate = document.getElementById(
-                'timelineDate'
-            ).value;
+            let selectedDate =
+                document.getElementById(
+                    'timelineDate'
+                ).value;
 
             // ========================
             // CLEAR OLD MARKERS
@@ -935,7 +1015,8 @@
             // FETCH DATA
             // ========================
 
-            let url = `/employee-timeline/${employeeId}/`;
+            let url =
+                `/employee-timeline/${employeeId}/`;
 
             if (selectedDate) {
 
@@ -962,6 +1043,33 @@
             });
 
             // ========================
+            // CALCULATE TOTAL DISTANCE
+            // ========================
+
+            let totalDistance = 0;
+
+            for (
+                let i = 1;
+                i < latlngs.length;
+                i++
+            ) {
+
+                totalDistance += calculateDistance(
+
+                    latlngs[i - 1][0],
+                    latlngs[i - 1][1],
+
+                    latlngs[i][0],
+                    latlngs[i][1]
+                );
+            }
+
+            document.getElementById(
+                'totalDistance'
+            ).innerText =
+                `${totalDistance.toFixed(2)} KM`;
+
+            // ========================
             // DRAW ROUTE
             // ========================
 
@@ -970,10 +1078,10 @@
                 polyline = L.polyline(
                     latlngs,
                     {
-                        color: '#2563eb',
-                        weight: 6,
-                        opacity: 0.8,
-                        smoothFactor: 1
+                        color:'#2563eb',
+                        weight:6,
+                        opacity:0.8,
+                        smoothFactor:1
                     }
                 ).addTo(map);
 
@@ -984,12 +1092,20 @@
                 let start = locations[0];
 
                 let startMarker = L.marker(
-                    [start.latitude, start.longitude],
+
+                    [
+                        start.latitude,
+                        start.longitude
+                    ],
+
                     {
-                        icon: startIcon
+                        icon:startIcon
                     }
+
                 )
+
                 .addTo(map)
+
                 .bindPopup(`
                     <b>Start Point</b><br>
                     Time: ${formatTime(start.time)}
@@ -1003,15 +1119,26 @@
 
                 if (locations.length > 1) {
 
-                    let end = locations[locations.length - 1];
+                    let end =
+                        locations[
+                            locations.length - 1
+                        ];
 
                     let endMarker = L.marker(
-                        [end.latitude, end.longitude],
+
+                        [
+                            end.latitude,
+                            end.longitude
+                        ],
+
                         {
-                            icon: endIcon
+                            icon:endIcon
                         }
+
                     )
+
                     .addTo(map)
+
                     .bindPopup(`
                         <b>End Point</b><br>
                         Time: ${formatTime(end.time)}
@@ -1027,13 +1154,15 @@
                 map.fitBounds(
                     polyline.getBounds(),
                     {
-                        padding: [50, 50]
+                        padding:[50, 50]
                     }
                 );
 
             } else {
 
-                alert("No location data found for selected date.");
+                alert(
+                    "No location data found."
+                );
             }
         }
 
@@ -1055,16 +1184,22 @@
 
         function formatTime(time) {
 
-            return new Date(time).toLocaleString('en-IN', {
+            return new Date(time)
+            .toLocaleString('en-IN', {
 
-                day: '2-digit',
-                month: 'short',
-                year: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit',
-                hour12: true
+                day:'2-digit',
 
+                month:'short',
+
+                year:'numeric',
+
+                hour:'2-digit',
+
+                minute:'2-digit',
+
+                second:'2-digit',
+
+                hour12:true
             });
         }
 
