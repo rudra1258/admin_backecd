@@ -579,6 +579,67 @@
 
     </style>
 
+    <style>
+        .timeline-filter{
+            display:flex;
+            align-items:center;
+            gap:12px;
+            padding:14px;
+            margin-bottom:18px;
+            background:#ffffff;
+            border-radius:16px;
+            box-shadow:0 4px 18px rgba(0,0,0,0.08);
+            border:1px solid #ececec;
+        }
+
+        .timeline-date{
+            flex:1;
+            height:48px;
+            border:1px solid #dcdcdc;
+            border-radius:12px;
+            padding:0 16px;
+            font-size:15px;
+            font-weight:500;
+            outline:none;
+            transition:0.3s;
+            background:#f9fafb;
+            color:#333;
+        }
+
+        .timeline-date:focus{
+            border-color:#5b4bdb;
+            background:#fff;
+            box-shadow:0 0 0 4px rgba(91,75,219,0.12);
+        }
+
+        .timeline-btn{
+            height:48px;
+            padding:0 22px;
+            border:none;
+            border-radius:12px;
+            background:linear-gradient(
+                135deg,
+                #5b4bdb,
+                #6d5dfc
+            );
+            color:white;
+            font-size:15px;
+            font-weight:600;
+            cursor:pointer;
+            transition:0.3s;
+            box-shadow:0 4px 12px rgba(91,75,219,0.25);
+        }
+
+        .timeline-btn:hover{
+            transform:translateY(-2px);
+            box-shadow:0 6px 16px rgba(91,75,219,0.35);
+        }
+
+        .timeline-btn:active{
+            transform:scale(0.98);
+        }
+    </style>
+
 </head>
 
 
@@ -628,6 +689,19 @@
                                 placeholder="Search employee..."
                                 onkeyup="searchEmployees()"
                             >
+                        </div>
+                        <div class="timeline-filter">
+
+                            <input 
+                                type="date" 
+                                id="timelineDate"
+                                class="timeline-date"
+                            >
+
+                            <button onclick="filterTimeline()" class="timeline-btn">
+                                Filter
+                            </button>
+
                         </div>
                         <!-- Employee List -->
                         <div class="employee-list">
@@ -786,6 +860,8 @@
         let markers = [];
         let polyline = null;
 
+        let currentEmployeeId = null;
+
         // ============================
         // CUSTOM ICONS
         // ============================
@@ -828,6 +904,12 @@
 
         async function loadTimeline(employeeId) {
 
+            currentEmployeeId = employeeId;
+
+            let selectedDate = document.getElementById(
+                'timelineDate'
+            ).value;
+
             // ========================
             // CLEAR OLD MARKERS
             // ========================
@@ -850,12 +932,17 @@
             }
 
             // ========================
-            // FETCH TIMELINE DATA
+            // FETCH DATA
             // ========================
 
-            let response = await fetch(
-                `/employee-timeline/${employeeId}/`
-            );
+            let url = `/employee-timeline/${employeeId}/`;
+
+            if (selectedDate) {
+
+                url += `?date=${selectedDate}`;
+            }
+
+            let response = await fetch(url);
 
             let locations = await response.json();
 
@@ -875,24 +962,24 @@
             });
 
             // ========================
-            // DRAW ROUTE LINE
+            // DRAW ROUTE
             // ========================
 
-            polyline = L.polyline(
-                latlngs,
-                {
-                    color: '#2563eb',
-                    weight: 6,
-                    opacity: 0.8,
-                    smoothFactor: 1
-                }
-            ).addTo(map);
+            if (latlngs.length > 0) {
 
-            // ========================
-            // START MARKER
-            // ========================
+                polyline = L.polyline(
+                    latlngs,
+                    {
+                        color: '#2563eb',
+                        weight: 6,
+                        opacity: 0.8,
+                        smoothFactor: 1
+                    }
+                ).addTo(map);
 
-            if (locations.length > 0) {
+                // ====================
+                // START MARKER
+                // ====================
 
                 let start = locations[0];
 
@@ -909,42 +996,62 @@
                 `);
 
                 markers.push(startMarker);
-            }
 
-            // ========================
-            // END MARKER
-            // ========================
+                // ====================
+                // END MARKER
+                // ====================
 
-            if (locations.length > 1) {
+                if (locations.length > 1) {
 
-                let end = locations[locations.length - 1];
+                    let end = locations[locations.length - 1];
 
-                let endMarker = L.marker(
-                    [end.latitude, end.longitude],
-                    {
-                        icon: endIcon
-                    }
-                )
-                .addTo(map)
-                .bindPopup(`
-                    <b>End Point</b><br>
-                    Time: ${formatTime(end.time)}
-                `);
+                    let endMarker = L.marker(
+                        [end.latitude, end.longitude],
+                        {
+                            icon: endIcon
+                        }
+                    )
+                    .addTo(map)
+                    .bindPopup(`
+                        <b>End Point</b><br>
+                        Time: ${formatTime(end.time)}
+                    `);
 
-                markers.push(endMarker);
-            }
-
-            // ========================
-            // AUTO FIT ROUTE
-            // ========================
-
-            map.fitBounds(
-                polyline.getBounds(),
-                {
-                    padding: [50, 50]
+                    markers.push(endMarker);
                 }
-            );
+
+                // ====================
+                // FIT MAP
+                // ====================
+
+                map.fitBounds(
+                    polyline.getBounds(),
+                    {
+                        padding: [50, 50]
+                    }
+                );
+
+            } else {
+
+                alert("No location data found for selected date.");
+            }
         }
+
+        // ============================
+        // FILTER BUTTON
+        // ============================
+
+        function filterTimeline() {
+
+            if (currentEmployeeId) {
+
+                loadTimeline(currentEmployeeId);
+            }
+        }
+
+        // ============================
+        // FORMAT TIME
+        // ============================
 
         function formatTime(time) {
 

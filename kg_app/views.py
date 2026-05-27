@@ -20,6 +20,7 @@ from django.db.models import Q
 from django.db import transaction
 from django.core.paginator import Paginator
 from django.core.serializers.json import DjangoJSONEncoder
+from django.utils.dateparse import parse_date
 
 from django.shortcuts import render
 from django.db.models import Count, Q
@@ -3039,27 +3040,23 @@ def update_employee_location(request):
         })
 
 def employee_timeline(request, employee_id):
-
+    date = request.GET.get('date')
     locations = LocationHistory.objects.filter(
-
         employee_id=employee_id
-
     ).order_by('created_at')
-
+    # FILTER BY DATE
+    if date:
+        parsed_date = parse_date(date)
+        locations = locations.filter(
+            created_at__date=parsed_date
+        )
     data = []
-
     for loc in locations:
-
         data.append({
-
             'latitude': loc.latitude,
-
             'longitude': loc.longitude,
-
             'time': loc.created_at.isoformat()
-
         })
-
     return JsonResponse(data, safe=False)
 
 
