@@ -73,15 +73,20 @@
               </a>
             </li>
 
-
             <li class="sidebar-list">
               <!-- <i class="fa-solid fa-thumbtack"></i> -->
-              <a class="sidebar-link" href="{% url 'kg_app:assign_task' %}">
+              <a class="sidebar-link" href="javascript:void(0)">
                 <svg class="stroke-icon">
                   <use href="{% static 'assets/svg/iconly-sprite.svg' %}#Bookmark"></use>
                 </svg>
-                <h6 class="f-w-600">Task List</h6>
+                <h6 class="f-w-600">Tasks</h6>
+                <!-- <i class="iconly-Arrow-Right-2 icli"></i> -->
+                <i class="fa-solid fa-chevron-right margin_left_auto"></i>
               </a>
+              <ul class="sidebar-submenu">
+                <li> <a href="{% url 'kg_app:assign_task' %}">Task List</a></li>
+                <li> <a href="{% url 'kg_app:assign_task_2' %}">Assign Task</a></li>
+              </ul>
             </li>
 
             <li class="sidebar-list">

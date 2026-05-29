@@ -25,12 +25,15 @@ urlpatterns = [
     path('assign_task/api/', views.assign_task_api, name='assign_task_api'),
     path('assign_task/filter-values/', views.assign_task_filter_values, name='assign_task_filter_values'),
     path('assign_task/category-counts/', views.assign_task_category_counts, name='assign_task_category_counts'),
-    path('assign_task/', views.assign_task, name='assign_task'),
+    path('task-list/', views.assign_task, name='assign_task'),
+    
+    path('assign-task/', views.assign_task_2, name='assign_task_2'),
+    path("tasks/bulk-assign/", views.pending_bulk_assign_tasks, name="pending_bulk_assign_tasks"),
     
     path('update_task/', views.update_task, name='update_task'),
     # path('view_history/', views.view_history, name='view_history'),
     path('complete_task/', views.complete_task, name='complete_task'),
-    path('create_task/', views.create_task, name='create_task'),
+    path('create-task/', views.create_task, name='create_task'),
     path('create_user/', views.create_user, name='create_user'),
     path('dashboard/', views.dashboard, name='dashboard'),
     path('groundstaff/', views.groundstaff, name='groundstaff'),

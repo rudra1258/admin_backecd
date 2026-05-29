@@ -1169,6 +1169,68 @@ def create_task(request):
         "tc_user_list": tl_user_list,
         })
 
+def assign_task_2(request):
+    session_admin_id = request.session.get('admin_id')
+    if not session_admin_id:
+        return render(request, 'index.html')
+    
+    admin_id_pk = admin_user_model.objects.get(pk=session_admin_id)
+    
+    task_list = Create_task.objects.filter(admin_id=admin_id_pk)
+    
+    # Fix nan values before passing to template
+    for task in task_list:
+        if str(task.tc_name).strip().lower() == 'nan':
+            task.tc_name = 'NA'
+        if str(task.fe_name).strip().lower() == 'nan':
+            task.fe_name = 'NA'
+        if str(task.tl_name).strip().lower() == 'nan':
+            task.tl_name = 'NA'
+        if str(task.update_location_status).strip().lower() == 'nan':
+            task.update_location_status = 'NA'
+
+    # Fetch users by role under this admin
+    tc_list = CreateUser.objects.filter(admin_id=admin_id_pk, role='telecaller')
+    tl_list = CreateUser.objects.filter(admin_id=admin_id_pk, role='teamlead')
+    gs_list = CreateUser.objects.filter(admin_id=admin_id_pk, role='groundstaff')
+    
+    return render(request, "assign_task_2.html", {
+        "task_list": task_list,
+        "tc_list": tc_list,
+        "tl_list": tl_list,
+        "gs_list": gs_list,
+    })
+    
+def pending_bulk_assign_tasks(request):
+    if request.method == "POST":
+        task_ids     = request.POST.getlist("task_ids")
+
+        tc_name      = request.POST.get("tc_name")
+        tc_userName  = request.POST.get("tc_userName")
+        tl_name      = request.POST.get("tl_name")
+        tl_userName  = request.POST.get("tl_userName")
+        fe_name      = request.POST.get("fe_name")
+        fe_userName  = request.POST.get("fe_userName")
+
+        tasks = Create_task.objects.filter(task_id__in=task_ids)
+
+        update_fields = {}
+        if tc_name:
+            update_fields["tc_name"]     = tc_name
+            update_fields["tc_userName"] = tc_userName
+        if tl_name:
+            update_fields["tl_name"]     = tl_name
+            update_fields["tl_userName"] = tl_userName
+        if fe_name:
+            update_fields["fe_name"]     = fe_name
+            update_fields["fe_userName"] = fe_userName
+
+        if update_fields:
+            tasks.update(**update_fields)
+
+        messages.success(request, f"{tasks.count()} tasks updated successfully.")
+        return redirect("kg_app:assign_task_2")
+
 #create task list api function
 class Create_task_Viewset(viewsets.ModelViewSet):
     queryset = Create_task.objects.all().order_by('-submit_time')

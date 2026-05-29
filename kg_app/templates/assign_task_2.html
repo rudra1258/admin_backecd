@@ -11,7 +11,7 @@
   <meta name="keywords"
     content="admin template, Admiro admin template, best javascript admin, dashboard template, bootstrap admin template, responsive admin template, web app">
   <meta name="author" content="pixelstrap">
-  <title>Pending Task</title>
+  <title>Assign Task</title>
   <!-- Favicon icon-->
   <link rel="icon" href="{% static 'assets/img/favicon.png' %}" type="image/x-icon">
   <link rel="shortcut icon" href="{% static 'assets/img/favicon.png' %}" type="image/x-icon">
@@ -214,6 +214,109 @@
 
   </style>
 
+  <style>
+        .action-bar {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+        background: #ffffff;
+        border: 1px solid #e9ecef;
+        border-radius: 10px;
+        padding: 10px 16px;
+        margin-bottom: 16px;
+        }
+
+        .sel-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: #e8f0fe;
+        color: #1a56db;
+        border-radius: 20px;
+        padding: 4px 12px;
+        font-size: 12px;
+        font-weight: 500;
+        white-space: nowrap;
+        min-width: 85px;
+        }
+
+        .bar-divider {
+        width: 1px;
+        height: 26px;
+        background: #dee2e6;
+        flex-shrink: 0;
+        }
+
+        .bar-group {
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+        }
+
+        .bar-group-label {
+        font-size: 10px;
+        font-weight: 600;
+        color: #6c757d;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        padding-left: 2px;
+        }
+
+        .bar-select {
+        font-size: 13px;
+        padding: 6px 28px 6px 10px;
+        border-radius: 8px;
+        border: 1px solid #ced4da;
+        background-color: #f8f9fa;
+        color: #212529;
+        min-width: 150px;
+        cursor: pointer;
+        appearance: none;
+        -webkit-appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 8px center;
+        transition: border-color 0.15s, box-shadow 0.15s;
+        }
+
+        .bar-select:hover { border-color: #adb5bd; }
+
+        .bar-select:focus {
+        outline: none;
+        border-color: #1a56db;
+        box-shadow: 0 0 0 3px rgba(26, 86, 219, 0.12);
+        }
+
+        .save-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        background: #1a56db;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        padding: 8px 20px;
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        white-space: nowrap;
+        margin-left: auto;
+        transition: background 0.15s, opacity 0.15s;
+        }
+
+        .save-btn:hover:not(:disabled) { background: #1344b0; }
+
+        .save-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+        .save-count-badge {
+        background: rgba(255,255,255,0.25);
+        border-radius: 20px;
+        padding: 1px 8px;
+        font-size: 12px;
+        }
+    </style>
+
 </head>
 
 
@@ -263,74 +366,109 @@
                   </div>
                   <div class="card-body">
                     <div class="table-responsive">
+                        <form id="bulkAssignForm" method="post" action="{% url 'kg_app:pending_bulk_assign_tasks' %}">
+                            {% csrf_token %}
 
-                      <form id="bulkDeleteForm" method="post" action="{% url 'kg_app:pending_bulk_delete_tasks' %}">
-                        {% csrf_token %}
+                            <!-- Action Bar -->
+                            <div class="action-bar">
+                                <div class="sel-pill">
+                                    <i class="fa-solid fa-check" style="font-size:11px;"></i>
+                                    <span id="selInfo">0 selected</span>
+                                </div>
 
-                        <!-- Top Action Bar -->
-                        <div class="action-bar">
-                          <button type="submit" class="delete-btn" id="deleteBtn">
-                            <i class="fa-solid fa-trash"></i>
-                            Delete Selected (<span id="selectedCount">0</span>)
-                          </button>
-                        </div>
+                                <div class="bar-divider"></div>
 
-                        <table class="display dataTable" id="basic-9">
-                          <thead style="background:#f8f9fa;">
-                            <tr>
-                              <th>
-                                <label class="custom-checkbox">
-                                  <input type="checkbox" id="select_all">
-                                  <span class="checkmark"></span>
-                                </label>
-                              </th>
-                              <th>Sl</th>
-                              <th>Agreement Id</th>
-                              <th>Category</th>
-                              <th>Customer Name</th>
-                              <th>Mobile Number</th>
-                              <th>TC Name</th>
-                              <th>GS Name </th>
-                              <th>Status</th>
-                              <th>Action</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {% for task in create_task_list %}
-                            <tr>
-                              <td>
-                                <label class="custom-checkbox">
-                                  <input type="checkbox" name="task_ids" value="{{task.task_id}}" class="row-checkbox">
-                                  <span class="checkmark"></span>
-                                </label>
-                              </td>
-                              <td>{{forloop.counter}}</td>
-                              <td>{{task.aggrement_id}}</td>
-                              <td>{{task.category}}</td>
-                              <td>{{task.customer_name}}</td>
-                              <td>{{task.customer_mobile_number}}</td>
-                              {% load custom_filters %}
-                              <td>{{task.tc_name|nan_to_na}}</td>
-                              <td>{{task.fe_name|nan_to_na}}</td>
-                              <td>{{task.update_location_status}}</td>
-                              <td>
-                                  <!-- Single delete -->
-                                  <form method="post"
-                                        action="{% url 'kg_app:pending_task_delete' task.task_id %}"
-                                        onsubmit="return confirm('Delete this record?');"
-                                        style="display:inline;">
-                                    {% csrf_token %}
-                                    <button type="submit" class="icon-btn">
-                                      <i class="fa-solid fa-trash-can"></i>
-                                    </button>
-                                  </form>
+                                <div class="bar-group">
+                                    <span class="bar-group-label">TC Name</span>
+                                    <select class="bar-select" id="barTC">
+                                    <option value="">— no change —</option>
+                                    {% for tc in tc_list %}
+                                    <option value="{{ tc.username }}" data-name="{{ tc.first_name }} {{ tc.last_name }}">
+                                        {{ tc.first_name }} {{ tc.last_name }}
+                                    </option>
+                                    {% endfor %}
+                                    </select>
+                                </div>
+
+                                <div class="bar-group">
+                                    <span class="bar-group-label">TL Name</span>
+                                    <select class="bar-select" id="barTL">
+                                    <option value="">— no change —</option>
+                                    {% for tl in tl_list %}
+                                    <option value="{{ tl.username }}" data-name="{{ tl.first_name }} {{ tl.last_name }}">
+                                        {{ tl.first_name }} {{ tl.last_name }}
+                                    </option>
+                                    {% endfor %}
+                                    </select>
+                                </div>
+
+                                <div class="bar-group">
+                                    <span class="bar-group-label">GS Name</span>
+                                    <select class="bar-select" id="barGS">
+                                    <option value="">— no change —</option>
+                                    {% for gs in gs_list %}
+                                    <option value="{{ gs.username }}" data-name="{{ gs.first_name }} {{ gs.last_name }}">
+                                        {{ gs.first_name }} {{ gs.last_name }}
+                                    </option>
+                                    {% endfor %}
+                                    </select>
+                                </div>
+
+                                <!-- hidden inputs populated by JS -->
+                                <input type="hidden" name="tc_name"     id="hTcName">
+                                <input type="hidden" name="tc_userName" id="hTcUserName">
+                                <input type="hidden" name="tl_name"     id="hTlName">
+                                <input type="hidden" name="tl_userName" id="hTlUserName">
+                                <input type="hidden" name="fe_name"     id="hFeName">
+                                <input type="hidden" name="fe_userName" id="hFeUserName">
+
+                                <button type="submit" class="save-btn" id="saveBtn" disabled>
+                                    <i class="fa-solid fa-floppy-disk"></i>
+                                    Save
+                                    <span class="save-count-badge" id="saveCount">0</span>
+                                </button>
+
+                                </div>
+
+                            <table class="display dataTable" id="basic-9">
+                            <thead>
+                                <tr>
+                                <th><input type="checkbox" id="select_all"></th>
+                                <th>Sl</th>
+                                <th>Agreement Id</th>
+                                <th>Category</th>
+                                <th>Customer Name</th>
+                                <th>Mobile Number</th>
+                                <th>TC Name</th>
+                                <th>TL Name</th>
+                                <th>GS Name</th>
+                                <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for task in task_list %}
+                                <tr>
+                                <td>
+                                    <label class="custom-checkbox">
+                                    <input type="checkbox" name="task_ids" value="{{ task.task_id }}" class="row-checkbox">
+                                    <span class="checkmark"></span>
+                                    </label>
                                 </td>
-                            </tr>
-                            {% endfor %}
-                          </tbody>
-                        </table>
-                      </form>
-                    </div>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ task.aggrement_id }}</td>
+                                <td>{{ task.category }}</td>
+                                <td>{{ task.customer_name }}</td>
+                                <td>{{ task.customer_mobile_number }}</td>
+                                <td>{{ task.tc_name }}</td>
+                                <td>{{ task.tl_name }}</td>
+                                <td>{{ task.fe_name }}</td>
+                                <td>{{ task.update_location_status }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                            </table>
+                        </form>
+                        </div>
                   </div>
                 </div>
               </div>
@@ -431,43 +569,64 @@
   <script src="{% static 'assets/js/script.js' %}"></script>
 
   <script>
-    // Select All
-    document.getElementById("select_all").addEventListener("change", function() {
-        let checkboxes = document.querySelectorAll('.row-checkbox');
-        checkboxes.forEach(cb => cb.checked = this.checked);
-        updateSelection();
-    });
+        const saveBtn    = document.getElementById("saveBtn");
+        const saveCount  = document.getElementById("saveCount");
+        const selInfo    = document.getElementById("selInfo");
 
-    // Count + Button state
-    const checkboxes = document.querySelectorAll('.row-checkbox');
-    const deleteBtn = document.getElementById("deleteBtn");
-    const selectedCount = document.getElementById("selectedCount");
-
-    checkboxes.forEach(cb => {
-        cb.addEventListener("change", updateSelection);
-    });
-
-    function updateSelection() {
-        let checked = document.querySelectorAll('.row-checkbox:checked').length;
-
-        selectedCount.innerText = checked;
-
-        deleteBtn.disabled = checked === 0;
-    }
-
-    // Form validation
-    document.getElementById("bulkDeleteForm").addEventListener("submit", function(e) {
-        let checked = document.querySelectorAll('.row-checkbox:checked');
-
-        if (checked.length === 0) {
-            alert("⚠️ Please select at least one task to delete!");
-            e.preventDefault();
+        function getChecked() {
+            return [...document.querySelectorAll(".row-checkbox:checked")];
         }
-    });
 
-    // Initialize button state
-    updateSelection();
-  </script>
+        function updateBar() {
+            const n = getChecked().length;
+            selInfo.textContent = `${n} selected`;
+            saveCount.textContent = n;
+            saveBtn.disabled = n === 0;
+        }
+
+        document.querySelectorAll(".row-checkbox").forEach(cb => {
+            cb.addEventListener("change", updateBar);
+        });
+
+        document.getElementById("select_all").addEventListener("change", function () {
+            document.querySelectorAll(".row-checkbox").forEach(cb => cb.checked = this.checked);
+            updateBar();
+        });
+
+        document.getElementById("bulkAssignForm").addEventListener("submit", function (e) {
+            if (getChecked().length === 0) {
+            alert("Please select at least one task.");
+            e.preventDefault();
+            return;
+            }
+
+            // TC
+            const tcSel = document.getElementById("barTC");
+            if (tcSel.value) {
+            const opt = tcSel.options[tcSel.selectedIndex];
+            document.getElementById("hTcName").value     = opt.dataset.name;
+            document.getElementById("hTcUserName").value = opt.value;
+            }
+
+            // TL
+            const tlSel = document.getElementById("barTL");
+            if (tlSel.value) {
+            const opt = tlSel.options[tlSel.selectedIndex];
+            document.getElementById("hTlName").value     = opt.dataset.name;
+            document.getElementById("hTlUserName").value = opt.value;
+            }
+
+            // GS (fe)
+            const gsSel = document.getElementById("barGS");
+            if (gsSel.value) {
+            const opt = gsSel.options[gsSel.selectedIndex];
+            document.getElementById("hFeName").value     = opt.dataset.name;
+            document.getElementById("hFeUserName").value = opt.value;
+            }
+        });
+
+        updateBar();
+    </script>
 
 
   <script>
