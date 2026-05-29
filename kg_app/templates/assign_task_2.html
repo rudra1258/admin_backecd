@@ -362,7 +362,7 @@
               <div class="col-sm-12">
                 <div class="card">
                   <div class="card-header pb-0 card-no-border">
-                    <h3>Pending Tasks</h3>
+                    <h3>Assign Tasks</h3>
                   </div>
                   <div class="card-body">
                     <div class="table-responsive">
@@ -436,13 +436,11 @@
                                 <th><input type="checkbox" id="select_all"></th>
                                 <th>Sl</th>
                                 <th>Agreement Id</th>
-                                <th>Category</th>
                                 <th>Customer Name</th>
                                 <th>Mobile Number</th>
                                 <th>TC Name</th>
                                 <th>TL Name</th>
                                 <th>GS Name</th>
-                                <th>Status</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -456,13 +454,11 @@
                                 </td>
                                 <td>{{ forloop.counter }}</td>
                                 <td>{{ task.aggrement_id }}</td>
-                                <td>{{ task.category }}</td>
                                 <td>{{ task.customer_name }}</td>
                                 <td>{{ task.customer_mobile_number }}</td>
                                 <td>{{ task.tc_name }}</td>
                                 <td>{{ task.tl_name }}</td>
                                 <td>{{ task.fe_name }}</td>
-                                <td>{{ task.update_location_status }}</td>
                                 </tr>
                                 {% endfor %}
                             </tbody>
